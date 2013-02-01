@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.texeltek</groupId>
+    <artifactId>mango</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+
+    <properties>
+        <distribution.repo.id>texeltek</distribution.repo.id>
+        <distribution.releases>http://192.168.20.249:8888/nexus/content/repositories/tt</distribution.releases>
+        <distribution.snap.id>texeltek</distribution.snap.id>
+        <distribution.snapshots>http://192.168.20.249:8888/nexus/content/repositories/tt-snapshots</distribution.snapshots>
+        <guava.version>13.0.1</guava.version>
+        <junit.version>4.8.1</junit.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    <distributionManagement>
+        <repository>
+            <id>${distribution.repo.id}</id>
+            <name>Release distribution</name>
+            <uniqueVersion>false</uniqueVersion>
+            <url>${distribution.releases}
+            </url>
+        </repository>
+        <snapshotRepository>
+            <id>${distribution.snap.id}</id>
+            <name>Snapshot distribution</name>
+            <uniqueVersion>false</uniqueVersion>
+            <url>${distribution.snapshots}
+            </url>
+        </snapshotRepository>
+    </distributionManagement>
+    <scm>
+        <connection>scm:git:git@github.com:texeltek/mango.git</connection>
+        <developerConnection>scm:git:git@github.com:texeltek/mango.git</developerConnection>
+        <url>scm:git:git@github.com:texeltek/mango.git</url>
+    </scm>
+</project>
