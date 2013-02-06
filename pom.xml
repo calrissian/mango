@@ -4,7 +4,7 @@
 
     <groupId>com.texeltek</groupId>
     <artifactId>mango</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2-SNAPSHOT</version>
 
     <properties>
         <distribution.repo.id>texeltek</distribution.repo.id>
