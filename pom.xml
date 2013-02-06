@@ -15,6 +15,8 @@
         <distribution.snapshots>http://192.168.20.249:8888/nexus/content/repositories/tt-snapshots</distribution.snapshots>
         <guava.version>13.0.1</guava.version>
         <junit.version>4.8.1</junit.version>
+        <mockito.version>1.9.0</mockito.version>
+        <powermock-module-junit4.version>1.4.9</powermock-module-junit4.version>
     </properties>
 
     <dependencies>
@@ -27,6 +29,18 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-module-test-mockito-junit4</artifactId>
+            <version>${powermock-module-junit4.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
