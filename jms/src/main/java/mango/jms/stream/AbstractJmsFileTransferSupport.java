@@ -24,6 +24,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.net.URLConnection;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -80,6 +81,8 @@ public abstract class AbstractJmsFileTransferSupport {
                 return null;
             }
 
+            String contentType = DomainMessageUtils.extractContentTypeFromMessage(returnMessage);
+
             // start the stream transfer at this destination
             final Destination receiveAckDestination = returnMessage
                     .getJMSReplyTo();
@@ -89,7 +92,8 @@ public abstract class AbstractJmsFileTransferSupport {
                     "Receiver[" + req.getRequestId()
                             + "]: File Transfer starting");
 
-            return new JmsFileReceiverInputStream(this, sendDataDestination,
+            System.out.println("CONTENTTYPE: " + contentType);
+            return new JmsFileReceiverInputStream(contentType, this, sendDataDestination,
                     receiveAckDestination);
         } catch (Exception e) {
             throw new JmsFileTransferException(e);
@@ -102,11 +106,14 @@ public abstract class AbstractJmsFileTransferSupport {
 
         DigestInputStream is = null;
         Assert.notNull(req, "Request cannot be null");
+        final URL downloadUrl = new URL(req.getDownloadUrl());
+        final URLConnection connection = downloadUrl.openConnection();
         try {
-            final URL downloadUrl = new URL(req.getDownloadUrl());
-            is = new DigestInputStream(new BufferedInputStream(downloadUrl
-                    .openStream()), MessageDigest
-                    .getInstance(getHashAlgorithm()));
+
+            is = new DigestInputStream(new BufferedInputStream(connection.getInputStream()),
+                    MessageDigest.getInstance(getHashAlgorithm()));
+
+
 
         } catch (NoSuchAlgorithmException e) {
             throw new JmsFileTransferException(e);
@@ -128,6 +135,10 @@ public abstract class AbstractJmsFileTransferSupport {
                                 Message responseMessage = DomainMessageUtils
                                         .toResponseMessage(session, new Response(
                                                 ResponseStatusEnum.ACCEPT));
+
+                                DomainMessageUtils
+                                        .setContentTypeOnMessage(responseMessage, connection.getContentType());
+
                                 // Actual file transfer should be done on a queue.
                                 // Topics will not work
                                 Destination streamTransferDestination = factoryQueue(

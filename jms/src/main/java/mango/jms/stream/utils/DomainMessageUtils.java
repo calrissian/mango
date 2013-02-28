@@ -20,6 +20,8 @@ public class DomainMessageUtils {
     private static final String PIECE_HASH = "filetransfer.piece.hash";
     private static final String RESPONSE_STATUS = "filetransfer.response.status";
     private static final String RESPONSE_HASH = "filetransfer.response.hash";
+    private static final String CONTENT_TYPE = "filestransfer.message.contentType";
+
     public static final String REQUEST_ID = "filetransfer.request.id";
     public static final String REQUEST_DOWNLOADURL = "filetransfer.request.downloadurl";
     public static final String MESSAGETYPE = "filetransfer.message.type";
@@ -55,6 +57,15 @@ public class DomainMessageUtils {
         message.setStringProperty(RESPONSE_HASH, response.getHash());
 
         return message;
+    }
+
+    public static String extractContentTypeFromMessage(Message message) throws JMSException {
+
+        return message.getStringProperty(CONTENT_TYPE);
+    }
+
+    public static void setContentTypeOnMessage(Message message, String contentType) throws JMSException {
+        message.setStringProperty(CONTENT_TYPE, contentType);
     }
 
     public static Response fromResponseMessage(Message message)

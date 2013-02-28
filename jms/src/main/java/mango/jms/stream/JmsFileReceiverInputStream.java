@@ -31,9 +31,12 @@ public class JmsFileReceiverInputStream extends InputStream {
 
     private MessageQueueListener messageQueueListener;
 
-    protected JmsFileReceiverInputStream(AbstractJmsFileTransferSupport support,
+    private String contentType;
+
+    protected JmsFileReceiverInputStream(String contentType, AbstractJmsFileTransferSupport support,
                                          String sendDataDestination, Destination receiveAckDestination) {
         this.support = support;
+        this.contentType = contentType;
         this.sendDataDestination = sendDataDestination;
         this.receiveAckDestination = receiveAckDestination;
 
@@ -119,36 +122,6 @@ public class JmsFileReceiverInputStream extends InputStream {
         return messageQueueListener.getMessageInQueue();
     }
 
-//    protected void storeNextMessage() {
-//        pool.submit(new Runnable() {
-//            @Override
-//            public void run() {
-//                //read message off queue
-//                //if message is STOPSEND Response, then stop receiving messages
-//                //loop
-//                boolean stop = false;
-//                while (!stop) {
-//                    Message msg = (Message) decorator.getJmsTemplate().execute(
-//                            new SessionCallback() {
-//
-//                                @Override
-//                                public Object doInJms(Session session)
-//                                        throws JMSException {
-//                                    Destination factoryQueue = decorator.factoryQueue(
-//                                            session, sendDataDestination);
-//                                    MessageConsumer consumer = session
-//                                            .createConsumer(factoryQueue);
-//                                    Message receive = consumer.receive(decorator
-//                                            .getJmsTemplate().getReceiveTimeout());
-//                                    return receive;
-//                                }
-//
-//                            }, true);
-//                }
-//            }
-//        });
-//    }
-
     @Override
     public void close() throws IOException {
         super.close();
@@ -189,5 +162,9 @@ public class JmsFileReceiverInputStream extends InputStream {
 
                 });
         started = true;
+    }
+
+    public String getContentType() {
+        return contentType;
     }
 }

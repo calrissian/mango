@@ -47,6 +47,10 @@ public class JmsFileTransferSupportTest extends TestCase {
                                                 .getBytes());
                                     }
 
+                                    @Override
+                                    public String getContentType() {
+                                        return "content/notnull";
+                                    }
                                 };
                             }
                         };
@@ -87,7 +91,7 @@ public class JmsFileTransferSupportTest extends TestCase {
         receiver.setJmsTemplate(jmsTemplate);
         receiver.setPieceSize(9);
 
-        InputStream stream = receiver.receiveStream("testprot:test");
+        JmsFileReceiverInputStream stream = (JmsFileReceiverInputStream) receiver.receiveStream("testprot:test");
         StringBuffer buffer = new StringBuffer();
         int read = 0;
         while ((read = stream.read()) >= 0) {
@@ -96,6 +100,7 @@ public class JmsFileTransferSupportTest extends TestCase {
         stream.close();
 
         assertEquals(TEST_STR, buffer.toString());
+        assertEquals("content/notnull", stream.getContentType());
 
         conn.stop();
 
