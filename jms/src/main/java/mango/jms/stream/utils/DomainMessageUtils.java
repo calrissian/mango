@@ -16,16 +16,16 @@ public class DomainMessageUtils {
     protected DomainMessageUtils() {
     }
 
-    private static final String PIECE_POSITION = "mvm.agentx.filetransfer.piece.position";
-    private static final String PIECE_HASH = "mvm.agentx.filetransfer.piece.hash";
-    private static final String RESPONSE_STATUS = "mvm.agentx.filetransfer.response.status";
-    private static final String RESPONSE_HASH = "mvm.agentx.filetransfer.response.hash";
-    public static final String REQUEST_ID = "mvm.agentx.filetransfer.request.id";
-    public static final String REQUEST_DOWNLOADURL = "mvm.agentx.filetransfer.request.downloadurl";
-    public static final String MESSAGETYPE = "mvm.agentx.filetransfer.message.type";
-    public static final String MESSAGETYPE_REQUEST = "mvm.agentx.filetransfer.message.type.request";
-    public static final String MESSAGETYPE_RESPONSE = "mvm.agentx.filetransfer.message.type.response";
-    public static final String MESSAGETYPE_PIECE = "mvm.agentx.filetransfer.message.type.piece";
+    private static final String PIECE_POSITION = "filetransfer.piece.position";
+    private static final String PIECE_HASH = "filetransfer.piece.hash";
+    private static final String RESPONSE_STATUS = "filetransfer.response.status";
+    private static final String RESPONSE_HASH = "filetransfer.response.hash";
+    public static final String REQUEST_ID = "filetransfer.request.id";
+    public static final String REQUEST_DOWNLOADURL = "filetransfer.request.downloadurl";
+    public static final String MESSAGETYPE = "filetransfer.message.type";
+    public static final String MESSAGETYPE_REQUEST = "filetransfer.message.type.request";
+    public static final String MESSAGETYPE_RESPONSE = "filetransfer.message.type.response";
+    public static final String MESSAGETYPE_PIECE = "filetransfer.message.type.piece";
 
     public static Message toRequestMessage(Session session, Request request)
             throws JMSException {

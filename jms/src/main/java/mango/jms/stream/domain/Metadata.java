@@ -41,5 +41,4 @@ public class Metadata implements Serializable {
 	public String getFileName() {
 		return fileName;
 	}
-
 }

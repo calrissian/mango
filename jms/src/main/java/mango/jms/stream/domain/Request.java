@@ -5,7 +5,6 @@ import java.util.UUID;
 
 public class Request implements Serializable{
 
-
     private static final long serialVersionUID = 3835642167224689315L;
 
     private String downloadUrl;
