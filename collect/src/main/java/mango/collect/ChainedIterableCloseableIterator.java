@@ -1,4 +1,4 @@
-package com.texeltek.mango.collect;
+package mango.collect;
 
 /**
  * Date: 1/28/13

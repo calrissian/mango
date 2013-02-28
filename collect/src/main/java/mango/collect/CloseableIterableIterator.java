@@ -1,4 +1,4 @@
-package com.texeltek.mango.collect;
+package mango.collect;
 
 import java.io.IOException;
 import java.util.Iterator;

@@ -1,4 +1,4 @@
-package com.texeltek.mango.collect;
+package mango.collect;
 
 import com.google.common.base.Function;
 import com.google.common.collect.AbstractIterator;

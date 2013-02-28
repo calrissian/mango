@@ -1,4 +1,4 @@
-package com.texeltek.mango.collect;
+package mango.collect;
 
 import org.junit.Test;
 import org.mockito.Mockito;

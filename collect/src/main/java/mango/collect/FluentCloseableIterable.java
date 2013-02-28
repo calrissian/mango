@@ -1,4 +1,4 @@
-package com.texeltek.mango.collect;
+package mango.collect;
 
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
@@ -8,8 +8,6 @@ import com.google.common.collect.*;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.Iterator;
-
-import static com.texeltek.mango.collect.CloseableIterables.consumeClose;
 
 /**
  */
@@ -76,7 +74,7 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
      * elements.
      */
     public final FluentCloseableIterable<T> cycle() {
-        return from(consumeClose(Iterables.cycle(this), this));
+        return from(CloseableIterables.consumeClose(Iterables.cycle(this), this));
     }
 
     /**
@@ -93,7 +91,7 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
      * @param type the type of elements desired
      */
     public final <T> FluentCloseableIterable<T> filter(Class<T> type) {
-        return from(consumeClose(Iterables.filter(this, type), this));
+        return from(CloseableIterables.consumeClose(Iterables.filter(this, type), this));
     }
 
     /**
@@ -204,7 +202,7 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
      * {@link IllegalStateException}.
      */
     public final FluentCloseableIterable<T> skip(int numberToSkip) {
-        return from(consumeClose(Iterables.skip(this, numberToSkip), this));
+        return from(CloseableIterables.consumeClose(Iterables.skip(this, numberToSkip), this));
     }
 
     /**

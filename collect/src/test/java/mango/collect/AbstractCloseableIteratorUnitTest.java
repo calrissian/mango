@@ -1,4 +1,4 @@
-package com.texeltek.mango.collect;
+package mango.collect;
 
 import org.junit.Test;
 
@@ -10,7 +10,7 @@ public class AbstractCloseableIteratorUnitTest {
 
     @Test(expected = UnsupportedOperationException.class)
     public void removeThrowsUnsupportedOperationException() {
-        AbstractCloseableIterator iterator = createMockIterator();
+        mango.collect.AbstractCloseableIterator iterator = createMockIterator();
         iterator.remove();
     }
 
@@ -19,6 +19,8 @@ public class AbstractCloseableIteratorUnitTest {
         AbstractCloseableIterator iterator = createMockIterator();
         assertEquals(iterator, iterator.iterator());
     }
+
+
 
     private <T> AbstractCloseableIterator<T> createMockIterator() {
         return new MockAbstractCloseableIterator<T>();
