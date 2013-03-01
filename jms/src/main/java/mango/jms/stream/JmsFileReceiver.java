@@ -6,8 +6,8 @@ import java.io.InputStream;
 public class JmsFileReceiver extends AbstractJmsFileTransferSupport implements
         FileTransfer {
 
-    public InputStream receiveStream(String url) throws JmsFileTransferException {
-        final Request req = new Request(url);
+    public InputStream receiveStream(String uri) throws JmsFileTransferException {
+        final Request req = new Request(uri);
         return receiveStream(req);
     }
 }

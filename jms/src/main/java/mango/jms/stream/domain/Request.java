@@ -7,21 +7,21 @@ public class Request implements Serializable{
 
     private static final long serialVersionUID = 3835642167224689315L;
 
-    private String downloadUrl;
+    private String downloadUri;
 
     private String requestId;
 
-    public Request(String downloadUrl) {
-        this(downloadUrl, UUID.randomUUID().toString());
+    public Request(String downloadUri) {
+        this(downloadUri, UUID.randomUUID().toString());
     }
 
     public Request(String downloadUrl, String requestId) {
-        this.downloadUrl = downloadUrl;
+        this.downloadUri = downloadUrl;
         this.requestId = requestId;
     }
 
-    public String getDownloadUrl() {
-        return downloadUrl;
+    public String getDownloadUri() {
+        return downloadUri;
     }
 
     public String getRequestId() {

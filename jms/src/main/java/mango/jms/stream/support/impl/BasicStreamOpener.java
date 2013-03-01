@@ -1,17 +1,17 @@
 package mango.jms.stream.support.impl;
 
-import mango.jms.stream.support.UrlStreamOpener;
+import mango.jms.stream.support.UriStreamOpener;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
+import java.net.URI;
 import java.net.URLConnection;
 
-public class BasicStreamOpener implements UrlStreamOpener {
+public class BasicStreamOpener implements UriStreamOpener {
     @Override
-    public InputStream openStream(URL url) throws IOException {
+    public InputStream openStream(URI uri) throws IOException {
 
-        final URLConnection connection = url.openConnection();
+        final URLConnection connection = uri.toURL().openConnection();
         return connection.getInputStream();
     }
 }

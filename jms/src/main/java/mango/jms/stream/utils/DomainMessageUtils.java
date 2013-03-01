@@ -35,7 +35,7 @@ public class DomainMessageUtils {
         message.setStringProperty(MESSAGETYPE, MESSAGETYPE_REQUEST);
         message
                 .setStringProperty(REQUEST_DOWNLOADURL, request
-                        .getDownloadUrl());
+                        .getDownloadUri());
         message.setStringProperty(REQUEST_ID, request.getRequestId());
 
         return message;

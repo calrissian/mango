@@ -4,7 +4,7 @@ import mango.jms.stream.domain.Piece;
 import mango.jms.stream.domain.Request;
 import mango.jms.stream.domain.Response;
 import mango.jms.stream.domain.ResponseStatusEnum;
-import mango.jms.stream.support.UrlStreamOpener;
+import mango.jms.stream.support.UriStreamOpener;
 import mango.jms.stream.support.impl.BasicStreamOpener;
 import mango.jms.stream.utils.DestinationRequestor;
 import mango.jms.stream.utils.DomainMessageUtils;
@@ -25,7 +25,8 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -40,7 +41,7 @@ public abstract class AbstractJmsFileTransferSupport {
     private Destination streamRequestDestination;
     private String hashAlgorithm;
 
-    private UrlStreamOpener streamOpener;
+    private UriStreamOpener streamOpener;
 
     private Logger logService;
 
@@ -49,7 +50,7 @@ public abstract class AbstractJmsFileTransferSupport {
         this.streamOpener = new BasicStreamOpener();
     }
 
-    public void setStreamOpener(UrlStreamOpener streamOpener) {
+    public void setStreamOpener(UriStreamOpener streamOpener) {
         this.streamOpener = streamOpener;
     }
 
@@ -75,7 +76,7 @@ public abstract class AbstractJmsFileTransferSupport {
             throws JmsFileTransferException {
         try {
             logger.info(
-                    "Broadcasting request for [" + req.getDownloadUrl()
+                    "Broadcasting request for [" + req.getDownloadUri()
                             + "] and id[" + req.getRequestId() + "]");
             Message returnMessage = sendWithResponse(new MessageCreator() {
 
@@ -91,7 +92,7 @@ public abstract class AbstractJmsFileTransferSupport {
             if (returnMessage == null) {
                 logger.info(
                         "No one can fullfil this request ["
-                                + req.getDownloadUrl() + "]");
+                                + req.getDownloadUri() + "]");
                 return null;
             }
 
@@ -117,7 +118,12 @@ public abstract class AbstractJmsFileTransferSupport {
 
         DigestInputStream is = null;
         Assert.notNull(req, "Request cannot be null");
-        final URL downloadUrl = new URL(req.getDownloadUrl());
+        final URI downloadUrl;
+        try {
+            downloadUrl = new URI(req.getDownloadUri());
+        } catch (URISyntaxException e) {
+            throw new IOException(e);
+        }
         try {
 
             is = new DigestInputStream(new BufferedInputStream(streamOpener.openStream(downloadUrl)),
