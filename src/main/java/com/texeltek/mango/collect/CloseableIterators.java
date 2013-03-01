@@ -2,11 +2,13 @@ package com.texeltek.mango.collect;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import com.google.common.collect.AbstractIterator;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.UnmodifiableIterator;
 import com.texeltek.mango.collect.AbstractCloseableIterator;
 import com.texeltek.mango.collect.CloseableIterator;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -52,6 +54,61 @@ public class CloseableIterators {
      */
     public static <T> CloseableIterator<T> chain(final Iterable<? extends CloseableIterator<? extends T>> iterable) {
         return new ChainedIterableCloseableIterator<T>(iterable);
+    }
+
+    public static <T> CloseableIterator<T> sortedDistinct(final CloseableIterator<T> iterator) {
+        AbstractIterator<T> sortedDistinctIterator = new AbstractIterator<T>() {
+            T current = null;
+
+            @Override
+            protected T computeNext() {
+                if (iterator.hasNext()) {
+                    if (current == null) {
+                        current = iterator.next();
+                        return current;
+                    } else {
+                        T next = iterator.next();
+                        while (current.equals(next)) {
+                            if (iterator.hasNext()) {
+                                next = iterator.next();
+                            } else {
+                                return endOfData();
+                            }
+                        }
+                        current = next;
+                        return current;
+                    }
+                } else
+                    return endOfData();
+            }
+        };
+        return consumeClose(sortedDistinctIterator, iterator);
+    }
+
+    public static <T> CloseableIterator<T> wrap(final Iterator<T> iterator) {
+        if (iterator instanceof CloseableIterator) return (CloseableIterator<T>) iterator;
+
+        return new AbstractCloseableIterator<T>() {
+
+            @Override
+            public void close() throws IOException {
+            }
+
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public T next() {
+                return iterator.next();
+            }
+
+            @Override
+            public void remove() {
+                iterator.remove();
+            }
+        };
     }
 
     /**
@@ -115,6 +172,30 @@ public class CloseableIterators {
                     closeQuietly();
                     throw re;
                 }
+            }
+        };
+    }
+
+    static <T> CloseableIterator<T> consumeClose(final Iterator<T> iterator, final Closeable closeable) {
+        return new AbstractCloseableIterator<T>() {
+            @Override
+            public void close() throws IOException {
+                closeable.close();
+            }
+
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public T next() {
+                return iterator.next();
+            }
+
+            @Override
+            public void remove() {
+                iterator.remove();
             }
         };
     }
