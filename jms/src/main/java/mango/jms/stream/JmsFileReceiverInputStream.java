@@ -31,12 +31,9 @@ public class JmsFileReceiverInputStream extends InputStream {
 
     private MessageQueueListener messageQueueListener;
 
-    private String contentType;
-
-    protected JmsFileReceiverInputStream(String contentType, AbstractJmsFileTransferSupport support,
+    protected JmsFileReceiverInputStream(AbstractJmsFileTransferSupport support,
                                          String sendDataDestination, Destination receiveAckDestination) {
         this.support = support;
-        this.contentType = contentType;
         this.sendDataDestination = sendDataDestination;
         this.receiveAckDestination = receiveAckDestination;
 
@@ -162,9 +159,5 @@ public class JmsFileReceiverInputStream extends InputStream {
 
                 });
         started = true;
-    }
-
-    public String getContentType() {
-        return contentType;
     }
 }

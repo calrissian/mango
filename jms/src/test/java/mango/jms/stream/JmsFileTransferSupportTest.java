@@ -100,7 +100,6 @@ public class JmsFileTransferSupportTest extends TestCase {
         stream.close();
 
         assertEquals(TEST_STR, buffer.toString());
-        assertEquals("content/notnull", stream.getContentType());
 
         conn.stop();
 
