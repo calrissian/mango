@@ -87,9 +87,8 @@
             <id>${distribution.snap.id}</id>
             <name>Snapshot distribution</name>
             <uniqueVersion>false</uniqueVersion>
-            <url>${distribution.snapshots}
-            </url>
-        </snapshotRepository>       3
+            <url>${distribution.snapshots}</url>
+        </snapshotRepository>       
     </distributionManagement>
     <scm>
         <connection>scm:git:git@github.com:texeltek/mango.git</connection>
