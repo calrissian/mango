@@ -2,7 +2,10 @@ package mango.collect;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import com.google.common.collect.AbstractIterator;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Iterators;
+import com.google.common.collect.PeekingIterator;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -41,6 +44,50 @@ public class CloseableIterables {
             @Override
             protected Iterator<T> retrieveIterator() {
                 return iterable.iterator();
+            }
+        };
+    }
+
+    /**
+     * If we can assume the iterable is sorted, return the distinct elements. This only works
+     * if the data comes back sorted.
+     */
+    public static <T> CloseableIterable<T> sortedDistinct(final CloseableIterable<T> iterable) {
+
+        return new AbstractCloseableIterable<T>() {
+            @Override
+            protected void doClose() throws IOException {
+                iterable.close();
+            }
+
+            @Override
+            protected Iterator<T> retrieveIterator() {
+                final Iterator<T> iterator = iterable.iterator();
+                return new AbstractIterator<T>() {
+                    T current = null;
+
+                    @Override
+                    protected T computeNext() {
+                        if (iterator.hasNext()) {
+                            if (current == null) {
+                                current = iterator.next();
+                                return current;
+                            } else {
+                                T next = iterator.next();
+                                while (current.equals(next)) {
+                                    if (iterator.hasNext()) {
+                                        next = iterator.next();
+                                    } else {
+                                        return endOfData();
+                                    }
+                                }
+                                current = next;
+                                return current;
+                            }
+                        } else
+                            return endOfData();
+                    }
+                };
             }
         };
     }
@@ -135,7 +182,6 @@ public class CloseableIterables {
     /**
      * Return a {@link CloseableIterable} that will consume from the first argument Iterator, and close the second Closeable on close
      *
-     *
      * @param consumeFrom
      * @param closeable
      * @return
@@ -154,4 +200,5 @@ public class CloseableIterables {
             }
         };
     }
+
 }

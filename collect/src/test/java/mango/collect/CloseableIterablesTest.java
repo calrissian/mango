@@ -87,8 +87,19 @@ public class CloseableIterablesTest {
         assertTrue(iterable.isClosed());
     }
 
+    @Test
+    public void testSortedDistinct() throws Exception {
+        AbstractCloseableIterable<Integer> integers = mockCloseableIterable(Lists.newArrayList(1, 1, 2, 2, 3, 3, 3, 4, 5, 6, 7, 7, 7));
+        CloseableIterable<Integer> distinct = CloseableIterables.sortedDistinct(integers);
+        assertEquals(7, Iterables.size(distinct));
+    }
+
     private AbstractCloseableIterable<Integer> mockCloseableIterable() {
         final ArrayList<Integer> list = Lists.newArrayList(1, 2, 3, 4, 5);
+        return mockCloseableIterable(list);
+    }
+
+    private AbstractCloseableIterable<Integer> mockCloseableIterable(final ArrayList<Integer> list) {
         return new AbstractCloseableIterable<Integer>() {
 
             @Override
