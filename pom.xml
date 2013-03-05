@@ -89,7 +89,7 @@
             <uniqueVersion>false</uniqueVersion>
             <url>${distribution.snapshots}
             </url>
-        </snapshotRepository>
+        </snapshotRepository>       3
     </distributionManagement>
     <scm>
         <connection>scm:git:git@github.com:texeltek/mango.git</connection>
