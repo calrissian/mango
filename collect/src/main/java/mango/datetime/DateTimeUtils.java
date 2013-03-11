@@ -1,4 +1,4 @@
-package com.texeltek.mango.datetime;
+package mango.datetime;
 
 import com.google.common.base.Preconditions;
 
