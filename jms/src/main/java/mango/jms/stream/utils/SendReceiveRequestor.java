@@ -13,9 +13,9 @@ public class SendReceiveRequestor implements MessagePostProcessor {
     public static final String REPLYTO_ID = "JMS_SYNC_REPLYTOID";
 
 //    private long timeout = 0;
-//    protected Session session; // The topic session the topic belongs to.
+//    protected Session session; // The queue session the queue belongs to.
 
-    protected Destination topic; // The topic to perform the request/reply on.
+    protected Destination topic; // The queue to perform the request/reply on.
     //    protected MessageProducer publisher;
 //    protected MessageConsumer subscriber;
     protected JmsTemplate jmsTemplate;

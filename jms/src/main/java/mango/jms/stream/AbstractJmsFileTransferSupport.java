@@ -134,6 +134,8 @@ public abstract class AbstractJmsFileTransferSupport {
         } catch (NoSuchAlgorithmException e) {
             throw new JmsFileTransferException(e);
         } catch (Throwable e) {
+
+            logger.info("Error occurred opening stream: " + e);
             return;
         }
 

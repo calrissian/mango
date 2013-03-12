@@ -10,15 +10,15 @@ import java.util.UUID;
  * Date: Nov 27, 2011
  * Time: 4:44:38 PM
  */
-public class JmsSessionTopicDecorator implements Session {
-    private Session session;
-    private String baseTopic;
-    protected Topic topic;
+public class JmsSessionQueueDecorator implements QueueSession {
+    private QueueSession session;
+    private String baseQueue;
+    protected Queue queue;
 
-    public JmsSessionTopicDecorator(Session session, String baseTopic) throws JMSException {
+    public JmsSessionQueueDecorator(QueueSession session, String baseQueue) throws JMSException {
         this.session = session;
-        this.baseTopic = baseTopic;
-        topic = session.createTopic(baseTopic);
+        this.baseQueue = baseQueue;
+        queue = session.createQueue(baseQueue);
     }
 
     @Override
@@ -94,13 +94,11 @@ public class JmsSessionTopicDecorator implements Session {
     @Override
     public MessageListener getMessageListener() throws JMSException {
         return session.getMessageListener();
-//        throw new UnsupportedOperationException();
     }
 
     @Override
     public void setMessageListener(MessageListener messageListener) throws JMSException {
         session.setMessageListener(messageListener);
-//        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -110,38 +108,42 @@ public class JmsSessionTopicDecorator implements Session {
 
     @Override
     public MessageProducer createProducer(Destination destination) throws JMSException {
-        return new JmsMessageProducerTopicDecorator(session.createProducer(topic), topic, JmsTopicDecoratorConstants.decorateDestination(destination));
+        return new JmsMessageProducerQueueDecorator(session.createProducer(queue), queue, JmsQueueDecoratorConstants.decorateDestination(destination));
     }
 
     @Override
     public MessageConsumer createConsumer(Destination destination) throws JMSException {
-        return new JmsMessageConsumerTopicDecorator(session.createConsumer(topic, JmsTopicDecoratorConstants.generateSelector(
-                JmsTopicDecoratorConstants.getDestination(destination), null)));
+        return new JmsMessageConsumerQueueDecorator(session.createConsumer(queue, JmsQueueDecoratorConstants.generateSelector(
+                JmsQueueDecoratorConstants.getDestination(destination), null)));
     }
 
     @Override
     public MessageConsumer createConsumer(Destination destination, String selector) throws JMSException {
-        return new JmsMessageConsumerTopicDecorator(session.createConsumer(topic, JmsTopicDecoratorConstants.generateSelector(
-                JmsTopicDecoratorConstants.getDestination(destination), selector)));
+        return new JmsMessageConsumerQueueDecorator(session.createConsumer(queue, JmsQueueDecoratorConstants.generateSelector(
+                JmsQueueDecoratorConstants.getDestination(destination), selector)));
     }
 
     @Override
     public MessageConsumer createConsumer(Destination destination, String selector, boolean noLocal) throws JMSException {
-        return new JmsMessageConsumerTopicDecorator(session.createConsumer(topic, JmsTopicDecoratorConstants.generateSelector(JmsTopicDecoratorConstants.getDestination(destination), selector), noLocal));
+        return new JmsMessageConsumerQueueDecorator(session.createConsumer(queue, JmsQueueDecoratorConstants.generateSelector(JmsTopicDecoratorConstants.getDestination(destination), selector), noLocal));
     }
 
     @Override
     public TopicSubscriber createDurableSubscriber(Topic destination, String name) throws JMSException {
         //TODO
-        return session.createDurableSubscriber(topic, name,
-                JmsTopicDecoratorConstants.generateSelector(JmsTopicDecoratorConstants.getDestination(destination), null), false);
+
+        throw new UnsupportedOperationException();
+//        return session.createDurableSubscriber(queue, name,
+//                JmsQueueDecoratorConstants.generateSelector(JmsQueueDecoratorConstants.getDestination(destination), null), false);
     }
 
     @Override
     public TopicSubscriber createDurableSubscriber(Topic destination, String name, String selector, boolean noLocal) throws JMSException {
+
+        throw new UnsupportedOperationException();
         //TODO
-        return session.createDurableSubscriber(topic, name,
-                JmsTopicDecoratorConstants.generateSelector(JmsTopicDecoratorConstants.getDestination(destination), selector), noLocal);
+//        return session.createDurableSubscriber(queue, name,
+//                JmsTopicDecoratorConstants.generateSelector(JmsTopicDecoratorConstants.getDestination(destination), selector), noLocal);
     }
 
     @Override
@@ -193,6 +195,21 @@ public class JmsSessionTopicDecorator implements Session {
     }
 
     @Override
+    public QueueReceiver createReceiver(Queue queue) throws JMSException {
+        return session.createReceiver(queue);
+    }
+
+    @Override
+    public QueueReceiver createReceiver(Queue queue, String s) throws JMSException {
+        return session.createReceiver(queue, s);
+    }
+
+    @Override
+    public QueueSender createSender(Queue queue) throws JMSException {
+        return session.createSender(queue);
+    }
+
+    @Override
     public Topic createTopic(String name) throws JMSException {
         return new SelectorDestination(name);
     }
@@ -206,7 +223,7 @@ public class JmsSessionTopicDecorator implements Session {
         return session;
     }
 
-    public String getBaseTopic() {
-        return baseTopic;
+    public String getBaseQueue() {
+        return baseQueue;
     }
 }

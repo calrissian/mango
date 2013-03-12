@@ -6,8 +6,8 @@ public class DestinationRequestor {
 
     private long timeout = 0;
 
-    protected Session session; // The topic session the topic belongs to.
-    protected Destination topic; // The topic to perform the request/reply on.
+    protected Session session; // The queue session the queue belongs to.
+    protected Destination topic; // The queue to perform the request/reply on.
     protected Destination tempDestination;
     protected MessageProducer publisher;
     protected MessageConsumer subscriber;
