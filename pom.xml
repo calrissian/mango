@@ -10,6 +10,7 @@
 
     <properties>
         <activemq.version>5.3.0</activemq.version>
+        <commons.net.version>3.0.1</commons.net.version>
         <distribution.repo.id>texeltek</distribution.repo.id>
         <distribution.releases>http://192.168.20.249:8888/nexus/content/repositories/tt</distribution.releases>
         <distribution.snap.id>texeltek</distribution.snap.id>
@@ -27,6 +28,7 @@
     <modules>
         <module>collect</module>
         <module>jms</module>
+	<module>types</module>
     </modules>
 
     <dependencyManagement>
@@ -73,6 +75,11 @@
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>${junit.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-net</groupId>
+                <artifactId>commons-net</artifactId>
+                <version>${commons.net.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
