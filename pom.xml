@@ -12,6 +12,7 @@
         <activemq.version>5.3.0</activemq.version>
         <commons.net.version>3.0.1</commons.net.version>
         <accumulo.version>1.4.1</accumulo.version>
+        <commons.lang.version>2.6</commons.lang.version>
         <distribution.repo.id>texeltek</distribution.repo.id>
         <distribution.releases>http://192.168.20.249:8888/nexus/content/repositories/tt</distribution.releases>
         <distribution.snap.id>texeltek</distribution.snap.id>
@@ -100,6 +101,11 @@
                 <groupId>org.codehaus.jackson</groupId>
                 <artifactId>jackson-mapper-asl</artifactId>
                 <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-lang</groupId>
+                <artifactId>commons-lang</artifactId>
+                <version>${commons.lang.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

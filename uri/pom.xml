@@ -12,6 +12,13 @@
 
     <dependencies>
 
+        <!-- Mango -->
+        <dependency>
+            <groupId>mango</groupId>
+            <artifactId>mango-jms</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
         <!-- Guava -->
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -24,6 +31,14 @@
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-mapper-asl</artifactId>
         </dependency>
+
+
+        <!-- Commons -->
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+        </dependency>
+
 
 
         <dependency>
