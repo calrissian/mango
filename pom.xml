@@ -19,6 +19,7 @@
         </distribution.snapshots>
         <guava.version>13.0.1</guava.version>
         <hadoop.version>0.20.2</hadoop.version>
+        <jackson.version>1.9.2</jackson.version>
         <javax.jms.version>1.1</javax.jms.version>
         <junit.version>4.8.1</junit.version>
         <mockito.version>1.9.0</mockito.version>
@@ -94,6 +95,11 @@
                 <groupId>org.apache.hadoop</groupId>
                 <artifactId>hadoop-core</artifactId>
                 <version>${hadoop.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.codehaus.jackson</groupId>
+                <artifactId>jackson-mapper-asl</artifactId>
+                <version>${jackson.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

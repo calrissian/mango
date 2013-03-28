@@ -11,6 +11,21 @@
     <artifactId>mango-uri</artifactId>
 
     <dependencies>
+
+        <!-- Guava -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+
+
+        <!-- Jackson -->
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+        </dependency>
+
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit-dep</artifactId>
