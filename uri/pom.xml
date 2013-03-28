@@ -9,42 +9,12 @@
     </parent>
 
     <artifactId>mango-uri</artifactId>
+    <packaging>pom</packaging>
 
-    <dependencies>
-
-        <!-- Mango -->
-        <dependency>
-            <groupId>mango</groupId>
-            <artifactId>mango-jms</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <!-- Guava -->
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-        </dependency>
+    <modules>
+	<module>common</module>
+	<module>jms</module>
+    </modules>
 
 
-        <!-- Jackson -->
-        <dependency>
-            <groupId>org.codehaus.jackson</groupId>
-            <artifactId>jackson-mapper-asl</artifactId>
-        </dependency>
-
-
-        <!-- Commons -->
-        <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-        </dependency>
-
-
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit-dep</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
 </project>
