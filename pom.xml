@@ -32,6 +32,7 @@
         <module>collect</module>
         <module>jms</module>
         <module>types</module>
+        <module>uri</module>
     </modules>
 
     <dependencyManagement>

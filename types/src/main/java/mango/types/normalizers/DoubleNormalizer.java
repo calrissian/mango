@@ -59,33 +59,36 @@ public class DoubleNormalizer implements TypeNormalizer<Double> {
      * Third - Fifth bytes are the exponent (or complement of the exponent if negative number)
      * Everything after the space is the value
      */
-    private String normalizeDouble(Double value) {
+    private String normalizeDouble(Double data) {
 
-        String valueSign = (value < 0) ? "-" : "0";
+        String valueSign = (data < 0) ? "-" : "0";
         String expSign = "0";
         Integer finalExp = 0;
 
         DecimalFormat df = new DecimalFormat(DECIMAL_FORMAT);
-        String[] splits = df.format(value).split("E");
-
-        // if there's an exponent, complement it
-        if(splits.length > 1) {
-
+        String[] splits = df.format(data).split("E");
+        //if there's an exponent, complement it
+        if (splits.length > 1) {
             String exponent = splits[1];
-
-            if(exponent.startsWith("-")) {
-
+            if (exponent.startsWith("-")) {
                 expSign = "-";
                 exponent = exponent.replace("-", "");
-                finalExp = 999 - Integer.parseInt(exponent);
             }
 
-            else {
+            if(valueSign.equals("-")) {
+
+                finalExp = 999 - Integer.parseInt(exponent);
+            } else {
                 finalExp = Integer.parseInt(exponent);
             }
         }
 
+        if(splits[0].startsWith("-")) {
+            splits[0] = splits[0].substring(1);
+        }
+
         return String.format("%s%s%03d %s", valueSign, expSign, finalExp, splits[0]);
+
     }
 
     private Double denormalizeDouble(String value) {
@@ -97,7 +100,7 @@ public class DoubleNormalizer implements TypeNormalizer<Double> {
 
         Integer expInt = Integer.parseInt(exp);
 
-        if(expSign == '-') {
+        if(valueSign == '-') {
             expInt = 999 - expInt;
         }
 
