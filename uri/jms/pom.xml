@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-	<groupId>mango</groupId>
+	<groupId>org.calrissian.mango</groupId>
 	<artifactId>mango-uri</artifactId>
 	<version>1.0.3-SNAPSHOT</version>
     </parent>
@@ -14,13 +14,13 @@
 
         <!-- Mango -->
         <dependency>
-            <groupId>mango</groupId>
-            <artifactId>mango-jms</artifactId>
+            <groupId>org.calrissian.mango</groupId>
+            <artifactId>mango-uri-common</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>mango</groupId>
-            <artifactId>mango-uri-common</artifactId>
+            <groupId>org.calrissian.mango</groupId>
+            <artifactId>mango-jms</artifactId>
             <version>${project.version}</version>
         </dependency>
 

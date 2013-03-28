@@ -3,8 +3,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-	<groupId>mango</groupId>
-	<artifactId>parent</artifactId>
+	<groupId>org.calrissian.mango</groupId>
+	<artifactId>mango-parent</artifactId>
 	<version>1.0.3-SNAPSHOT</version>
     </parent>
 
@@ -12,8 +12,8 @@
     <packaging>pom</packaging>
 
     <modules>
-	<module>common</module>
-	<module>jms</module>
+	    <module>common</module>
+	    <module>jms</module>
     </modules>
 
 

@@ -3,9 +3,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-	<groupId>mango</groupId>
-	<artifactId>mango-uri</artifactId>
-	<version>1.0.3-SNAPSHOT</version>
+    	<groupId>org.calrissian.mango</groupId>
+    	<artifactId>mango-uri</artifactId>
+    	<version>1.0.3-SNAPSHOT</version>
     </parent>
 
     <artifactId>mango-uri-common</artifactId>
@@ -14,7 +14,7 @@
 
         <!-- Mango -->
         <dependency>
-            <groupId>mango</groupId>
+            <groupId>org.calrissian.mango</groupId>
             <artifactId>mango-jms</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -24,7 +24,6 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
         </dependency>
-
 
         <!-- Jackson -->
         <dependency>
@@ -39,12 +38,11 @@
             <artifactId>commons-lang</artifactId>
         </dependency>
 
-
-
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit-dep</artifactId>
             <scope>test</scope>
         </dependency>
+
     </dependencies>
 </project>

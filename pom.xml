@@ -3,8 +3,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>mango</groupId>
-    <artifactId>parent</artifactId>
+    <groupId>org.calrissian.mango</groupId>
+    <artifactId>mango-parent</artifactId>
     <version>1.0.3-SNAPSHOT</version>
     <packaging>pom</packaging>
 
@@ -110,26 +110,6 @@
         </dependencies>
     </dependencyManagement>
 
-    <distributionManagement>
-        <repository>
-            <id>${distribution.repo.id}</id>
-            <name>Release distribution</name>
-            <uniqueVersion>false</uniqueVersion>
-            <url>${distribution.releases}
-            </url>
-        </repository>
-        <snapshotRepository>
-            <id>${distribution.snap.id}</id>
-            <name>Snapshot distribution</name>
-            <uniqueVersion>false</uniqueVersion>
-            <url>${distribution.snapshots}</url>
-        </snapshotRepository>
-    </distributionManagement>
-    <scm>
-        <connection>scm:git:git@github.com:texeltek/mango.git</connection>
-        <developerConnection>scm:git:git@github.com:texeltek/mango.git</developerConnection>
-        <url>scm:git:git@github.com:texeltek/mango.git</url>
-    </scm>
     <repositories>
         <repository>
             <id>repository.jboss.org-public</id>
