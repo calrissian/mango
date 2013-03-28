@@ -27,12 +27,12 @@ Implements the BatchScanner interface, but uses straight Scanners underneath ins
 
 One problem we constantly run into is that we create too many BatchScanners than our server can handle. This helper class will only create BatchScanners up to a certain thread pool size and then return a BatchScannerWithScanners.
 
-TODO: Keep track of the thread pool with BatchWriters/Deleters as well
-
-TODO: A BatchScanner can be allocated with N threads, but use much less depending on the number of tablets it needs. The current thread pool does not take advantage of this and I'm not sure how it would.
-
 ### Sample
 ```java
     //using thread pool size
     ThreadPoolConnector poolConnector = new ThreadPoolConnector(connector, 10);
 ```
+
+### TODO
+1. Keep track of the thread pool with BatchWriters/Deleters as well
+2. A BatchScanner can be allocated with N threads, but use much less depending on the number of tablets it needs. The current thread pool does not take advantage of this and I'm not sure how it would.
