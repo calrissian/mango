@@ -76,11 +76,14 @@ This will print the following:
 I AM A URI
 ```
 
+Keep in mind, this specific example knows nothing of target systems. The URIs that are passed to these resolvers only contain the "Service Request" component. In the next section, we'll get into the distributed URI resolving- where the target system (or "any") is used.
+
 # I'm Resolving URIs, now what?
 
 This is where things get good. The Mango URI JMS module contains services to syncrhonously send/receive data over a topic given a simple URI. For simplicity, these services were written using Springframework.
 
 ## Receiving requests given a Mango URI
+
 ```java 
 TaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
 taskExecutor.setCorePoolSize(50);
@@ -101,7 +104,8 @@ senderListener.setPieceSize(500000);
 senderListener.setStreamOpener(new UriResolverStreamOpener());
 senderListener.setTaskExecutor(taskExecutor);
 senderListener.setJmsTemplate(jmsTemplate);
-
 ```
+
+
 
 
