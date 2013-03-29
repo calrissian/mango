@@ -23,6 +23,55 @@ Let's pick apart the above URI into meaningful component to better explain how i
 3. Parameters
 
 
-It would suit us well to talk about the URI from the inside out. Let's start with #2 & #3.
+It would suit us well to talk about the URI from the inside out. Let's start with #2 & #3, which form a component called the "Service Request".
 
 ## Resolving the "Service Request"
+
+The service request in the above URI follows the form:
+```
+service://parameters
+```
+
+Ultimately, it is this part of the URI that allows some registered service to fetch the data being requested in the link (if that data still exits). In the URL above, the "blob://" part tells the service resolver to use the registered blob service as its mechanism for returning the data requested. The "txt#My%20File.txt" component is sent to the registered blob service so that it knows specifically what to return. In this case, the blob service knows to return a 'txt' blob with an id of "My File.txt".
+
+## Targeting a remote system
+
+Part #1 of the URI example above represents a target system. Generally, systems connected to a multi-cloud cluster are individually named to identify themselves. This component uses that name to target data on that specific cloud. A target system of "any" means that the first system that has data and responds to a URI request can send the data.
+
+# Example URI Resolver
+
+Now that we've gone over the format of a Mango URI, let's dive into an example URI resolver:
+```
+public class EchoStringUriResolver extends BasicObjectUriResolver<String> {
+
+    public EchoStringUriResolver() {}
+
+    @Override
+    public String getServiceName() {
+      return "string";
+    }
+
+    @Override
+    public String resolveUri(URI uri, String[] auths) {
+
+      return uri.getRawAuthority();
+    }
+}
+```
+
+It's obvious that this example is oversimplified, but it's good to see how easy it is to construct a URI resolver. Let's register this resolver with the main context so that we can resolve it:
+```
+UriResolverContext.getInstance().addResolver(new EchoStringUriResolver());
+```
+
+Now, you can resolve any uri's that have "string://" using the following:
+```
+URI uri = new URI("string://I%20AM%20A%20URI");
+UriResolver resolver = UriResolverContext.getInstance().getResolver(uri);
+System.out.println(resolver.resolveUri(uri, null));
+```
+
+This will print the following:
+```
+I AM A URI
+```
