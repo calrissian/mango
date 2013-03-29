@@ -41,7 +41,7 @@ Part #1 of the URI example above represents a target system. Generally, systems 
 # Example URI Resolver
 
 Now that we've gone over the format of a Mango URI, let's dive into an example URI resolver:
-```
+```java
 public class EchoStringUriResolver extends BasicObjectUriResolver<String> {
 
     public EchoStringUriResolver() {}
@@ -60,18 +60,22 @@ public class EchoStringUriResolver extends BasicObjectUriResolver<String> {
 ```
 
 It's obvious that this example is oversimplified, but it's good to see how easy it is to construct a URI resolver. Let's register this resolver with the main context so that we can resolve it:
-```
+```java
 UriResolverContext.getInstance().addResolver(new EchoStringUriResolver());
 ```
 
 Now, you can resolve any uri's that have "string://" using the following:
-```
+```java
 URI uri = new URI("string://I%20AM%20A%20URI");
 UriResolver resolver = UriResolverContext.getInstance().getResolver(uri);
 System.out.println(resolver.resolveUri(uri, null));
 ```
 
 This will print the following:
-```
+```java
 I AM A URI
 ```
+
+# I'm Resolving URIs, now what?
+
+This is where things get good. The Mango URI JMS module contains services to syncrhonously send/receive data over a topic given a URI. 
