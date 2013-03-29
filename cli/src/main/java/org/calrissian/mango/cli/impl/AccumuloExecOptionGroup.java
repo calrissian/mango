@@ -14,8 +14,6 @@ public class AccumuloExecOptionGroup implements ExecOptionGroup {
     public static final String CLIKEY_PASSWORD = "p";
     public static final String CLIKEY_AUTHS = "a";
 
-
-
     @Override
     public List<ExecOption> getOptions() {
         List<ExecOption> options = new ArrayList<ExecOption>();
@@ -28,7 +26,4 @@ public class AccumuloExecOptionGroup implements ExecOptionGroup {
 
         return options;
     }
-
-
-
 }
