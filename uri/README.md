@@ -123,7 +123,7 @@ receiver.setStreamRequestDestination(new ActiveMQTopic("uri.transmission");
 receiver.setPieceSize(500000);
 receiver.setJmsTemplate(jmsTemplate);
 
-System.out.println(receiver.resolveUri(new URI("string://I%20AM%20A%20URI")), null);
+System.out.println(receiver.resolveUri(new URI("string://I%20AM%20A%20URI")), new String[]{});
 ```
 
 This looks strikingly similar to the URI above, right? If everything worked, you should see the following printed to the screen:
