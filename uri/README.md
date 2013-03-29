@@ -78,4 +78,30 @@ I AM A URI
 
 # I'm Resolving URIs, now what?
 
-This is where things get good. The Mango URI JMS module contains services to syncrhonously send/receive data over a topic given a URI. 
+This is where things get good. The Mango URI JMS module contains services to syncrhonously send/receive data over a topic given a simple URI. For simplicity, these services were written using Springframework.
+
+## Receiving requests given a Mango URI
+```java 
+TaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
+taskExecutor.setCorePoolSize(50);
+taskExecutor.setMaxPoolSize(60);
+taskExecutor.setQueueCapacity(10);
+
+ConnectionFactory connFac = new ActiveMQConnectionFactory("tcp://localhost:61616");
+connFac.start();
+
+JmsTemplate jmsTemplate = new JmsTemplate();
+jmsTemplate.setConnectionFactory(connFac);
+jmsTemplate.setReceiveTimeout(5000);
+
+JmsUriSender senderListener = new JmsUriSender("systemName1");
+senderListener.setHashAlgorithm("MD5");
+senderListener.setStreamRequestDestination(new ActiveMQTopic("uri.transmission");
+senderListener.setPieceSize(500000);
+senderListener.setStreamOpener(new UriResolverStreamOpener());
+senderListener.setTaskExecutor(taskExecutor);
+senderListener.setJmsTemplate(jmsTemplate);
+
+```
+
+
