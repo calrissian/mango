@@ -80,7 +80,7 @@ Keep in mind, this specific example knows nothing of target systems. The URIs th
 
 # I'm Resolving URIs, now what?
 
-This is where things get good. The Mango URI JMS module contains services to syncrhonously send/receive data over a topic given a simple URI. For simplicity, these services were written using the TaskExecutor and JmeTemplate interfaces which can be found in Springframework.
+This is where things get good. The Mango URI JMS module contains services to syncrhonously send/receive data over a topic given a simple URI. For simplicity, these services were written using the TaskExecutor and JmsTemplate interfaces which require elements from Spring Framework to be on the classpath.
 
 ## Receiving requests given a Mango URI
 
@@ -123,7 +123,7 @@ receiver.setStreamRequestDestination(new ActiveMQTopic("uri.transmission");
 receiver.setPieceSize(500000);
 receiver.setJmsTemplate(jmsTemplate);
 
-System.out.println(receiver.resolveUri(new URI("string://I%20AM%20A%20URI", null);
+System.out.println(receiver.resolveUri(new URI("string://I%20AM%20A%20URI")), null);
 ```
 
 This looks strikingly similar to the URI above, right? If everything worked, you should see the following printed to the screen:
