@@ -80,9 +80,11 @@ Keep in mind, this specific example knows nothing of target systems. The URIs th
 
 # I'm Resolving URIs, now what?
 
-This is where things get good. The Mango URI JMS module contains services to syncrhonously send/receive data over a topic given a simple URI. For simplicity, these services were written using Springframework.
+This is where things get good. The Mango URI JMS module contains services to syncrhonously send/receive data over a topic given a simple URI. For simplicity, these services were written using the TaskExecutor and JmeTemplate interfaces which can be found in Springframework.
 
 ## Receiving requests given a Mango URI
+
+Assuming we keep our example above, let's get a sender running that can listen on a JMS topic and honor requests to resolve URIs and send data.
 
 ```java 
 TaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
@@ -93,9 +95,6 @@ taskExecutor.setQueueCapacity(10);
 ConnectionFactory connFac = new ActiveMQConnectionFactory("tcp://localhost:61616");
 connFac.start();
 
-JmsTemplate jmsTemplate = new JmsTemplate();
-jmsTemplate.setConnectionFactory(connFac);
-jmsTemplate.setReceiveTimeout(5000);
 
 JmsUriSender senderListener = new JmsUriSender("systemName1");
 senderListener.setHashAlgorithm("MD5");
@@ -106,6 +105,28 @@ senderListener.setTaskExecutor(taskExecutor);
 senderListener.setJmsTemplate(jmsTemplate);
 ```
 
+## Requesting data via Mango URI
 
+Assuming you've got a sender up and running, let's go ahead and send a Service Request for an EchoString URI.
 
+```java
+ConnectionFactory connFac = new ActiveMQConnectionFactory("tcp://localhost:61616");
+connFac.start();
 
+JmsTemplate jmsTemplate = new JmsTemplate();
+jmsTemplate.setConnectionFactory(connFac);
+jmsTemplate.setReceiveTimeout(5000);
+
+JmsUriReceiver receiver = new JmsUriReceiver();
+receiver.setHashAlgorithm("MD5");
+receiver.setStreamRequestDestination(new ActiveMQTopic("uri.transmission");
+receiver.setPieceSize(500000);
+receiver.setJmsTemplate(jmsTemplate);
+
+System.out.println(receiver.resolveUri(new URI("string://I%20AM%20A%20URI", null);
+```
+
+This looks strikingly similar to the URI above, right? If everything worked, you should see the following printed to the screen:
+```
+I AM A URI
+```
