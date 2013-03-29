@@ -130,3 +130,13 @@ This looks strikingly similar to the URI above, right? If everything worked, you
 ```
 I AM A URI
 ```
+
+# Connecting clouds via bridged JMS topics
+
+The distributed URI resolvers use temporary topics to send data back and forth. If you are working in an environment where you have a limited number of topics that have been bridged between systems, you can use a topic decorator to send everything over one topic.
+
+```java
+ConnectionFactory decoratedConnectionFactory = new JmsConnectionFactoryTopicDecorator();
+decoratedConnectionFactory.setConnectionFactory(connFac);
+decoratedConnectionFactory.setBaseTopic("uri.transmission");
+```
