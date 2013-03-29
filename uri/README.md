@@ -126,7 +126,7 @@ receiver.setJmsTemplate(jmsTemplate);
 System.out.println(receiver.resolveUri(new URI("systemName1:string://I%20AM%20A%20URI")), new String[]{});
 ```
 
-This looks strikingly similar to the URI above, right? If everything worked, you should see the following printed to the screen:
+This looks strikingly similar to the URI that we resolved in our first example above, right? If everything worked, you should see the following printed to the screen:
 ```
 I AM A URI
 ```
