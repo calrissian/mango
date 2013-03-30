@@ -33,6 +33,8 @@
         <module>accumulo</module>
         <module>cli</module>
         <module>collect</module>
+        <module>commons</module>
+        <module>criteria</module>
         <module>jms</module>
         <module>types</module>
         <module>uri</module>

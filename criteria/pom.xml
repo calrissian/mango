@@ -8,15 +8,14 @@
 	<version>1.0.3-SNAPSHOT</version>
     </parent>
 
-    <artifactId>mango-types</artifactId>
+    <artifactId>mango-criteria</artifactId>
 
     <dependencies>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit-dep</artifactId>
-            <scope>test</scope>
+            <groupId>org.calrissian.mango</groupId>
+            <artifactId>mango-types</artifactId>
+            <version>${project.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.calrissian.mango</groupId>
             <artifactId>mango-commons</artifactId>
@@ -28,11 +27,12 @@
             <artifactId>jackson-mapper-asl</artifactId>
         </dependency>
 
-        <!-- Apache -->
         <dependency>
-            <groupId>commons-net</groupId>
-            <artifactId>commons-net</artifactId>
+            <groupId>junit</groupId>
+            <artifactId>junit-dep</artifactId>
+            <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
