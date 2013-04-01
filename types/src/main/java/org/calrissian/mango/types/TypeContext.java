@@ -1,7 +1,11 @@
 package org.calrissian.mango.types;
 
+import org.calrissian.commons.domain.Tuple;
+import org.calrissian.commons.serialization.ObjectMapperContext;
 import org.calrissian.mango.types.exception.TypeNormalizationException;
 import org.calrissian.mango.types.normalizers.*;
+import org.calrissian.mango.types.serialization.TypedTupleMixin;
+import org.codehaus.jackson.map.ObjectMapper;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -14,7 +18,15 @@ public class TypeContext {
 
     private static TypeContext instance;
 
-    public static TypeContext getInstance() {
+    static {
+
+        ObjectMapper objectMapper = ObjectMapperContext.getInstance().getObjectMapper();
+
+        objectMapper.getSerializationConfig().addMixInAnnotations(Tuple.class, TypedTupleMixin.class);
+        objectMapper.getDeserializationConfig().addMixInAnnotations(Tuple.class, TypedTupleMixin.class);
+    }
+
+    public static synchronized TypeContext getInstance() {
 
         if(instance == null) {
             instance = new TypeContext();

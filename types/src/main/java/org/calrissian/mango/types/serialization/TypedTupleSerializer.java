@@ -14,7 +14,8 @@ import java.io.IOException;
  * Date: 9/12/12
  * Time: 2:52 PM
  */
-public class TupleSerializer extends JsonSerializer<Tuple> {
+public class TypedTupleSerializer extends JsonSerializer<Tuple> {
+
     @Override
     public void serialize(Tuple tuple, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
             throws IOException, JsonProcessingException {
@@ -38,6 +39,7 @@ public class TupleSerializer extends JsonSerializer<Tuple> {
             throw new RuntimeException(e);
         }
 
+        System.out.println("USING SERIALIZER");
 
         jsonGenerator.writeEndObject();
     }

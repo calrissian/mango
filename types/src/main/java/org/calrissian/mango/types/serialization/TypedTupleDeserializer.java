@@ -14,7 +14,7 @@ import java.io.IOException;
  * Date: 9/12/12
  * Time: 2:56 PM
  */
-public class TupleDeserializer extends JsonDeserializer<Tuple> {
+public class TypedTupleDeserializer extends JsonDeserializer<Tuple> {
     @Override
     public Tuple deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         JsonNode root = jsonParser.getCodec().readTree(jsonParser);

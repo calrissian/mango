@@ -1,11 +1,16 @@
 package org.calrissian.commons.domain;
 
 
+import org.calrissian.commons.serialization.ObjectMapperContext;
+import org.codehaus.jackson.map.ObjectMapper;
+
 public class Tuple {
 
     protected final String key;
     protected final Object value;
     protected final String visibility;
+
+
 
     public Tuple(String key, Object value, String visibility) {
         this.key = key;

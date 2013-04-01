@@ -7,7 +7,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
  * Date: 9/12/12
  * Time: 2:52 PM
  */
-@JsonSerialize(using = TupleSerializer.class)
-@JsonDeserialize(using = TupleDeserializer.class)
-public interface TupleMixin {
+@JsonSerialize(using = TypedTupleSerializer.class)
+@JsonDeserialize(using = TypedTupleDeserializer.class)
+public interface TypedTupleMixin {
 }

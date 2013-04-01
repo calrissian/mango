@@ -6,7 +6,7 @@ public class ObjectMapperContext {
 
     protected static ObjectMapperContext instance;
 
-    public static ObjectMapperContext getInstance() {
+    public static synchronized ObjectMapperContext getInstance() {
 
         if(instance == null) {
             instance = new ObjectMapperContext();
