@@ -39,8 +39,6 @@ public class TypedTupleSerializer extends JsonSerializer<Tuple> {
             throw new RuntimeException(e);
         }
 
-        System.out.println("USING SERIALIZER");
-
         jsonGenerator.writeEndObject();
     }
 }
