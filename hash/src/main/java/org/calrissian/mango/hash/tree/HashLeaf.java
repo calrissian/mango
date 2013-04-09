@@ -7,7 +7,7 @@ import java.util.List;
  * A leaf represents a single hashed "bucket" of data- it needs to be sortable. Raw data should NOT be carried along
  * as serializable properties of the Leaf because this will negate the compressed effect of the data structure.
  */
-public abstract class HashLeaf implements Node, Comparable {
+public abstract class HashLeaf implements Node {
 
     protected String hash;
 

@@ -24,7 +24,6 @@ public class HashNode implements Node {
         }
 
         try {
-
             hash = HashUtils.hashString(hashes);
         } catch (Exception e) {
             throw new IllegalStateException("Hash could not be derived from children: " + children);

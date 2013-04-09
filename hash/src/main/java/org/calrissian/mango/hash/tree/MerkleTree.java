@@ -2,7 +2,6 @@ package org.calrissian.mango.hash.tree;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -47,15 +46,20 @@ public class MerkleTree<T extends HashLeaf> implements Serializable {
         return topHash;
     }
 
+    public Integer getDimensions() {
+        return dimensions;
+    }
+
+    public Integer getNumLeaves() {
+        return numLeaves;
+    }
+
     /**
      * The merkle tree is constructed from the bottom up.
      * @param leaves
      * @return
      */
     private Node build(List<T> leaves) {
-
-        // first sort the collection so we can deterministically construct our tree
-        Collections.sort(leaves);
 
         List<Node> hashNodes = new ArrayList<Node>();
         List<T> curLeaves;
@@ -107,6 +111,11 @@ public class MerkleTree<T extends HashLeaf> implements Serializable {
      * @return
      */
     public List<T> diff(MerkleTree other) {
+
+        if(other.dimensions != dimensions || other.numLeaves != numLeaves) {
+            throw new IllegalStateException("Trees need to have the same size & dimension to diff.");
+        }
+
 
         List<T> differences = new ArrayList<T>();
 
