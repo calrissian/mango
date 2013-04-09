@@ -35,6 +35,7 @@
         <module>collect</module>
         <module>commons</module>
         <module>criteria</module>
+        <module>hash</module>
         <module>jms</module>
         <module>types</module>
         <module>uri</module>
