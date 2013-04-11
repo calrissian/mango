@@ -49,9 +49,10 @@ try {
   }
 } catch(Exception e) {
   throw new RuntimeException(e);
+} finally {
+  bufferedInput.close();
 }
 
-bufferedInput.close();
 
 MerkleTree merkleTree = new MerkleTree(leaves);
 ```
