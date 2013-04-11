@@ -15,10 +15,20 @@ public class HashUtils {
      */
     public static String hashString(String itemToHash) throws NoSuchAlgorithmException, UnsupportedEncodingException {
 
-        byte[] bytesOfMessage = new byte[0];
-        bytesOfMessage = itemToHash.getBytes("UTF-8");
+        return new String(hashBytes(itemToHash.getBytes("UTF-8")));
+    }
+
+    /**
+     * Turns a byte array into an MD5 hash
+     * @param bytes
+     * @return
+     * @throws NoSuchAlgorithmException
+     * @throws UnsupportedEncodingException
+     */
+    public static byte[] hashBytes(byte[] bytes) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+
         MessageDigest md = MessageDigest.getInstance("MD5");
-        byte[] thedigest = md.digest(bytesOfMessage);
+        byte[] thedigest = md.digest(bytes);
         StringBuffer hexString = new StringBuffer();
         for (int i=0; i < thedigest.length; i++) {
             String hex=Integer.toHexString(0xff & thedigest[i]);
@@ -26,6 +36,6 @@ public class HashUtils {
             hexString.append(hex);
         }
 
-        return hexString.toString();
+        return hexString.toString().getBytes();
     }
 }
