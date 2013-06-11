@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.io.IOException;
+import java.util.NoSuchElementException;
 
 import static com.google.common.collect.Iterators.elementsEqual;
 import static java.util.Arrays.asList;
@@ -90,6 +91,42 @@ public class CloseableIteratorsTest {
         assertTrue(elementsEqual(asList(1, 2, 3, 4, 5, 6, 7).iterator(), distinct));
         assertFalse(distinct.hasNext());
         distinct.close();
+    }
+
+    @Test
+    public void testChain() throws Exception {
+        //test empty
+        CloseableIterator iterator = chain(emptyIterator(), emptyIterator(), emptyIterator());
+        assertFalse(iterator.hasNext());
+
+        try {
+            iterator.next();
+            fail();
+        } catch (NoSuchElementException ne) {}
+        iterator.close();
+
+        //Verify 1 element
+        iterator = chain(wrap(asList(1).iterator()));
+        try {
+            assertTrue(iterator.hasNext());
+            iterator.next();
+        } catch (NoSuchElementException ex) {
+            fail("should not throw NoSuchElementException here");
+        } finally {
+            iterator.closeQuietly();
+        }
+        iterator.close();
+
+        //Verify multiple and order
+        iterator = chain(
+                wrap(asList(1, 2).iterator()),
+                wrap(asList(3, 4).iterator()),
+                wrap(asList(5, 6).iterator()));
+
+        assertTrue(iterator.hasNext());
+        assertTrue(Iterators.elementsEqual(asList(1,2,3,4,5,6).iterator(), iterator));
+        assertFalse(iterator.hasNext());
+        iterator.close();
     }
 
     @Test
