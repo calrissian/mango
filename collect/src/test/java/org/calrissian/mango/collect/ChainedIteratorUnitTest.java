@@ -4,25 +4,22 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
-public class ChainedCloseableIteratorUnitTest {
+public class ChainedIteratorUnitTest {
 
     @Test
     public void emptyIteratorHasNextReturnsFalse() {
-        CloseableIterator iterator = new ChainedCloseableIterator<Object>(emptyIterator(), emptyIterator(), emptyIterator());
+        CloseableIterator iterator = CloseableIterators.chain(emptyIterator(), emptyIterator(), emptyIterator());
         assertFalse(iterator.hasNext());
         iterator.closeQuietly();
     }
 
     @Test(expected = NoSuchElementException.class)
     public void emptyIteratorNextThrowsNoSuchElementException() {
-        CloseableIterator iterator = new ChainedCloseableIterator<Object>(emptyIterator(), emptyIterator(), emptyIterator());
+        CloseableIterator iterator = CloseableIterators.chain(emptyIterator(), emptyIterator(), emptyIterator());
         try {
             iterator.next();
         } finally {
@@ -32,14 +29,14 @@ public class ChainedCloseableIteratorUnitTest {
 
     @Test
     public void nonEmptyIteratorHasNextReturnsTrue() {
-        CloseableIterator iterator = new ChainedCloseableIterator<Object>(newIterator(1));
+        CloseableIterator iterator = CloseableIterators.chain(newIterator(1));
         assertTrue(iterator.hasNext());
         iterator.closeQuietly();
     }
 
     @Test
     public void nonEmptyIteratorNextDoesNotThrowNoSuchElementException() {
-        CloseableIterator iterator = new ChainedCloseableIterator<Object>(newIterator(1));
+        CloseableIterator iterator = CloseableIterators.chain(newIterator(1));
         try {
             assertTrue(iterator.hasNext());
             iterator.next();
@@ -52,10 +49,10 @@ public class ChainedCloseableIteratorUnitTest {
 
     @Test
     public void exhaustIterators() {
-        CloseableIterator iterator1 = Mockito.spy(newIterator(1));
-        CloseableIterator iterator2 = Mockito.spy(newIterator(2));
-        CloseableIterator iterator3 = Mockito.spy(newIterator(3));
-        CloseableIterator chainedIterator = new ChainedCloseableIterator<Object>(iterator1, iterator2, iterator3);
+        CloseableIterator<String> iterator1 = Mockito.spy(newIterator(1));
+        CloseableIterator<String> iterator2 = Mockito.spy(newIterator(2));
+        CloseableIterator<String> iterator3 = Mockito.spy(newIterator(3));
+        CloseableIterator<String> chainedIterator = CloseableIterators.chain(iterator1, iterator2, iterator3);
 
         while (chainedIterator.hasNext()) {
             chainedIterator.next();
@@ -70,7 +67,7 @@ public class ChainedCloseableIteratorUnitTest {
         CloseableIterator iterator1 = Mockito.spy(newIterator(1));
         CloseableIterator iterator2 = Mockito.spy(newIterator(2));
         CloseableIterator iterator3 = Mockito.spy(newIterator(3));
-        CloseableIterator chainedIterator = new ChainedCloseableIterator<Object>(iterator1, iterator2, iterator3);
+        CloseableIterator chainedIterator = CloseableIterators.chain(iterator1, iterator2, iterator3);
 
         int count = 0;
         while (chainedIterator.hasNext()) {
@@ -89,7 +86,7 @@ public class ChainedCloseableIteratorUnitTest {
     public void closeCallsCloseOnAllIterators() throws IOException {
         CloseableIterator iterator1 = Mockito.spy(newIterator(1));
         CloseableIterator iterator2 = Mockito.spy(newIterator(2));
-        CloseableIterator iterator = new ChainedCloseableIterator<Object>(iterator1, iterator2);
+        CloseableIterator iterator = CloseableIterators.chain(iterator1, iterator2);
 
         iterator.close();
         Mockito.verify(iterator1).close();
@@ -100,7 +97,7 @@ public class ChainedCloseableIteratorUnitTest {
     public void removeCallsRemoveOnCurrentIterator() {
         CloseableIterator iterator1 = newMockIterator();
         CloseableIterator iterator2 = newMockIterator();
-        CloseableIterator iterator = new ChainedCloseableIterator<Object>(iterator1, iterator2);
+        CloseableIterator iterator = CloseableIterators.chain(iterator1, iterator2);
 
         iterator.next();
         iterator.remove();
@@ -115,7 +112,7 @@ public class ChainedCloseableIteratorUnitTest {
         CloseableIterator notMe2 = Mockito.spy(emptyIterator());
         CloseableIterator me = newMockIterator();
         CloseableIterator notMe3 = Mockito.spy(emptyIterator());
-        CloseableIterator iterator = new ChainedCloseableIterator<Object>(notMe1, notMe2, me, notMe3);
+        CloseableIterator iterator = CloseableIterators.chain(notMe1, notMe2, me, notMe3);
 
         iterator.next();
         iterator.remove();
@@ -128,27 +125,23 @@ public class ChainedCloseableIteratorUnitTest {
 
     @Test(expected = UnsupportedOperationException.class)
     public void removeThrowsIllegalStateExceptionIfNextIsNotCalled() {
-        CloseableIterator iterator = new ChainedCloseableIterator<Object>(newIterator(1));
+        CloseableIterator iterator = CloseableIterators.chain(newIterator(1));
 
         iterator.remove();
         fail("expected an UnsupportedOperationException to be thrown?");
     }
 
     @SuppressWarnings("unchecked")
-    private CloseableIterator newIterator(int numberOfElements) {
+    private CloseableIterator<String> newIterator(int numberOfElements) {
         List list = new ArrayList(numberOfElements);
         for (int ii = 0; ii < numberOfElements; ++ii) {
-            list.add(Mockito.mock(Object.class));
+            list.add(UUID.randomUUID().toString());
         }
-        return createCloseableIterator(list.iterator());
+        return CloseableIterators.wrap(list.iterator());
     }
 
     private CloseableIterator emptyIterator() {
-        return CloseableIteratorAdapter.emptyIterator();
-    }
-
-    private <T> CloseableIterator<? extends T> createCloseableIterator(Iterator<? extends T> iterator) {
-        return CloseableIteratorAdapter.wrap(iterator);
+        return CloseableIterators.emptyIterator();
     }
 
     @SuppressWarnings("unchecked")

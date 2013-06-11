@@ -1,23 +1,17 @@
 package org.calrissian.mango.collect;
 
+import com.google.common.collect.AbstractIterator;
+import com.google.common.io.Closeables;
+
 import java.util.Iterator;
 
 /**
  * Provides a basic implementation of an {@link Iterator} that calls close when the end of the iterator is reached.
  */
-public abstract class AbstractCloseableIterator<T> implements CloseableIterator<T> {
+public abstract class AbstractCloseableIterator<T> extends AbstractIterator<T> implements CloseableIterator<T> {
 
     @Override
     public void closeQuietly() {
-        try{
-            this.close();
-        } catch(Exception e) {
-            //ignore
-        }
-    }
-
-    @Override
-    public Iterator<T> iterator() {
-        return this;
+        Closeables.closeQuietly(this);
     }
 }

@@ -22,9 +22,8 @@ public class ByteArray {
 
         ByteArray byteArray1 = (ByteArray) o;
 
-        if (!Arrays.equals(byteArray, byteArray1.byteArray)) return false;
+        return Arrays.equals(byteArray, byteArray1.byteArray);
 
-        return true;
     }
 
     @Override

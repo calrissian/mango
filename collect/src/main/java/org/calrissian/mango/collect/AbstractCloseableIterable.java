@@ -1,5 +1,7 @@
 package org.calrissian.mango.collect;
 
+import com.google.common.io.Closeables;
+
 import java.io.IOException;
 import java.util.Iterator;
 
@@ -11,10 +13,7 @@ public abstract class AbstractCloseableIterable<T> implements CloseableIterable<
 
     @Override
     public void closeQuietly() {
-        try {
-            close();
-        } catch (IOException e) {
-        }
+        Closeables.closeQuietly(this);
     }
 
     @Override
@@ -29,10 +28,6 @@ public abstract class AbstractCloseableIterable<T> implements CloseableIterable<
     public Iterator<T> iterator() {
         if (closed) throw new IllegalStateException("Iterable is already closed");
         return retrieveIterator();
-    }
-
-    public boolean isClosed() {
-        return closed;
     }
 
     protected abstract void doClose() throws IOException;

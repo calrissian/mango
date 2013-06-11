@@ -18,19 +18,19 @@ public class LimitIteratorCloseableUnitTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void constructorThrowsIllegalArgumentExceptionIfLimitIsBelowZero() {
-        new LimitCloseableIterator<Object>(newEmptyIterator(), -1);
+        CloseableIterators.limit(newEmptyIterator(), -1);
     }
 
     @Test
     public void hasNextReturnsFalseIfIteratorIsEmpty() {
-        CloseableIterator<Object> iter = new LimitCloseableIterator<Object>(newEmptyIterator(), 10);
+        CloseableIterator<Object> iter = CloseableIterators.limit(newEmptyIterator(), 10);
         assertFalse(iter.hasNext());
         iter.closeQuietly();
     }
 
     @Test(expected = NoSuchElementException.class)
     public void nextThrowsNoSuchElementExceptionIfIteratorIsEmpty() {
-        CloseableIterator<Object> iter = new LimitCloseableIterator<Object>(newEmptyIterator(), 10);
+        CloseableIterator<Object> iter = CloseableIterators.limit(newEmptyIterator(), 10);
         try {
             iter.next();
         } finally {
@@ -41,7 +41,7 @@ public class LimitIteratorCloseableUnitTest {
     @Test
     public void removePassesThrough() {
         CloseableIterator<Object> mockedIterator = newMockIterator();
-        CloseableIterator<Object> iter = new LimitCloseableIterator<Object>(mockedIterator, 10);
+        CloseableIterator<Object> iter = CloseableIterators.limit(mockedIterator, 10);
         try {
             iter.remove();
         } finally {
@@ -53,7 +53,7 @@ public class LimitIteratorCloseableUnitTest {
     @Test
     public void hasNextCalledIfLimitNotExceeded() {
         CloseableIterator<Object> mockedIterator = newMockIterator();
-        CloseableIterator<Object> iter = new LimitCloseableIterator<Object>(mockedIterator, 1);
+        CloseableIterator<Object> iter = CloseableIterators.limit(mockedIterator, 1);
         iter.hasNext();
         Mockito.verify(mockedIterator).hasNext();
         iter.closeQuietly();
@@ -64,7 +64,7 @@ public class LimitIteratorCloseableUnitTest {
         CloseableIterator<Object> mockedIterator = newMockIterator();
         Mockito.when(mockedIterator.hasNext()).thenReturn(true);
 
-        CloseableIterator<Object> iter = new LimitCloseableIterator<Object>(mockedIterator, 0);
+        CloseableIterator<Object> iter = CloseableIterators.limit(mockedIterator, 0);
         assertFalse(iter.hasNext());
         iter.closeQuietly();
     }
@@ -72,7 +72,7 @@ public class LimitIteratorCloseableUnitTest {
     @Test
     public void nextThrowsNoSuchElementExceptionIfLimitIsZero() {
         CloseableIterator<Object> mockedIterator = newMockIterator();
-        CloseableIterator<Object> iter = new LimitCloseableIterator<Object>(mockedIterator, 0);
+        CloseableIterator<Object> iter = CloseableIterators.limit(mockedIterator, 0);
         try {
             iter.next();
             fail("expected NoSuchElementException to be thrown?");
@@ -87,7 +87,7 @@ public class LimitIteratorCloseableUnitTest {
     @Test
     public void nextReturnsResultIfLimitNotExceeded() {
         List<Integer> list = Arrays.asList(1, 2);
-        CloseableIterator<Integer> iter = new LimitCloseableIterator<Integer>(createCloseableIterator(list.iterator()), 2);
+        CloseableIterator<Integer> iter = CloseableIterators.limit(createCloseableIterator(list.iterator()), 2);
         try {
             assertEquals(1, iter.next().intValue());
             assertEquals(2, iter.next().intValue());
@@ -101,7 +101,7 @@ public class LimitIteratorCloseableUnitTest {
         CloseableIterator<Object> mockedIterator = newMockIterator();
         Mockito.when(mockedIterator.hasNext()).thenReturn(true);
 
-        CloseableIterator<Object> iter = new LimitCloseableIterator<Object>(mockedIterator, 2);
+        CloseableIterator<Object> iter = CloseableIterators.limit(mockedIterator, 2);
         try {
             iter.next();
             iter.next();
@@ -121,7 +121,7 @@ public class LimitIteratorCloseableUnitTest {
         CloseableIterator<Object> mockedIterator = newMockIterator();
         Mockito.when(mockedIterator.hasNext()).thenReturn(true);
 
-        CloseableIterator<Object> iter = new LimitCloseableIterator<Object>(mockedIterator, 1);
+        CloseableIterator<Object> iter = CloseableIterators.limit(mockedIterator, 1);
         try {
             assertTrue(iter.hasNext());
             iter.next();
@@ -134,7 +134,7 @@ public class LimitIteratorCloseableUnitTest {
     @Test
     public void closePassesThroughToInnerIterator() throws IOException {
         CloseableIterator<Object> mockIterator = newMockIterator();
-        CloseableIterator<Object> iter = new LimitCloseableIterator<Object>(mockIterator, 1);
+        CloseableIterator<Object> iter = CloseableIterators.limit(mockIterator, 1);
 
         try {
             iter.close();
@@ -148,7 +148,7 @@ public class LimitIteratorCloseableUnitTest {
 
     @SuppressWarnings("unchecked")
     private CloseableIterator<Object> newEmptyIterator() {
-        return CloseableIteratorAdapter.<Object>emptyIterator();
+        return CloseableIterators.emptyIterator();
     }
 
     @SuppressWarnings("unchecked")
@@ -159,7 +159,7 @@ public class LimitIteratorCloseableUnitTest {
     @Test(expected = NoSuchElementException.class)
     public void nextThrowsNoSuchElementExceptionIfIteratorIsExhaustedAndLimitNotExceeded() {
         List<Integer> list = Arrays.asList(1, 2);
-        CloseableIterator<Integer> iter = new LimitCloseableIterator<Integer>(createCloseableIterator(list.iterator()), 5);
+        CloseableIterator<Integer> iter = CloseableIterators.limit(createCloseableIterator(list.iterator()), 5);
         try {
             iter.next();
             iter.next();
@@ -170,6 +170,6 @@ public class LimitIteratorCloseableUnitTest {
     }
 
     private <T> CloseableIterator<T> createCloseableIterator(Iterator<T> iterator) {
-        return CloseableIteratorAdapter.<T>wrap(iterator);
+        return CloseableIterators.wrap(iterator);
     }
 }

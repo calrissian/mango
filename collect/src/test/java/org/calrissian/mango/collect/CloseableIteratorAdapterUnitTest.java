@@ -76,6 +76,6 @@ public class CloseableIteratorAdapterUnitTest {
     }
 
     private <T> CloseableIterator<T> createCloseableIterator(Iterator<T> iterator) {
-        return CloseableIteratorAdapter.wrap(iterator);
+        return CloseableIterators.wrap(iterator);
     }
 }
