@@ -11,7 +11,7 @@ public class Iterables2 {
 
     /**
      * If we can assume the iterable is sorted, return the distinct elements. This only works
-     * if the data comes back sorted.
+     * if the data provided is sorted.
      */
     public static <T> Iterable<T> distinct(final Iterable<T> iterable) {
         checkNotNull(iterable);

@@ -3,54 +3,114 @@ package org.calrissian.mango.collect;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.UnmodifiableIterator;
 
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Helper class to develop commonly used Iterables
+ * Utility class to develop commonly used closeable iterables functions.
  */
 public class CloseableIterables {
 
+    /**
+     * Returns an iterable that applies {@code function} to each element of {@code
+     * fromIterable}.
+     */
     public static <F, T> CloseableIterable<T> transform(final CloseableIterable<F> iterable, final Function<? super F, ? extends T> function) {
-        return consumeClose(Iterables.transform(iterable, function), iterable);
+        return wrap(Iterables.transform(iterable, function), iterable);
     }
 
+    /**
+     * Creates a closeable iterable with the first {@code limitSize} elements of the given
+     * closeable iterable. If the original closeable iterable does not contain that many
+     * elements, the returned iterator will have the same behavior as the original
+     * closeable iterable. The returned closeable iterable's iterator supports {@code remove()}
+     * if the original iterator does.
+     */
     public static <T> CloseableIterable<T> limit(final CloseableIterable<T> iterable, final int limitSize) {
-        return consumeClose(Iterables.limit(iterable, limitSize), iterable);
+        return wrap(Iterables.limit(iterable, limitSize), iterable);
     }
 
+    /**
+     * Returns the elements of {@code unfiltered} that satisfy a predicate. The
+     * resulting closeable iterable's iterator does not support {@code remove()}.
+     */
     public static <T> CloseableIterable<T> filter(final CloseableIterable<T> iterable, final Predicate<? super T> filter) {
-        return consumeClose(Iterables.filter(iterable, filter), iterable);
+        return wrap(Iterables.filter(iterable, filter), iterable);
     }
 
+    /**
+     * Combines multiple iterables into a single closeable iterable.
+     * The returned closeable iterable has an iterator that traverses the elements
+     * of each iterable in {@code inputs}. The input iterators are not polled until
+     * necessary.
+     */
     public static <T> CloseableIterable<T> concat(final CloseableIterable<? extends Iterable<? extends T>> inputs) {
-        return consumeClose(Iterables.concat(inputs), inputs);
+        return wrap(Iterables.concat(inputs), inputs);
     }
 
+    /**
+     * Combines multiple closeable iterables into a single closeable iterable.
+     * The returned closeable iterable has an iterator that traverses the elements
+     * of each iterable in {@code inputs}. The input iterators are not polled until
+     * necessary.
+     */
     public static <T> CloseableIterable<T> chain(final Iterable<? extends CloseableIterable<? extends T>> iterables) {
         checkNotNull(iterables);
+
+        //Don't use CloseableIterators here, as Iterables can reiterate over their data
+        //and don't want to close it on them.
         return new FluentCloseableIterable<T>() {
-            CloseableIterator<T> curr = CloseableIterators.emptyIterator();
             @Override
             protected void doClose() throws IOException {
-                curr.close();
+                for (CloseableIterable<? extends T> curr : iterables)
+                    curr.closeQuietly();
             }
 
             @Override
             protected Iterator<T> retrieveIterator() {
-                curr = CloseableIterators.chain(iterators(iterables));
-                return curr;
+                return Iterators.concat(iterators(iterables));
             }
         };
     }
 
+    /**
+     * If we can assume the closeable iterable is sorted, return the distinct elements.
+     * This only works if the data provided is sorted.
+     */
+    public static <T> CloseableIterable<T> distinct(final CloseableIterable<T> iterable) {
+        return wrap(Iterables2.distinct(iterable), iterable);
+    }
+
+    /**
+     * Autoclose the iterator when exhausted or if an exception is thrown.
+     */
+    public static <T> CloseableIterable<T> autoClose(final CloseableIterable<? extends T> iterable) {
+        checkNotNull(iterable);
+        return new FluentCloseableIterable<T>() {
+            @Override
+            protected void doClose() throws IOException {
+                iterable.close();
+            }
+
+            @Override
+            protected Iterator<T> retrieveIterator() {
+                //autoclose iterator when it is exhausted.
+                return CloseableIterators.autoClose(
+                        CloseableIterators.wrap(iterable.iterator(), iterable)
+                );
+            }
+        };
+    }
+
+    /**
+     * Creates a {@link CloseableIterable} from a standard iterable
+     */
     public static <T> CloseableIterable<T> wrap(final Iterable<T> iterable) {
         checkNotNull(iterable);
         if (iterable instanceof CloseableIterable) return (CloseableIterable<T>) iterable;
@@ -70,99 +130,13 @@ public class CloseableIterables {
     }
 
     /**
-     * If we can assume the iterable is sorted, return the distinct elements. This only works
-     * if the data comes back sorted.
-     */
-    public static <T> CloseableIterable<T> distinct(final CloseableIterable<T> iterable) {
-        return consumeClose(Iterables2.distinct(iterable), iterable);
-    }
-
-    /**
-     * Autoclose the iterator when exhausted or if an exception is thrown. It is currently set to protected, so that only
-     * classes in this package can use.
+     * Creates a {@link CloseableIterable} from a standard iterable, while closing the provided
+     * closeable.
      *
-     * @param iterable
-     * @param <T>
-     * @return
+     * Intentionally left package private.
      */
-    static <T> CloseableIterable<T> autoClose(final CloseableIterable<? extends T> iterable) {
-        checkNotNull(iterable);
-        return new AbstractCloseableIterable<T>() {
-
-            private boolean closed = false;
-
-            @Override
-            protected void doClose() throws IOException {
-                if (closed)
-                    return;
-
-                closed = true;
-                iterable.close();
-            }
-
-            @Override
-            protected Iterator<T> retrieveIterator() {
-                //autoclose when this iterator is consumed or an exception occurs
-                final Iterator<? extends T> iterator = iterable.iterator();
-                return new Iterator<T>() {
-                    @Override
-                    public boolean hasNext() {
-                        try {
-                            if (closed)
-                                return false;
-                            if (!iterator.hasNext()) {
-                                closeQuietly();
-                                return false;
-                            }
-                            return true;
-                        } catch (RuntimeException re) {
-                            closeQuietly();
-                            throw re;
-                        }
-                    }
-
-                    @Override
-                    public T next() {
-                        if (hasNext()) {
-                            try {
-                                return iterator.next();
-                            } catch (RuntimeException re) {
-                                closeQuietly();
-                                throw re;
-                            } finally {
-                                //if no more are left, hasNext will close the stream
-                                hasNext();
-                            }
-                        }
-                        throw new NoSuchElementException();
-                    }
-
-                    @Override
-                    public void remove() {
-                        if (hasNext()) {
-                            try {
-                                iterator.remove();
-                            } catch (RuntimeException re) {
-                                closeQuietly();
-                                throw re;
-                            }
-                        }
-                    }
-                };
-            }
-        };
-    }
-
-    /**
-     * Return a {@link CloseableIterable} that will consume from the first argument Iterator, and close the second Closeable on close
-     *
-     * @param iterable
-     * @param closeable
-     * @return
-     */
-    static <T> FluentCloseableIterable<T> consumeClose(final Iterable<T> iterable, final Closeable closeable) {
+    static <T> FluentCloseableIterable<T> wrap(final Iterable<T> iterable, final Closeable closeable) {
         return new FluentCloseableIterable<T>() {
-
             @Override
             protected void doClose() throws IOException {
                 closeable.close();
@@ -175,18 +149,19 @@ public class CloseableIterables {
         };
     }
 
-    private static <T> Iterator<? extends CloseableIterator<? extends T>> iterators(Iterable<? extends CloseableIterable<? extends T>> inputs) {
-        final Iterator<? extends CloseableIterable<? extends T>> iterator = inputs.iterator();
-        return new UnmodifiableIterator<CloseableIterator<? extends T>>() {
+    /**
+     * Returns an iterator over the iterators of the given iterables.
+     */
+    private static <T> UnmodifiableIterator<Iterator<? extends T>> iterators(Iterable<? extends CloseableIterable<? extends T>> iterables) {
+        final Iterator<? extends Iterable<? extends T>> iterableIterator = iterables.iterator();
+        return new UnmodifiableIterator<Iterator<? extends T>>() {
             @Override
             public boolean hasNext() {
-                return iterator.hasNext();
+                return iterableIterator.hasNext();
             }
-
             @Override
-            public CloseableIterator<? extends T> next() {
-                CloseableIterable<? extends T> internal = iterator.next();
-                return CloseableIterators.consumeClose(internal.iterator(), internal);
+            public Iterator<? extends T> next() {
+                return iterableIterator.next().iterator();
             }
         };
     }

@@ -3,13 +3,12 @@ package org.calrissian.mango.collect;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
 
+import static java.util.Arrays.asList;
+import static org.calrissian.mango.collect.CloseableIterables.wrap;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -19,20 +18,9 @@ public class FluentCloseableIterableTest {
 
     @Test
     public void testFluent() throws IOException {
-        final ArrayList<Integer> list = Lists.newArrayList(1, 2, 3, 4, 5);
-        CloseableIterable<Integer> closeableIterable = new AbstractCloseableIterable<Integer>() {
+        CloseableIterable<Integer> closeableIterable = wrap(asList(1, 2, 3, 4, 5));
 
-            @Override
-            public void doClose() throws IOException {
-            }
-
-            @Override
-            public Iterator<Integer> retrieveIterator() {
-                return list.iterator();
-            }
-        };
-
-        FluentCloseableIterable<Integer> filter = (FluentCloseableIterable<Integer>) FluentCloseableIterable.
+        FluentCloseableIterable<Integer> filter = FluentCloseableIterable.
                 from(closeableIterable).
                 transform(new Function<Integer, Integer>() {
                     @Override
@@ -47,13 +35,13 @@ public class FluentCloseableIterableTest {
                     }
                 });
 
-        Iterables.elementsEqual(Lists.newArrayList(2, 4, 6), filter);
+        Iterables.elementsEqual(asList(2, 4, 6), filter);
 
         filter.close();
 
         //make sure closed
         try {
-            Iterator<Integer> iterator = filter.iterator();
+            filter.iterator();
             fail();
         } catch (IllegalStateException ise) {
         }
@@ -61,20 +49,9 @@ public class FluentCloseableIterableTest {
 
     @Test
     public void testLimit() throws IOException {
-        final ArrayList<Integer> list = Lists.newArrayList(1, 2, 3, 4, 5);
-        CloseableIterable<Integer> closeableIterable = new AbstractCloseableIterable<Integer>() {
+        CloseableIterable<Integer> closeableIterable = wrap(asList(1, 2, 3, 4, 5));
 
-            @Override
-            public void doClose() throws IOException {
-            }
-
-            @Override
-            public Iterator<Integer> retrieveIterator() {
-                return list.iterator();
-            }
-        };
-
-        FluentCloseableIterable<Integer> limit = (FluentCloseableIterable<Integer>) FluentCloseableIterable.
+        FluentCloseableIterable<Integer> limit = FluentCloseableIterable.
                 from(closeableIterable).limit(3);
 
         assertEquals(3, Iterables.size(limit));

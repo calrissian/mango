@@ -6,10 +6,14 @@ import com.google.common.io.Closeables;
 import java.util.Iterator;
 
 /**
- * Provides a basic implementation of an {@link Iterator} that calls close when the end of the iterator is reached.
+ * This class is an extension of the {@link AbstractIterator} class which provides additional
+ * support for closing the {@link Iterator} quietly.
  */
 public abstract class AbstractCloseableIterator<T> extends AbstractIterator<T> implements CloseableIterator<T> {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void closeQuietly() {
         Closeables.closeQuietly(this);
