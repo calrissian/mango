@@ -121,7 +121,7 @@ public class CloseableIterators {
      *
      * As each closeable iterator is exhausted, it is closed before moving onto the next closeable
      * iterator.  A call to close on the returned closeable iterator will quietly close all of
-     * the closeable iterators in {@code inputs} which having been exhausted.
+     * the closeable iterators in {@code inputs} which have not been exhausted.
      */
     public static <T> CloseableIterator<T> chain(CloseableIterator<? extends T>... iterators) {
         return chain(Iterators.forArray(iterators));
@@ -134,7 +134,7 @@ public class CloseableIterators {
      *
      * As each closeable iterator is exhausted, it is closed before moving onto the next closeable
      * iterator.  A call to close on the returned closeable iterator will quietly close all of
-     * the closeable iterators in {@code inputs} which having been exhausted.
+     * the closeable iterators in {@code inputs} which have not been exhausted.
      */
     public static <T> CloseableIterator<T> chain(final Iterator<? extends CloseableIterator<? extends T>> iterator) {
         checkNotNull(iterator);
