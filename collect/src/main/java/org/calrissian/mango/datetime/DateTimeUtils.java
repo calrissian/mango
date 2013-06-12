@@ -1,9 +1,9 @@
 package org.calrissian.mango.datetime;
 
-import com.google.common.base.Preconditions;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  */
@@ -12,7 +12,7 @@ public class DateTimeUtils {
     public static final String INDEXED_DATE_FORMAT = "yyyyMMddHHmmsssSSS";
 
     public static String getIndexedDate(Date date) {
-        Preconditions.checkNotNull(date);
+        checkNotNull(date);
         String formattedDateString = new SimpleDateFormat(INDEXED_DATE_FORMAT).format(date);
         long diff = INDEXED_DATE_SORT_VAL - Long.valueOf(formattedDateString);
 

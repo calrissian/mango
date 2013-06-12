@@ -2,9 +2,9 @@ package org.calrissian.mango.collect;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
-import com.google.common.collect.AbstractIterator;
 import com.google.common.collect.Iterators;
-import com.google.common.collect.UnmodifiableIterator;
+import com.google.common.collect.PeekingIterator;
+import com.google.common.io.Closeables;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -14,113 +14,194 @@ import java.util.NoSuchElementException;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Date: 8/29/12
- * Time: 10:02 AM
+ * Utility class to develop commonly used closeable iterator functions.
  */
 public class CloseableIterators {
 
-    public static <F, T> CloseableIterator<T> transform(final CloseableIterator<F> iterator, final Function<F, T> function) {
-        Iterator<T> transform = Iterators.transform(iterator, function);
-        return CloseableIteratorAdapter.wrap(transform, iterator);
-    }
+    private static final CloseableIterator EMPTY_ITERATOR = wrap(Iterators.emptyIterator());
 
-    public static <T> PeekingCloseableIterator<T> peekingIterator(final CloseableIterator<T> iterator) {
-        return new PeekingCloseableIterator<T>(iterator);
-    }
-
-    public static <T> CloseableIterator<T> limit(final CloseableIterator<T> iterator, final int limitSize) {
-        checkNotNull(iterator);
-        return new LimitCloseableIterator<T>(iterator, limitSize);
-    }
-
-    public static <T> CloseableIterator<T> filter(final CloseableIterator<T> iterator, final Predicate<T> filter) {
-        final UnmodifiableIterator<T> filteredIter = Iterators.filter(iterator, filter);
-        return CloseableIteratorAdapter.wrap(filteredIter, iterator);
-    }
-
-    public static <T> CloseableIterator<T> concat(final CloseableIterator<? extends Iterator<? extends T>> inputs) {
-        final Iterator<T> concat = Iterators.concat(inputs);
-        return CloseableIteratorAdapter.wrap(concat, inputs);
+    /**
+     * Returns a closeable iterator that applies {@code function} to each element of {@code
+     * fromIterator}.
+     */
+    public static <F, T> CloseableIterator<T> transform(CloseableIterator<F> iterator, Function<F, T> function) {
+        return wrap(Iterators.transform(iterator, function), iterator);
     }
 
     /**
-     * Concat an Iterable of CloseableIterators. This will allow us to concat any Collection of CloseableIterators.
+     * /**
+     * Returns a {@code PeekingCloseableIterator} backed by the given closeable iterator.
      *
-     * @param iterable
-     * @param <T>
-     * @return
+     * Calls to peek do not change the state of the iterator.  The subsequent call to next
+     * after peeking will always return the same value.
      */
-    public static <T> CloseableIterator<T> chain(final Iterable<? extends CloseableIterator<? extends T>> iterable) {
-        return new ChainedIterableCloseableIterator<T>(iterable);
-    }
-
-    public static <T> CloseableIterator<T> sortedDistinct(final CloseableIterator<T> iterator) {
-        AbstractIterator<T> sortedDistinctIterator = new AbstractIterator<T>() {
-            T current = null;
-
+    public static <T> PeekingCloseableIterator<T> peekingIterator(final CloseableIterator<T> iterator) {
+        final PeekingIterator<T> peeking = Iterators.peekingIterator(iterator);
+        return new PeekingCloseableIterator<T>() {
             @Override
-            protected T computeNext() {
-                if (iterator.hasNext()) {
-                    if (current == null) {
-                        current = iterator.next();
-                        return current;
-                    } else {
-                        T next = iterator.next();
-                        while (current.equals(next)) {
-                            if (iterator.hasNext()) {
-                                next = iterator.next();
-                            } else {
-                                return endOfData();
-                            }
-                        }
-                        current = next;
-                        return current;
-                    }
-                } else
-                    return endOfData();
+            public void closeQuietly() {
+                iterator.closeQuietly();
             }
-        };
-        return consumeClose(sortedDistinctIterator, iterator);
-    }
-
-    public static <T> CloseableIterator<T> wrap(final Iterator<T> iterator) {
-        if (iterator instanceof CloseableIterator) return (CloseableIterator<T>) iterator;
-
-        return new AbstractCloseableIterator<T>() {
 
             @Override
             public void close() throws IOException {
+                iterator.close();
             }
 
             @Override
-            public boolean hasNext() {
-                return iterator.hasNext();
+            public T peek() {
+                return peeking.peek();
             }
 
             @Override
             public T next() {
-                return iterator.next();
+                return peeking.next();
             }
 
             @Override
             public void remove() {
-                iterator.remove();
+                peeking.remove();
+            }
+
+            @Override
+            public boolean hasNext() {
+                return peeking.hasNext();
             }
         };
     }
 
     /**
-     * Autoclose the iterator when exhausted or if an exception is thrown. It is currently set to protected, so that only
-     * classes in this package can use.
-     *
-     * @param iterator
+     * Creates a closeable iterator returning the first {@code limitSize} elements of the
+     * given closeable iterator. If the original closeable iterator does not contain that many
+     * elements, the returned closeable iterator will have the same behavior as the original.
+     */
+    public static <T> CloseableIterator<T> limit(CloseableIterator<T> iterator, int limitSize) {
+        return wrap(Iterators.limit(iterator, limitSize), iterator);
+    }
+
+    /**
+     * Returns the elements of {@code unfiltered} that satisfy a predicate.
+     */
+    public static <T> CloseableIterator<T> filter(CloseableIterator<T> iterator, Predicate<T> filter) {
+        return wrap(Iterators.filter(iterator, filter), iterator);
+    }
+
+    /**
+     * Calls {@code next()} on {@code iterator}, either {@code numberToAdvance} times
+     * or until {@code hasNext()} returns {@code false}, whichever comes first.
+     */
+    public static <T> int advance (CloseableIterator<T> iterator, int numberToAdvance) {
+        return Iterators.advance(iterator, numberToAdvance);
+    }
+
+    /**
+     * Returns an empty closeable iterator.
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> CloseableIterator<T> emptyIterator() {
+        return (CloseableIterator<T>)EMPTY_ITERATOR;
+    }
+
+    /**
+     * Combines multiple iterators into a single closeable iterator. The returned
+     * closeable iterator iterates across the elements of each iterator in {@code inputs}.
+     * The input iterators are not polled until necessary.
+     * @param iterators
      * @param <T>
      * @return
      */
-    static <T> CloseableIterator<T> autoClose(final CloseableIterator<? extends T> iterator) {
-        return new AbstractCloseableIterator<T>() {
+    public static <T> CloseableIterator<T> concat(CloseableIterator<? extends Iterator<? extends T>> iterators) {
+        return wrap(Iterators.concat(iterators), iterators);
+    }
 
+    /**
+     * Combines multiple closeable iterators into a single closeable iterator. The returned
+     * closeable iterator iterates across the elements of each closeable iterator in {@code inputs}.
+     * The input iterators are not polled until necessary.
+     *
+     * As each closeable iterator is exhausted, it is closed before moving onto the next closeable
+     * iterator.  A call to close on the returned closeable iterator will quietly close all of
+     * the closeable iterators in {@code inputs} which have not been exhausted.
+     */
+    public static <T> CloseableIterator<T> chain(CloseableIterator<? extends T>... iterators) {
+        return chain(Iterators.forArray(iterators));
+    }
+
+    /**
+     * Combines multiple closeable iterators into a single closeable iterator. The returned
+     * closeable iterator iterates across the elements of each closeable iterator in {@code inputs}.
+     * The input iterators are not polled until necessary.
+     *
+     * As each closeable iterator is exhausted, it is closed before moving onto the next closeable
+     * iterator.  A call to close on the returned closeable iterator will quietly close all of
+     * the closeable iterators in {@code inputs} which have not been exhausted.
+     */
+    public static <T> CloseableIterator<T> chain(final Iterator<? extends CloseableIterator<? extends T>> iterator) {
+        checkNotNull(iterator);
+        return new CloseableIterator<T>() {
+            CloseableIterator<? extends T> curr = emptyIterator();
+            @Override
+            public void closeQuietly() {
+                Closeables.closeQuietly(this);
+            }
+
+            @Override
+            public void close() throws IOException {
+                //Close the current one then close all the others
+                if (curr != null)
+                    curr.closeQuietly();
+
+                while (iterator.hasNext())
+                    iterator.next().closeQuietly();
+
+            }
+
+            @Override
+            public boolean hasNext() {
+                //autoclose will close when the iterator is exhausted
+                while (!curr.hasNext() && iterator.hasNext())
+                    curr = autoClose(iterator.next());
+
+                return curr.hasNext();
+            }
+
+            @Override
+            public T next() {
+                if (hasNext())
+                    return curr.next();
+
+                throw new NoSuchElementException();
+            }
+
+            @Override
+            public void remove() {
+                curr.remove();
+            }
+        };
+    }
+
+    /**
+     * If we can assume the closeable iterator is sorted, return the distinct elements.
+     * This only works if the data provided is sorted.
+     */
+    public static <T> CloseableIterator<T> distinct(final CloseableIterator<T> iterator) {
+        checkNotNull(iterator);
+        return wrap(Iterators2.distinct(iterator), iterator);
+    }
+
+
+    /**
+     * Autoclose the iterator when exhausted or if an exception is thrown. It is currently set to protected, so that only
+     * classes in this package can use.
+     */
+    static <T> CloseableIterator<T> autoClose(final CloseableIterator<? extends T> iterator) {
+        checkNotNull(iterator);
+        return new CloseableIterator<T>() {
             private boolean closed = false;
+            @Override
+            public void closeQuietly() {
+                Closeables.closeQuietly(this);
+            }
 
             @Override
             public void close() throws IOException {
@@ -174,8 +255,57 @@ public class CloseableIterators {
         };
     }
 
-    static <T> CloseableIterator<T> consumeClose(final Iterator<T> iterator, final Closeable closeable) {
-        return new AbstractCloseableIterator<T>() {
+    /**
+     * Creates a {@link CloseableIterator} from a standard iterator.
+     */
+    public static <T> CloseableIterator<T> wrap(final Iterator<T> iterator) {
+        checkNotNull(iterator);
+        if (iterator instanceof CloseableIterator) return (CloseableIterator<T>) iterator;
+
+        return new CloseableIterator<T>() {
+
+            @Override
+            public void closeQuietly() {
+                Closeables.closeQuietly(this);
+            }
+
+            @Override
+            public void close() throws IOException {
+                if (iterator instanceof Closeable)
+                    ((Closeable) iterator).close();
+            }
+
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public T next() {
+                return iterator.next();
+            }
+
+            @Override
+            public void remove() {
+                iterator.remove();
+            }
+        };
+    }
+
+    /**
+     * Creates a {@link CloseableIterable} from a standard iterable, while closing the provided
+     * closeable.
+     *
+     * Intentionally left package private.
+     */
+    static <T> CloseableIterator<T> wrap(final Iterator<T> iterator, final Closeable closeable) {
+        return new CloseableIterator<T>() {
+
+            @Override
+            public void closeQuietly() {
+                Closeables.closeQuietly(this);
+            }
+
             @Override
             public void close() throws IOException {
                 closeable.close();

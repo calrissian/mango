@@ -4,14 +4,9 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 public class ObjectMapperContext {
 
-    protected static ObjectMapperContext instance;
+    protected static ObjectMapperContext instance = new ObjectMapperContext();
 
-    public static synchronized ObjectMapperContext getInstance() {
-
-        if(instance == null) {
-            instance = new ObjectMapperContext();
-        }
-
+    public static ObjectMapperContext getInstance() {
         return instance;
     }
 
