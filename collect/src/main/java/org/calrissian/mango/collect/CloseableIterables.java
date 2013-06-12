@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.Iterator;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Arrays.asList;
 
 /**
  * Utility class to develop commonly used closeable iterables functions.
@@ -52,6 +53,16 @@ public class CloseableIterables {
      */
     public static <T> CloseableIterable<T> concat(final CloseableIterable<? extends Iterable<? extends T>> inputs) {
         return wrap(Iterables.concat(inputs), inputs);
+    }
+
+    /**
+     * Combines multiple closeable iterables into a single closeable iterable.
+     * The returned closeable iterable has an iterator that traverses the elements
+     * of each iterable in {@code inputs}. The input iterators are not polled until
+     * necessary.
+     */
+    public static <T> CloseableIterable<T> chain(CloseableIterable<? extends T>... iterables) {
+        return chain(asList(iterables));
     }
 
     /**
