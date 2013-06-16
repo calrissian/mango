@@ -21,7 +21,6 @@ import java.security.NoSuchAlgorithmException;
 public class JmsFileReceiverInputStream extends InputStream {
 
     private InputStream current;
-    private int index = 0;
     private boolean closed = false;
     private boolean started = false;
 

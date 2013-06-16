@@ -28,7 +28,6 @@
         <module>mango-core</module>
         <module>mango-accumulo</module>
         <module>mango-jms</module>
-        <module>uri</module>
     </modules>
 
     <dependencyManagement>
