@@ -1,7 +1,5 @@
 package org.calrissian.mango.uri.common.support;
 
-import java.lang.String;
-
 public class DataResolverConstants {
 
 

@@ -13,11 +13,6 @@
         <commons.net.version>3.0.1</commons.net.version>
         <accumulo.version>1.4.1</accumulo.version>
         <commons.lang.version>2.6</commons.lang.version>
-        <distribution.repo.id>texeltek</distribution.repo.id>
-        <distribution.releases>http://192.168.20.249:8888/nexus/content/repositories/tt</distribution.releases>
-        <distribution.snap.id>texeltek</distribution.snap.id>
-        <distribution.snapshots>http://192.168.20.249:8888/nexus/content/repositories/tt-snapshots
-        </distribution.snapshots>
         <guava.version>13.0.1</guava.version>
         <hadoop.version>0.20.2</hadoop.version>
         <jackson.version>1.9.2</jackson.version>
@@ -30,14 +25,9 @@
     </properties>
 
     <modules>
-        <module>accumulo</module>
-        <module>cli</module>
-        <module>collect</module>
-        <module>commons</module>
-        <module>criteria</module>
-        <module>hash</module>
-        <module>jms</module>
-        <module>types</module>
+        <module>mango-core</module>
+        <module>mango-accumulo</module>
+        <module>mango-jms</module>
         <module>uri</module>
     </modules>
 
