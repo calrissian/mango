@@ -44,7 +44,7 @@ public class UriResolverStreamOpenerTest {
     @Test
     public void testOpenStream() throws IOException, URISyntaxException {
 
-        URI uri = new URI("service://blah\u0000A,B,C");
+        URI uri = new URI("service://blah#A,B,C");
 
         InputStream is = streamOpener.openStream(uri);
 

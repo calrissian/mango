@@ -7,5 +7,5 @@ public class DataResolverConstants {
 
     public static final String SYSTEM_ALL = "any";
 
-    public static final String DELIM = "\u0000";
+    public static final String DELIM = "#";
 }

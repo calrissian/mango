@@ -22,13 +22,13 @@ public class DataResolverFormatUtilsTest {
         URI baseURI = new URI("service://hello?param1=value1");
         URI uri = DataResolverFormatUtils.buildRequestURI(baseURI, new String[]{"A", "B", "C"});
 
-        assertEquals("service://hello?param1=value1\u0000A,B,C", uri.toString());
+        assertEquals("service://hello?param1=value1#A,B,C", uri.toString());
     }
 
     @Test
     public void testExtractAuthsFromUrl() throws MalformedURLException, URISyntaxException {
 
-        URI baseURI = new URI("service://hello?param1=value1\u0000A,B,C");
+        URI baseURI = new URI("service://hello?param1=value1#A,B,C");
 
         assertEquals(new String[] {"A", "B" ,"C"}, DataResolverFormatUtils.extractAuthsFromUri(baseURI));
 
