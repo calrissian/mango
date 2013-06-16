@@ -13,11 +13,6 @@
         <commons.net.version>3.0.1</commons.net.version>
         <accumulo.version>1.4.1</accumulo.version>
         <commons.lang.version>2.6</commons.lang.version>
-        <distribution.repo.id>texeltek</distribution.repo.id>
-        <distribution.releases>http://192.168.20.249:8888/nexus/content/repositories/tt</distribution.releases>
-        <distribution.snap.id>texeltek</distribution.snap.id>
-        <distribution.snapshots>http://192.168.20.249:8888/nexus/content/repositories/tt-snapshots
-        </distribution.snapshots>
         <guava.version>13.0.1</guava.version>
         <hadoop.version>0.20.2</hadoop.version>
         <jackson.version>1.9.2</jackson.version>
@@ -30,23 +25,58 @@
     </properties>
 
     <modules>
-        <module>accumulo</module>
-        <module>cli</module>
-        <module>collect</module>
-        <module>commons</module>
-        <module>criteria</module>
-        <module>hash</module>
-        <module>jms</module>
-        <module>types</module>
-        <module>uri</module>
+        <module>mango-core</module>
+        <module>mango-accumulo</module>
+        <module>mango-jms</module>
     </modules>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-net</groupId>
+                <artifactId>commons-net</artifactId>
+                <version>${commons.net.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.codehaus.jackson</groupId>
+                <artifactId>jackson-mapper-asl</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-lang</groupId>
+                <artifactId>commons-lang</artifactId>
+                <version>${commons.lang.version}</version>
+            </dependency>
+
+            <!--Logging-->
+            <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <version>${slf4j.version}</version>
+            </dependency>
+
+            <!--Accumulo-->
+            <dependency>
+                <groupId>org.apache.accumulo</groupId>
+                <artifactId>accumulo-core</artifactId>
+                <version>${accumulo.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.hadoop</groupId>
+                <artifactId>hadoop-core</artifactId>
+                <version>${hadoop.version}</version>
+            </dependency>
+
+            <!--Jms-->
+            <dependency>
+                <groupId>javax.jms</groupId>
+                <artifactId>jms</artifactId>
+                <version>${javax.jms.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
@@ -59,14 +89,11 @@
                 <version>${activemq.version}</version>
                 <scope>test</scope>
             </dependency>
-            <dependency>
-                <groupId>com.google.guava</groupId>
-                <artifactId>guava</artifactId>
-                <version>${guava.version}</version>
-            </dependency>
+
+            <!--Test-->
             <dependency>
                 <groupId>junit</groupId>
-                <artifactId>junit-dep</artifactId>
+                <artifactId>junit</artifactId>
                 <version>${junit.version}</version>
                 <scope>test</scope>
             </dependency>
@@ -75,41 +102,6 @@
                 <artifactId>mockito-core</artifactId>
                 <version>${mockito.version}</version>
                 <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>javax.jms</groupId>
-                <artifactId>jms</artifactId>
-                <version>${javax.jms.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>${junit.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>commons-net</groupId>
-                <artifactId>commons-net</artifactId>
-                <version>${commons.net.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.accumulo</groupId>
-                <artifactId>accumulo-core</artifactId>
-                <version>${accumulo.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.hadoop</groupId>
-                <artifactId>hadoop-core</artifactId>
-                <version>${hadoop.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.codehaus.jackson</groupId>
-                <artifactId>jackson-mapper-asl</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>commons-lang</groupId>
-                <artifactId>commons-lang</artifactId>
-                <version>${commons.lang.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
