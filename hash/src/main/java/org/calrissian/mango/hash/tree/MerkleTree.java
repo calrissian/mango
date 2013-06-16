@@ -22,7 +22,7 @@ public class MerkleTree<T extends HashLeaf> implements Serializable {
      * @throws IllegalStateException
      */
     public MerkleTree(List<T> leaves) throws IllegalStateException{
-        this.topHash = build(leaves);
+        this.topHash = buildTop(leaves);
         this.numLeaves = leaves.size();
     }
 
@@ -34,7 +34,7 @@ public class MerkleTree<T extends HashLeaf> implements Serializable {
      */
     public MerkleTree(List<T> leaves, int dimensions) throws IllegalStateException{
         this.dimensions = dimensions;
-        this.topHash = build(leaves);
+        this.topHash = buildTop(leaves);
         this.numLeaves = leaves.size();
     }
 
@@ -59,7 +59,7 @@ public class MerkleTree<T extends HashLeaf> implements Serializable {
      * @param leaves
      * @return
      */
-    private Node build(List<T> leaves) {
+    private Node buildTop(List<T> leaves) {
 
         List<Node> hashNodes = new ArrayList<Node>();
         List<T> curLeaves;
