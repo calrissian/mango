@@ -20,39 +20,30 @@ import org.calrissian.mango.types.TypeContext;
 import org.calrissian.mango.types.canonicalizer.domain.CanonicalDef;
 import org.calrissian.mango.types.canonicalizer.validator.Validator;
 import org.calrissian.mango.types.exception.TypeNormalizationException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
+import static java.util.Collections.sort;
+import static org.calrissian.mango.types.TypeContext.DEFAULT_TYPES;
+
 public class CanonicalizerContext {
 
-    public static Logger logger = LoggerFactory.getLogger(CanonicalizerContext.class);
-
-    private static CanonicalizerContext instance;
+    private final TypeContext typeContext;
     private Map<String, Class<? extends Validator>> validatorClasses;
-
-    public static CanonicalizerContext getInstance() {
-
-        if (instance == null) {
-            instance = new CanonicalizerContext();
-        }
-
-        return instance;
-    }
 
     private Map<String, String> matchers;
     private Map<String, String> types;
     private Map<String, Validator> validators;
 
-    public CanonicalizerContext() {
-        try {
-            loadCanonicalDefs();
-        } catch (IOException e) {
-            logger.error("There was an error loading the canonical definitions from the canonicalDefs.properties file.");
-        }
+    public CanonicalizerContext() throws IOException {
+        this(DEFAULT_TYPES);
+    }
+
+    public CanonicalizerContext(TypeContext typeContext) throws IOException {
+        this.typeContext = typeContext;
+        loadCanonicalDefs();
     }
 
     private void loadCanonicalDefs() throws IOException {
@@ -136,7 +127,7 @@ public class CanonicalizerContext {
 
         try {
 
-            Object val = TypeContext.getInstance().fromString(value.trim(), datatype);
+            Object val = typeContext.fromString(value.trim(), datatype);
             return val;
         } catch (RuntimeException e) {
             throw new IllegalArgumentException(e);
@@ -156,7 +147,7 @@ public class CanonicalizerContext {
             canonicalDefs.add(new CanonicalDef(type, dataType));
         }
 
-        Collections.sort(canonicalDefs);
+        sort(canonicalDefs);
         return canonicalDefs;
     }
 }

@@ -15,7 +15,6 @@
  */
 package org.calrissian.mango.types.canonicalizer;
 
-import org.calrissian.mango.types.exception.TypeNormalizationException;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertNotNull;
@@ -24,16 +23,16 @@ import static junit.framework.Assert.fail;
 public class CanonicalizerContextTest {
 
     @Test
-    public void testFromStringRegularType() throws TypeNormalizationException {
+    public void testFromStringRegularType() throws Exception {
 
-        CanonicalizerContext context = CanonicalizerContext.getInstance();
+        CanonicalizerContext context = new CanonicalizerContext();
         System.out.println(context.canonicalizeValueFromString("destinationIp", "1.2.3.4"));
         System.out.println(context.canonicalizeValueFromString("sourcePort", "8080"));
     }
 
     @Test
     public void testRange() throws Exception {
-        CanonicalizerContext context = CanonicalizerContext.getInstance();
+        CanonicalizerContext context = new CanonicalizerContext();
         assertNotNull(context.canonicalizeValueFromString("sourcePort", "8080"));
         try {
             context.canonicalizeValueFromString("sourcePort", "hello");
@@ -49,7 +48,7 @@ public class CanonicalizerContextTest {
 
     @Test
     public void testRegex() throws Exception {
-        CanonicalizerContext context = CanonicalizerContext.getInstance();
+        CanonicalizerContext context = new CanonicalizerContext();
         assertNotNull(context.canonicalizeValueFromString("sourceIp", "1.2.3.4"));
         try {
             context.canonicalizeValueFromString("sourceIp", "hello");

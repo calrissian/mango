@@ -30,7 +30,11 @@ import java.io.IOException;
  */
 public class NodeSerializer extends JsonSerializer<Node> {
 
-    private TypeContext instance = TypeContext.getInstance();
+    private final TypeContext typeContext;
+
+    public NodeSerializer(TypeContext typeContext) {
+        this.typeContext = typeContext;
+    }
 
     @Override
     public void serialize(Node node, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
@@ -81,8 +85,8 @@ public class NodeSerializer extends JsonSerializer<Node> {
             jsonGenerator.writeStringField("key", equalsLeaf.getKey());
 
             Object value = equalsLeaf.getValue();
-            String type = instance.getAliasForType(value);
-            String val_str = instance.asString(value);
+            String type = typeContext.getAliasForType(value);
+            String val_str = typeContext.asString(value);
             jsonGenerator.writeStringField("type", type);
             jsonGenerator.writeStringField("value", val_str);
 
@@ -94,8 +98,8 @@ public class NodeSerializer extends JsonSerializer<Node> {
             jsonGenerator.writeStringField("key", leaf.getKey());
 
             Object value = leaf.getValue();
-            String type = instance.getAliasForType(value);
-            String val_str = instance.asString(value);
+            String type = typeContext.getAliasForType(value);
+            String val_str = typeContext.asString(value);
             jsonGenerator.writeStringField("type", type);
             jsonGenerator.writeStringField("value", val_str);
 
@@ -107,13 +111,13 @@ public class NodeSerializer extends JsonSerializer<Node> {
             jsonGenerator.writeStringField("key", leaf.getKey());
 
             Object start = leaf.getStart();
-            String type = instance.getAliasForType(start);
-            String val_str = instance.asString(start);
+            String type = typeContext.getAliasForType(start);
+            String val_str = typeContext.asString(start);
             jsonGenerator.writeStringField("type", type);
             jsonGenerator.writeStringField("start", val_str);
 
             Object end = leaf.getEnd();
-            val_str = instance.asString(end);
+            val_str = typeContext.asString(end);
             jsonGenerator.writeStringField("end", val_str);
 
             jsonGenerator.writeEndObject();

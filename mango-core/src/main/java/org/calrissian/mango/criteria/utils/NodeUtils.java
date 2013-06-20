@@ -18,20 +18,20 @@ package org.calrissian.mango.criteria.utils;
 import org.calrissian.mango.criteria.domain.Leaf;
 import org.calrissian.mango.criteria.domain.Node;
 import org.calrissian.mango.criteria.domain.ParentNode;
-import org.calrissian.mango.criteria.serialization.NodeMixin;
-import org.calrissian.mango.serialization.ObjectMapperContext;
+import org.calrissian.mango.criteria.serialization.CriteriaModule;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.IOException;
 
+import static org.calrissian.mango.types.TypeContext.DEFAULT_TYPES;
+
 public class NodeUtils {
 
-    static {
-        ObjectMapper objectMapper = ObjectMapperContext.getInstance().getObjectMapper();
-
-        objectMapper.getSerializationConfig().addMixInAnnotations(Node.class, NodeMixin.class);
-        objectMapper.getDeserializationConfig().addMixInAnnotations(Node.class, NodeMixin.class);
-    }
+    /**
+     * Don't use a local object mapper so that callers can use their own type contexts.
+     */
+    private static final ObjectMapper objectMapper = new ObjectMapper()
+            .withModule(new CriteriaModule(DEFAULT_TYPES));
 
     public static boolean isLeaf(Node node) {
         return node instanceof Leaf || node.children() == null || node.children().size() == 0;
@@ -45,14 +45,11 @@ public class NodeUtils {
     }
 
     public static String serialize(Node node) throws IOException {
-        return ObjectMapperContext.getInstance().getObjectMapper().writeValueAsString(node);
+        return objectMapper.writeValueAsString(node);
     }
 
     public static Node deserialize(String json) throws IOException {
-        return ObjectMapperContext.getInstance().getObjectMapper().readValue(json, Node.class);
+        return objectMapper.readValue(json, Node.class);
     }
 
-    public static void initializeMixins() {
-        //that static method takes care of this
-    }
 }
