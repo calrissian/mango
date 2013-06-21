@@ -127,7 +127,7 @@ public class MerkleTree<T extends HashLeaf> implements Serializable {
      */
     public List<T> diff(MerkleTree other) {
 
-        if(other.dimensions != dimensions || other.numLeaves != numLeaves) {
+        if(!other.dimensions.equals(dimensions) || !other.numLeaves.equals(numLeaves)) {
             throw new IllegalStateException("Trees need to have the same size & dimension to diff.");
         }
 
