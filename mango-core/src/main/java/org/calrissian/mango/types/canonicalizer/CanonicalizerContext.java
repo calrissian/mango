@@ -26,6 +26,7 @@ import java.io.InputStream;
 import java.util.*;
 
 import static java.util.Collections.sort;
+import static java.util.Collections.unmodifiableList;
 import static org.calrissian.mango.types.TypeContext.DEFAULT_TYPES;
 
 public class CanonicalizerContext {
@@ -106,31 +107,24 @@ public class CanonicalizerContext {
         }
     }
 
-    public Object canonicalizeValueFromString(String typeName, String value)
-            throws IllegalArgumentException {
+    public Object canonicalizeValueFromString(String typeName, String value) {
 
         String datatype = types.get(typeName);
-        if (datatype == null) {
-
+        if (datatype == null)
             throw new IllegalArgumentException(typeName + " is not a recognized type.");
-        }
 
         String matcher = matchers.get(typeName);
         Validator validator = matcher != null ? validators.get(matcher) : null;
 
-        if (validator != null) {
-            if (!validator.validate(value)) {
-
+        if (validator != null && !validator.validate(value))
                 throw new IllegalArgumentException(value + " did not validate with validator: " + validator.getClass());
-            }
-        }
 
         try {
 
-            Object val = typeContext.fromString(value.trim(), datatype);
-            return val;
-        } catch (RuntimeException e) {
-            throw new IllegalArgumentException(e);
+            return typeContext.fromString(value.trim(), datatype);
+
+        } catch (RuntimeException re) {
+            throw re;
         } catch (TypeNormalizationException e) {
             throw new IllegalArgumentException(e);
         }
@@ -148,6 +142,6 @@ public class CanonicalizerContext {
         }
 
         sort(canonicalDefs);
-        return canonicalDefs;
+        return unmodifiableList(canonicalDefs);
     }
 }

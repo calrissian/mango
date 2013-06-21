@@ -19,6 +19,7 @@ import org.calrissian.mango.criteria.domain.Leaf;
 import org.calrissian.mango.criteria.domain.Node;
 import org.calrissian.mango.criteria.domain.ParentNode;
 import org.calrissian.mango.criteria.serialization.CriteriaModule;
+import org.calrissian.mango.types.TypeContext;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.IOException;
@@ -26,12 +27,6 @@ import java.io.IOException;
 import static org.calrissian.mango.types.TypeContext.DEFAULT_TYPES;
 
 public class NodeUtils {
-
-    /**
-     * Don't use a local object mapper so that callers can use their own type contexts.
-     */
-    private static final ObjectMapper objectMapper = new ObjectMapper()
-            .withModule(new CriteriaModule(DEFAULT_TYPES));
 
     public static boolean isLeaf(Node node) {
         return node instanceof Leaf || node.children() == null || node.children().size() == 0;
@@ -45,11 +40,18 @@ public class NodeUtils {
     }
 
     public static String serialize(Node node) throws IOException {
-        return objectMapper.writeValueAsString(node);
+        return serialize(node, DEFAULT_TYPES);
+    }
+
+    public static String serialize(Node node, TypeContext typeContext) throws IOException {
+        return new ObjectMapper().withModule(new CriteriaModule(typeContext)).writeValueAsString(node);
     }
 
     public static Node deserialize(String json) throws IOException {
-        return objectMapper.readValue(json, Node.class);
+        return deserialize(json, DEFAULT_TYPES);
     }
 
+    public static Node deserialize(String json, TypeContext typeContext) throws IOException {
+        return new ObjectMapper().withModule(new CriteriaModule(typeContext)).readValue(json, Node.class);
+    }
 }

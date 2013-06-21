@@ -20,7 +20,7 @@ import org.calrissian.mango.types.exception.TypeNormalizationException;
 import org.calrissian.mango.types.normalizers.*;
 
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static java.util.Arrays.asList;
@@ -37,8 +37,8 @@ public class TypeContext {
             );
 
 
-    private Map<String, TypeNormalizer> typeToNormalizer = new HashMap<String, TypeNormalizer>();
-    private Map<Class, TypeNormalizer> classToNormalizer = new HashMap<Class, TypeNormalizer>();
+    private final Map<String, TypeNormalizer> typeToNormalizer = new LinkedHashMap<String, TypeNormalizer>();
+    private final Map<Class, TypeNormalizer> classToNormalizer = new LinkedHashMap<Class, TypeNormalizer>();
 
     public TypeContext(TypeNormalizer... normalizers) {
         this(asList(normalizers));
@@ -58,9 +58,8 @@ public class TypeContext {
      */
     public String getAliasForType(Object obj) {
         TypeNormalizer typeNormalizer = classToNormalizer.get(obj.getClass());
-        if(typeNormalizer != null) {
+        if(typeNormalizer != null)
             return typeNormalizer.getAlias();
-        }
 
         return null;
     }
@@ -68,18 +67,16 @@ public class TypeContext {
     public Object fromString(String str, String objType) throws TypeNormalizationException {
 
         TypeNormalizer typeNormalizer = typeToNormalizer.get(objType);
-        if(typeNormalizer != null) {
+        if(typeNormalizer != null)
             return typeNormalizer.fromString(str);
-        }
 
         throw new TypeNormalizationException("An unknown type [" + objType + "] was encountered");
     }
 
     public String asString(Object obj) throws TypeNormalizationException {
         TypeNormalizer typeNormalizer = classToNormalizer.get(obj.getClass());
-        if(typeNormalizer != null) {
+        if(typeNormalizer != null)
             return typeNormalizer.asString(obj);
-        }
 
         throw new TypeNormalizationException("An unknown type [" + obj.getClass() + "] was encountered");
     }
@@ -91,9 +88,8 @@ public class TypeContext {
      */
     public String normalize(Object obj) throws TypeNormalizationException {
         TypeNormalizer typeNormalizer = classToNormalizer.get(obj.getClass());
-        if(typeNormalizer != null) {
+        if(typeNormalizer != null)
             return typeNormalizer.normalize(obj);
-        }
 
         throw new TypeNormalizationException("An unknown type [" + obj.getClass() + "] was encountered");
     }
@@ -106,15 +102,13 @@ public class TypeContext {
      */
     public Object denormalize(String str, String objType) throws TypeNormalizationException {
         TypeNormalizer typeNormalizer = typeToNormalizer.get(objType);
-        if(typeNormalizer != null) {
+        if(typeNormalizer != null)
             return typeNormalizer.denormalize(str);
-        }
 
         throw new TypeNormalizationException("An unknown type [" + objType + "] was encountered");
     }
 
     public Collection<TypeNormalizer> getAllNormalizers() {
-
         return unmodifiableCollection(classToNormalizer.values());
     }
 
