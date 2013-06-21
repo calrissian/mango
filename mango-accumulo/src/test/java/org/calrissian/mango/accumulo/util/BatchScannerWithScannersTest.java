@@ -17,7 +17,6 @@ package org.calrissian.mango.accumulo.util;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import org.calrissian.mango.accumulo.exception.AlreadyClosedException;
 import org.apache.accumulo.core.client.BatchWriter;
 import org.apache.accumulo.core.client.Connector;
 import org.apache.accumulo.core.client.IteratorSetting;
@@ -146,15 +145,5 @@ public class BatchScannerWithScannersTest {
         assertEquals(0, Iterables.size(scanners));
 
         scanners.close();
-    }
-
-    @Test(expected = AlreadyClosedException.class)
-    public void testCannotCloseScannersMultipleTimes() throws Exception {
-        BatchScannerWithScanners scanners = new BatchScannerWithScanners(connector, tableName, auths);
-        scanners.setRanges(Lists.newArrayList(Range.exact("row1"), Range.exact("row3")));
-
-        scanners.close();
-        scanners.close();
-        fail();
     }
 }

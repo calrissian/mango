@@ -16,7 +16,6 @@
 package org.calrissian.mango.accumulo.util;
 
 import com.google.common.base.Function;
-import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 import org.apache.accumulo.core.client.*;
 import org.apache.accumulo.core.client.impl.ScannerOptions;
@@ -27,12 +26,13 @@ import org.apache.accumulo.core.data.Value;
 import org.apache.accumulo.core.data.thrift.IterInfo;
 import org.apache.accumulo.core.security.Authorizations;
 import org.apache.hadoop.io.Text;
-import org.calrissian.mango.accumulo.exception.AlreadyClosedException;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
+
+import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Collections.unmodifiableCollection;
 
 /**
  * A BatchScanner implementation backed with Scanners. This is a non threaded implementation of the BatchScanner.
@@ -43,7 +43,6 @@ public class BatchScannerWithScanners extends ScannerOptions implements BatchSca
     private final String tableName;
     private final Authorizations authorizations;
     private Collection<Range> ranges;
-    private boolean open = true;
 
     public BatchScannerWithScanners(Connector connector, String tableName, Authorizations authorizations) {
         this.connector = connector;
@@ -53,14 +52,13 @@ public class BatchScannerWithScanners extends ScannerOptions implements BatchSca
 
     @Override
     public void setRanges(Collection<Range> ranges) {
-        Preconditions.checkNotNull(ranges);
-        this.ranges = Collections.unmodifiableCollection(ranges);
+        checkNotNull(ranges);
+        this.ranges = unmodifiableCollection(ranges);
     }
 
     @Override
     public void close() {
-        verifyOpen();
-        open = false;
+        //No held resources
     }
 
     @Override
@@ -94,13 +92,5 @@ public class BatchScannerWithScanners extends ScannerOptions implements BatchSca
                         }
                 )
         ).iterator();
-    }
-
-    private void verifyOpen() {
-        if (!open) throw new AlreadyClosedException("Scanner already closed");
-    }
-
-    public boolean isOpen() {
-        return open;
     }
 }
