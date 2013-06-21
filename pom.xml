@@ -24,17 +24,16 @@ limitations under the License.
     <packaging>pom</packaging>
 
     <properties>
-        <activemq.version>5.3.0</activemq.version>
-        <commons.net.version>3.0.1</commons.net.version>
         <accumulo.version>1.4.1</accumulo.version>
+        <activemq.version>5.3.0</activemq.version>
         <commons.lang.version>2.6</commons.lang.version>
+        <commons.net.version>3.0.1</commons.net.version>
         <guava.version>13.0.1</guava.version>
         <hadoop.version>0.20.2</hadoop.version>
         <jackson.version>1.9.2</jackson.version>
         <javax.jms.version>1.1</javax.jms.version>
         <junit.version>4.8.1</junit.version>
         <mockito.version>1.9.0</mockito.version>
-        <powermock-module-junit4.version>1.4.9</powermock-module-junit4.version>
         <slf4j.version>1.6.1</slf4j.version>
         <spring.version>3.0.5.RELEASE</spring.version>
     </properties>
@@ -44,6 +43,14 @@ limitations under the License.
         <module>mango-accumulo</module>
         <module>mango-jms</module>
     </modules>
+
+    <repositories>
+        <repository>
+            <id>repository.jboss.org-public</id>
+            <name>JBoss.org Maven repository</name>
+            <url>https://repository.jboss.org/nexus/content/groups/public</url>
+        </repository>
+    </repositories>
 
     <dependencyManagement>
         <dependencies>
@@ -58,14 +65,16 @@ limitations under the License.
                 <version>${commons.net.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.codehaus.jackson</groupId>
-                <artifactId>jackson-mapper-asl</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>commons-lang</groupId>
                 <artifactId>commons-lang</artifactId>
                 <version>${commons.lang.version}</version>
+            </dependency>
+
+            <!--Json-->
+            <dependency>
+                <groupId>org.codehaus.jackson</groupId>
+                <artifactId>jackson-mapper-asl</artifactId>
+                <version>${jackson.version}</version>
             </dependency>
 
             <!--Logging-->
@@ -135,12 +144,37 @@ limitations under the License.
                     </configuration>
                 </plugin>
                 <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>2.9</version>
+                    <configuration>
+                        <quiet>true</quiet>
+                        <links>
+                            <link>http://download.oracle.com/javase/6/docs/api/</link>
+                            <link>http://download.oracle.com/javaee/6/api/</link>
+                            <link>http://docs.guava-libraries.googlecode.com/git/javadoc/</link>
+                        </links>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>2.2.1</version>
+                </plugin>
+                <plugin>
                     <groupId>org.apache.rat</groupId>
                     <artifactId>apache-rat-plugin</artifactId>
                     <version>0.9</version>
+                    <configuration>
+                        <excludes>
+                            <exclude>**\README.md</exclude>
+                        </excludes>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
+
+
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -152,6 +186,28 @@ limitations under the License.
                 </configuration>
             </plugin>
             <plugin>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.rat</groupId>
                 <artifactId>apache-rat-plugin</artifactId>
                 <executions>
@@ -160,22 +216,10 @@ limitations under the License.
                             <goal>check</goal>
                         </goals>
                         <phase>verify</phase>
-                        <configuration>
-                            <excludes>
-                                <exclude>**\README.md</exclude>
-                            </excludes>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
+
         </plugins>
     </build>
-
-    <repositories>
-        <repository>
-            <id>repository.jboss.org-public</id>
-            <name>JBoss.org Maven repository</name>
-            <url>https://repository.jboss.org/nexus/content/groups/public</url>
-        </repository>
-    </repositories>
 </project>
