@@ -70,8 +70,8 @@ public class JmsUriSender extends JmsFileSenderListener
                 logger.info("Ignoring uri download request: " + uri);
             }
 
-        } catch (Exception e1) {
-            e1.printStackTrace();
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
         }
 
     }
@@ -91,7 +91,7 @@ public class JmsUriSender extends JmsFileSenderListener
             try {
                 sendStream(req, jmsReplyTo);
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
 

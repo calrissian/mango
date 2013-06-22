@@ -16,12 +16,13 @@
 package org.calrissian.mango.jms.stream;
 
 import org.calrissian.mango.jms.stream.domain.Request;
-import org.calrissian.mango.jms.stream.utils.DomainMessageUtils;
 import org.springframework.core.task.TaskExecutor;
 
 import javax.jms.Destination;
 import javax.jms.Message;
 import javax.jms.MessageListener;
+
+import static org.calrissian.mango.jms.stream.utils.DomainMessageUtils.fromRequestMessage;
 
 
 public class JmsFileSenderListener extends AbstractJmsFileTransferSupport
@@ -39,13 +40,11 @@ public class JmsFileSenderListener extends AbstractJmsFileTransferSupport
 
     @Override
     public void onMessage(Message request) {
-        Request req = null;
         try {
-            req = DomainMessageUtils.fromRequestMessage(request);
-            taskExecutor.execute(new JmsFileSenderRunnable(req, request
+            taskExecutor.execute(new JmsFileSenderRunnable(fromRequestMessage(request), request
                     .getJMSReplyTo()));
         } catch (Exception e1) {
-            e1.printStackTrace();
+            //TODO possibly log
         }
 
     }
@@ -65,7 +64,7 @@ public class JmsFileSenderListener extends AbstractJmsFileTransferSupport
             try {
                 sendStream(req, jmsReplyTo);
             } catch (Exception e) {
-                e.printStackTrace();
+                //TODO possibly log
             }
         }
 
