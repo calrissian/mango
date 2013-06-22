@@ -87,7 +87,7 @@ public abstract class AbstractJmsFileTransferSupport {
     }
 
     public InputStream receiveStream(final Request req)
-            throws JmsFileTransferException {
+            throws IOException {
         try {
             logger.info(
                     "Broadcasting request for [" + req.getDownloadUri()
@@ -122,13 +122,13 @@ public abstract class AbstractJmsFileTransferSupport {
             return new JmsFileReceiverInputStream(this, sendDataDestination,
                     receiveAckDestination);
         } catch (Exception e) {
-            throw new JmsFileTransferException(e);
+            throw new IOException(e);
         }
     }
 
 
     public void sendStream(Request req, final Destination replyTo)
-            throws IOException, JmsFileTransferException {
+            throws IOException {
 
         DigestInputStream is = null;
         Assert.notNull(req, "Request cannot be null");
@@ -146,7 +146,7 @@ public abstract class AbstractJmsFileTransferSupport {
 
 
         } catch (NoSuchAlgorithmException e) {
-            throw new JmsFileTransferException(e);
+            throw new IOException(e);
         } catch (Throwable e) {
 
             logger.info("Error occurred opening stream: " + e);
@@ -291,7 +291,7 @@ public abstract class AbstractJmsFileTransferSupport {
             }
 
         } catch (Exception e) {
-            throw new JmsFileTransferException(e);
+            throw new IOException(e);
         } finally {
             if (is != null)
                 try {

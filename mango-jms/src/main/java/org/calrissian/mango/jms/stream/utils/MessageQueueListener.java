@@ -16,12 +16,12 @@
 package org.calrissian.mango.jms.stream.utils;
 
 import org.calrissian.mango.jms.stream.AbstractJmsFileTransferSupport;
-import org.calrissian.mango.jms.stream.JmsFileTransferException;
 import org.springframework.jms.listener.SimpleMessageListenerContainer;
 
 import javax.jms.Destination;
 import javax.jms.Message;
 import javax.jms.MessageListener;
+import java.io.IOException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -76,12 +76,12 @@ public class MessageQueueListener implements MessageListener {
         }
     }
 
-    public Message getMessageInQueue() throws JmsFileTransferException {
+    public Message getMessageInQueue() throws IOException {
         //poll the queue
         try {
             Object o = queueMessages.poll(support.getJmsTemplate().getReceiveTimeout(), TimeUnit.MILLISECONDS);
             if (o == null)
-                throw new JmsFileTransferException("Timeout reached in waiting for message");
+                throw new IOException("Timeout reached in waiting for message");
             return (Message) o;
         } catch (InterruptedException e) {
 

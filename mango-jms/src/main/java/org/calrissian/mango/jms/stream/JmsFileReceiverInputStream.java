@@ -15,10 +15,10 @@
  */
 package org.calrissian.mango.jms.stream;
 
+import org.calrissian.mango.io.AbstractBufferedInputStream;
 import org.calrissian.mango.jms.stream.domain.Piece;
 import org.calrissian.mango.jms.stream.domain.Response;
 import org.calrissian.mango.jms.stream.domain.ResponseStatusEnum;
-import org.calrissian.mango.jms.stream.utils.DomainMessageUtils;
 import org.calrissian.mango.jms.stream.utils.MessageQueueListener;
 import org.springframework.jms.core.MessageCreator;
 
@@ -26,16 +26,15 @@ import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
-public class JmsFileReceiverInputStream extends InputStream {
+import static org.calrissian.mango.jms.stream.utils.DomainMessageUtils.fromMessage;
+import static org.calrissian.mango.jms.stream.utils.DomainMessageUtils.toResponseMessage;
 
-    private InputStream current;
-    private boolean closed = false;
+public class JmsFileReceiverInputStream extends AbstractBufferedInputStream {
+
+    private boolean done = false;
     private boolean started = false;
 
     private AbstractJmsFileTransferSupport support;
@@ -58,55 +57,41 @@ public class JmsFileReceiverInputStream extends InputStream {
     public int read() throws IOException {
         if (!started)
             start();
-        int read = -1;
-        if (current != null)
-            read = current.read();
-        if (!closed && read >= 0) {
-            return read;
-        } else if (closed)
-            return -1;
-        else {
-            try {
-                readNext();
-                return read();
-            } catch (JmsFileTransferException e) {
-                new IOException(e);
-            }
-        }
-
-        return -1;
+        return super.read();
     }
 
-    protected void readNext() throws JmsFileTransferException {
-        try {
-            Message message = getMessageInQueue();
+    @Override
+    protected boolean isEOF() {
+        return done;
+    }
 
-            Object object = DomainMessageUtils.fromMessage(message);
+    @Override
+    protected byte[] getNextBuffer() throws IOException {
+        try {
+            byte[] data = null;
+            Message message = messageQueueListener.getMessageInQueue();
+
+            Object object = fromMessage(message);
             ResponseStatusEnum responseStatus = ResponseStatusEnum.ACCEPT;
             if (object instanceof Piece) {
                 Piece piece = (Piece) object;
 
                 String sentHash = piece.getHash();
-                if (!new String(MessageDigest.getInstance(support.getHashAlgorithm())
-                                .digest(piece.getData())).equals(sentHash)) {
+                if (!new String(MessageDigest.getInstance(support.getHashAlgorithm()).digest(piece.getData())).equals(sentHash))
                     responseStatus = ResponseStatusEnum.RESEND;
-                } else {
-                    byte[] data = piece.getData();
-                    current = new ByteArrayInputStream(data);
-                }
+                else
+                    data = piece.getData();
+
             } else if (object instanceof Response) {
                 Response transferResp = (Response) object;
-                if (transferResp.getStatus() == ResponseStatusEnum.STOPSEND) {
-                    closed = true;
+                if (transferResp.getStatus() == ResponseStatusEnum.STOPSEND)
+                    done = true;
+                else
+                    throw new IOException("Transfer aborted with status[" + transferResp.getStatus() + "] from server");
+            } else {
+                throw new IOException("Unexpected message received: " + message);
+            }
 
-                } else
-                    throw new JmsFileTransferException(
-                            "Transfer aborted with status["
-                                    + transferResp.getStatus()
-                                    + "] from server");
-            } else
-                throw new JmsFileTransferException(
-                        "Unexpected message received: " + message);
             // ACK
             final ResponseStatusEnum toSendStatus = responseStatus;
             support.getJmsTemplate().send(receiveAckDestination,
@@ -115,28 +100,27 @@ public class JmsFileReceiverInputStream extends InputStream {
                         @Override
                         public Message createMessage(Session session)
                                 throws JMSException {
-                            return DomainMessageUtils.toResponseMessage(
+                            return toResponseMessage(
                                     session, new Response(toSendStatus));
                         }
 
                     });
-        } catch (JMSException e) {
-            throw new JmsFileTransferException(e);
-        } catch (NoSuchAlgorithmException e) {
-            throw new JmsFileTransferException(e);
-        }
-    }
 
-    protected Message getMessageInQueue() throws JmsFileTransferException {
-        return messageQueueListener.getMessageInQueue();
+            return data;
+
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new IOException(e);
+        }
+
     }
 
     @Override
     public void close() throws IOException {
-        super.close();
         messageQueueListener.close();
-        if (!closed) {
-            closed = true;
+        if (!done) {
+            done = true;
             final ResponseStatusEnum responseStatus = ResponseStatusEnum.DENY;
             support.getJmsTemplate().send(receiveAckDestination,
                     new MessageCreator() {
@@ -144,12 +128,13 @@ public class JmsFileReceiverInputStream extends InputStream {
                         @Override
                         public Message createMessage(Session session)
                                 throws JMSException {
-                            return DomainMessageUtils.toResponseMessage(
+                            return toResponseMessage(
                                     session, new Response(responseStatus));
                         }
 
                     });
         }
+        super.close();
     }
 
     protected void start() {
@@ -160,8 +145,8 @@ public class JmsFileReceiverInputStream extends InputStream {
                     public Message createMessage(Session session)
                             throws JMSException {
 
-                        final Message responseMessage = DomainMessageUtils
-                                .toResponseMessage(session, new Response(
+                        final Message responseMessage =
+                                toResponseMessage(session, new Response(
                                         ResponseStatusEnum.STARTSEND));
                         Destination factoryQueue = support.factoryQueue(
                                 session, sendDataDestination);

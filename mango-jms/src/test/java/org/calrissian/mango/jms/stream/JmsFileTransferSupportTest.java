@@ -108,7 +108,7 @@ public class JmsFileTransferSupportTest extends TestCase {
 
         JmsFileReceiverInputStream stream = (JmsFileReceiverInputStream) receiver.receiveStream("testprot:test");
         StringBuffer buffer = new StringBuffer();
-        int read = 0;
+        int read;
         while ((read = stream.read()) >= 0) {
             buffer.append((char) read);
         }
