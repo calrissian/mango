@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.types.range;
+package org.calrissian.mango.domain;
 
 import org.apache.commons.net.util.SubnetUtils;
-import org.calrissian.mango.domain.IPv4;
 
 
 public class CidrValueRangeIPv4 extends ValueRange<IPv4> {
