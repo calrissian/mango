@@ -15,9 +15,9 @@
  */
 package org.calrissian.mango.hash.tree;
 
-import org.calrissian.mango.hash.support.HashUtils;
-
 import java.util.List;
+
+import static org.apache.commons.codec.digest.DigestUtils.md5Hex;
 
 /**
  * An internal hash node in a merkle tree that automatically derives the hashes of its children to form its own hash.
@@ -39,7 +39,7 @@ public class HashNode implements Node {
         }
 
         try {
-            hash = HashUtils.hashString(hashes);
+            hash = md5Hex(hashes);
         } catch (Exception e) {
             throw new IllegalStateException("Hash could not be derived from children: " + children);
         }
