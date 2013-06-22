@@ -20,7 +20,7 @@ import org.calrissian.mango.criteria.domain.EqualsLeaf;
 import org.calrissian.mango.criteria.domain.Node;
 import org.calrissian.mango.criteria.domain.RangeLeaf;
 import org.calrissian.mango.types.TypeContext;
-import org.calrissian.mango.types.types.IPv4;
+import org.calrissian.mango.domain.IPv4;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 

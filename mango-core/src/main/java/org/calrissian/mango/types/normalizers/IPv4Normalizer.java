@@ -17,7 +17,7 @@ package org.calrissian.mango.types.normalizers;
 
 import org.calrissian.mango.types.TypeNormalizer;
 import org.calrissian.mango.types.exception.TypeNormalizationException;
-import org.calrissian.mango.types.types.IPv4;
+import org.calrissian.mango.domain.IPv4;
 
 
 public class IPv4Normalizer implements TypeNormalizer<IPv4> {

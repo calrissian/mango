@@ -16,7 +16,7 @@
 package org.calrissian.mango.types.range;
 
 import org.apache.commons.net.util.SubnetUtils;
-import org.calrissian.mango.types.types.IPv4;
+import org.calrissian.mango.domain.IPv4;
 
 
 public class CidrValueRangeIPv4 extends ValueRange<IPv4> {
