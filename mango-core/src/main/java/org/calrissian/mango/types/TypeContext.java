@@ -16,46 +16,39 @@
 package org.calrissian.mango.types;
 
 
-import org.calrissian.mango.domain.Tuple;
-import org.calrissian.mango.serialization.ObjectMapperContext;
 import org.calrissian.mango.types.exception.TypeNormalizationException;
 import org.calrissian.mango.types.normalizers.*;
-import org.calrissian.mango.types.serialization.TypedTupleMixin;
-import org.codehaus.jackson.map.ObjectMapper;
 
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+
+import static java.util.Arrays.asList;
+import static java.util.Collections.unmodifiableCollection;
 
 public class TypeContext {
 
-    private Map<String, TypeNormalizer> typeToNormalizer = new HashMap<String, TypeNormalizer>();
-    private Map<Class, TypeNormalizer> classToNormalizer = new HashMap<Class, TypeNormalizer>();
+    public static final TypeContext DEFAULT_TYPES =
+            new TypeContext(
+                    new BooleanNormalizer(), new DateNormalizer(),
+                    new DoubleNormalizer(), new IntegerNormalizer(),
+                    new LongNormalizer(), new IPv4Normalizer(),
+                    new StringNormalizer(),new URINormalizer()
+            );
 
-    private static TypeContext instance;
 
-    static {
+    private final Map<String, TypeNormalizer> typeToNormalizer = new LinkedHashMap<String, TypeNormalizer>();
+    private final Map<Class, TypeNormalizer> classToNormalizer = new LinkedHashMap<Class, TypeNormalizer>();
 
-        ObjectMapper objectMapper = ObjectMapperContext.getInstance().getObjectMapper();
-
-        objectMapper.getSerializationConfig().addMixInAnnotations(Tuple.class, TypedTupleMixin.class);
-        objectMapper.getDeserializationConfig().addMixInAnnotations(Tuple.class, TypedTupleMixin.class);
+    public TypeContext(TypeNormalizer... normalizers) {
+        this(asList(normalizers));
     }
 
-    public static synchronized TypeContext getInstance() {
-
-        if(instance == null) {
-            instance = new TypeContext();
+    public TypeContext(Iterable<TypeNormalizer> normalizers) {
+        for(TypeNormalizer resolver: normalizers) {
+            typeToNormalizer.put(resolver.getAlias(), resolver);
+            classToNormalizer.put(resolver.resolves(), resolver);
         }
-
-        return instance;
-    }
-
-    private TypeContext() {
-        //load default mappings
-        loadNormalizers(new BooleanNormalizer(), new DateNormalizer(), new DoubleNormalizer(),
-                new IntegerNormalizer(), new LongNormalizer(), new IPv4Normalizer(), new StringNormalizer(),
-                new URINormalizer());
     }
 
     /**
@@ -65,9 +58,8 @@ public class TypeContext {
      */
     public String getAliasForType(Object obj) {
         TypeNormalizer typeNormalizer = classToNormalizer.get(obj.getClass());
-        if(typeNormalizer != null) {
+        if(typeNormalizer != null)
             return typeNormalizer.getAlias();
-        }
 
         return null;
     }
@@ -75,18 +67,16 @@ public class TypeContext {
     public Object fromString(String str, String objType) throws TypeNormalizationException {
 
         TypeNormalizer typeNormalizer = typeToNormalizer.get(objType);
-        if(typeNormalizer != null) {
+        if(typeNormalizer != null)
             return typeNormalizer.fromString(str);
-        }
 
         throw new TypeNormalizationException("An unknown type [" + objType + "] was encountered");
     }
 
     public String asString(Object obj) throws TypeNormalizationException {
         TypeNormalizer typeNormalizer = classToNormalizer.get(obj.getClass());
-        if(typeNormalizer != null) {
+        if(typeNormalizer != null)
             return typeNormalizer.asString(obj);
-        }
 
         throw new TypeNormalizationException("An unknown type [" + obj.getClass() + "] was encountered");
     }
@@ -98,9 +88,8 @@ public class TypeContext {
      */
     public String normalize(Object obj) throws TypeNormalizationException {
         TypeNormalizer typeNormalizer = classToNormalizer.get(obj.getClass());
-        if(typeNormalizer != null) {
+        if(typeNormalizer != null)
             return typeNormalizer.normalize(obj);
-        }
 
         throw new TypeNormalizationException("An unknown type [" + obj.getClass() + "] was encountered");
     }
@@ -113,27 +102,14 @@ public class TypeContext {
      */
     public Object denormalize(String str, String objType) throws TypeNormalizationException {
         TypeNormalizer typeNormalizer = typeToNormalizer.get(objType);
-        if(typeNormalizer != null) {
+        if(typeNormalizer != null)
             return typeNormalizer.denormalize(str);
-        }
 
         throw new TypeNormalizationException("An unknown type [" + objType + "] was encountered");
     }
 
-    /**
-     * Loads a set of normalizers so their corresponding types can be supported
-     * @param mapping
-     */
-    public void loadNormalizers(TypeNormalizer... mapping)  {
-        for(TypeNormalizer resolver: mapping) {
-            typeToNormalizer.put(resolver.getAlias(), resolver);
-            classToNormalizer.put(resolver.resolves(), resolver);
-        }
-    }
-
     public Collection<TypeNormalizer> getAllNormalizers() {
-
-        return classToNormalizer.values();
+        return unmodifiableCollection(classToNormalizer.values());
     }
 
 }

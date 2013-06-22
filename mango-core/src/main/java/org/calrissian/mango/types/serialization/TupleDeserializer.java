@@ -30,7 +30,14 @@ import java.io.IOException;
  * Date: 9/12/12
  * Time: 2:56 PM
  */
-public class TypedTupleDeserializer extends JsonDeserializer<Tuple> {
+public class TupleDeserializer extends JsonDeserializer<Tuple> {
+
+    private final TypeContext typeContext;
+
+    public TupleDeserializer(TypeContext typeContext) {
+        this.typeContext = typeContext;
+    }
+
     @Override
     public Tuple deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         JsonNode root = jsonParser.getCodec().readTree(jsonParser);
@@ -43,7 +50,7 @@ public class TypedTupleDeserializer extends JsonDeserializer<Tuple> {
             String type = type_json.getValueAsText();
             String val_str = root.get("value").getValueAsText();
             try {
-                value = TypeContext.getInstance().fromString(val_str, type);
+                value = typeContext.fromString(val_str, type);
             } catch (TypeNormalizationException e) {
                 throw new RuntimeException(e);
             }

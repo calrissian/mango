@@ -20,39 +20,31 @@ import org.calrissian.mango.types.TypeContext;
 import org.calrissian.mango.types.canonicalizer.domain.CanonicalDef;
 import org.calrissian.mango.types.canonicalizer.validator.Validator;
 import org.calrissian.mango.types.exception.TypeNormalizationException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
+import static java.util.Collections.sort;
+import static java.util.Collections.unmodifiableList;
+import static org.calrissian.mango.types.TypeContext.DEFAULT_TYPES;
+
 public class CanonicalizerContext {
 
-    public static Logger logger = LoggerFactory.getLogger(CanonicalizerContext.class);
-
-    private static CanonicalizerContext instance;
+    private final TypeContext typeContext;
     private Map<String, Class<? extends Validator>> validatorClasses;
-
-    public static CanonicalizerContext getInstance() {
-
-        if (instance == null) {
-            instance = new CanonicalizerContext();
-        }
-
-        return instance;
-    }
 
     private Map<String, String> matchers;
     private Map<String, String> types;
     private Map<String, Validator> validators;
 
-    public CanonicalizerContext() {
-        try {
-            loadCanonicalDefs();
-        } catch (IOException e) {
-            logger.error("There was an error loading the canonical definitions from the canonicalDefs.properties file.");
-        }
+    public CanonicalizerContext() throws IOException {
+        this(DEFAULT_TYPES);
+    }
+
+    public CanonicalizerContext(TypeContext typeContext) throws IOException {
+        this.typeContext = typeContext;
+        loadCanonicalDefs();
     }
 
     private void loadCanonicalDefs() throws IOException {
@@ -115,31 +107,24 @@ public class CanonicalizerContext {
         }
     }
 
-    public Object canonicalizeValueFromString(String typeName, String value)
-            throws IllegalArgumentException {
+    public Object canonicalizeValueFromString(String typeName, String value) {
 
         String datatype = types.get(typeName);
-        if (datatype == null) {
-
+        if (datatype == null)
             throw new IllegalArgumentException(typeName + " is not a recognized type.");
-        }
 
         String matcher = matchers.get(typeName);
         Validator validator = matcher != null ? validators.get(matcher) : null;
 
-        if (validator != null) {
-            if (!validator.validate(value)) {
-
+        if (validator != null && !validator.validate(value))
                 throw new IllegalArgumentException(value + " did not validate with validator: " + validator.getClass());
-            }
-        }
 
         try {
 
-            Object val = TypeContext.getInstance().fromString(value.trim(), datatype);
-            return val;
-        } catch (RuntimeException e) {
-            throw new IllegalArgumentException(e);
+            return typeContext.fromString(value.trim(), datatype);
+
+        } catch (RuntimeException re) {
+            throw re;
         } catch (TypeNormalizationException e) {
             throw new IllegalArgumentException(e);
         }
@@ -156,7 +141,7 @@ public class CanonicalizerContext {
             canonicalDefs.add(new CanonicalDef(type, dataType));
         }
 
-        Collections.sort(canonicalDefs);
-        return canonicalDefs;
+        sort(canonicalDefs);
+        return unmodifiableList(canonicalDefs);
     }
 }

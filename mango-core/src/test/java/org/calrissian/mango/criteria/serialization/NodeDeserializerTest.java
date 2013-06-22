@@ -17,13 +17,13 @@ package org.calrissian.mango.criteria.serialization;
 
 import org.calrissian.mango.criteria.domain.Node;
 import org.calrissian.mango.criteria.visitor.PrintNodeVisitor;
-import org.calrissian.mango.serialization.ObjectMapperContext;
+import org.calrissian.mango.types.TypeContext;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.StringWriter;
 
+import static org.calrissian.mango.types.TypeContext.DEFAULT_TYPES;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -32,12 +32,8 @@ import static org.junit.Assert.assertEquals;
  */
 public class NodeDeserializerTest {
 
-    private ObjectMapper objectMapper = ObjectMapperContext.getInstance().getObjectMapper();
-
-    @Before
-    public void setUp() throws Exception {
-        objectMapper.getDeserializationConfig().addMixInAnnotations(Node.class, NodeMixin.class);
-    }
+    private ObjectMapper objectMapper = new ObjectMapper()
+            .withModule(new CriteriaModule(DEFAULT_TYPES));
 
     @Test
     public void testEqDeserialize() throws Exception {

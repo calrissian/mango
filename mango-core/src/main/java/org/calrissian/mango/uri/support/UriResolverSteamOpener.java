@@ -16,7 +16,7 @@
 package org.calrissian.mango.uri.support;
 
 import org.calrissian.mango.uri.UriResolver;
-import org.calrissian.mango.uri.UriResolverContext;
+import org.calrissian.mango.uri.UriResolverRegistry;
 import org.calrissian.mango.uri.exception.BadUriException;
 import org.calrissian.mango.uri.exception.ResourceNotFoundException;
 
@@ -24,30 +24,37 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static org.calrissian.mango.uri.support.DataResolverFormatUtils.extractAuthsFromUri;
+import static org.calrissian.mango.uri.support.DataResolverFormatUtils.extractURIFromRequestURI;
+
 public class UriResolverSteamOpener implements UriStreamOpener {
+
+    private final UriResolverRegistry resolverRegistry;
+
+    public UriResolverSteamOpener(UriResolverRegistry resolverRegistry) {
+        checkNotNull(resolverRegistry);
+        this.resolverRegistry = resolverRegistry;
+    }
 
     @Override
     public InputStream openStream(URI uri) throws IOException {
 
         try {
-            String[] auths = DataResolverFormatUtils.extractAuthsFromUri(uri);
-            URI requestURI = DataResolverFormatUtils.extractURIFromRequestURI(uri);
+            String[] auths = extractAuthsFromUri(uri);
+            URI requestURI = extractURIFromRequestURI(uri);
 
-            UriResolver resolver = UriResolverContext.getInstance().getResolver(requestURI);
+            UriResolver resolver = resolverRegistry.getResolver(requestURI);
 
-            if(resolver == null) {
+            if(resolver == null)
                 throw new BadUriException();
-            }
 
             Object obj = resolver.resolveUri(requestURI, auths);
 
-            if(obj != null) {
-                return resolver.toStream(obj);
-            }
-
-            else {
+            if(obj == null)
                 throw new ResourceNotFoundException();
-            }
+
+            return resolver.toStream(obj);
         }
 
         catch(Exception e){

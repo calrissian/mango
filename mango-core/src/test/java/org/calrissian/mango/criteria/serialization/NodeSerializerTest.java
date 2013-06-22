@@ -19,12 +19,12 @@ import org.calrissian.mango.criteria.builder.QueryBuilder;
 import org.calrissian.mango.criteria.domain.EqualsLeaf;
 import org.calrissian.mango.criteria.domain.Node;
 import org.calrissian.mango.criteria.domain.RangeLeaf;
-import org.calrissian.mango.serialization.ObjectMapperContext;
+import org.calrissian.mango.types.TypeContext;
 import org.calrissian.mango.types.types.IPv4;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.junit.Before;
 import org.junit.Test;
 
+import static org.calrissian.mango.types.TypeContext.DEFAULT_TYPES;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -33,12 +33,8 @@ import static org.junit.Assert.assertEquals;
  */
 public class NodeSerializerTest {
 
-    private ObjectMapper objectMapper = ObjectMapperContext.getInstance().getObjectMapper();
-
-    @Before
-    public void setUp() throws Exception {
-        objectMapper.getSerializationConfig().addMixInAnnotations(Node.class, NodeMixin.class);
-    }
+    private ObjectMapper objectMapper = new ObjectMapper()
+            .withModule(new CriteriaModule(DEFAULT_TYPES));
 
     @Test
     public void testEqSerialization() throws Exception {
