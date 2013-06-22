@@ -29,14 +29,18 @@ import java.io.IOException;
  * Date: 9/12/12
  * Time: 2:52 PM
  */
-public class TypedTupleSerializer extends JsonSerializer<Tuple> {
+public class TupleSerializer extends JsonSerializer<Tuple> {
+
+    private final TypeContext typeContext;
+
+    public TupleSerializer(TypeContext typeContext) {
+        this.typeContext = typeContext;
+    }
 
     @Override
     public void serialize(Tuple tuple, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
             throws IOException, JsonProcessingException {
         jsonGenerator.writeStartObject();
-
-        TypeContext instance = TypeContext.getInstance();
 
         jsonGenerator.writeStringField("key", tuple.getKey());
         String visibility = tuple.getVisibility();
@@ -45,8 +49,8 @@ public class TypedTupleSerializer extends JsonSerializer<Tuple> {
         try {
             Object value = tuple.getValue();
             if (value != null) {
-                String type = instance.getAliasForType(value);
-                String val_str = instance.asString(value);
+                String type = typeContext.getAliasForType(value);
+                String val_str = typeContext.asString(value);
                 jsonGenerator.writeStringField("type", type);
                 jsonGenerator.writeStringField("value", val_str);
             }

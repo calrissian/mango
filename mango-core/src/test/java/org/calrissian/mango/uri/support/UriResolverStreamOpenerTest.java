@@ -17,7 +17,7 @@ package org.calrissian.mango.uri.support;
 
 
 import org.calrissian.mango.uri.UriResolver;
-import org.calrissian.mango.uri.UriResolverContext;
+import org.calrissian.mango.uri.UriResolverRegistry;
 import org.calrissian.mango.uri.resolver.BasicObjectUriResolver;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,12 +33,11 @@ public class UriResolverStreamOpenerTest {
 
 
     UriStreamOpener streamOpener;
+    UriResolverRegistry resolverRegistry = new UriResolverRegistry();
     UriResolver resolver;
 
     @Before
     public void setUp() {
-
-        streamOpener = new UriResolverSteamOpener();
 
         resolver = new BasicObjectUriResolver<String>() {
             @Override
@@ -52,7 +51,7 @@ public class UriResolverStreamOpenerTest {
             }
         };
 
-        UriResolverContext.getInstance().addResolver(resolver);
+        streamOpener = new UriResolverSteamOpener(resolverRegistry.addResolver(resolver));
 
     }
 

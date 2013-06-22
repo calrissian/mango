@@ -24,8 +24,6 @@ import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.map.DeserializationContext;
 import org.codehaus.jackson.map.JsonDeserializer;
 import org.codehaus.jackson.node.ArrayNode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -35,8 +33,12 @@ import java.util.Iterator;
  * Time: 11:34 AM
  */
 public class NodeDeserializer extends JsonDeserializer<Node> {
-    private static final Logger logger = LoggerFactory.getLogger(NodeDeserializer.class);
-    private TypeContext typeContext = TypeContext.getInstance();
+
+    private final TypeContext typeContext;
+
+    public NodeDeserializer(TypeContext typeContext) {
+        this.typeContext = typeContext;
+    }
 
     /**
      * {"or":{"children":[{"and":{"children":[{"eq":{"key":"k1","type":"string","value":"v1"}},{"neq":{"key":"k2","type":"ipv4","value":"1.2.3.4"}}]}},{"and":{"children":[{"eq":{"key":"k3","type":"integer","value":"1234"}}]}}]}}
@@ -53,7 +55,7 @@ public class NodeDeserializer extends JsonDeserializer<Node> {
         return null;
     }
 
-    protected Node parseField(String fieldKey, JsonNode fieldJson) {
+    protected Node parseField(String fieldKey, JsonNode fieldJson) throws IOException {
         try {
             if ("and".equals(fieldKey)) {
                 AndNode andNode = new AndNode();
@@ -114,9 +116,7 @@ public class NodeDeserializer extends JsonDeserializer<Node> {
                 throw new IllegalArgumentException("Unsupported field: " + fieldKey);
             }
         } catch (TypeNormalizationException e) {
-            logger.warn("Type Normalization Exception for field key: " + fieldKey + " exception message: " + e.getMessage());
+            throw new IOException(e);
         }
-        return null;
-
     }
 }

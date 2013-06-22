@@ -18,20 +18,15 @@ package org.calrissian.mango.criteria.utils;
 import org.calrissian.mango.criteria.domain.Leaf;
 import org.calrissian.mango.criteria.domain.Node;
 import org.calrissian.mango.criteria.domain.ParentNode;
-import org.calrissian.mango.criteria.serialization.NodeMixin;
-import org.calrissian.mango.serialization.ObjectMapperContext;
+import org.calrissian.mango.criteria.serialization.CriteriaModule;
+import org.calrissian.mango.types.TypeContext;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.IOException;
 
+import static org.calrissian.mango.types.TypeContext.DEFAULT_TYPES;
+
 public class NodeUtils {
-
-    static {
-        ObjectMapper objectMapper = ObjectMapperContext.getInstance().getObjectMapper();
-
-        objectMapper.getSerializationConfig().addMixInAnnotations(Node.class, NodeMixin.class);
-        objectMapper.getDeserializationConfig().addMixInAnnotations(Node.class, NodeMixin.class);
-    }
 
     public static boolean isLeaf(Node node) {
         return node instanceof Leaf || node.children() == null || node.children().size() == 0;
@@ -45,14 +40,18 @@ public class NodeUtils {
     }
 
     public static String serialize(Node node) throws IOException {
-        return ObjectMapperContext.getInstance().getObjectMapper().writeValueAsString(node);
+        return serialize(node, DEFAULT_TYPES);
+    }
+
+    public static String serialize(Node node, TypeContext typeContext) throws IOException {
+        return new ObjectMapper().withModule(new CriteriaModule(typeContext)).writeValueAsString(node);
     }
 
     public static Node deserialize(String json) throws IOException {
-        return ObjectMapperContext.getInstance().getObjectMapper().readValue(json, Node.class);
+        return deserialize(json, DEFAULT_TYPES);
     }
 
-    public static void initializeMixins() {
-        //that static method takes care of this
+    public static Node deserialize(String json, TypeContext typeContext) throws IOException {
+        return new ObjectMapper().withModule(new CriteriaModule(typeContext)).readValue(json, Node.class);
     }
 }
