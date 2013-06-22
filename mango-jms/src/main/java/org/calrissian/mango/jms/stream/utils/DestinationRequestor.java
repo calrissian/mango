@@ -74,11 +74,6 @@ public class DestinationRequestor {
             ((TemporaryQueue) tempDestination).delete();
         else if (tempDestination instanceof TemporaryTopic)
             ((TemporaryTopic) tempDestination).delete();
-        // Method method =
-        // ReflectionUtils.findMethod(tempDestination.getClass(),
-        // "delete");
-        // if (method != null)
-        // ReflectionUtils.invokeMethod(method, tempDestination);
     }
 
 }

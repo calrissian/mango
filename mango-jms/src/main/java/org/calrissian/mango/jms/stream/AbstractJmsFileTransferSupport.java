@@ -21,7 +21,6 @@ import org.calrissian.mango.jms.stream.domain.Response;
 import org.calrissian.mango.jms.stream.domain.ResponseStatusEnum;
 import org.calrissian.mango.jms.stream.utils.DestinationRequestor;
 import org.calrissian.mango.jms.stream.utils.DomainMessageUtils;
-import org.calrissian.mango.jms.stream.utils.MessageDigestUtils;
 import org.calrissian.mango.jms.stream.utils.MessageQueueListener;
 import org.calrissian.mango.uri.support.UriStreamOpener;
 import org.calrissian.mango.uri.support.impl.BasicStreamOpener;
@@ -273,8 +272,7 @@ public abstract class AbstractJmsFileTransferSupport {
                         throws JMSException {
                     Response stopSendResponse = new Response(
                             ResponseStatusEnum.STOPSEND);
-                    stopSendResponse.setHash(MessageDigestUtils
-                            .getHashString(fiIs.getMessageDigest().digest()));
+                    stopSendResponse.setHash(new String(fiIs.getMessageDigest().digest()));
                     return DomainMessageUtils.toResponseMessage(session,
                             stopSendResponse);
                 }

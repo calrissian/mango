@@ -19,7 +19,6 @@ import org.calrissian.mango.jms.stream.domain.Piece;
 import org.calrissian.mango.jms.stream.domain.Response;
 import org.calrissian.mango.jms.stream.domain.ResponseStatusEnum;
 import org.calrissian.mango.jms.stream.utils.DomainMessageUtils;
-import org.calrissian.mango.jms.stream.utils.MessageDigestUtils;
 import org.calrissian.mango.jms.stream.utils.MessageQueueListener;
 import org.springframework.jms.core.MessageCreator;
 
@@ -88,8 +87,7 @@ public class JmsFileReceiverInputStream extends InputStream {
                 Piece piece = (Piece) object;
 
                 String sentHash = piece.getHash();
-                if (!MessageDigestUtils.getHashString(
-                        MessageDigest.getInstance(support.getHashAlgorithm())
+                if (!new String(MessageDigest.getInstance(support.getHashAlgorithm())
                                 .digest(piece.getData())).equals(sentHash)) {
                     responseStatus = ResponseStatusEnum.RESEND;
                 } else {

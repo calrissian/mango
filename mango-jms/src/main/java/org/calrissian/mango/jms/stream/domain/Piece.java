@@ -15,8 +15,6 @@
  */
 package org.calrissian.mango.jms.stream.domain;
 
-import org.calrissian.mango.jms.stream.utils.MessageDigestUtils;
-
 import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -45,7 +43,7 @@ public class Piece implements Serializable {
         super();
         this.position = position;
         this.data = data;
-        this.hash = MessageDigestUtils.getHashString(MessageDigest.getInstance(
+        this.hash = new String(MessageDigest.getInstance(
                 hashAlgorithm).digest(data));
     }
 
