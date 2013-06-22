@@ -20,7 +20,12 @@ import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class IPv4 implements Serializable {
+import static java.lang.Integer.parseInt;
+import static java.lang.Long.compare;
+import static java.lang.Math.pow;
+import static java.util.regex.Pattern.compile;
+
+public class IPv4 implements Comparable<IPv4>, Serializable {
 
     final Long value;
 
@@ -28,7 +33,7 @@ public class IPv4 implements Serializable {
 
     public IPv4(String ip) {
 
-        Pattern p = Pattern.compile(IP_ADDRESS);
+        Pattern p = compile(IP_ADDRESS);
         Matcher m = p.matcher(ip);
 
         if(!m.matches()) {
@@ -53,10 +58,17 @@ public class IPv4 implements Serializable {
         for (int i = 0; i < addrArray.length; i++) {
             int power = 3 - i;
 
-            num += ((Integer.parseInt(addrArray[i]) % 256 * Math.pow(256, power)));
+            num += (parseInt(addrArray[i]) % 256) * pow(256, power);
         }
 
         return num;
+    }
+
+    @Override
+    public int compareTo(IPv4 o) {
+        if (o == null)
+            return 1;
+        return compare(value, o.value);
     }
 
     public String toString() {
