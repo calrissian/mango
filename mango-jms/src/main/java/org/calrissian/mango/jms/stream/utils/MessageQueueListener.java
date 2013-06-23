@@ -36,12 +36,10 @@ public class MessageQueueListener implements MessageListener {
 
     private BlockingQueue<Message> queueMessages = new LinkedBlockingQueue<Message>();
     private SimpleMessageListenerContainer messageListenerContainer;
-    private String destination;
     private AbstractJmsFileTransferSupport support;
 
     public MessageQueueListener(AbstractJmsFileTransferSupport support, String destination) {
         this.support = support;
-        this.destination = destination;
 
         //set up listener
         messageListenerContainer = new SimpleMessageListenerContainer();

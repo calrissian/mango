@@ -128,7 +128,7 @@ public abstract class AbstractJmsFileTransferSupport {
 
 
     public void sendStream(Request req, final Destination replyTo)
-            throws IOException, JmsFileTransferException {
+            throws IOException {
 
         DigestInputStream is = null;
         Assert.notNull(req, "Request cannot be null");

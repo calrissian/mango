@@ -16,7 +16,6 @@
 package org.calrissian.mango.jms.uri;
 
 import org.calrissian.mango.jms.stream.JmsFileReceiver;
-import org.calrissian.mango.jms.stream.JmsFileTransferException;
 import org.calrissian.mango.uri.UriResolver;
 import org.calrissian.mango.uri.UriResolverRegistry;
 import org.calrissian.mango.uri.exception.BadUriException;
@@ -39,7 +38,7 @@ public class JmsUriReceiver extends JmsFileReceiver {
         this.resolverRegistry = resolverRegistry;
     }
 
-    public Object resolveUri(String uri, String[] auths) throws JmsFileTransferException, IOException {
+    public Object resolveUri(String uri, String[] auths) throws IOException {
 
         try {
 

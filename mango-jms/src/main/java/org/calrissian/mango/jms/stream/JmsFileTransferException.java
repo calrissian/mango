@@ -15,7 +15,9 @@
  */
 package org.calrissian.mango.jms.stream;
 
-public class JmsFileTransferException extends Exception {
+import java.io.IOException;
+
+public class JmsFileTransferException extends IOException {
 
     public JmsFileTransferException() {
     }
