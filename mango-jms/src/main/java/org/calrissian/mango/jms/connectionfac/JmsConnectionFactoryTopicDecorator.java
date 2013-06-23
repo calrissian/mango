@@ -15,6 +15,8 @@
  */
 package org.calrissian.mango.jms.connectionfac;
 
+import org.calrissian.mango.jms.connectionfac.decorator.ConnectionFactoryDecorator;
+
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
@@ -24,37 +26,25 @@ import javax.jms.JMSException;
  * Date: Nov 27, 2011
  * Time: 4:38:17 PM
  */
-public class JmsConnectionFactoryTopicDecorator implements ConnectionFactory {
-
-    private ConnectionFactory connectionFactory;
+public class JmsConnectionFactoryTopicDecorator extends ConnectionFactoryDecorator {
 
     private String baseTopic;
 
+    public JmsConnectionFactoryTopicDecorator(ConnectionFactory connectionFactory, String baseTopic) {
+        super(connectionFactory);
+        this.baseTopic = baseTopic;
+    }
+
     @Override
     public Connection createConnection() throws JMSException {
-        JmsConnectionTopicDecorator connectionTopicDecorator = new JmsConnectionTopicDecorator(connectionFactory.createConnection(), baseTopic);
+        JmsConnectionTopicDecorator connectionTopicDecorator = new JmsConnectionTopicDecorator(super.createConnection(), baseTopic);
         return connectionTopicDecorator;
     }
 
     @Override
     public Connection createConnection(String userName, String password) throws JMSException {
-        JmsConnectionTopicDecorator connectionTopicDecorator = new JmsConnectionTopicDecorator(connectionFactory.createConnection(userName, password), baseTopic);
+        JmsConnectionTopicDecorator connectionTopicDecorator = new JmsConnectionTopicDecorator(super.createConnection(userName, password), baseTopic);
         return connectionTopicDecorator;
     }
 
-    public ConnectionFactory getConnectionFactory() {
-        return connectionFactory;
-    }
-
-    public void setConnectionFactory(ConnectionFactory connectionFactory) {
-        this.connectionFactory = connectionFactory;
-    }
-
-    public String getBaseTopic() {
-        return baseTopic;
-    }
-
-    public void setBaseTopic(String baseTopic) {
-        this.baseTopic = baseTopic;
-    }
 }
