@@ -16,10 +16,10 @@
 package org.calrissian.mango.types.canonicalizer;
 
 
-import org.calrissian.mango.types.TypeContext;
+import org.calrissian.mango.types.TypeRegistry;
 import org.calrissian.mango.types.canonicalizer.domain.CanonicalDef;
 import org.calrissian.mango.types.canonicalizer.validator.Validator;
-import org.calrissian.mango.types.exception.TypeNormalizationException;
+import org.calrissian.mango.types.exception.TypeDecodingException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,11 +27,11 @@ import java.util.*;
 
 import static java.util.Collections.sort;
 import static java.util.Collections.unmodifiableList;
-import static org.calrissian.mango.types.TypeContext.DEFAULT_TYPES;
+import static org.calrissian.mango.types.GenericTypeEncoders.DEFAULT_TYPES;
 
 public class CanonicalizerContext {
 
-    private final TypeContext typeContext;
+    private final TypeRegistry<String> typeContext;
     private Map<String, Class<? extends Validator>> validatorClasses;
 
     private Map<String, String> matchers;
@@ -42,7 +42,7 @@ public class CanonicalizerContext {
         this(DEFAULT_TYPES);
     }
 
-    public CanonicalizerContext(TypeContext typeContext) throws IOException {
+    public CanonicalizerContext(TypeRegistry<String> typeContext) throws IOException {
         this.typeContext = typeContext;
         loadCanonicalDefs();
     }
@@ -117,15 +117,15 @@ public class CanonicalizerContext {
         Validator validator = matcher != null ? validators.get(matcher) : null;
 
         if (validator != null && !validator.validate(value))
-                throw new IllegalArgumentException(value + " did not validate with validator: " + validator.getClass());
+            throw new IllegalArgumentException(value + " did not validate with validator: " + validator.getClass());
 
         try {
 
-            return typeContext.fromString(value.trim(), datatype);
+            return typeContext.decode(datatype, value.trim());
 
         } catch (RuntimeException re) {
             throw re;
-        } catch (TypeNormalizationException e) {
+        } catch (TypeDecodingException e) {
             throw new IllegalArgumentException(e);
         }
     }
