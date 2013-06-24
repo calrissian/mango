@@ -21,13 +21,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static java.lang.Integer.parseInt;
-import static java.lang.Long.compare;
 import static java.lang.Math.pow;
 import static java.util.regex.Pattern.compile;
 
 public class IPv4 implements Comparable<IPv4>, Serializable {
 
-    final Long value;
+    private final long value;
 
     private static final String IP_ADDRESS = "\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}";
 
@@ -47,7 +46,7 @@ public class IPv4 implements Comparable<IPv4>, Serializable {
         this.value = ip;
     }
 
-    public Long getValue() {
+    public long getValue() {
         return value;
     }
 
@@ -68,7 +67,7 @@ public class IPv4 implements Comparable<IPv4>, Serializable {
     public int compareTo(IPv4 o) {
         if (o == null)
             return 1;
-        return compare(value, o.value);
+        return (value<o.value ? -1 : (value==o.value ? 0 : 1));
     }
 
     public String toString() {
@@ -86,13 +85,13 @@ public class IPv4 implements Comparable<IPv4>, Serializable {
 
         IPv4 iPv4 = (IPv4) o;
 
-        if (value != null ? !value.equals(iPv4.value) : iPv4.value != null) return false;
+        if (value != iPv4.value) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return value != null ? value.hashCode() : 0;
+        return (int) (value ^ (value >>> 32));
     }
 }
