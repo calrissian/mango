@@ -16,7 +16,7 @@
 package org.calrissian.mango.types.exception;
 
 
-public class TypeDecodingException extends Run {
+public class TypeDecodingException extends Exception {
 
     public TypeDecodingException() {
     }
