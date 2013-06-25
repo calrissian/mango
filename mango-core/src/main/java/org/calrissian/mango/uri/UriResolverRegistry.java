@@ -20,7 +20,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * A singleton context by which to register a number of URI Resolvers that can be recalled given a URI.
+ * A utility class by which to register a number of URI Resolvers that can be recalled given a URI.
  * By convention, the scheme of the URI determines the service upon which honors the request.
  */
 public class UriResolverRegistry {

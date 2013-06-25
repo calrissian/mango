@@ -25,9 +25,9 @@ import java.util.List;
  */
 public class MerkleTree<T extends HashLeaf> implements Serializable {
 
-    protected Integer dimensions = 2;  // default to a binary tree
-    protected Integer numLeaves;       // keeping this around for future optimizations
-    protected Node topHash;
+    private int dimensions = 2;  // default to a binary tree
+    private int numLeaves;       // keeping this around for future optimizations
+    private Node topHash;
 
     public MerkleTree() {}
 
@@ -127,7 +127,7 @@ public class MerkleTree<T extends HashLeaf> implements Serializable {
      */
     public List<T> diff(MerkleTree other) {
 
-        if(!other.dimensions.equals(dimensions) || !other.numLeaves.equals(numLeaves)) {
+        if(dimensions != other.dimensions || numLeaves != other.numLeaves) {
             throw new IllegalStateException("Trees need to have the same size & dimension to diff.");
         }
 
@@ -235,8 +235,8 @@ public class MerkleTree<T extends HashLeaf> implements Serializable {
 
         MerkleTree that = (MerkleTree) o;
 
-        if (dimensions != null ? !dimensions.equals(that.dimensions) : that.dimensions != null) return false;
-        if (numLeaves != null ? !numLeaves.equals(that.numLeaves) : that.numLeaves != null) return false;
+        if (dimensions != that.dimensions) return false;
+        if (numLeaves != that.numLeaves) return false;
         if (topHash != null ? !topHash.equals(that.topHash) : that.topHash != null) return false;
 
         return true;
@@ -244,8 +244,8 @@ public class MerkleTree<T extends HashLeaf> implements Serializable {
 
     @Override
     public int hashCode() {
-        int result = dimensions != null ? dimensions.hashCode() : 0;
-        result = 31 * result + (numLeaves != null ? numLeaves.hashCode() : 0);
+        int result = dimensions;
+        result = 31 * result + numLeaves;
         result = 31 * result + (topHash != null ? topHash.hashCode() : 0);
         return result;
     }

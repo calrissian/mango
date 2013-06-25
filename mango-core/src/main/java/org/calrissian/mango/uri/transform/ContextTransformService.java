@@ -26,8 +26,8 @@ import java.util.Map;
 
 public class ContextTransformService {
 
-    Map<String, ContextTransformer> contextTransformMap = new HashMap<String,ContextTransformer>();
-    Map<Class, ContextTransformInterceptor> transformInterceptorMap = new HashMap<Class,ContextTransformInterceptor>();
+    private final Map<String, ContextTransformer> contextTransformMap = new HashMap<String,ContextTransformer>();
+    private final Map<Class, ContextTransformInterceptor> transformInterceptorMap = new HashMap<Class,ContextTransformInterceptor>();
 
     public ContextTransformService(Collection<ContextTransformer> contextTransforms,
                                    Collection<ContextTransformInterceptor> contextTransformInterceptors) {
