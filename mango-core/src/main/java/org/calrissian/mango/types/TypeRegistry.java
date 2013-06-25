@@ -37,6 +37,11 @@ public class TypeRegistry<U> {
 
     public TypeRegistry(Iterable<TypeEncoder<?, U>> normalizers) {
         for(TypeEncoder<?, U> resolver: normalizers) {
+            if (aliasMapping.containsKey(resolver.getAlias()))
+                throw new IllegalArgumentException("The aliases provided by the normalizers must be unique");
+            if (classMapping.containsKey(resolver.resolves()))
+                throw new IllegalArgumentException("There can only be one normalizer per class type.");
+
             aliasMapping.put(resolver.getAlias(), resolver);
             classMapping.put(resolver.resolves(), resolver);
         }
