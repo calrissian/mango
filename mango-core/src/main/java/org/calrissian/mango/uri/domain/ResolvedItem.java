@@ -23,10 +23,10 @@ import java.util.Map;
 
 public class ResolvedItem {
 
-    MediaType contentType;
-    Map<String,String> additionalHeaders;
+    private final MediaType contentType;
+    private final Map<String,String> additionalHeaders;
 
-    InputStream object;
+    private final InputStream object;
 
     public ResolvedItem(MediaType contentType, Map<String, String> additionalHeaders, InputStream object) {
         this.contentType = contentType;

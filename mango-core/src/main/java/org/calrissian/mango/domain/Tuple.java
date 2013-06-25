@@ -22,8 +22,6 @@ public class Tuple {
     protected final Object value;
     protected final String visibility;
 
-
-
     public Tuple(String key, Object value, String visibility) {
         this.key = key;
         this.value = value;

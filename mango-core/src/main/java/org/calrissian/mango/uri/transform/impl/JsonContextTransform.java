@@ -28,7 +28,7 @@ public class JsonContextTransform implements ContextTransformer<Object> {
 
     public static final MediaType CONTENT_TYPE = MediaType.JSON_UTF_8;
 
-    protected final ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
     public JsonContextTransform(ObjectMapper objectMapper) {
 

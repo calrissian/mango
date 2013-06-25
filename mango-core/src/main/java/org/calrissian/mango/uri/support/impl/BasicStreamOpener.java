@@ -25,8 +25,6 @@ import java.net.URLConnection;
 public class BasicStreamOpener implements UriStreamOpener {
     @Override
     public InputStream openStream(URI uri) throws IOException {
-
-        final URLConnection connection = uri.toURL().openConnection();
-        return connection.getInputStream();
+        return uri.toURL().openConnection().getInputStream();
     }
 }
