@@ -43,41 +43,26 @@ public class ContextTransformService {
                 transformInterceptorMap.put(interceptor.intercepts(), interceptor);
             }
         }
-
-        System.out.println(contextTransforms);
-        System.out.println(contextTransformInterceptors);
     }
 
     public ResolvedItem transform(String contextName, Object obj) throws ContextTransformException {
 
         ContextTransformInterceptor interceptor = transformInterceptorMap.get(obj.getClass());
 
-        if(interceptor != null) {
-
+        if(interceptor != null)
             return interceptor.transform(obj);
-        }
+        else
+            return contextTransformMap.get(contextName).transform(obj);
 
-        else {
-
-            ContextTransformer transform = contextTransformMap.get(contextName);
-            return transform.transform(obj);
-        }
     }
 
     public MediaType getMediaType(String contextName, Object obj) throws ContextTransformException {
 
         ContextTransformInterceptor interceptor = transformInterceptorMap.get(obj.getClass());
 
-        if(interceptor != null) {
-
+        if(interceptor != null)
             return interceptor.getMediaType(obj);
-        }
-
-        else {
-
-            ContextTransformer transform = contextTransformMap.get(contextName);
-            return transform.getMediaType(obj);
-        }
-
+        else
+            return contextTransformMap.get(contextName).getMediaType(obj);
     }
 }

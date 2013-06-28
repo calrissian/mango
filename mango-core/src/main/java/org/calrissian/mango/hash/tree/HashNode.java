@@ -15,9 +15,11 @@
  */
 package org.calrissian.mango.hash.tree;
 
+import java.security.MessageDigest;
 import java.util.List;
 
-import static org.apache.commons.codec.digest.DigestUtils.md5Hex;
+import static org.apache.commons.codec.binary.Hex.encodeHexString;
+import static org.apache.commons.codec.digest.DigestUtils.getMd5Digest;
 
 /**
  * An internal hash node in a merkle tree that automatically derives the hashes of its children to form its own hash.
@@ -32,17 +34,11 @@ public class HashNode implements Node {
     public HashNode(List<Node> children) {
         this.children = children;
 
-        String hashes = "";
-        for(Node node : children) {
+        MessageDigest digest = getMd5Digest();
+        for(Node node : children)
+            digest.update((node.getHash() + "\u0000").getBytes());
 
-            hashes += node.getHash() + "\u0000";
-        }
-
-        try {
-            hash = md5Hex(hashes);
-        } catch (Exception e) {
-            throw new IllegalStateException("Hash could not be derived from children: " + children);
-        }
+        hash = encodeHexString(digest.digest());
     }
 
     /**
