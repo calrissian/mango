@@ -28,13 +28,11 @@ import java.util.Date;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.lang.Boolean.parseBoolean;
-import static java.lang.Byte.parseByte;
+import static java.lang.Character.digit;
 import static java.lang.Double.doubleToRawLongBits;
 import static java.lang.Double.longBitsToDouble;
 import static java.lang.Float.floatToIntBits;
 import static java.lang.Float.intBitsToFloat;
-import static java.lang.Integer.parseInt;
-import static java.lang.Long.parseLong;
 
 /**
  * Default type encoders for normalizing data to
@@ -49,12 +47,32 @@ public class AccumuloTypeEncoders {
             integerEncoder(), ipv4Encoder(), longEncoder(), stringEncoder(), uriEncoder()
     );
 
+    /**
+     * Helper function simply because Long.parseLong(hex,16) does not handle negative numbers that were
+     * converted to hex.
+     */
+    private static long fromHex(String hex) {
+        long value = 0;
+        for (int i = 0; i < hex.length(); i++)
+            value = (value << 4) | digit(hex.charAt(i), 16);
+
+        return value;
+    }
+
     private static String normalizeInt(int value) {
-        return String.format("%011d", value);
+        return String.format("%08x", value ^ Integer.MIN_VALUE);
     }
 
     private static String normalizeLong(long value) {
-        return String.format("%020d", value);
+        return String.format("%016x", value ^ Long.MIN_VALUE);
+    }
+
+    private static int denormalizeInt(String value) {
+        return (int)fromHex(value) ^ Integer.MIN_VALUE;
+    }
+
+    private static long denormalizeLong(String value) {
+        return fromHex(value) ^ Long.MIN_VALUE;
     }
 
     public static TypeEncoder<Boolean, String> booleanEncoder() {
@@ -90,7 +108,7 @@ public class AccumuloTypeEncoders {
             @Override
             public Byte decode(String value) {
                 checkNotNull(value, "Null values are not allowed");
-                return parseByte(value);
+                return (byte)denormalizeInt(value);
             }
         };
     }
@@ -106,7 +124,7 @@ public class AccumuloTypeEncoders {
             @Override
             public Date decode(String value) {
                 checkNotNull(value, "Null values are not allowed");
-                return new Date(parseLong(value));
+                return new Date(denormalizeLong(value));
             }
         };
     }
@@ -122,7 +140,7 @@ public class AccumuloTypeEncoders {
             @Override
             public Double decode(String value) {
                 checkNotNull(value, "Null values are not allowed");
-                return longBitsToDouble(parseLong(value));
+                return longBitsToDouble(denormalizeLong(value));
             }
         };
     }
@@ -138,7 +156,7 @@ public class AccumuloTypeEncoders {
             @Override
             public Float decode(String value) {
                 checkNotNull(value, "Null values are not allowed");
-                return intBitsToFloat(parseInt(value));
+                return intBitsToFloat(denormalizeInt(value));
             }
         };
     }
@@ -154,7 +172,7 @@ public class AccumuloTypeEncoders {
             @Override
             public Integer decode(String value) {
                 checkNotNull(value, "Null values are not allowed");
-                return parseInt(value);
+                return denormalizeInt(value);
             }
         };
     }
@@ -170,7 +188,7 @@ public class AccumuloTypeEncoders {
             @Override
             public IPv4 decode(String value) {
                 checkNotNull(value, "Null values are not allowed");
-                return new IPv4(parseLong(value));
+                return new IPv4(denormalizeLong(value));
             }
         };
     }
@@ -186,7 +204,7 @@ public class AccumuloTypeEncoders {
             @Override
             public Long decode(String value) {
                 checkNotNull(value, "Null values are not allowed");
-                return parseLong(value);
+                return denormalizeLong(value);
             }
         };
     }

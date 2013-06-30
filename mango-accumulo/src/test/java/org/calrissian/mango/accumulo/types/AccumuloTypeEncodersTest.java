@@ -58,23 +58,23 @@ public class AccumuloTypeEncodersTest {
         assertEquals("true", booleanEncoder().encode(true));
         assertEquals("false", booleanEncoder().encode(false));
 
-        assertEquals("00000000003", byteEncoder().encode((byte) 3));
+        assertEquals("80000003", byteEncoder().encode((byte) 3));
 
-        assertEquals("00000000000000000010", dateEncoder().encode(new Date(10)));
+        assertEquals("800000000000000a", dateEncoder().encode(new Date(10)));
 
-        assertEquals("04609434218613702656", doubleEncoder().encode(1.5D));
-        assertEquals("-4613937818241073152", doubleEncoder().encode(-1.5D));
+        assertEquals("bff8000000000000", doubleEncoder().encode(1.5D));
+        assertEquals("3ff8000000000000", doubleEncoder().encode(-1.5D));
 
-        assertEquals("01069547520", floatEncoder().encode(1.5F));
-        assertEquals("-1077936128", floatEncoder().encode(-1.5F));
+        assertEquals("bfc00000", floatEncoder().encode(1.5F));
+        assertEquals("3fc00000", floatEncoder().encode(-1.5F));
 
-        assertEquals("00000000003", integerEncoder().encode(3));
-        assertEquals("-0000000003", integerEncoder().encode(-3));
+        assertEquals("80000003", integerEncoder().encode(3));
+        assertEquals("7ffffffd", integerEncoder().encode(-3));
 
-        assertEquals("00000000003232235777", ipv4Encoder().encode(new IPv4("192.168.1.1")));
+        assertEquals("80000000c0a80101", ipv4Encoder().encode(new IPv4("192.168.1.1")));
 
-        assertEquals("00000000000000000003", longEncoder().encode(3L));
-        assertEquals("-0000000000000000003", longEncoder().encode(-3L));
+        assertEquals("8000000000000003", longEncoder().encode(3L));
+        assertEquals("7ffffffffffffffd", longEncoder().encode(-3L));
 
         assertEquals("test", stringEncoder().encode("test"));
 
