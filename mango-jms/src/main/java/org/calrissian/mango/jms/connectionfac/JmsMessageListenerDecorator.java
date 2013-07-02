@@ -15,34 +15,32 @@
  */
 package org.calrissian.mango.jms.connectionfac;
 
+import org.calrissian.mango.jms.connectionfac.decorator.MessageListenerDecorator;
+
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 
+import static org.calrissian.mango.jms.connectionfac.JmsDecoratorUtils.postReceiveMessage;
+
 /**
- * Class JmsMessageListenerTopicDecorator
+ * Class JmsMessageListenerDecorator
  * Date: Nov 30, 2011
  * Time: 5:07:28 PM
  */
-public class JmsMessageListenerTopicDecorator implements MessageListener {
+public class JmsMessageListenerDecorator extends MessageListenerDecorator {
 
-    private MessageListener messageListener;
-
-    public JmsMessageListenerTopicDecorator(MessageListener messageListener) {
-        this.messageListener = messageListener;
+    public JmsMessageListenerDecorator(MessageListener messageListener) {
+        super(messageListener);
     }
 
     @Override
     public void onMessage(Message message) {
         try {
-            JmsTopicDecoratorConstants.postReceiveMessage(message);
+            postReceiveMessage(message);
         } catch (JMSException e) {
             //not sure what to do here
         }
-        messageListener.onMessage(message);
-    }
-
-    public MessageListener getMessageListener() {
-        return messageListener;
+        super.onMessage(message);
     }
 }
