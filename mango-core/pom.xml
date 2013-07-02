@@ -48,11 +48,6 @@ limitations under the License.
       <artifactId>jackson-mapper-asl</artifactId>
     </dependency>
 
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-    </dependency>
-
     <!--Test-->
     <dependency>
       <groupId>junit</groupId>
