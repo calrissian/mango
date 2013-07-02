@@ -13,23 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.types.exception;
+package org.calrissian.mango.types.encoders;
 
+import org.calrissian.mango.types.TypeEncoder;
 
-public class TypeNormalizationException extends Exception {
-
-    public TypeNormalizationException() {
+public abstract class AbstractStringEncoder<U> implements TypeEncoder<String, U> {
+    @Override
+    public String getAlias() {
+        return "string";
     }
 
-    public TypeNormalizationException(String s) {
-        super(s);
-    }
-
-    public TypeNormalizationException(String s, Throwable throwable) {
-        super(s, throwable);
-    }
-
-    public TypeNormalizationException(Throwable throwable) {
-        super(throwable);
+    @Override
+    public Class<String> resolves() {
+        return String.class;
     }
 }

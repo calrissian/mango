@@ -17,8 +17,8 @@ package org.calrissian.mango.types.serialization;
 
 
 import org.calrissian.mango.domain.Tuple;
-import org.calrissian.mango.types.TypeContext;
-import org.calrissian.mango.types.exception.TypeNormalizationException;
+import org.calrissian.mango.types.TypeRegistry;
+import org.calrissian.mango.types.exception.TypeDecodingException;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.DeserializationContext;
@@ -32,10 +32,10 @@ import java.io.IOException;
  */
 public class TupleDeserializer extends JsonDeserializer<Tuple> {
 
-    private final TypeContext typeContext;
+    private final TypeRegistry<String> typeRegistry;
 
-    public TupleDeserializer(TypeContext typeContext) {
-        this.typeContext = typeContext;
+    public TupleDeserializer(TypeRegistry<String> typeRegistry) {
+        this.typeRegistry = typeRegistry;
     }
 
     @Override
@@ -50,8 +50,8 @@ public class TupleDeserializer extends JsonDeserializer<Tuple> {
             String type = type_json.getValueAsText();
             String val_str = root.get("value").getValueAsText();
             try {
-                value = typeContext.fromString(val_str, type);
-            } catch (TypeNormalizationException e) {
+                value = typeRegistry.decode(type, val_str);
+            } catch (TypeDecodingException e) {
                 throw new RuntimeException(e);
             }
         }

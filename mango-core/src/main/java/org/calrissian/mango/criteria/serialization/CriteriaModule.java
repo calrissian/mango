@@ -17,22 +17,22 @@ package org.calrissian.mango.criteria.serialization;
 
 
 import org.calrissian.mango.criteria.domain.Node;
-import org.calrissian.mango.types.TypeContext;
+import org.calrissian.mango.types.TypeRegistry;
 import org.codehaus.jackson.Version;
 import org.codehaus.jackson.map.module.SimpleModule;
 
-import static org.calrissian.mango.types.TypeContext.DEFAULT_TYPES;
+import static org.calrissian.mango.types.GenericTypeEncoders.DEFAULT_TYPES;
 
 public class CriteriaModule extends SimpleModule{
 
-    private final TypeContext typeContext;
+    private final TypeRegistry<String> typeContext;
 
     public CriteriaModule() {
         this(DEFAULT_TYPES);
     }
 
-    public CriteriaModule(TypeContext typeContext) {
-        super("TupleModule", new Version(0,0,1,null));
+    public CriteriaModule(TypeRegistry<String> typeContext) {
+        super("NodeModule", new Version(0,0,1,null));
         this.typeContext = typeContext;
     }
 

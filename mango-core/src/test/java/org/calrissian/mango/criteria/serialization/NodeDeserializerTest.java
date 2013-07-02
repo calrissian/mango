@@ -17,13 +17,13 @@ package org.calrissian.mango.criteria.serialization;
 
 import org.calrissian.mango.criteria.domain.Node;
 import org.calrissian.mango.criteria.visitor.PrintNodeVisitor;
-import org.calrissian.mango.types.TypeContext;
+import org.calrissian.mango.types.GenericTypeEncoders;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
 import java.io.StringWriter;
 
-import static org.calrissian.mango.types.TypeContext.DEFAULT_TYPES;
+import static org.calrissian.mango.types.GenericTypeEncoders.DEFAULT_TYPES;
 import static org.junit.Assert.assertEquals;
 
 /**
