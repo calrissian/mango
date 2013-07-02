@@ -16,8 +16,8 @@
 package org.calrissian.mango.criteria.serialization;
 
 import org.calrissian.mango.criteria.domain.*;
-import org.calrissian.mango.types.TypeContext;
-import org.calrissian.mango.types.exception.TypeNormalizationException;
+import org.calrissian.mango.types.TypeRegistry;
+import org.calrissian.mango.types.exception.TypeDecodingException;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonProcessingException;
@@ -34,10 +34,10 @@ import java.util.Iterator;
  */
 public class NodeDeserializer extends JsonDeserializer<Node> {
 
-    private final TypeContext typeContext;
+    private final TypeRegistry<String> typeRegistry;
 
-    public NodeDeserializer(TypeContext typeContext) {
-        this.typeContext = typeContext;
+    public NodeDeserializer(TypeRegistry<String> typeRegistry) {
+        this.typeRegistry = typeRegistry;
     }
 
     /**
@@ -94,14 +94,14 @@ public class NodeDeserializer extends JsonDeserializer<Node> {
                 String type = fieldJson.get("type").getValueAsText();
                 String val_str = fieldJson.get("value").getValueAsText();
 
-                Object obj = typeContext.fromString(val_str, type);
+                Object obj = this.typeRegistry.decode(type, val_str);
                 return new EqualsLeaf(key, obj, null);
             } else if ("neq".equals(fieldKey)) {
                 String key = fieldJson.get("key").getValueAsText();
                 String type = fieldJson.get("type").getValueAsText();
                 String val_str = fieldJson.get("value").getValueAsText();
 
-                Object obj = typeContext.fromString(val_str, type);
+                Object obj = this.typeRegistry.decode(type, val_str);
                 return new NotEqualsLeaf(key, obj, null);
             } else if ("range".equals(fieldKey)) {
                 String key = fieldJson.get("key").getValueAsText();
@@ -109,13 +109,13 @@ public class NodeDeserializer extends JsonDeserializer<Node> {
                 String start_str = fieldJson.get("start").getValueAsText();
                 String end_str = fieldJson.get("end").getValueAsText();
 
-                Object start = typeContext.fromString(start_str, type);
-                Object end = typeContext.fromString(end_str, type);
+                Object start = this.typeRegistry.decode(type, start_str);
+                Object end = this.typeRegistry.decode(type, end_str);
                 return new RangeLeaf(key, start, end, null);
             } else {
                 throw new IllegalArgumentException("Unsupported field: " + fieldKey);
             }
-        } catch (TypeNormalizationException e) {
+        } catch (TypeDecodingException e) {
             throw new IOException(e);
         }
     }

@@ -13,26 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.jms.connectionfac.decorator;
+package org.calrissian.mango.types.exception;
 
 
-import javax.jms.Message;
-import javax.jms.MessageListener;
+public class TypeDecodingException extends Exception {
 
-public abstract class MessageListenerDecorator implements MessageListener {
-
-    private final MessageListener messageListener;
-
-    protected MessageListenerDecorator(MessageListener messageListener) {
-        this.messageListener = messageListener;
+    public TypeDecodingException() {
     }
 
-    @Override
-    public void onMessage(Message message) {
-        messageListener.onMessage(message);
+    public TypeDecodingException(String s) {
+        super(s);
     }
 
-    public MessageListener getInternal() {
-        return messageListener;
+    public TypeDecodingException(String s, Throwable throwable) {
+        super(s, throwable);
+    }
+
+    public TypeDecodingException(Throwable throwable) {
+        super(throwable);
     }
 }

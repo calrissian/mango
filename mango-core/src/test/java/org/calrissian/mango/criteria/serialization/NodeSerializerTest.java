@@ -19,12 +19,12 @@ import org.calrissian.mango.criteria.builder.QueryBuilder;
 import org.calrissian.mango.criteria.domain.EqualsLeaf;
 import org.calrissian.mango.criteria.domain.Node;
 import org.calrissian.mango.criteria.domain.RangeLeaf;
-import org.calrissian.mango.types.TypeContext;
 import org.calrissian.mango.domain.IPv4;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
-import static org.calrissian.mango.types.TypeContext.DEFAULT_TYPES;
+
+import static org.calrissian.mango.types.GenericTypeEncoders.DEFAULT_TYPES;
 import static org.junit.Assert.assertEquals;
 
 /**

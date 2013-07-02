@@ -17,21 +17,21 @@ package org.calrissian.mango.types.serialization;
 
 
 import org.calrissian.mango.domain.Tuple;
-import org.calrissian.mango.types.TypeContext;
+import org.calrissian.mango.types.TypeRegistry;
 import org.codehaus.jackson.Version;
 import org.codehaus.jackson.map.module.SimpleModule;
 
-import static org.calrissian.mango.types.TypeContext.DEFAULT_TYPES;
+import static org.calrissian.mango.types.GenericTypeEncoders.DEFAULT_TYPES;
 
 public class TupleModule extends SimpleModule{
 
-    private final TypeContext typeContext;
+    private final TypeRegistry<String> typeContext;
 
     public TupleModule() {
         this(DEFAULT_TYPES);
     }
 
-    public TupleModule(TypeContext typeContext) {
+    public TupleModule(TypeRegistry<String> typeContext) {
         super("TupleModule", new Version(0,0,1,null));
         this.typeContext = typeContext;
     }

@@ -16,10 +16,9 @@
 package org.calrissian.mango.types.serialization;
 
 import org.calrissian.mango.domain.Tuple;
-import org.calrissian.mango.types.TypeContext;
-import org.calrissian.mango.types.exception.TypeNormalizationException;
+import org.calrissian.mango.types.TypeRegistry;
+import org.calrissian.mango.types.exception.TypeEncodingException;
 import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.map.JsonSerializer;
 import org.codehaus.jackson.map.SerializerProvider;
 
@@ -31,15 +30,15 @@ import java.io.IOException;
  */
 public class TupleSerializer extends JsonSerializer<Tuple> {
 
-    private final TypeContext typeContext;
+    private final TypeRegistry<String> typeContext;
 
-    public TupleSerializer(TypeContext typeContext) {
+    public TupleSerializer(TypeRegistry<String> typeContext) {
         this.typeContext = typeContext;
     }
 
     @Override
     public void serialize(Tuple tuple, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
-            throws IOException, JsonProcessingException {
+            throws IOException {
         jsonGenerator.writeStartObject();
 
         jsonGenerator.writeStringField("key", tuple.getKey());
@@ -49,12 +48,12 @@ public class TupleSerializer extends JsonSerializer<Tuple> {
         try {
             Object value = tuple.getValue();
             if (value != null) {
-                String type = typeContext.getAliasForType(value);
-                String val_str = typeContext.asString(value);
+                String type = typeContext.getAlias(value);
+                String val_str = typeContext.encode(value);
                 jsonGenerator.writeStringField("type", type);
                 jsonGenerator.writeStringField("value", val_str);
             }
-        } catch (TypeNormalizationException e) {
+        } catch (TypeEncodingException e) {
             throw new RuntimeException(e);
         }
 

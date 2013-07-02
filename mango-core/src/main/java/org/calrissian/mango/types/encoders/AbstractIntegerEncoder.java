@@ -13,26 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.jms.connectionfac.decorator;
+package org.calrissian.mango.types.encoders;
 
+import org.calrissian.mango.types.TypeEncoder;
 
-import javax.jms.Message;
-import javax.jms.MessageListener;
-
-public abstract class MessageListenerDecorator implements MessageListener {
-
-    private final MessageListener messageListener;
-
-    protected MessageListenerDecorator(MessageListener messageListener) {
-        this.messageListener = messageListener;
+public abstract class AbstractIntegerEncoder<U> implements TypeEncoder<Integer, U> {
+    @Override
+    public String getAlias() {
+        return "integer";
     }
 
     @Override
-    public void onMessage(Message message) {
-        messageListener.onMessage(message);
-    }
-
-    public MessageListener getInternal() {
-        return messageListener;
+    public Class<Integer> resolves() {
+        return Integer.class;
     }
 }

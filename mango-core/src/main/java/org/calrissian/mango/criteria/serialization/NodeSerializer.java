@@ -16,8 +16,8 @@
 package org.calrissian.mango.criteria.serialization;
 
 import org.calrissian.mango.criteria.domain.*;
-import org.calrissian.mango.types.TypeContext;
-import org.calrissian.mango.types.exception.TypeNormalizationException;
+import org.calrissian.mango.types.TypeRegistry;
+import org.calrissian.mango.types.exception.TypeEncodingException;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.JsonSerializer;
 import org.codehaus.jackson.map.SerializerProvider;
@@ -30,10 +30,10 @@ import java.io.IOException;
  */
 public class NodeSerializer extends JsonSerializer<Node> {
 
-    private final TypeContext typeContext;
+    private final TypeRegistry<String> typeRegistry;
 
-    public NodeSerializer(TypeContext typeContext) {
-        this.typeContext = typeContext;
+    public NodeSerializer(TypeRegistry<String> typeRegistry) {
+        this.typeRegistry = typeRegistry;
     }
 
     @Override
@@ -49,7 +49,7 @@ public class NodeSerializer extends JsonSerializer<Node> {
             } else {
                 throw new IllegalArgumentException("Unsupported node: " + node);
             }
-        } catch (TypeNormalizationException e) {
+        } catch (TypeEncodingException e) {
             throw new IOException(e);
         }
         jsonGenerator.writeEndObject();
@@ -76,7 +76,7 @@ public class NodeSerializer extends JsonSerializer<Node> {
     }
 
     public void serialize(Leaf node, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
-            throws IOException, TypeNormalizationException {
+            throws IOException, TypeEncodingException {
 
         if (node instanceof EqualsLeaf) {
             //eq
@@ -85,8 +85,8 @@ public class NodeSerializer extends JsonSerializer<Node> {
             jsonGenerator.writeStringField("key", equalsLeaf.getKey());
 
             Object value = equalsLeaf.getValue();
-            String type = typeContext.getAliasForType(value);
-            String val_str = typeContext.asString(value);
+            String type = typeRegistry.getAlias(value);
+            String val_str = typeRegistry.encode(value);
             jsonGenerator.writeStringField("type", type);
             jsonGenerator.writeStringField("value", val_str);
 
@@ -98,8 +98,8 @@ public class NodeSerializer extends JsonSerializer<Node> {
             jsonGenerator.writeStringField("key", leaf.getKey());
 
             Object value = leaf.getValue();
-            String type = typeContext.getAliasForType(value);
-            String val_str = typeContext.asString(value);
+            String type = typeRegistry.getAlias(value);
+            String val_str = typeRegistry.encode(value);
             jsonGenerator.writeStringField("type", type);
             jsonGenerator.writeStringField("value", val_str);
 
@@ -111,13 +111,13 @@ public class NodeSerializer extends JsonSerializer<Node> {
             jsonGenerator.writeStringField("key", leaf.getKey());
 
             Object start = leaf.getStart();
-            String type = typeContext.getAliasForType(start);
-            String val_str = typeContext.asString(start);
+            String type = typeRegistry.getAlias(start);
+            String val_str = typeRegistry.encode(start);
             jsonGenerator.writeStringField("type", type);
             jsonGenerator.writeStringField("start", val_str);
 
             Object end = leaf.getEnd();
-            val_str = typeContext.asString(end);
+            val_str = typeRegistry.encode(end);
             jsonGenerator.writeStringField("end", val_str);
 
             jsonGenerator.writeEndObject();
