@@ -13,74 +13,58 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.jms.connectionfac;
+package org.calrissian.mango.jms.connectionfac.decorator;
+
 
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageListener;
 
-/**
- * Class JmsMessageConsumerTopicDecorator
- * Date: Nov 30, 2011
- * Time: 5:05:42 PM
- */
-public class JmsMessageConsumerQueueDecorator implements MessageConsumer {
+public abstract class MessageConsumerDecorator implements MessageConsumer{
 
-    private MessageConsumer consumer;
+    private final MessageConsumer messageConsumer;
 
-    public JmsMessageConsumerQueueDecorator(MessageConsumer consumer) {
-        this.consumer = consumer;
-    }
-
-    public MessageConsumer getConsumer() {
-        return consumer;
+    public MessageConsumerDecorator(MessageConsumer messageConsumer) {
+        this.messageConsumer = messageConsumer;
     }
 
     @Override
     public String getMessageSelector() throws JMSException {
-        return consumer.getMessageSelector();
+        return messageConsumer.getMessageSelector();
     }
 
     @Override
     public MessageListener getMessageListener() throws JMSException {
-        return ((JmsMessageListenerQueueDecorator) consumer.getMessageListener()).getMessageListener();
+        return messageConsumer.getMessageListener();
     }
 
     @Override
     public void setMessageListener(MessageListener messageListener) throws JMSException {
-        consumer.setMessageListener(new JmsMessageListenerQueueDecorator(messageListener));
+        messageConsumer.setMessageListener(messageListener);
     }
 
     @Override
     public Message receive() throws JMSException {
-        Message msg = consumer.receive();
-        if (msg != null) {
-            JmsQueueDecoratorConstants.postReceiveMessage(msg);
-        }
-        return msg;
+        return messageConsumer.receive();
     }
 
     @Override
     public Message receive(long l) throws JMSException {
-        Message msg = consumer.receive(l);
-        if (msg != null) {
-            JmsQueueDecoratorConstants.postReceiveMessage(msg);
-        }
-        return msg;
+        return messageConsumer.receive(l);
     }
 
     @Override
     public Message receiveNoWait() throws JMSException {
-        Message msg = consumer.receiveNoWait();
-        if(msg != null) {
-            JmsQueueDecoratorConstants.postReceiveMessage(msg);
-        }
-        return msg;
+        return messageConsumer.receiveNoWait();
     }
 
     @Override
     public void close() throws JMSException {
-        consumer.close();
+        messageConsumer.close();
+    }
+
+    public MessageConsumer getInternal() {
+        return messageConsumer;
     }
 }

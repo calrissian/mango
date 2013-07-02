@@ -13,38 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.jms.connectionfac;
-
-import org.calrissian.mango.jms.connectionfac.decorator.ConnectionFactoryDecorator;
+package org.calrissian.mango.jms.connectionfac.decorator;
 
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
 
-/**
- * Class JmsConnectionFactoryTopicDecorator
- * Date: Nov 27, 2011
- * Time: 4:38:17 PM
- */
-public class JmsConnectionFactoryTopicDecorator extends ConnectionFactoryDecorator {
+public abstract class ConnectionFactoryDecorator implements ConnectionFactory{
 
-    private String baseTopic;
+    private final ConnectionFactory connectionFactory;
 
-    public JmsConnectionFactoryTopicDecorator(ConnectionFactory connectionFactory, String baseTopic) {
-        super(connectionFactory);
-        this.baseTopic = baseTopic;
+    public ConnectionFactoryDecorator(ConnectionFactory connectionFactory) {
+        this.connectionFactory = connectionFactory;
     }
 
     @Override
     public Connection createConnection() throws JMSException {
-        JmsConnectionTopicDecorator connectionTopicDecorator = new JmsConnectionTopicDecorator(super.createConnection(), baseTopic);
-        return connectionTopicDecorator;
+        return connectionFactory.createConnection();
     }
 
     @Override
     public Connection createConnection(String userName, String password) throws JMSException {
-        JmsConnectionTopicDecorator connectionTopicDecorator = new JmsConnectionTopicDecorator(super.createConnection(userName, password), baseTopic);
-        return connectionTopicDecorator;
+        return connectionFactory.createConnection(userName, password);
     }
 
+    public ConnectionFactory getInternal() {
+        return connectionFactory;
+    }
 }

@@ -18,17 +18,17 @@ package org.calrissian.mango.jms.connectionfac;
 import javax.jms.*;
 
 /**
- * Class JmsTopicDecoratorConstants
+ * Class JmsDecoratorUtils
  * Date: Dec 1, 2011
  * Time: 8:36:37 AM
  */
-public class JmsTopicDecoratorConstants {
+public class JmsDecoratorUtils {
     public static final String JMS_TOPIC_PROP_STR = "selectTopic";
     public static final String JMS_REPLYTO_PROP_STR = "replyTo";
 
-    public static void preSendMessage(Message msg, Topic topic, Destination destination) throws JMSException {
+    public static void preSendMessage(Message msg, Destination topic, Destination destination) throws JMSException {
         if (destination != null) {
-            String selectTopic = null;
+            String selectTopic;
             if(destination instanceof SelectorDestination) {
                 selectTopic = ((SelectorDestination) destination).getDestination();
             } else {
@@ -40,7 +40,7 @@ public class JmsTopicDecoratorConstants {
         //Because Tibco does not let non Tibco types in the JmsReplyTo, we have to fake it
         if (destReplyTo != null && destReplyTo instanceof SelectorDestination) {
             msg.setJMSReplyTo(topic);
-            msg.setStringProperty(JmsTopicDecoratorConstants.JMS_REPLYTO_PROP_STR, ((SelectorDestination) destReplyTo).getDestination());
+            msg.setStringProperty(JMS_REPLYTO_PROP_STR, ((SelectorDestination) destReplyTo).getDestination());
         }
     }
 
@@ -50,7 +50,7 @@ public class JmsTopicDecoratorConstants {
             //set the destination
             message.setJMSDestination(new SelectorDestination(selectTopic));
         }
-        String replyTo = message.getStringProperty(JmsTopicDecoratorConstants.JMS_REPLYTO_PROP_STR);
+        String replyTo = message.getStringProperty(JMS_REPLYTO_PROP_STR);
         if (replyTo != null) {
             message.setJMSReplyTo(new SelectorDestination(replyTo));
         }

@@ -80,11 +80,11 @@ Keep in mind, this specific example knows nothing of target systems. The URIs th
 
 # I'm Resolving URIs, now what?
 
-This is where things get good. The Mango URI JMS module contains services to syncrhonously send/receive data over a topic given a simple URI. For simplicity, these services were written using the TaskExecutor and JmsTemplate interfaces which require elements from Spring Framework to be on the classpath.
+This is where things get good. The Mango URI JMS module contains services to syncrhonously send/receive data over a destination given a simple URI. For simplicity, these services were written using the TaskExecutor and JmsTemplate interfaces which require elements from Spring Framework to be on the classpath.
 
 ## Receiving requests given a Mango URI
 
-Assuming we keep our example above, let's get a sender running that can listen on a JMS topic and honor requests to resolve URIs and send data.
+Assuming we keep our example above, let's get a sender running that can listen on a JMS destination and honor requests to resolve URIs and send data.
 
 ```java 
 TaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
@@ -133,7 +133,7 @@ I AM A URI
 
 # Connecting clouds via bridged JMS topics
 
-The distributed URI resolvers use temporary topics to send data back and forth. If you are working in an environment where you have a limited number of topics that have been bridged between systems, you can use a topic decorator to send everything over one topic.
+The distributed URI resolvers use temporary topics to send data back and forth. If you are working in an environment where you have a limited number of topics that have been bridged between systems, you can use a destination decorator to send everything over one destination.
 
 ```java
 ConnectionFactory decoratedConnectionFactory = new JmsConnectionFactoryTopicDecorator();
