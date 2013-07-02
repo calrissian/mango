@@ -3,7 +3,7 @@ language: java
 notifications:
   email:
     recipients:
-      - sonixbp@gmail.com
+      - cjnolet@gmail.com
       - ceraw79@gmail.com
       - smonaghan000@gmail.com
     on_success: [always|never|change] # default: change
