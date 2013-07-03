@@ -21,20 +21,16 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static java.lang.Integer.parseInt;
-import static java.lang.Math.pow;
 import static java.util.regex.Pattern.compile;
 
 public class IPv4 implements Comparable<IPv4>, Serializable {
 
     private final long value;
 
-    private static final String IP_ADDRESS = "\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}";
+    private static final Pattern IP_PATTERN = compile("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}");
 
     public IPv4(String ip) {
-
-        Pattern p = compile(IP_ADDRESS);
-        Matcher m = p.matcher(ip);
-
+        Matcher m = IP_PATTERN.matcher(ip);
         if(!m.matches()) {
             throw new IllegalArgumentException("For input string: " + ip);
         }
@@ -50,15 +46,10 @@ public class IPv4 implements Comparable<IPv4>, Serializable {
         return value;
     }
 
-    private long ipToLong(String addr) {
-        String[] addrArray = addr.split("\\.");
-
+    private static long ipToLong(String addr) {
         long num = 0;
-        for (int i = 0; i < addrArray.length; i++) {
-            int power = 3 - i;
-
-            num += (parseInt(addrArray[i]) % 256) * pow(256, power);
-        }
+        for (String octStr : addr.split("\\."))
+            num = num << 8 | (parseInt(octStr) & 0xFF);
 
         return num;
     }
@@ -72,9 +63,9 @@ public class IPv4 implements Comparable<IPv4>, Serializable {
 
     public String toString() {
 
-        return ((value >> 24) & 0xFF) + "." +
-                ((value >> 16) & 0xFF) + "." +
-                ((value >> 8) & 0xFF) + "." +
+        return ((value >>> 24) & 0xFF) + "." +
+                ((value >>> 16) & 0xFF) + "." +
+                ((value >>> 8) & 0xFF) + "." +
                 (value & 0xFF);
     }
 
@@ -85,9 +76,7 @@ public class IPv4 implements Comparable<IPv4>, Serializable {
 
         IPv4 iPv4 = (IPv4) o;
 
-        if (value != iPv4.value) return false;
-
-        return true;
+        return value == iPv4.value;
     }
 
     @Override
