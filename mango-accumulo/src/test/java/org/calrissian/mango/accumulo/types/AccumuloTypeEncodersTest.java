@@ -55,10 +55,10 @@ public class AccumuloTypeEncodersTest {
     @Test
     public void testCorrectEncoding () throws Exception {
 
-        assertEquals("true", booleanEncoder().encode(true));
-        assertEquals("false", booleanEncoder().encode(false));
+        assertEquals("1", booleanEncoder().encode(true));
+        assertEquals("0", booleanEncoder().encode(false));
 
-        assertEquals("80000003", byteEncoder().encode((byte) 3));
+        assertEquals("03", byteEncoder().encode((byte) 3));
 
         assertEquals("800000000000000a", dateEncoder().encode(new Date(10)));
 
@@ -71,7 +71,8 @@ public class AccumuloTypeEncodersTest {
         assertEquals("80000003", integerEncoder().encode(3));
         assertEquals("7ffffffd", integerEncoder().encode(-3));
 
-        assertEquals("80000000c0a80101", ipv4Encoder().encode(new IPv4("192.168.1.1")));
+        assertEquals("c0a80101", ipv4Encoder().encode(new IPv4("192.168.1.1")));
+        assertEquals("ffffffff", ipv4Encoder().encode(new IPv4("255.255.255.255")));
 
         assertEquals("8000000000000003", longEncoder().encode(3L));
         assertEquals("7ffffffffffffffd", longEncoder().encode(-3L));

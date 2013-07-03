@@ -27,7 +27,6 @@ import java.net.URISyntaxException;
 import java.util.Date;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static java.lang.Boolean.parseBoolean;
 import static java.lang.Character.digit;
 import static java.lang.Double.doubleToRawLongBits;
 import static java.lang.Double.longBitsToDouble;
@@ -48,6 +47,8 @@ public class AccumuloTypeEncoders {
     );
 
     /**
+     * Returns the raw bit representation of a string of hex digits.
+     *
      * Helper function simply because Long.parseLong(hex,16) does not handle negative numbers that were
      * converted to hex.
      */
@@ -59,19 +60,32 @@ public class AccumuloTypeEncoders {
         return value;
     }
 
-    private static String normalizeInt(int value) {
-        return String.format("%08x", value ^ Integer.MIN_VALUE);
+    private static String encodeUInt(int value) {
+        return String.format("%08x", value);
     }
 
-    private static String normalizeLong(long value) {
-        return String.format("%016x", value ^ Long.MIN_VALUE);
+    /**
+     * Encodes an int so that it can be lexicographically sorted.
+     */
+    private static String encodeInt(int value) {
+        //Flip the sign bit before encoding so that negative numbers are lexicographically before
+        //positive integers.
+        return encodeUInt(value ^ Integer.MIN_VALUE);
     }
 
-    private static int denormalizeInt(String value) {
+    private static int decodeInt(String value) {
+        //Flip the sign bit back to the value before encoding.
         return (int)fromHex(value) ^ Integer.MIN_VALUE;
     }
 
-    private static long denormalizeLong(String value) {
+    private static String encodeLong(long value) {
+        //Flip the sign bit before encoding so that negative numbers are lexicographically before
+        //positive integers.
+        return String.format("%016x", value ^ Long.MIN_VALUE);
+    }
+
+    private static long decodeLong(String value) {
+        //Flip the sign bit back to the value before encoding.
         return fromHex(value) ^ Long.MIN_VALUE;
     }
 
@@ -80,7 +94,7 @@ public class AccumuloTypeEncoders {
             @Override
             public String encode(Boolean value) {
                 checkNotNull(value, "Null values are not allowed");
-                return value.toString();
+                return (value ? "1" : "0");
             }
 
             @Override
@@ -88,10 +102,10 @@ public class AccumuloTypeEncoders {
                 checkNotNull(value, "Null values are not allowed");
 
                 String lowercase = value.toLowerCase();
-                if(!lowercase.equals("true") && !lowercase.equals("false"))
+                if(!lowercase.equals("1") && !lowercase.equals("0"))
                     throw new RuntimeException("The value " + value + " is not a valid boolean.");
 
-                return parseBoolean(lowercase);
+                return value.equals("1");
             }
         };
     }
@@ -101,14 +115,13 @@ public class AccumuloTypeEncoders {
             @Override
             public String encode(Byte value) {
                 checkNotNull(value, "Null values are not allowed");
-
-                return normalizeInt(value.intValue());
+                return String.format("%02x", value);
             }
 
             @Override
             public Byte decode(String value) {
                 checkNotNull(value, "Null values are not allowed");
-                return (byte)denormalizeInt(value);
+                return (byte) fromHex(value);
             }
         };
     }
@@ -118,13 +131,13 @@ public class AccumuloTypeEncoders {
             @Override
             public String encode(Date value) {
                 checkNotNull(value, "Null values are not allowed");
-                return normalizeLong(value.getTime());
+                return encodeLong(value.getTime());
             }
 
             @Override
             public Date decode(String value) {
                 checkNotNull(value, "Null values are not allowed");
-                return new Date(denormalizeLong(value));
+                return new Date(decodeLong(value));
             }
         };
     }
@@ -134,13 +147,13 @@ public class AccumuloTypeEncoders {
             @Override
             public String encode(Double value) {
                 checkNotNull(value, "Null values are not allowed");
-                return normalizeLong(doubleToRawLongBits(value));
+                return encodeLong(doubleToRawLongBits(value));
             }
 
             @Override
             public Double decode(String value) {
                 checkNotNull(value, "Null values are not allowed");
-                return longBitsToDouble(denormalizeLong(value));
+                return longBitsToDouble(decodeLong(value));
             }
         };
     }
@@ -150,13 +163,13 @@ public class AccumuloTypeEncoders {
             @Override
             public String encode(Float value) {
                 checkNotNull(value, "Null values are not allowed");
-                return normalizeInt(floatToIntBits(value));
+                return encodeInt(floatToIntBits(value));
             }
 
             @Override
             public Float decode(String value) {
                 checkNotNull(value, "Null values are not allowed");
-                return intBitsToFloat(denormalizeInt(value));
+                return intBitsToFloat(decodeInt(value));
             }
         };
     }
@@ -166,13 +179,13 @@ public class AccumuloTypeEncoders {
             @Override
             public String encode(Integer value) {
                 checkNotNull(value, "Null values are not allowed");
-                return normalizeInt(value);
+                return encodeInt(value);
             }
 
             @Override
             public Integer decode(String value) {
                 checkNotNull(value, "Null values are not allowed");
-                return denormalizeInt(value);
+                return decodeInt(value);
             }
         };
     }
@@ -182,13 +195,13 @@ public class AccumuloTypeEncoders {
             @Override
             public String encode(IPv4 value) {
                 checkNotNull(value, "Null values are not allowed");
-                return normalizeLong(value.getValue());
+                return encodeUInt((int)value.getValue());
             }
 
             @Override
             public IPv4 decode(String value) {
                 checkNotNull(value, "Null values are not allowed");
-                return new IPv4(denormalizeLong(value));
+                return new IPv4(fromHex(value));
             }
         };
     }
@@ -198,13 +211,13 @@ public class AccumuloTypeEncoders {
             @Override
             public String encode(Long value) {
                 checkNotNull(value, "Null values are not allowed");
-                return normalizeLong(value);
+                return encodeLong(value);
             }
 
             @Override
             public Long decode(String value) {
                 checkNotNull(value, "Null values are not allowed");
-                return denormalizeLong(value);
+                return decodeLong(value);
             }
         };
     }
