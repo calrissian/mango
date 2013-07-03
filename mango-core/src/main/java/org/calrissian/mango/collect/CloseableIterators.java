@@ -33,6 +33,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class CloseableIterators {
 
+    private CloseableIterators() {/* private constructor */}
+
     private static final CloseableIterator EMPTY_ITERATOR = wrap(Iterators.emptyIterator());
 
     /**

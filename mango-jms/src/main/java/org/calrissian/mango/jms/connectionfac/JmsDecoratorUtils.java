@@ -23,8 +23,11 @@ import javax.jms.*;
  * Time: 8:36:37 AM
  */
 public class JmsDecoratorUtils {
-    public static final String JMS_TOPIC_PROP_STR = "selectTopic";
-    public static final String JMS_REPLYTO_PROP_STR = "replyTo";
+
+    public JmsDecoratorUtils() {/* private constructor */}
+
+    private static final String JMS_TOPIC_PROP_STR = "selectTopic";
+    private static final String JMS_REPLYTO_PROP_STR = "replyTo";
 
     public static void preSendMessage(Message msg, Destination topic, Destination destination) throws JMSException {
         if (destination != null) {

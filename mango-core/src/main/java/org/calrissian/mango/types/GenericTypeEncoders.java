@@ -36,6 +36,8 @@ import static java.lang.Long.parseLong;
 
 public class GenericTypeEncoders {
 
+    public GenericTypeEncoders() {/* private constructor */}
+
     public static final TypeRegistry<String> DEFAULT_TYPES = new TypeRegistry<String>(
             booleanEncoder(), byteEncoder(), dateEncoder(), doubleEncoder(), floatEncoder(),
             integerEncoder(), ipv4Encoder(), longEncoder(), stringEncoder(), uriEncoder()

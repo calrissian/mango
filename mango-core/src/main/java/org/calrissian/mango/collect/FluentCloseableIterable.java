@@ -25,6 +25,8 @@ import java.util.Comparator;
 import java.util.Iterator;
 
 /**
+ * A class to provide the same basic functionality as {@link com.google.common.collect.FluentIterable} to work
+ * with {@link CloseableIterable}s
  */
 public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterable<T> {
 

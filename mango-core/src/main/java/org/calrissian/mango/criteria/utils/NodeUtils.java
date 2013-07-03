@@ -28,6 +28,8 @@ import static org.calrissian.mango.types.GenericTypeEncoders.DEFAULT_TYPES;
 
 public class NodeUtils {
 
+    public NodeUtils() {/* private constructor */}
+
     public static boolean isLeaf(Node node) {
         return node instanceof Leaf || node.children() == null || node.children().size() == 0;
     }

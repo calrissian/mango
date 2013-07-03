@@ -85,7 +85,7 @@ public class Iterables2 {
      */
     public static <T> Iterable<T> drainingIterable(Queue<T> queue) {
 
-        //Only create a single iterator as navigating it will draing the queue anyway.
+        //Only create a single iterator as navigating it will drain the queue anyway.
         final Iterator<T> iterator = Iterators2.drainingIterator(queue);
         return new Iterable<T>() {
             @Override

@@ -33,6 +33,8 @@ import static java.util.Arrays.asList;
  */
 public class CloseableIterables {
 
+    public CloseableIterables() {/* private constructor */}
+
     /**
      * Returns an iterable that applies {@code function} to each element of {@code
      * fromIterable}.

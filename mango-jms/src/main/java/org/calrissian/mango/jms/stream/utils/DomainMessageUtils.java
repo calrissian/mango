@@ -28,8 +28,7 @@ import javax.jms.Session;
 
 public class DomainMessageUtils {
 
-    protected DomainMessageUtils() {
-    }
+    private DomainMessageUtils() {/* private constructor */}
 
     private static final String PIECE_POSITION = "filetransfer.piece.position";
     private static final String PIECE_HASH = "filetransfer.piece.hash";

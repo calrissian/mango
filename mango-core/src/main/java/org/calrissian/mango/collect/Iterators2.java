@@ -23,9 +23,6 @@ import java.util.Queue;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-/**
- * Additional functions for working on Iterators
- */
 
 /**
  * Additional functions for working on Iterators
@@ -65,7 +62,7 @@ public class Iterators2 {
     }
 
     /**
-     * Generates an iterable that will drain a queue by consistently polling the latest item.
+     * Generates an iterator that will drain a queue by consistently polling the latest item.
      * @param queue
      * @param <T>
      * @return
