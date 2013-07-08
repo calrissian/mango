@@ -1,5 +1,7 @@
 language: java
 
+install: mvn install -DskipTests=true -P full -B
+
 notifications:
   email:
     recipients:
