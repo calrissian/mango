@@ -21,8 +21,11 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.*;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * A class to provide the same basic functionality as {@link com.google.common.collect.FluentIterable} to work
@@ -157,8 +160,6 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
      * <p>The returned fluent iterable's iterator supports {@code remove()} if this
      * function-returned iterables' iterator does. After a successful {@code remove()} call,
      * the returned fluent iterable no longer contains the corresponding element.
-     *
-     * @since 13.0
      */
     public <E> FluentCloseableIterable<E> transformAndConcat(
             Function<? super T, ? extends Iterable<E>> function) {
@@ -247,7 +248,7 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
      * Returns an {@code ImmutableList} containing all of the elements from this
      * fluent iterable in proper sequence.
      */
-    public final ImmutableList<T> toImmutableList() {
+    public final ImmutableList<T> toList() {
         return ImmutableList.copyOf(this);
     }
 
@@ -259,9 +260,8 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
      *
      * @param comparator the function by which to sort list elements
      * @throws NullPointerException if any element is null
-     * @since 13.0
      */
-    public final ImmutableList<T> toSortedImmutableList(Comparator<? super T> comparator) {
+    public final ImmutableList<T> toSortedList(Comparator<? super T> comparator) {
         return Ordering.from(comparator).immutableSortedCopy(this);
     }
 
@@ -269,7 +269,7 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
      * Returns an {@code ImmutableSet} containing all of the elements from this
      * fluent iterable with duplicates removed.
      */
-    public final ImmutableSet<T> toImmutableSet() {
+    public final ImmutableSet<T> toSet() {
         return ImmutableSet.copyOf(this);
     }
 
@@ -283,8 +283,57 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
      * @param comparator the function by which to sort set elements
      * @throws NullPointerException if any element is null
      */
-    public final ImmutableSortedSet<T> toImmutableSortedSet(Comparator<? super T> comparator) {
+    public final ImmutableSortedSet<T> toSortedSet(Comparator<? super T> comparator) {
         return ImmutableSortedSet.copyOf(comparator, this);
+    }
+
+    /**
+     * Returns an immutable map for which the elements of this {@code FluentIterable} are the keys in
+     * the same order, mapped to values by the given function. If this iterable contains duplicate
+     * elements, the returned map will contain each distinct element once in the order it first
+     * appears.
+     *
+     * @throws NullPointerException if any element of this iterable is {@code null}, or if {@code
+     *     valueFunction} produces {@code null} for any key
+     */
+    public final <V> ImmutableMap<T, V> toMap(Function<? super T, V> valueFunction) {
+        return Maps.toMap(this, valueFunction);
+    }
+
+    /**
+     * Creates an index {@code ImmutableListMultimap} that contains the results of applying a
+     * specified function to each item in this {@code FluentIterable} of values. Each element of this
+     * iterable will be stored as a value in the resulting multimap, yielding a multimap with the same
+     * size as this iterable. The key used to store that value in the multimap will be the result of
+     * calling the function on that value. The resulting multimap is created as an immutable snapshot.
+     * In the returned multimap, keys appear in the order they are first encountered, and the values
+     * corresponding to each key appear in the same order as they are encountered.
+     *
+     * @param keyFunction the function used to produce the key for each value
+     * @throws NullPointerException if any of the following cases is true:
+     *     <ul>
+     *       <li>{@code keyFunction} is null
+     *       <li>An element in this fluent iterable is null
+     *       <li>{@code keyFunction} returns {@code null} for any element of this iterable
+     *     </ul>
+     */
+    public final <K> ImmutableListMultimap<K, T> index(Function<? super T, K> keyFunction) {
+        return Multimaps.index(this, keyFunction);
+    }
+
+    /**
+     * Returns an immutable map for which the {@link java.util.Map#values} are the elements of this
+     * {@code FluentIterable} in the given order, and each key is the product of invoking a supplied
+     * function on its corresponding value.
+     *
+     * @param keyFunction the function used to produce the key for each value
+     * @throws IllegalArgumentException if {@code keyFunction} produces the same key for more than one
+     *     value in this fluent iterable
+     * @throws NullPointerException if any element of this fluent iterable is null, or if
+     *     {@code keyFunction} produces {@code null} for any value
+     */
+    public final <K> ImmutableMap<K, T> uniqueIndex(Function<? super T, K> keyFunction) {
+        return Maps.uniqueIndex(this, keyFunction);
     }
 
     /**
@@ -296,6 +345,21 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
      */
     public final T[] toArray(Class<T> type) {
         return Iterables.toArray(this, type);
+    }
+
+    /**
+     * Copies all the elements from this fluent iterable to {@code collection}. This is equivalent to
+     * calling {@code Iterables.addAll(collection, this)}.
+     *
+     * @param collection the collection to copy elements to
+     * @return {@code collection}, for convenience
+     */
+    public final <C extends Collection<? super T>> C copyInto(C collection) {
+        checkNotNull(collection);
+        for (T item : this) {
+            collection.add(item);
+        }
+        return collection;
     }
 
     /**
