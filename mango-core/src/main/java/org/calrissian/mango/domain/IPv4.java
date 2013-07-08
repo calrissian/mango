@@ -17,25 +17,39 @@ package org.calrissian.mango.domain;
 
 
 import java.io.Serializable;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.primitives.Longs.compare;
 import static java.lang.Integer.parseInt;
-import static java.util.regex.Pattern.compile;
 
 public class IPv4 implements Comparable<IPv4>, Serializable {
 
     private final long value;
 
-    private static final Pattern IP_PATTERN = compile("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}");
+    private static long ipToLong(String addr) {
+        checkNotNull(addr);
+
+        String[] octets = addr.split("\\.", 5);
+        checkArgument(octets.length == 4, "Invalid IPv4 representation: %s", addr);
+
+        long num = 0;
+        for (String octStr : octets) {
+            try {
+                int octet = parseInt(octStr);
+                checkArgument(octet >= 0 && octet < 256, "Invalid IPv4 representation: %s", addr);
+
+                num = num << 8 | (parseInt(octStr) & 0xFF);
+            } catch (NumberFormatException nfe) {
+                throw new IllegalArgumentException("Invalid IPv4 representation: " + addr);
+            }
+
+        }
+        return num;
+    }
 
     public IPv4(String ip) {
-        Matcher m = IP_PATTERN.matcher(ip);
-        if(!m.matches()) {
-            throw new IllegalArgumentException("For input string: " + ip);
-        }
-
-        value = ipToLong(ip);
+        this(ipToLong(ip));
     }
 
     public IPv4(Long ip) {
@@ -46,23 +60,14 @@ public class IPv4 implements Comparable<IPv4>, Serializable {
         return value;
     }
 
-    private static long ipToLong(String addr) {
-        long num = 0;
-        for (String octStr : addr.split("\\."))
-            num = num << 8 | (parseInt(octStr) & 0xFF);
-
-        return num;
-    }
-
     @Override
     public int compareTo(IPv4 o) {
         if (o == null)
             return 1;
-        return (value<o.value ? -1 : (value==o.value ? 0 : 1));
+        return compare(value, o.value);
     }
 
     public String toString() {
-
         return ((value >>> 24) & 0xFF) + "." +
                 ((value >>> 16) & 0xFF) + "." +
                 ((value >>> 8) & 0xFF) + "." +
