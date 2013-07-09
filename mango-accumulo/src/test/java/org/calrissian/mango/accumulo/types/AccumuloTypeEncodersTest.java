@@ -50,6 +50,15 @@ public class AccumuloTypeEncodersTest {
         verifyBasicFunctionality("long", 3L, longEncoder());
         verifyBasicFunctionality("string", "testing", stringEncoder());
         verifyBasicFunctionality("uri", new URI("http://testing.org"), uriEncoder());
+
+        verifyBasicFunctionality("boolean", true, reverseBooleanEncoder());
+        verifyBasicFunctionality("byte", (byte) 3, reverseByteEncoder());
+        verifyBasicFunctionality("date", new Date(), reverseDateEncoder());
+        verifyBasicFunctionality("double", -1.5D, reverseDoubleEncoder());
+        verifyBasicFunctionality("float", -1.5F, reverseFloatEncoder());
+        verifyBasicFunctionality("integer", 3, reverseIntegerEncoder());
+        verifyBasicFunctionality("ipv4", new IPv4("192.168.1.1"), reverseIPv4Encoder());
+        verifyBasicFunctionality("long", 3L, reverseLongEncoder());
     }
 
     @Test
@@ -80,5 +89,31 @@ public class AccumuloTypeEncodersTest {
         assertEquals("test", stringEncoder().encode("test"));
 
         assertEquals("http://testing.org", uriEncoder().encode(new URI("http://testing.org")));
+    }
+
+    @Test
+    public void testCorrectReverseEncoding () throws Exception {
+
+        assertEquals("0", reverseBooleanEncoder().encode(true));
+        assertEquals("1", reverseBooleanEncoder().encode(false));
+
+        assertEquals("fc", reverseByteEncoder().encode((byte) 3));
+
+        assertEquals("7ffffffffffffff5", reverseDateEncoder().encode(new Date(10)));
+
+        assertEquals("4007ffffffffffff", reverseDoubleEncoder().encode(1.5D));
+        assertEquals("c007ffffffffffff", reverseDoubleEncoder().encode(-1.5D));
+
+        assertEquals("403fffff", reverseFloatEncoder().encode(1.5F));
+        assertEquals("c03fffff", reverseFloatEncoder().encode(-1.5F));
+
+        assertEquals("7ffffffc", reverseIntegerEncoder().encode(3));
+        assertEquals("80000002", reverseIntegerEncoder().encode(-3));
+
+        assertEquals("3f57fefe", reverseIPv4Encoder().encode(new IPv4("192.168.1.1")));
+        assertEquals("00000000", reverseIPv4Encoder().encode(new IPv4("255.255.255.255")));
+
+        assertEquals("7ffffffffffffffc", reverseLongEncoder().encode(3L));
+        assertEquals("8000000000000002", reverseLongEncoder().encode(-3L));
     }
 }

@@ -46,6 +46,11 @@ public class AccumuloTypeEncoders {
             integerEncoder(), ipv4Encoder(), longEncoder(), stringEncoder(), uriEncoder()
     );
 
+    public static final TypeRegistry<String> ACCUMULO_REVERSE_TYPES = new TypeRegistry<String>(
+            reverseBooleanEncoder(), reverseByteEncoder(), reverseDateEncoder(), reverseDoubleEncoder(),
+            reverseFloatEncoder(), reverseIntegerEncoder(), reverseIPv4Encoder(), reverseLongEncoder()
+    );
+
     /**
      * Returns the raw bit representation of a string of hex digits.
      *
@@ -110,6 +115,27 @@ public class AccumuloTypeEncoders {
         };
     }
 
+    public static TypeEncoder<Boolean, String> reverseBooleanEncoder() {
+        return new AbstractBooleanEncoder<String>() {
+            @Override
+            public String encode(Boolean value) {
+                checkNotNull(value, "Null values are not allowed");
+                return (value ? "0" : "1");
+            }
+
+            @Override
+            public Boolean decode(String value) {
+                checkNotNull(value, "Null values are not allowed");
+
+                String lowercase = value.toLowerCase();
+                if(!lowercase.equals("1") && !lowercase.equals("0"))
+                    throw new RuntimeException("The value " + value + " is not a valid boolean.");
+
+                return value.equals("0");
+            }
+        };
+    }
+
     public static TypeEncoder<Byte, String> byteEncoder() {
         return new AbstractByteEncoder<String>() {
             @Override
@@ -122,6 +148,22 @@ public class AccumuloTypeEncoders {
             public Byte decode(String value) {
                 checkNotNull(value, "Null values are not allowed");
                 return (byte) fromHex(value);
+            }
+        };
+    }
+
+    public static TypeEncoder<Byte, String> reverseByteEncoder() {
+        return new AbstractByteEncoder<String>() {
+            @Override
+            public String encode(Byte value) {
+                checkNotNull(value, "Null values are not allowed");
+                return String.format("%02x", (byte)~value);
+            }
+
+            @Override
+            public Byte decode(String value) {
+                checkNotNull(value, "Null values are not allowed");
+                return (byte) ~fromHex(value);
             }
         };
     }
@@ -142,6 +184,22 @@ public class AccumuloTypeEncoders {
         };
     }
 
+    public static TypeEncoder<Date, String> reverseDateEncoder() {
+        return new AbstractDateEncoder<String>() {
+            @Override
+            public String encode(Date value) {
+                checkNotNull(value, "Null values are not allowed");
+                return encodeLong(~value.getTime());
+            }
+
+            @Override
+            public Date decode(String value) {
+                checkNotNull(value, "Null values are not allowed");
+                return new Date(~decodeLong(value));
+            }
+        };
+    }
+
     public static TypeEncoder<Double, String> doubleEncoder() {
         return new AbstractDoubleEncoder<String>() {
             @Override
@@ -154,6 +212,22 @@ public class AccumuloTypeEncoders {
             public Double decode(String value) {
                 checkNotNull(value, "Null values are not allowed");
                 return longBitsToDouble(decodeLong(value));
+            }
+        };
+    }
+
+    public static TypeEncoder<Double, String> reverseDoubleEncoder() {
+        return new AbstractDoubleEncoder<String>() {
+            @Override
+            public String encode(Double value) {
+                checkNotNull(value, "Null values are not allowed");
+                return encodeLong(~doubleToRawLongBits(value));
+            }
+
+            @Override
+            public Double decode(String value) {
+                checkNotNull(value, "Null values are not allowed");
+                return longBitsToDouble(~decodeLong(value));
             }
         };
     }
@@ -174,6 +248,22 @@ public class AccumuloTypeEncoders {
         };
     }
 
+    public static TypeEncoder<Float, String> reverseFloatEncoder() {
+        return new AbstractFloatEncoder<String>() {
+            @Override
+            public String encode(Float value) {
+                checkNotNull(value, "Null values are not allowed");
+                return encodeInt(~floatToIntBits(value));
+            }
+
+            @Override
+            public Float decode(String value) {
+                checkNotNull(value, "Null values are not allowed");
+                return intBitsToFloat(~decodeInt(value));
+            }
+        };
+    }
+
     public static TypeEncoder<Integer, String> integerEncoder() {
         return new AbstractIntegerEncoder<String>() {
             @Override
@@ -186,6 +276,22 @@ public class AccumuloTypeEncoders {
             public Integer decode(String value) {
                 checkNotNull(value, "Null values are not allowed");
                 return decodeInt(value);
+            }
+        };
+    }
+
+    public static TypeEncoder<Integer, String> reverseIntegerEncoder() {
+        return new AbstractIntegerEncoder<String>() {
+            @Override
+            public String encode(Integer value) {
+                checkNotNull(value, "Null values are not allowed");
+                return encodeInt(~value);
+            }
+
+            @Override
+            public Integer decode(String value) {
+                checkNotNull(value, "Null values are not allowed");
+                return ~decodeInt(value);
             }
         };
     }
@@ -206,6 +312,22 @@ public class AccumuloTypeEncoders {
         };
     }
 
+    public static TypeEncoder<IPv4, String> reverseIPv4Encoder() {
+        return new AbstractIPv4Encoder<String>() {
+            @Override
+            public String encode(IPv4 value) {
+                checkNotNull(value, "Null values are not allowed");
+                return encodeUInt(~(int)value.getValue());
+            }
+
+            @Override
+            public IPv4 decode(String value) {
+                checkNotNull(value, "Null values are not allowed");
+                return new IPv4(~fromHex(value) & 0xffffffffL);
+            }
+        };
+    }
+
     public static TypeEncoder<Long, String> longEncoder() {
         return new AbstractLongEncoder<String>() {
             @Override
@@ -222,6 +344,22 @@ public class AccumuloTypeEncoders {
         };
     }
 
+    public static TypeEncoder<Long, String> reverseLongEncoder() {
+        return new AbstractLongEncoder<String>() {
+            @Override
+            public String encode(Long value) {
+                checkNotNull(value, "Null values are not allowed");
+                return encodeLong(~value);
+            }
+
+            @Override
+            public Long decode(String value) {
+                checkNotNull(value, "Null values are not allowed");
+                return ~decodeLong(value);
+            }
+        };
+    }
+
     public static TypeEncoder<String, String> stringEncoder() {
         return new AbstractStringEncoder<String>() {
             @Override
@@ -232,7 +370,7 @@ public class AccumuloTypeEncoders {
 
             @Override
             public String decode(String value) {
-                checkNotNull(value, "Null values are not allowed");
+                checkNotNull(value, "Null vallues are not allowed");
                 return value;
             }
         };
