@@ -52,7 +52,7 @@ public class IPv4 implements Comparable<IPv4>, Serializable {
         this(ipToLong(ip));
     }
 
-    public IPv4(Long ip) {
+    public IPv4(long ip) {
         this.value = ip;
     }
 

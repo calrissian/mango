@@ -44,7 +44,7 @@ public class NodeDeserializer extends JsonDeserializer<Node> {
      * {"or":{"children":[{"and":{"children":[{"eq":{"key":"k1","type":"string","value":"v1"}},{"neq":{"key":"k2","type":"ipv4","value":"1.2.3.4"}}]}},{"and":{"children":[{"eq":{"key":"k3","type":"integer","value":"1234"}}]}}]}}
      */
     @Override
-    public Node deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
+    public Node deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         JsonNode root = jsonParser.getCodec().readTree(jsonParser);
         Iterator<String> fieldNames = root.getFieldNames();
         if (fieldNames.hasNext()) {
@@ -90,24 +90,24 @@ public class NodeDeserializer extends JsonDeserializer<Node> {
                 }
                 return orNode;
             } else if ("eq".equals(fieldKey)) {
-                String key = fieldJson.get("key").getValueAsText();
-                String type = fieldJson.get("type").getValueAsText();
-                String val_str = fieldJson.get("value").getValueAsText();
+                String key = fieldJson.get("key").asText();
+                String type = fieldJson.get("type").asText();
+                String val_str = fieldJson.get("value").asText();
 
                 Object obj = this.typeRegistry.decode(type, val_str);
                 return new EqualsLeaf(key, obj, null);
             } else if ("neq".equals(fieldKey)) {
-                String key = fieldJson.get("key").getValueAsText();
-                String type = fieldJson.get("type").getValueAsText();
-                String val_str = fieldJson.get("value").getValueAsText();
+                String key = fieldJson.get("key").asText();
+                String type = fieldJson.get("type").asText();
+                String val_str = fieldJson.get("value").asText();
 
                 Object obj = this.typeRegistry.decode(type, val_str);
                 return new NotEqualsLeaf(key, obj, null);
             } else if ("range".equals(fieldKey)) {
-                String key = fieldJson.get("key").getValueAsText();
-                String type = fieldJson.get("type").getValueAsText();
-                String start_str = fieldJson.get("start").getValueAsText();
-                String end_str = fieldJson.get("end").getValueAsText();
+                String key = fieldJson.get("key").asText();
+                String type = fieldJson.get("type").asText();
+                String start_str = fieldJson.get("start").asText();
+                String end_str = fieldJson.get("end").asText();
 
                 Object start = this.typeRegistry.decode(type, start_str);
                 Object end = this.typeRegistry.decode(type, end_str);

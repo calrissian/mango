@@ -41,14 +41,14 @@ public class TupleDeserializer extends JsonDeserializer<Tuple> {
     @Override
     public Tuple deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         JsonNode root = jsonParser.getCodec().readTree(jsonParser);
-        String key = root.get("key").getValueAsText();
+        String key = root.get("key").asText();
         JsonNode vis_json = root.get("visibility");
-        String visibility = vis_json != null ? vis_json.getValueAsText() : null;
+        String visibility = vis_json != null ? vis_json.asText() : null;
         Object value = null;
         JsonNode type_json = root.get("type");
         if (type_json != null) {
-            String type = type_json.getValueAsText();
-            String val_str = root.get("value").getValueAsText();
+            String type = type_json.asText();
+            String val_str = root.get("value").asText();
             try {
                 value = typeRegistry.decode(type, val_str);
             } catch (TypeDecodingException e) {

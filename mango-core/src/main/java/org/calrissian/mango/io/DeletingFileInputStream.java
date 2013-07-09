@@ -20,11 +20,17 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+/**
+ * Overloaded {@link FileInputStream} that will optionally delete the file when the input stream is closed.
+ */
 public class DeletingFileInputStream extends FileInputStream {
 
-    private boolean deleteOnClose = false;
+    private final boolean deleteOnClose;
+    private final File file;
 
-    private File file;
+    public DeletingFileInputStream(String name, boolean deleteOnClose) throws FileNotFoundException {
+        this((name != null ? new File(name) : null), deleteOnClose);
+    }
 
     public DeletingFileInputStream(File file, boolean deleteOnClose)
             throws FileNotFoundException {
@@ -33,19 +39,14 @@ public class DeletingFileInputStream extends FileInputStream {
         this.deleteOnClose = deleteOnClose;
     }
 
-    public boolean isDeleteOnClose() {
-        return deleteOnClose;
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void close() throws IOException {
         super.close();
         if (deleteOnClose && file != null) {
             file.delete();
         }
-    }
-
-    public File getFile() {
-        return file;
     }
 }
