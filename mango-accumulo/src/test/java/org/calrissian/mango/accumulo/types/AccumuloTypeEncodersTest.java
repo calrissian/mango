@@ -72,10 +72,10 @@ public class AccumuloTypeEncodersTest {
         assertEquals("800000000000000a", dateEncoder().encode(new Date(10)));
 
         assertEquals("bff8000000000000", doubleEncoder().encode(1.5D));
-        assertEquals("3ff8000000000000", doubleEncoder().encode(-1.5D));
+        assertEquals("4007ffffffffffff", doubleEncoder().encode(-1.5D));
 
         assertEquals("bfc00000", floatEncoder().encode(1.5F));
-        assertEquals("3fc00000", floatEncoder().encode(-1.5F));
+        assertEquals("403fffff", floatEncoder().encode(-1.5F));
 
         assertEquals("80000003", integerEncoder().encode(3));
         assertEquals("7ffffffd", integerEncoder().encode(-3));
@@ -102,10 +102,10 @@ public class AccumuloTypeEncodersTest {
         assertEquals("7ffffffffffffff5", reverseDateEncoder().encode(new Date(10)));
 
         assertEquals("4007ffffffffffff", reverseDoubleEncoder().encode(1.5D));
-        assertEquals("c007ffffffffffff", reverseDoubleEncoder().encode(-1.5D));
+        assertEquals("bff8000000000000", reverseDoubleEncoder().encode(-1.5D));
 
         assertEquals("403fffff", reverseFloatEncoder().encode(1.5F));
-        assertEquals("c03fffff", reverseFloatEncoder().encode(-1.5F));
+        assertEquals("bfc00000", reverseFloatEncoder().encode(-1.5F));
 
         assertEquals("7ffffffc", reverseIntegerEncoder().encode(3));
         assertEquals("80000002", reverseIntegerEncoder().encode(-3));

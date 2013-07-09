@@ -83,15 +83,47 @@ public class AccumuloTypeEncoders {
         return (int)fromHex(value) ^ Integer.MIN_VALUE;
     }
 
+    private static String encodeULong(long value) {
+        return String.format("%016x", value);
+    }
+
     private static String encodeLong(long value) {
         //Flip the sign bit before encoding so that negative numbers are lexicographically before
         //positive integers.
-        return String.format("%016x", value ^ Long.MIN_VALUE);
+        return encodeULong(value ^ Long.MIN_VALUE);
     }
 
     private static long decodeLong(String value) {
         //Flip the sign bit back to the value before encoding.
         return fromHex(value) ^ Long.MIN_VALUE;
+    }
+
+    private static int normalizeFloat(float value) {
+        if (value > 0)
+            return floatToIntBits(value) ^ Integer.MIN_VALUE;
+        else
+            return ~floatToIntBits(value);
+    }
+
+    private static float denormalizeFloat(int value) {
+        if (value > 0)
+            return intBitsToFloat(~value);
+        else
+            return intBitsToFloat(value ^ Integer.MIN_VALUE);
+    }
+
+    private static long normalizeDouble(double value) {
+        if (value > 0)
+            return doubleToRawLongBits(value) ^ Long.MIN_VALUE;
+        else
+            return ~doubleToRawLongBits(value);
+    }
+
+    private static double denormalizeDouble(long value) {
+        if (value > 0)
+            return longBitsToDouble(~value);
+        else
+            return longBitsToDouble(value ^ Long.MIN_VALUE);
     }
 
     public static TypeEncoder<Boolean, String> booleanEncoder() {
@@ -205,13 +237,13 @@ public class AccumuloTypeEncoders {
             @Override
             public String encode(Double value) {
                 checkNotNull(value, "Null values are not allowed");
-                return encodeLong(doubleToRawLongBits(value));
+                return encodeULong(normalizeDouble(value));
             }
 
             @Override
             public Double decode(String value) {
                 checkNotNull(value, "Null values are not allowed");
-                return longBitsToDouble(decodeLong(value));
+                return denormalizeDouble(fromHex(value));
             }
         };
     }
@@ -221,13 +253,13 @@ public class AccumuloTypeEncoders {
             @Override
             public String encode(Double value) {
                 checkNotNull(value, "Null values are not allowed");
-                return encodeLong(~doubleToRawLongBits(value));
+                return encodeULong(~normalizeDouble(value));
             }
 
             @Override
             public Double decode(String value) {
                 checkNotNull(value, "Null values are not allowed");
-                return longBitsToDouble(~decodeLong(value));
+                return denormalizeDouble(~fromHex(value));
             }
         };
     }
@@ -237,13 +269,13 @@ public class AccumuloTypeEncoders {
             @Override
             public String encode(Float value) {
                 checkNotNull(value, "Null values are not allowed");
-                return encodeInt(floatToIntBits(value));
+                return encodeUInt(normalizeFloat(value));
             }
 
             @Override
             public Float decode(String value) {
                 checkNotNull(value, "Null values are not allowed");
-                return intBitsToFloat(decodeInt(value));
+                return denormalizeFloat((int)fromHex(value));
             }
         };
     }
@@ -253,13 +285,13 @@ public class AccumuloTypeEncoders {
             @Override
             public String encode(Float value) {
                 checkNotNull(value, "Null values are not allowed");
-                return encodeInt(~floatToIntBits(value));
+                return encodeUInt(~normalizeFloat(value));
             }
 
             @Override
             public Float decode(String value) {
                 checkNotNull(value, "Null values are not allowed");
-                return intBitsToFloat(~decodeInt(value));
+                return denormalizeFloat(~(int)fromHex(value));
             }
         };
     }
