@@ -17,10 +17,12 @@ package org.calrissian.mango.types.encoders;
 
 import org.calrissian.mango.types.TypeEncoder;
 
+import static org.calrissian.mango.types.encoders.AliasConstants.BYTE_ALIAS;
+
 public abstract class AbstractByteEncoder<U> implements TypeEncoder<Byte, U> {
     @Override
     public String getAlias() {
-        return "byte";
+        return BYTE_ALIAS;
     }
 
     @Override

@@ -19,10 +19,12 @@ import org.calrissian.mango.types.TypeEncoder;
 
 import java.net.URI;
 
+import static org.calrissian.mango.types.encoders.AliasConstants.URI_ALIAS;
+
 public abstract class AbstractURIEncoder<U> implements TypeEncoder<URI, U> {
     @Override
     public String getAlias() {
-        return "uri";
+        return URI_ALIAS;
     }
 
     @Override

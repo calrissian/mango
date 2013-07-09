@@ -17,10 +17,12 @@ package org.calrissian.mango.types.encoders;
 
 import org.calrissian.mango.types.TypeEncoder;
 
+import static org.calrissian.mango.types.encoders.AliasConstants.FLOAT_ALIAS;
+
 public abstract class AbstractFloatEncoder<U> implements TypeEncoder<Float, U> {
     @Override
     public String getAlias() {
-        return "float";
+        return FLOAT_ALIAS;
     }
 
     @Override

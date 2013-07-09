@@ -17,10 +17,12 @@ package org.calrissian.mango.types.encoders;
 
 import org.calrissian.mango.types.TypeEncoder;
 
+import static org.calrissian.mango.types.encoders.AliasConstants.BOOLEAN_ALIAS;
+
 public abstract class AbstractBooleanEncoder<U> implements TypeEncoder<Boolean, U> {
     @Override
     public String getAlias() {
-        return "boolean";
+        return BOOLEAN_ALIAS;
     }
 
     @Override

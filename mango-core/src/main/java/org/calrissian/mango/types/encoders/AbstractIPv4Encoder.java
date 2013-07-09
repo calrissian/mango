@@ -18,10 +18,12 @@ package org.calrissian.mango.types.encoders;
 import org.calrissian.mango.domain.IPv4;
 import org.calrissian.mango.types.TypeEncoder;
 
+import static org.calrissian.mango.types.encoders.AliasConstants.IPV4_ALIAS;
+
 public abstract class AbstractIPv4Encoder<U> implements TypeEncoder<IPv4, U> {
     @Override
     public String getAlias() {
-        return "ipv4";
+        return IPV4_ALIAS;
     }
 
     @Override

@@ -17,10 +17,12 @@ package org.calrissian.mango.types.encoders;
 
 import org.calrissian.mango.types.TypeEncoder;
 
+import static org.calrissian.mango.types.encoders.AliasConstants.INTEGER_ALIAS;
+
 public abstract class AbstractIntegerEncoder<U> implements TypeEncoder<Integer, U> {
     @Override
     public String getAlias() {
-        return "integer";
+        return INTEGER_ALIAS;
     }
 
     @Override

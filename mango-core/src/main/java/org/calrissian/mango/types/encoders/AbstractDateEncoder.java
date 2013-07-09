@@ -19,10 +19,12 @@ import org.calrissian.mango.types.TypeEncoder;
 
 import java.util.Date;
 
+import static org.calrissian.mango.types.encoders.AliasConstants.DATE_ALIAS;
+
 public abstract class AbstractDateEncoder<U> implements TypeEncoder<Date, U> {
     @Override
     public String getAlias() {
-        return "date";
+        return DATE_ALIAS;
     }
 
     @Override

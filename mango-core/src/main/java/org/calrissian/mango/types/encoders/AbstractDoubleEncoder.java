@@ -17,10 +17,12 @@ package org.calrissian.mango.types.encoders;
 
 import org.calrissian.mango.types.TypeEncoder;
 
+import static org.calrissian.mango.types.encoders.AliasConstants.DOUBLE_ALIAS;
+
 public abstract class AbstractDoubleEncoder<U> implements TypeEncoder<Double, U> {
     @Override
     public String getAlias() {
-        return "double";
+        return DOUBLE_ALIAS;
     }
 
     @Override

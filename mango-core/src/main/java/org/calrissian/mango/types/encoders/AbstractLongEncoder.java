@@ -17,10 +17,12 @@ package org.calrissian.mango.types.encoders;
 
 import org.calrissian.mango.types.TypeEncoder;
 
+import static org.calrissian.mango.types.encoders.AliasConstants.LONG_ALIAS;
+
 public abstract class AbstractLongEncoder<U> implements TypeEncoder<Long, U> {
     @Override
     public String getAlias() {
-        return "long";
+        return LONG_ALIAS;
     }
 
     @Override
