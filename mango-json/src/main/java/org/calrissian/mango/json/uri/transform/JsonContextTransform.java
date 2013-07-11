@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.uri.transform.impl;
+package org.calrissian.mango.json.uri.transform;
 
 import com.google.common.net.MediaType;
 import org.calrissian.mango.uri.domain.ResolvedItem;

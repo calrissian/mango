@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.types.serialization;
+package org.calrissian.mango.json.tuple;
 
 
 import org.calrissian.mango.domain.Tuple;

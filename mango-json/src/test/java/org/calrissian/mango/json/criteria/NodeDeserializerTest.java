@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.criteria.serialization;
+package org.calrissian.mango.json.criteria;
 
 import org.calrissian.mango.criteria.domain.Node;
 import org.calrissian.mango.criteria.visitor.PrintNodeVisitor;
-import org.calrissian.mango.types.GenericTypeEncoders;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
