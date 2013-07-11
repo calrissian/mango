@@ -22,6 +22,7 @@ import org.springframework.jms.listener.SimpleMessageListenerContainer;
 import javax.jms.Destination;
 import javax.jms.Message;
 import javax.jms.MessageListener;
+import javax.jms.Topic;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -38,7 +39,7 @@ public class MessageQueueListener implements MessageListener {
     private SimpleMessageListenerContainer messageListenerContainer;
     private AbstractJmsFileTransferSupport support;
 
-    public MessageQueueListener(AbstractJmsFileTransferSupport support, String destination) {
+    public MessageQueueListener(AbstractJmsFileTransferSupport support, String destination, boolean isTopic) {
         this.support = support;
 
         //set up listener
@@ -46,6 +47,7 @@ public class MessageQueueListener implements MessageListener {
         messageListenerContainer.setConnectionFactory(support.getJmsTemplate().getConnectionFactory());
         messageListenerContainer.setDestinationName(destination);
         messageListenerContainer.setMessageListener(this);
+        messageListenerContainer.setPubSubDomain(isTopic);
         messageListenerContainer.start();
     }
 
@@ -58,6 +60,7 @@ public class MessageQueueListener implements MessageListener {
         messageListenerContainer.setConnectionFactory(support.getJmsTemplate().getConnectionFactory());
         messageListenerContainer.setDestination(destination);
         messageListenerContainer.setMessageListener(this);
+        messageListenerContainer.setPubSubDomain(destination instanceof Topic);
         messageListenerContainer.start();
     }
 

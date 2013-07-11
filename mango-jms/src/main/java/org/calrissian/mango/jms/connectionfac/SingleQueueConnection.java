@@ -20,26 +20,29 @@ import org.calrissian.mango.jms.connectionfac.decorator.ConnectionDecorator;
 import javax.jms.*;
 
 /**
- * Class JmsConnectionTopicDecorator
+ * Class SingleQueueConnection
  * Date: Nov 27, 2011
  * Time: 4:43:19 PM
  */
-public class JmsConnectionTopicDecorator extends ConnectionDecorator {
+class SingleQueueConnection extends ConnectionDecorator {
 
-    private String baseTopic;
+    private String baseQueue;
 
-    public JmsConnectionTopicDecorator(Connection connection, String baseTopic) {
+    public SingleQueueConnection(Connection connection, String baseQueue) {
         super(connection);
-        this.baseTopic = baseTopic;
+        this.baseQueue = baseQueue;
     }
 
     @Override
     public Session createSession(boolean transacted, int ackMode) throws JMSException {
-        return new JmsSessionTopicDecorator(super.createSession(transacted, ackMode), baseTopic);
+        return new SingleQueueSession(super.createSession(transacted, ackMode), baseQueue);
     }
 
     @Override
-    public ConnectionConsumer createDurableConnectionConsumer(Topic topic, String s, String s1, ServerSessionPool serverSessionPool, int i) throws JMSException {
-        throw new UnsupportedOperationException();
+    public ConnectionConsumer createConnectionConsumer(Destination destination, String messageSelector, ServerSessionPool serverSessionPool, int maxMessages) throws JMSException {
+        if (destination instanceof Queue)
+            throw new UnsupportedOperationException();
+
+        return super.createConnectionConsumer(destination, messageSelector, serverSessionPool, maxMessages);
     }
 }

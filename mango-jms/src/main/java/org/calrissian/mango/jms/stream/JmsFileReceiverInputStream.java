@@ -52,7 +52,7 @@ public class JmsFileReceiverInputStream extends AbstractBufferedInputStream {
         this.receiveAckDestination = receiveAckDestination;
 
         //set up listener
-        messageQueueListener = new MessageQueueListener(support, sendDataDestination);
+        messageQueueListener = new MessageQueueListener(support, sendDataDestination, true);
     }
 
     @Override
@@ -143,8 +143,7 @@ public class JmsFileReceiverInputStream extends AbstractBufferedInputStream {
                     public Message createMessage(Session session)
                             throws JMSException {
                         final Message responseMessage = toResponseMessage(session, new Response(STARTSEND));
-                        Destination factoryQueue = support.factoryQueue(session, sendDataDestination);
-                        responseMessage.setJMSReplyTo(factoryQueue);
+                        responseMessage.setJMSReplyTo(support.factoryDestination(session, sendDataDestination));
                         return responseMessage;
                     }
 

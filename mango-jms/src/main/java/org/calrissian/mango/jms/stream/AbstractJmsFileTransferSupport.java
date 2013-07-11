@@ -170,7 +170,7 @@ public abstract class AbstractJmsFileTransferSupport {
 
                                 // Actual file transfer should be done on a queue.
                                 // Topics will not work
-                                Destination streamTransferDestination = factoryQueue(
+                                Destination streamTransferDestination = factoryDestination(
                                         session, UUID.randomUUID().toString());
                                 requestor = new DestinationRequestor(
                                         session, replyTo,
@@ -279,7 +279,6 @@ public abstract class AbstractJmsFileTransferSupport {
 
             });
 
-//            Message ackMessage = jmsTemplate.receive(receiveAckDestination);
             Message ackMessage = queueListener.getMessageInQueue();
 
             Object fromMessage = DomainMessageUtils.fromMessage(ackMessage);
@@ -329,10 +328,10 @@ public abstract class AbstractJmsFileTransferSupport {
         }, true);
     }
 
-    protected Destination factoryQueue(Session session, String queueName)
+    protected Destination factoryDestination(Session session, String destinationName)
             throws JMSException {
         return jmsTemplate.getDestinationResolver().resolveDestinationName(
-                session, queueName, false);
+                session, destinationName, true);
     }
 
     public void setJmsTemplate(JmsTemplate jmsTemplate) {

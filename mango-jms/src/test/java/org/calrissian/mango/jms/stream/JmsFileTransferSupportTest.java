@@ -18,10 +18,12 @@ package org.calrissian.mango.jms.stream;
 import junit.framework.TestCase;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQTopic;
+import org.calrissian.mango.jms.connectionfac.SingleTopicConnectionFactory;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import javax.jms.Connection;
+import javax.jms.ConnectionFactory;
 import javax.jms.MessageConsumer;
 import javax.jms.Session;
 import java.io.ByteArrayInputStream;
@@ -87,8 +89,9 @@ public class JmsFileTransferSupportTest extends TestCase {
         listener.setPieceSize(9);
         listener.setTaskExecutor(te);
 
-        ActiveMQConnectionFactory cf = new ActiveMQConnectionFactory(
+        ConnectionFactory cf = new ActiveMQConnectionFactory(
                 "vm://localhost?broker.persistent=false");
+        cf = new SingleTopicConnectionFactory(cf, "test");
         JmsTemplate jmsTemplate = new JmsTemplate();
         jmsTemplate.setConnectionFactory(cf);
         jmsTemplate.setReceiveTimeout(60000);

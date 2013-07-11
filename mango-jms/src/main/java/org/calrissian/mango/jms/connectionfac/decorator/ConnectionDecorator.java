@@ -17,7 +17,7 @@ package org.calrissian.mango.jms.connectionfac.decorator;
 
 import javax.jms.*;
 
-public abstract class ConnectionDecorator implements Connection, TopicConnection, QueueConnection {
+public abstract class ConnectionDecorator implements Connection {
 
     private final Connection connection;
 
@@ -78,26 +78,6 @@ public abstract class ConnectionDecorator implements Connection, TopicConnection
     @Override
     public ConnectionConsumer createDurableConnectionConsumer(Topic topic, String subscriptionName, String messageSelector, ServerSessionPool serverSessionPool, int maxMessages) throws JMSException {
         return connection.createDurableConnectionConsumer(topic, subscriptionName, messageSelector, serverSessionPool, maxMessages);
-    }
-
-    @Override
-    public QueueSession createQueueSession(boolean b, int i) throws JMSException {
-        return ((QueueConnection)connection).createQueueSession(b, i);
-    }
-
-    @Override
-    public ConnectionConsumer createConnectionConsumer(Queue queue, String s, ServerSessionPool serverSessionPool, int i) throws JMSException {
-        return ((QueueConnection)connection).createConnectionConsumer(queue, s, serverSessionPool, i);
-    }
-
-    @Override
-    public TopicSession createTopicSession(boolean b, int i) throws JMSException {
-        return ((TopicConnection)connection).createTopicSession(b, i);
-    }
-
-    @Override
-    public ConnectionConsumer createConnectionConsumer(Topic topic, String s, ServerSessionPool serverSessionPool, int i) throws JMSException {
-        return ((TopicConnection)connection).createConnectionConsumer(topic, s, serverSessionPool, i);
     }
 
     public Connection getInternal() {

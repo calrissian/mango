@@ -18,32 +18,27 @@ package org.calrissian.mango.jms.connectionfac;
 import javax.jms.*;
 
 /**
- * Class JmsDecoratorUtils
+ * Class SingleDestinationUtils
  * Date: Dec 1, 2011
  * Time: 8:36:37 AM
  */
-public class JmsDecoratorUtils {
+class SingleDestinationUtils {
 
-    public JmsDecoratorUtils() {/* private constructor */}
+    private SingleDestinationUtils() {/* private constructor */}
 
     private static final String JMS_TOPIC_PROP_STR = "selectTopic";
     private static final String JMS_REPLYTO_PROP_STR = "replyTo";
 
     public static void preSendMessage(Message msg, Destination topic, Destination destination) throws JMSException {
         if (destination != null) {
-            String selectTopic;
-            if(destination instanceof SelectorDestination) {
-                selectTopic = ((SelectorDestination) destination).getDestination();
-            } else {
-                selectTopic = getDestination(destination);
-            }
+            String selectTopic = getDestination(destination);
             msg.setStringProperty(JMS_TOPIC_PROP_STR, selectTopic);
         }
         Destination destReplyTo = msg.getJMSReplyTo();
         //Because Tibco does not let non Tibco types in the JmsReplyTo, we have to fake it
-        if (destReplyTo != null && destReplyTo instanceof SelectorDestination) {
+        if (destReplyTo != null) {
             msg.setJMSReplyTo(topic);
-            msg.setStringProperty(JMS_REPLYTO_PROP_STR, ((SelectorDestination) destReplyTo).getDestination());
+            msg.setStringProperty(JMS_REPLYTO_PROP_STR, getDestination(destReplyTo));
         }
     }
 

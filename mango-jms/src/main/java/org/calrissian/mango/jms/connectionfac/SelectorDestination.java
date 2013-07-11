@@ -27,6 +27,7 @@ public class SelectorDestination implements Queue, Topic, TemporaryQueue, Tempor
         this.destination = destination;
     }
 
+    //These are here for ActiveMQ which uses reflection for these values.
     public boolean isQueue() {
         return false;
     }
@@ -37,21 +38,17 @@ public class SelectorDestination implements Queue, Topic, TemporaryQueue, Tempor
 
     @Override
     public String getQueueName() throws JMSException {
-        return getDestination();
+        return destination;
     }
 
     @Override
     public String getTopicName() throws JMSException {
-        return getDestination();
+        return destination;
     }
 
     @Override
     public void delete() throws JMSException {
 
-    }
-
-    public String getDestination() {
-        return destination;
     }
 
     @Override
