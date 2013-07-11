@@ -29,7 +29,7 @@ limitations under the License.
   </modules>
 
   <properties>
-    <accumulo.version>1.4.1</accumulo.version>
+    <accumulo.version>1.4.3</accumulo.version>
     <activemq.version>5.6.0</activemq.version>
     <commons.codec.version>1.8</commons.codec.version>
     <commons.lang.version>2.6</commons.lang.version>
