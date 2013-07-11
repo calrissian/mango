@@ -16,7 +16,6 @@
 package org.calrissian.mango.criteria.builder;
 
 import org.calrissian.mango.criteria.domain.Node;
-import org.calrissian.mango.criteria.utils.NodeUtils;
 import org.calrissian.mango.criteria.visitor.PrintNodeVisitor;
 import org.junit.Test;
 
@@ -40,8 +39,9 @@ public class QueryBuilderTest {
     @Test
     public void testEq() throws Exception {
         Node build = new QueryBuilder().eq("feedName", "netflowv9").build();
-        String json = NodeUtils.serialize(build);
-        System.out.println(json);
+        StringWriter writer = new StringWriter();
+        build.accept(new PrintNodeVisitor(writer));
+        assertEquals("AndNode(Equals[feedName,netflowv9],),", writer.toString());
     }
 
     @Test

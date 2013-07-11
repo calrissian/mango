@@ -13,33 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.criteria.serialization;
+package org.calrissian.mango.json.tuple;
 
 
-import org.calrissian.mango.criteria.domain.Node;
+import org.calrissian.mango.domain.Tuple;
 import org.calrissian.mango.types.TypeRegistry;
 import org.codehaus.jackson.Version;
 import org.codehaus.jackson.map.module.SimpleModule;
 
 import static org.calrissian.mango.types.GenericTypeEncoders.DEFAULT_TYPES;
 
-public class CriteriaModule extends SimpleModule{
+public class TupleModule extends SimpleModule{
 
     private final TypeRegistry<String> typeContext;
 
-    public CriteriaModule() {
+    public TupleModule() {
         this(DEFAULT_TYPES);
     }
 
-    public CriteriaModule(TypeRegistry<String> typeContext) {
-        super("NodeModule", new Version(0,0,1,null));
+    public TupleModule(TypeRegistry<String> typeContext) {
+        super("TupleModule", new Version(0,0,1,null));
         this.typeContext = typeContext;
     }
 
     @Override
     public void setupModule(SetupContext context) {
-        addSerializer(Node.class, new NodeSerializer(typeContext));
-        addDeserializer(Node.class, new NodeDeserializer(typeContext));
+        addSerializer(Tuple.class, new TupleSerializer(typeContext));
+        addDeserializer(Tuple.class, new TupleDeserializer(typeContext));
         super.setupModule(context);
     }
 }
