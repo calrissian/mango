@@ -17,8 +17,6 @@ package org.calrissian.mango.types;
 
 
 import org.calrissian.mango.domain.IPv4;
-import org.calrissian.mango.types.TypeEncoder;
-import org.calrissian.mango.types.TypeRegistry;
 import org.calrissian.mango.types.encoders.*;
 import org.calrissian.mango.types.exception.TypeDecodingException;
 

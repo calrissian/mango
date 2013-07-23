@@ -26,6 +26,7 @@ limitations under the License.
     <module>mango-core</module>
     <module>mango-accumulo</module>
     <module>mango-jms</module>
+    <module>mango-json</module>
   </modules>
 
   <properties>

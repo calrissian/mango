@@ -20,7 +20,6 @@ import org.calrissian.mango.uri.support.UriStreamOpener;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
-import java.net.URLConnection;
 
 public class BasicStreamOpener implements UriStreamOpener {
     @Override

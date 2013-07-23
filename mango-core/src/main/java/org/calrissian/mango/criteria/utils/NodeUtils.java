@@ -18,13 +18,6 @@ package org.calrissian.mango.criteria.utils;
 import org.calrissian.mango.criteria.domain.Leaf;
 import org.calrissian.mango.criteria.domain.Node;
 import org.calrissian.mango.criteria.domain.ParentNode;
-import org.calrissian.mango.criteria.serialization.CriteriaModule;
-import org.calrissian.mango.types.TypeRegistry;
-import org.codehaus.jackson.map.ObjectMapper;
-
-import java.io.IOException;
-
-import static org.calrissian.mango.types.GenericTypeEncoders.DEFAULT_TYPES;
 
 public class NodeUtils {
 
@@ -39,21 +32,5 @@ public class NodeUtils {
             if (!isLeaf(child)) return false;
         }
         return true;
-    }
-
-    public static String serialize(Node node) throws IOException {
-        return serialize(node, DEFAULT_TYPES);
-    }
-
-    public static String serialize(Node node, TypeRegistry typeContext) throws IOException {
-        return new ObjectMapper().withModule(new CriteriaModule(typeContext)).writeValueAsString(node);
-    }
-
-    public static Node deserialize(String json) throws IOException {
-        return deserialize(json, DEFAULT_TYPES);
-    }
-
-    public static Node deserialize(String json, TypeRegistry typeContext) throws IOException {
-        return new ObjectMapper().withModule(new CriteriaModule(typeContext)).readValue(json, Node.class);
     }
 }
