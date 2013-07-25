@@ -16,14 +16,13 @@
 package org.calrissian.mango.json.criteria;
 
 
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.calrissian.mango.criteria.domain.Node;
 import org.calrissian.mango.types.TypeRegistry;
-import org.codehaus.jackson.Version;
-import org.codehaus.jackson.map.module.SimpleModule;
 
 import static org.calrissian.mango.types.GenericTypeEncoders.DEFAULT_TYPES;
 
-public class CriteriaModule extends SimpleModule{
+public class CriteriaModule extends SimpleModule {
 
     private final TypeRegistry<String> typeContext;
 
@@ -32,7 +31,7 @@ public class CriteriaModule extends SimpleModule{
     }
 
     public CriteriaModule(TypeRegistry<String> typeContext) {
-        super("NodeModule", new Version(0,0,1,null));
+        super("NodeModule");
         this.typeContext = typeContext;
     }
 

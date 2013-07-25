@@ -15,14 +15,14 @@
  */
 package org.calrissian.mango.json.criteria;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.calrissian.mango.criteria.domain.*;
 import org.calrissian.mango.types.TypeRegistry;
 import org.calrissian.mango.types.exception.TypeDecodingException;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.map.DeserializationContext;
-import org.codehaus.jackson.map.JsonDeserializer;
-import org.codehaus.jackson.node.ArrayNode;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -45,7 +45,7 @@ public class NodeDeserializer extends JsonDeserializer<Node> {
     @Override
     public Node deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         JsonNode root = jsonParser.getCodec().readTree(jsonParser);
-        Iterator<String> fieldNames = root.getFieldNames();
+        Iterator<String> fieldNames = root.fieldNames();
         if (fieldNames.hasNext()) {
             String fieldKey = fieldNames.next();
             JsonNode fieldJson = root.get(fieldKey);
@@ -61,10 +61,10 @@ public class NodeDeserializer extends JsonDeserializer<Node> {
                 JsonNode children = fieldJson.get("children");
                 if (children instanceof ArrayNode) {
                     ArrayNode childrenArray = (ArrayNode) children;
-                    Iterator<JsonNode> elements = childrenArray.getElements();
+                    Iterator<JsonNode> elements = childrenArray.elements();
                     while (elements.hasNext()) {
                         JsonNode entry = elements.next();
-                        Iterator<String> fieldNames = entry.getFieldNames();
+                        Iterator<String> fieldNames = entry.fieldNames();
                         while (fieldNames.hasNext()) {
                             String key = fieldNames.next();
                             andNode.addChild(parseField(key, entry.get(key)));
@@ -77,10 +77,10 @@ public class NodeDeserializer extends JsonDeserializer<Node> {
                 JsonNode children = fieldJson.get("children");
                 if (children instanceof ArrayNode) {
                     ArrayNode childrenArray = (ArrayNode) children;
-                    Iterator<JsonNode> elements = childrenArray.getElements();
+                    Iterator<JsonNode> elements = childrenArray.elements();
                     while (elements.hasNext()) {
                         JsonNode entry = elements.next();
-                        Iterator<String> fieldNames = entry.getFieldNames();
+                        Iterator<String> fieldNames = entry.fieldNames();
                         while (fieldNames.hasNext()) {
                             String key = fieldNames.next();
                             orNode.addChild(parseField(key, entry.get(key)));

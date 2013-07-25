@@ -15,11 +15,11 @@
  */
 package org.calrissian.mango.json.uri.transform;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.net.MediaType;
 import org.calrissian.mango.uri.domain.ResolvedItem;
 import org.calrissian.mango.uri.exception.ContextTransformException;
 import org.calrissian.mango.uri.transform.ContextTransformer;
-import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
