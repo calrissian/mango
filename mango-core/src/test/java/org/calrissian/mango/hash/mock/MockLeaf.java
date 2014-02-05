@@ -18,6 +18,7 @@ package org.calrissian.mango.hash.mock;
 import org.calrissian.mango.hash.tree.HashLeaf;
 
 public class MockLeaf extends HashLeaf {
+    private static final long serialVersionUID = 1L;
 
     public MockLeaf(String hash) {
         super(hash);

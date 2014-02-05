@@ -17,8 +17,8 @@ package org.calrissian.mango.types.canonicalizer;
 
 import org.junit.Test;
 
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.fail;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 public class CanonicalizerContextTest {
 

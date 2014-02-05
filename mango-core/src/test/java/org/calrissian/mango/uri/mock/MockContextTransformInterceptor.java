@@ -16,6 +16,7 @@
 package org.calrissian.mango.uri.mock;
 
 import com.google.common.net.MediaType;
+
 import org.calrissian.mango.uri.domain.ResolvedItem;
 import org.calrissian.mango.uri.exception.ContextTransformException;
 import org.calrissian.mango.uri.transform.interceptor.ContextTransformInterceptor;
@@ -28,6 +29,7 @@ public class MockContextTransformInterceptor implements ContextTransformIntercep
 
     public static final String OUTPUT_STRING = "INTERCEPTED_OUTPUT";
 
+    @SuppressWarnings("rawtypes")
     @Override
     public Class intercepts() {
         return Integer.class;

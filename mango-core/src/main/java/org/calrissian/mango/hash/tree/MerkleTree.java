@@ -24,6 +24,7 @@ import java.util.List;
  * it moves up the levels of the tree. The root (or Top Hash) represents the hashes of the entire tree.
  */
 public class MerkleTree<T extends HashLeaf> implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     private int dimensions = 2;  // default to a binary tree
     private int numLeaves;       // keeping this around for future optimizations
@@ -125,6 +126,7 @@ public class MerkleTree<T extends HashLeaf> implements Serializable {
      * @param other
      * @return
      */
+    @SuppressWarnings("rawtypes")
     public List<T> diff(MerkleTree other) {
 
         if(dimensions != other.dimensions || numLeaves != other.numLeaves) {
@@ -170,6 +172,7 @@ public class MerkleTree<T extends HashLeaf> implements Serializable {
      * @param two
      * @return
      */
+    @SuppressWarnings("unchecked")
     private  List<T> diff(Node one, Node two) {
 
         List<T> differences = new ArrayList<T>();
@@ -203,6 +206,7 @@ public class MerkleTree<T extends HashLeaf> implements Serializable {
      * @param nodes
      * @return
      */
+    @SuppressWarnings("unchecked")
     private List<T> getLeaves(List<Node> nodes) {
 
         List<T> leaves = new ArrayList<T>();
@@ -228,6 +232,7 @@ public class MerkleTree<T extends HashLeaf> implements Serializable {
                 '}';
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

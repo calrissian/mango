@@ -24,6 +24,7 @@ import static com.google.common.primitives.Longs.compare;
 import static java.lang.Integer.parseInt;
 
 public class IPv4 implements Comparable<IPv4>, Serializable {
+    private static final long serialVersionUID = 1L;
 
     private final long value;
 

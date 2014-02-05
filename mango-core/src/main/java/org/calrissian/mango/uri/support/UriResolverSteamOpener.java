@@ -37,6 +37,7 @@ public class UriResolverSteamOpener implements UriStreamOpener {
         this.resolverRegistry = resolverRegistry;
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public InputStream openStream(URI uri) throws IOException {
 

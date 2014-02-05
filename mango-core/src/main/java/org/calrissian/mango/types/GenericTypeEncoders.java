@@ -36,6 +36,7 @@ public class GenericTypeEncoders {
 
     public GenericTypeEncoders() {/* private constructor */}
 
+    @SuppressWarnings("unchecked")
     public static final TypeRegistry<String> DEFAULT_TYPES = new TypeRegistry<String>(
             booleanEncoder(), byteEncoder(), dateEncoder(), doubleEncoder(), floatEncoder(),
             integerEncoder(), ipv4Encoder(), longEncoder(), stringEncoder(), uriEncoder()

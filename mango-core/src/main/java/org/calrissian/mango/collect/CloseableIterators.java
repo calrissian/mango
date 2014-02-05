@@ -35,6 +35,7 @@ public class CloseableIterators {
 
     private CloseableIterators() {/* private constructor */}
 
+    @SuppressWarnings("rawtypes")
     private static final CloseableIterator EMPTY_ITERATOR = wrap(Iterators.emptyIterator());
 
     /**
