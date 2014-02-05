@@ -28,7 +28,7 @@ limitations under the License.
   <properties>
     <activemq.version>5.6.0</activemq.version>
     <javax.jms.version>1.1</javax.jms.version>
-    <spring.version>3.0.5.RELEASE</spring.version>
+    <spring.version>3.1.1.RELEASE</spring.version>
   </properties>
 
   <dependencies>
