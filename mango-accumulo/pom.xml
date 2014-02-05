@@ -25,25 +25,34 @@ limitations under the License.
 
   <artifactId>mango-accumulo</artifactId>
 
+  <properties>
+    <accumulo.version>1.4.3</accumulo.version>
+    <hadoop.version>0.20.2</hadoop.version>
+  </properties>
+
   <dependencies>
     <dependency>
-      <groupId>org.calrissian.mango</groupId>
-      <artifactId>mango-core</artifactId>
-      <version>${project.version}</version>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
     </dependency>
     <dependency>
       <groupId>org.apache.accumulo</groupId>
       <artifactId>accumulo-core</artifactId>
+      <version>${accumulo.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.hadoop</groupId>
       <artifactId>hadoop-core</artifactId>
+      <version>${hadoop.version}</version>
     </dependency>
-
-    <!--Test-->
+    <dependency>
+      <groupId>org.calrissian.mango</groupId>
+      <artifactId>mango-core</artifactId>
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>

@@ -25,35 +25,54 @@ limitations under the License.
 
   <artifactId>mango-jms</artifactId>
 
+  <properties>
+    <activemq.version>5.6.0</activemq.version>
+    <javax.jms.version>1.1</javax.jms.version>
+    <spring.version>3.0.5.RELEASE</spring.version>
+  </properties>
+
   <dependencies>
-
     <dependency>
-      <groupId>org.calrissian.mango</groupId>
-      <artifactId>mango-core</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-jms</artifactId>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
     </dependency>
     <dependency>
       <groupId>javax.jms</groupId>
       <artifactId>jms</artifactId>
+      <version>${javax.jms.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.calrissian.mango</groupId>
+      <artifactId>mango-core</artifactId>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
     </dependency>
-
-    <!--Test-->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-jms</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.activemq</groupId>
       <artifactId>activemq-core</artifactId>
+      <version>${activemq.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
