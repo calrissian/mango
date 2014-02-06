@@ -32,7 +32,11 @@ public class MockIterator<T> implements CloseableIterator<T> {
 
     @Override
     public void closeQuietly() {
-        Closeables.closeQuietly(this);
+        try {
+            Closeables.close(this, true);
+        } catch (IOException e) {
+            // IOException should not have been thrown
+        }
     }
 
     @Override

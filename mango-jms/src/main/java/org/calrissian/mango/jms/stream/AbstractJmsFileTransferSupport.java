@@ -35,6 +35,7 @@ import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
+
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -127,6 +128,7 @@ public abstract class AbstractJmsFileTransferSupport {
     }
 
 
+    @SuppressWarnings("unchecked")
     public void sendStream(Request req, final Destination replyTo)
             throws IOException {
 
@@ -156,6 +158,7 @@ public abstract class AbstractJmsFileTransferSupport {
         MessageQueueListener queueListener = null;
         try {
 
+            @SuppressWarnings("rawtypes")
             Message returnMessage = (Message) jmsTemplate.execute(
                     new SessionCallback() {
 
@@ -303,6 +306,7 @@ public abstract class AbstractJmsFileTransferSupport {
         }
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     protected Message sendWithResponse(final MessageCreator mc,
                                        final Destination replyTo) {
         return (Message) jmsTemplate.execute(new SessionCallback() {

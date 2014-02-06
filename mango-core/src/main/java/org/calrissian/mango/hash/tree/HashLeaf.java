@@ -23,6 +23,7 @@ import java.util.List;
  * as serializable properties of the Leaf because this will negate the compressed effect of the data structure.
  */
 public abstract class HashLeaf implements Node {
+    private static final long serialVersionUID = 1L;
 
     protected String hash;
 

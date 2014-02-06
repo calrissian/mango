@@ -17,6 +17,7 @@ package org.calrissian.mango.json.uri.transform;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.net.MediaType;
+
 import org.calrissian.mango.uri.domain.ResolvedItem;
 import org.calrissian.mango.uri.transform.ContextTransformService;
 import org.calrissian.mango.uri.transform.ContextTransformer;
@@ -26,13 +27,14 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNull;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class JsonContextTransformTest {
 
     ContextTransformService contextTransformService;
 
+    @SuppressWarnings("rawtypes")
     @Before
     public void setUp() {
 

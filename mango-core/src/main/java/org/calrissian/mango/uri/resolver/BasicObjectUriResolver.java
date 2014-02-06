@@ -23,6 +23,7 @@ import java.io.*;
 public abstract class BasicObjectUriResolver<T> implements UriResolver<T> {
 
 
+    @SuppressWarnings("unchecked")
     @Override
     public T fromStream(InputStream is) throws IOException {
 

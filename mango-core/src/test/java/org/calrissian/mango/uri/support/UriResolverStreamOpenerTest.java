@@ -34,6 +34,7 @@ public class UriResolverStreamOpenerTest {
 
     UriStreamOpener streamOpener;
     UriResolverRegistry resolverRegistry = new UriResolverRegistry();
+    @SuppressWarnings("rawtypes")
     UriResolver resolver;
 
     @Before

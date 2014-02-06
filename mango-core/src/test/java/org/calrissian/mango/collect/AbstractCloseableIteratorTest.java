@@ -21,8 +21,10 @@ import java.io.IOException;
 
 public class AbstractCloseableIteratorTest {
 
+    @SuppressWarnings("deprecation")
     @Test(expected = UnsupportedOperationException.class)
     public void removeThrowsUnsupportedOperationException() {
+        @SuppressWarnings("rawtypes")
         AbstractCloseableIterator iterator = testIterator();
         iterator.remove();
     }

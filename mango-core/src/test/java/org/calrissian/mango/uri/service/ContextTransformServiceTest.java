@@ -31,12 +31,13 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 public class ContextTransformServiceTest {
 
     ContextTransformService transformService;
 
+    @SuppressWarnings("rawtypes")
     @Before
     public void setUp() {
 

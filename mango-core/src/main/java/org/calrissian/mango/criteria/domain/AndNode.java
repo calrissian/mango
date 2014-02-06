@@ -22,6 +22,7 @@ import java.util.List;
  * Time: 1:53 PM
  */
 public class AndNode extends ParentNode {
+    private static final long serialVersionUID = 1L;
 
     public AndNode() {
     }

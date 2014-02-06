@@ -18,6 +18,7 @@ package org.calrissian.mango.collect;
 import com.google.common.collect.AbstractIterator;
 import com.google.common.io.Closeables;
 
+import java.io.IOException;
 import java.util.Iterator;
 
 /**
@@ -31,6 +32,10 @@ public abstract class AbstractCloseableIterator<T> extends AbstractIterator<T> i
      */
     @Override
     public void closeQuietly() {
-        Closeables.closeQuietly(this);
+        try {
+            Closeables.close(this, true);
+        } catch (IOException e) {
+            // IOException should not have been thrown
+        }
     }
 }
