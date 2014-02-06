@@ -16,6 +16,7 @@
 package org.calrissian.mango.uri.transform;
 
 import com.google.common.net.MediaType;
+
 import org.calrissian.mango.uri.domain.ResolvedItem;
 import org.calrissian.mango.uri.exception.ContextTransformException;
 import org.calrissian.mango.uri.transform.interceptor.ContextTransformInterceptor;
@@ -26,9 +27,12 @@ import java.util.Map;
 
 public class ContextTransformService {
 
+    @SuppressWarnings("rawtypes")
     private final Map<String, ContextTransformer> contextTransformMap = new HashMap<String,ContextTransformer>();
+    @SuppressWarnings("rawtypes")
     private final Map<Class, ContextTransformInterceptor> transformInterceptorMap = new HashMap<Class,ContextTransformInterceptor>();
 
+    @SuppressWarnings("rawtypes")
     public ContextTransformService(Collection<ContextTransformer> contextTransforms,
                                    Collection<ContextTransformInterceptor> contextTransformInterceptors) {
 
@@ -45,6 +49,7 @@ public class ContextTransformService {
         }
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public ResolvedItem transform(String contextName, Object obj) throws ContextTransformException {
 
         ContextTransformInterceptor interceptor = transformInterceptorMap.get(obj.getClass());
@@ -56,6 +61,7 @@ public class ContextTransformService {
 
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public MediaType getMediaType(String contextName, Object obj) throws ContextTransformException {
 
         ContextTransformInterceptor interceptor = transformInterceptorMap.get(obj.getClass());

@@ -25,13 +25,16 @@ import java.util.Map;
  */
 public class UriResolverRegistry {
 
+    @SuppressWarnings("rawtypes")
     private final Map<String, UriResolver> resolverMap = new LinkedHashMap<String, UriResolver>();
 
+    @SuppressWarnings("rawtypes")
     public UriResolverRegistry addResolver(UriResolver resolver) {
         resolverMap.put(resolver.getServiceName(), resolver);
         return this;
     }
 
+    @SuppressWarnings("rawtypes")
     public UriResolver getResolver(URI uri) {
         return resolverMap.get(uri.getScheme());
     }

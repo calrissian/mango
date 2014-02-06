@@ -47,6 +47,7 @@ public class CanonicalizerContext {
         loadCanonicalDefs();
     }
 
+    @SuppressWarnings("unchecked")
     private void loadCanonicalDefs() throws IOException {
 
         validatorClasses = new HashMap<String, Class<? extends Validator>>();

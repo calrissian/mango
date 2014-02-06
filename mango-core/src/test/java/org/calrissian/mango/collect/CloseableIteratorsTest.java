@@ -19,6 +19,7 @@ package org.calrissian.mango.collect;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
+
 import org.calrissian.mango.collect.mock.MockIterator;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -33,6 +34,7 @@ import static org.junit.Assert.*;
 
 public class CloseableIteratorsTest {
 
+    @SuppressWarnings("unchecked")
     @Test
     public void testWrap() throws Exception {
         CloseableIterator<Object> mockIterator = mockIterator();
@@ -108,6 +110,7 @@ public class CloseableIteratorsTest {
         distinct.close();
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Test
     public void testChain() throws Exception {
         //test empty
@@ -177,7 +180,7 @@ public class CloseableIteratorsTest {
         assertTrue(iterator.isClosed());
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     private CloseableIterator mockIterator() {
         return Mockito.mock(CloseableIterator.class);
     }

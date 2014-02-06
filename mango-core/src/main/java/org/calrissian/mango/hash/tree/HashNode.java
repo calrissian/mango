@@ -25,6 +25,7 @@ import static org.apache.commons.codec.digest.DigestUtils.getMd5Digest;
  * An internal hash node in a merkle tree that automatically derives the hashes of its children to form its own hash.
  */
 public class HashNode implements Node {
+    private static final long serialVersionUID = 1L;
 
     protected String hash;
     protected List<Node> children;

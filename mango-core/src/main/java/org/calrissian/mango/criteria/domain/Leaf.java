@@ -24,6 +24,7 @@ import java.util.List;
  * Time: 1:46 PM
  */
 public abstract class Leaf implements Node {
+    private static final long serialVersionUID = 1L;
 
     private ParentNode parent;
 

@@ -29,7 +29,7 @@ import static java.util.Collections.unmodifiableCollection;
 public class TypeRegistry<U> {
 
     private final Map<String, TypeEncoder<?, U>> aliasMapping = new LinkedHashMap<String, TypeEncoder<?, U>>();
-    private final Map<Class, TypeEncoder<?, U>> classMapping = new LinkedHashMap<Class, TypeEncoder<?, U>>();
+    private final Map<Class<?>, TypeEncoder<?, U>> classMapping = new LinkedHashMap<Class<?>, TypeEncoder<?, U>>();
 
     public TypeRegistry(TypeEncoder<?, U>... normalizers) {
         this(asList(normalizers));
@@ -63,6 +63,7 @@ public class TypeRegistry<U> {
         return null;
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public U encode(Object value) throws TypeEncodingException {
         TypeEncoder encoder = classMapping.get(value.getClass());
         if(encoder != null)

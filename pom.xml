@@ -16,36 +16,27 @@ limitations under the License.
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-
   <groupId>org.calrissian.mango</groupId>
   <artifactId>mango-parent</artifactId>
   <version>1.0.3-SNAPSHOT</version>
   <packaging>pom</packaging>
-
   <modules>
     <module>mango-core</module>
     <module>mango-accumulo</module>
     <module>mango-jms</module>
     <module>mango-json</module>
   </modules>
-
   <properties>
-    <accumulo.version>1.4.3</accumulo.version>
-    <activemq.version>5.6.0</activemq.version>
     <commons.codec.version>1.8</commons.codec.version>
     <commons.lang.version>2.6</commons.lang.version>
     <commons.net.version>3.3</commons.net.version>
-    <guava.version>14.0.1</guava.version>
-    <hadoop.version>0.20.2</hadoop.version>
-    <jackson.version>1.9.2</jackson.version>
-    <javax.jms.version>1.1</javax.jms.version>
+    <guava.version>15.0</guava.version>
     <junit.version>4.11</junit.version>
     <mockito.version>1.9.0</mockito.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <slf4j.version>1.6.4</slf4j.version>
-    <spring.version>3.0.5.RELEASE</spring.version>
   </properties>
-
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -68,51 +59,17 @@ limitations under the License.
         <artifactId>commons-net</artifactId>
         <version>${commons.net.version}</version>
       </dependency>
-
-      <!--Json-->
       <dependency>
-        <groupId>org.codehaus.jackson</groupId>
-        <artifactId>jackson-mapper-asl</artifactId>
-        <version>${jackson.version}</version>
+        <groupId>org.calrissian.mango</groupId>
+        <artifactId>mango-core</artifactId>
+        <version>${project.version}</version>
       </dependency>
-
       <!--Logging-->
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
         <version>${slf4j.version}</version>
       </dependency>
-
-      <!--Accumulo-->
-      <dependency>
-        <groupId>org.apache.accumulo</groupId>
-        <artifactId>accumulo-core</artifactId>
-        <version>${accumulo.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.hadoop</groupId>
-        <artifactId>hadoop-core</artifactId>
-        <version>${hadoop.version}</version>
-      </dependency>
-
-      <!--Jms-->
-      <dependency>
-        <groupId>javax.jms</groupId>
-        <artifactId>jms</artifactId>
-        <version>${javax.jms.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-jms</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.activemq</groupId>
-        <artifactId>activemq-core</artifactId>
-        <version>${activemq.version}</version>
-        <scope>test</scope>
-      </dependency>
-
       <!--Test-->
       <dependency>
         <groupId>junit</groupId>
@@ -128,7 +85,6 @@ limitations under the License.
       </dependency>
     </dependencies>
   </dependencyManagement>
-
   <build>
     <pluginManagement>
       <plugins>
@@ -138,14 +94,12 @@ limitations under the License.
           <configuration>
             <source>1.6</source>
             <target>1.6</target>
-            <encoding>UTF-8</encoding>
             <optimize>true</optimize>
           </configuration>
         </plugin>
         <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>2.9</version>
+          <version>2.9.1</version>
           <configuration>
             <quiet>true</quiet>
             <links>
@@ -156,9 +110,15 @@ limitations under the License.
           </configuration>
         </plugin>
         <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-source-plugin</artifactId>
           <version>2.2.1</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-release-plugin</artifactId>
+          <version>2.4.2</version>
+          <configuration>
+            <autoVersionSubmodules>true</autoVersionSubmodules>
+          </configuration>
         </plugin>
         <plugin>
           <groupId>org.apache.rat</groupId>
@@ -174,31 +134,18 @@ limitations under the License.
         <plugin>
           <groupId>com.google.code.sortpom</groupId>
           <artifactId>maven-sortpom-plugin</artifactId>
-          <version>2.1.0</version>
+          <version>2.3.0</version>
           <configuration>
             <predefinedSortOrder>custom_1</predefinedSortOrder>
             <lineSeparator>\n</lineSeparator>
             <encoding>${project.build.sourceEncoding}</encoding>
             <sortProperties>true</sortProperties>
-            <keepBlankLines>true</keepBlankLines>
-            <sortDependencies>scope</sortDependencies>
-            <createBackupFile>false</createBackupFile>
+            <sortDependencies>scope,groupId,artifactId</sortDependencies>
           </configuration>
         </plugin>
-
       </plugins>
     </pluginManagement>
-
     <plugins>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.3</version>
-        <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
-          <optimize>true</optimize>
-        </configuration>
-      </plugin>
       <plugin>
         <groupId>com.google.code.sortpom</groupId>
         <artifactId>maven-sortpom-plugin</artifactId>
@@ -215,13 +162,15 @@ limitations under the License.
     </plugins>
   </build>
 
-  <repositories>
-    <repository>
-      <id>repository.jboss.org-public</id>
-      <name>JBoss.org Maven repository</name>
-      <url>https://repository.jboss.org/nexus/content/groups/public</url>
-    </repository>
-  </repositories>
+  <organization>
+    <name>Calrissian</name>
+    <url>https://github.com/calrissian</url>
+  </organization>
+  <scm>
+    <connection>scm:git:https://github.com/calrissian/mango.git</connection>
+    <developerConnection>scm:git:https://github.com/calrissian/mango.git</developerConnection>
+    <tag>HEAD</tag>
+  </scm>
 
   <profiles>
     <profile>

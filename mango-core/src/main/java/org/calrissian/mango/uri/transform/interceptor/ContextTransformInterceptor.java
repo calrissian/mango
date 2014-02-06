@@ -19,5 +19,6 @@ import org.calrissian.mango.uri.transform.Transformable;
 
 public interface ContextTransformInterceptor<T> extends Transformable<T> {
 
+    @SuppressWarnings("rawtypes")
     Class intercepts();
 }
