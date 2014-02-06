@@ -20,6 +20,7 @@ package org.calrissian.mango.criteria.domain;
  * Time: 1:51 PM
  */
 public class RangeLeaf extends Leaf {
+    private static final long serialVersionUID = 1L;
 
     protected String key;
     protected Object start;

@@ -18,6 +18,7 @@ package org.calrissian.mango.jms.stream;
 import java.io.IOException;
 
 public class JmsFileTransferException extends IOException {
+    private static final long serialVersionUID = 1L;
 
     public JmsFileTransferException() {
     }

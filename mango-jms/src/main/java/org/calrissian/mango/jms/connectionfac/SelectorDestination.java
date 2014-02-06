@@ -20,6 +20,7 @@ import java.io.Serializable;
 
 
 public class SelectorDestination implements Queue, Topic, TemporaryQueue, TemporaryTopic, Serializable {
+    private static final long serialVersionUID = 1L;
     
     private String destination;
 

@@ -13,29 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.uri.transform.impl;
+package org.calrissian.mango.json.uri.transform;
 
 import com.google.common.net.MediaType;
+
 import org.calrissian.mango.uri.domain.ResolvedItem;
-import org.calrissian.mango.uri.exception.ContextTransformException;
 import org.calrissian.mango.uri.transform.ContextTransformService;
 import org.calrissian.mango.uri.transform.ContextTransformer;
-import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNull;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class JsonContextTransformTest {
 
     ContextTransformService contextTransformService;
 
+    @SuppressWarnings("rawtypes")
     @Before
     public void setUp() {
 
@@ -47,7 +46,7 @@ public class JsonContextTransformTest {
     }
 
     @Test
-    public void testJsonContextTransform() throws ContextTransformException, JsonGenerationException, IOException {
+    public void testJsonContextTransform() throws Exception {
 
         ArrayList<String> items = new ArrayList<String>();
         items.add("item1");

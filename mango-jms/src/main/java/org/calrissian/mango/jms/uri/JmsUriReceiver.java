@@ -38,6 +38,7 @@ public class JmsUriReceiver extends JmsFileReceiver {
         this.resolverRegistry = resolverRegistry;
     }
 
+    @SuppressWarnings("rawtypes")
     public Object resolveUri(String uri, String[] auths) throws IOException {
 
         try {

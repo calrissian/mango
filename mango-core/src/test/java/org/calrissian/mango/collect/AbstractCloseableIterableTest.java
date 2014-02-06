@@ -20,10 +20,11 @@ import org.calrissian.mango.collect.mock.MockIterable;
 import org.junit.Test;
 
 import static java.util.Collections.emptyList;
-import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertTrue;
 
 public class AbstractCloseableIterableTest {
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Test
     public void closeTest() throws Exception {
         MockIterable iterable = new MockIterable(emptyList());
@@ -31,6 +32,7 @@ public class AbstractCloseableIterableTest {
         assertTrue(iterable.isClosed());
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Test(expected = IllegalStateException.class)
     public void errorAfterCloseTest() throws Exception {
         MockIterable iterable = new MockIterable(emptyList());

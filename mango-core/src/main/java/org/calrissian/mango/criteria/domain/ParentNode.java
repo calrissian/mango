@@ -25,6 +25,7 @@ import java.util.List;
  * Time: 1:52 PM
  */
 public abstract class ParentNode implements Node {
+    private static final long serialVersionUID = 1L;
 
     protected List<Node> nodes;
     protected ParentNode parent;

@@ -35,6 +35,7 @@ public class CloseableIterators {
 
     private CloseableIterators() {/* private constructor */}
 
+    @SuppressWarnings("rawtypes")
     private static final CloseableIterator EMPTY_ITERATOR = wrap(Iterators.emptyIterator());
 
     /**
@@ -159,7 +160,11 @@ public class CloseableIterators {
             CloseableIterator<? extends T> curr = emptyIterator();
             @Override
             public void closeQuietly() {
-                Closeables.closeQuietly(this);
+                try {
+                    Closeables.close(this, true);
+                } catch (IOException e) {
+                    // IOException should not have been thrown
+                }
             }
 
             @Override
@@ -217,7 +222,11 @@ public class CloseableIterators {
             private boolean closed = false;
             @Override
             public void closeQuietly() {
-                Closeables.closeQuietly(this);
+                try {
+                    Closeables.close(this, true);
+                } catch (IOException e) {
+                    // IOException should not have been thrown
+                }
             }
 
             @Override
@@ -283,7 +292,11 @@ public class CloseableIterators {
 
             @Override
             public void closeQuietly() {
-                Closeables.closeQuietly(this);
+                try {
+                    Closeables.close(this, true);
+                } catch (IOException e) {
+                    // IOException should not have been thrown
+                }
             }
 
             @Override
@@ -320,7 +333,11 @@ public class CloseableIterators {
 
             @Override
             public void closeQuietly() {
-                Closeables.closeQuietly(this);
+                try {
+                    Closeables.close(this, true);
+                } catch (IOException e) {
+                    // IOException should not have been thrown
+                }
             }
 
             @Override

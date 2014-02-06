@@ -17,8 +17,6 @@ package org.calrissian.mango.types;
 
 
 import org.calrissian.mango.domain.IPv4;
-import org.calrissian.mango.types.TypeEncoder;
-import org.calrissian.mango.types.TypeRegistry;
 import org.calrissian.mango.types.encoders.*;
 import org.calrissian.mango.types.exception.TypeDecodingException;
 
@@ -38,6 +36,7 @@ public class GenericTypeEncoders {
 
     public GenericTypeEncoders() {/* private constructor */}
 
+    @SuppressWarnings("unchecked")
     public static final TypeRegistry<String> DEFAULT_TYPES = new TypeRegistry<String>(
             booleanEncoder(), byteEncoder(), dateEncoder(), doubleEncoder(), floatEncoder(),
             integerEncoder(), ipv4Encoder(), longEncoder(), stringEncoder(), uriEncoder()
