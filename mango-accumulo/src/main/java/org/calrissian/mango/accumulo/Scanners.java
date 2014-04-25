@@ -1,6 +1,7 @@
 package org.calrissian.mango.accumulo;
 
 import org.apache.accumulo.core.client.BatchScanner;
+import org.apache.accumulo.core.client.ScannerBase;
 import org.apache.accumulo.core.data.Key;
 import org.apache.accumulo.core.data.Value;
 import org.calrissian.mango.collect.CloseableIterable;
@@ -11,23 +12,24 @@ import java.util.Iterator;
 
 import static java.util.Map.Entry;
 
-public class BatchScanners {
+public class Scanners {
 
-    private BatchScanners() {/* private constructor */}
+    private Scanners() {/* private constructor */}
 
     /**
-     * Converts a {@link BatchScanner} into a {@link CloseableIterable}
+     * Converts a {@link ScannerBase} into a {@link CloseableIterable}
      */
-    public static CloseableIterable<Entry<Key, Value>> closeableIterable(final BatchScanner batchScanner) {
+    public static CloseableIterable<Entry<Key, Value>> closeableIterable(final ScannerBase scanner) {
         return new FluentCloseableIterable<Entry<Key, Value>>() {
             @Override
             protected void doClose() throws IOException {
-                batchScanner.close();
+                if (scanner instanceof BatchScanner)
+                    ((BatchScanner)scanner).close();
             }
 
             @Override
             protected Iterator<Entry<Key, Value>> retrieveIterator() {
-                return batchScanner.iterator();
+                return scanner.iterator();
             }
         };
     }
