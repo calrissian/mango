@@ -15,12 +15,12 @@
  */
 package org.calrissian.mango.json.uri.transform;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.net.MediaType;
 
 import org.calrissian.mango.uri.domain.ResolvedItem;
 import org.calrissian.mango.uri.transform.ContextTransformService;
 import org.calrissian.mango.uri.transform.ContextTransformer;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 

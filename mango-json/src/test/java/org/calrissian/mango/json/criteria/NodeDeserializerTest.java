@@ -15,9 +15,9 @@
  */
 package org.calrissian.mango.json.criteria;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.calrissian.mango.criteria.domain.Node;
 import org.calrissian.mango.criteria.visitor.PrintNodeVisitor;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
 import java.io.StringWriter;
@@ -32,7 +32,7 @@ import static org.junit.Assert.assertEquals;
 public class NodeDeserializerTest {
 
     private ObjectMapper objectMapper = new ObjectMapper()
-            .withModule(new CriteriaModule(DEFAULT_TYPES));
+            .registerModule(new CriteriaModule(DEFAULT_TYPES));
 
     @Test
     public void testEqDeserialize() throws Exception {
