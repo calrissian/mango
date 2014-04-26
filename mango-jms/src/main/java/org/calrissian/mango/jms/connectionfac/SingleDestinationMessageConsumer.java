@@ -22,27 +22,27 @@ import javax.jms.Message;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageListener;
 
-import static org.calrissian.mango.jms.connectionfac.JmsDecoratorUtils.postReceiveMessage;
+import static org.calrissian.mango.jms.connectionfac.SingleDestinationUtils.postReceiveMessage;
 
 /**
- * Class JmsMessageConsumerDecorator
+ * Class SingleDestinationMessageConsumer
  * Date: Nov 30, 2011
  * Time: 5:05:42 PM
  */
-public class JmsMessageConsumerDecorator extends MessageConsumerDecorator {
+class SingleDestinationMessageConsumer extends MessageConsumerDecorator {
 
-    public JmsMessageConsumerDecorator(MessageConsumer messageConsumer) {
+    public SingleDestinationMessageConsumer(MessageConsumer messageConsumer) {
         super(messageConsumer);
     }
 
     @Override
     public MessageListener getMessageListener() throws JMSException {
-        return ((JmsMessageListenerDecorator) super.getMessageListener()).getInternal();
+        return ((SingleDestinationMessageListener) super.getMessageListener()).getInternal();
     }
 
     @Override
     public void setMessageListener(MessageListener messageListener) throws JMSException {
-        super.setMessageListener(new JmsMessageListenerDecorator(messageListener));
+        super.setMessageListener(new SingleDestinationMessageListener(messageListener));
     }
 
     @Override

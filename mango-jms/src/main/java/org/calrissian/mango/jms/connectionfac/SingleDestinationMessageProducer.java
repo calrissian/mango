@@ -22,19 +22,19 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageProducer;
 
-import static org.calrissian.mango.jms.connectionfac.JmsDecoratorUtils.preSendMessage;
+import static org.calrissian.mango.jms.connectionfac.SingleDestinationUtils.preSendMessage;
 
 /**
- * Class JmsMessageProducerDecorator
+ * Class SingleDestinationMessageProducer
  * Date: Nov 27, 2011
  * Time: 5:25:02 PM
  */
-public class JmsMessageProducerDecorator extends MessageProducerDecorator {
+class SingleDestinationMessageProducer extends MessageProducerDecorator {
 
     private final Destination destination;
     private final SelectorDestination selectorDestination;
 
-    public JmsMessageProducerDecorator(MessageProducer messageProducer, Destination destination, SelectorDestination selectorDestination) {
+    public SingleDestinationMessageProducer(MessageProducer messageProducer, Destination destination, SelectorDestination selectorDestination) {
         super(messageProducer);
         this.destination = destination;
         this.selectorDestination = selectorDestination;

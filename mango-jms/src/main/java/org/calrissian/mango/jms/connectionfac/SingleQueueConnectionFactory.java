@@ -22,29 +22,26 @@ import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
 
 /**
- * Class JmsConnectionFactoryTopicDecorator
+ * Class SingleQueueConnectionFactory
  * Date: Nov 27, 2011
  * Time: 4:38:17 PM
  */
-public class JmsConnectionFactoryTopicDecorator extends ConnectionFactoryDecorator {
+public class SingleQueueConnectionFactory extends ConnectionFactoryDecorator {
 
-    private String baseTopic;
+    private final String baseQueue;
 
-    public JmsConnectionFactoryTopicDecorator(ConnectionFactory connectionFactory, String baseTopic) {
+    public SingleQueueConnectionFactory(ConnectionFactory connectionFactory, String baseQueue) {
         super(connectionFactory);
-        this.baseTopic = baseTopic;
+        this.baseQueue = baseQueue;
     }
 
     @Override
     public Connection createConnection() throws JMSException {
-        JmsConnectionTopicDecorator connectionTopicDecorator = new JmsConnectionTopicDecorator(super.createConnection(), baseTopic);
-        return connectionTopicDecorator;
+        return new SingleQueueConnection(super.createConnection(), baseQueue);
     }
 
     @Override
     public Connection createConnection(String userName, String password) throws JMSException {
-        JmsConnectionTopicDecorator connectionTopicDecorator = new JmsConnectionTopicDecorator(super.createConnection(userName, password), baseTopic);
-        return connectionTopicDecorator;
+        return new SingleTopicConnection(super.createConnection(userName, password), baseQueue);
     }
-
 }

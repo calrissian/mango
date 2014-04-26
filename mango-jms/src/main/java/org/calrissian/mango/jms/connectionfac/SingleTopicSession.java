@@ -21,40 +21,52 @@ import org.calrissian.mango.jms.connectionfac.decorator.SessionDecorator;
 import javax.jms.*;
 
 import static java.util.UUID.randomUUID;
-import static org.calrissian.mango.jms.connectionfac.JmsDecoratorUtils.*;
+import static org.calrissian.mango.jms.connectionfac.SingleDestinationUtils.*;
 
 /**
- * Class JmsSessionTopicDecorator
+ * Class SingleTopicSession
  * Date: Nov 27, 2011
  * Time: 4:44:38 PM
  */
-public class JmsSessionTopicDecorator extends SessionDecorator {
+class SingleTopicSession extends SessionDecorator {
 
     private final Topic topic;
 
-    public JmsSessionTopicDecorator(Session session, String baseTopic) throws JMSException {
+    public SingleTopicSession(Session session, String baseTopic) throws JMSException {
         super(session);
         this.topic = session.createTopic(baseTopic);
     }
 
     @Override
     public MessageProducer createProducer(Destination destination) throws JMSException {
-        return new JmsMessageProducerDecorator(super.createProducer(topic), topic, decorateDestination(destination));
+        if (destination instanceof Topic)
+            return new SingleDestinationMessageProducer(super.createProducer(topic), topic, decorateDestination(destination));
+
+        return super.createProducer(destination);
     }
 
     @Override
     public MessageConsumer createConsumer(Destination destination) throws JMSException {
-        return new JmsMessageConsumerDecorator(super.createConsumer(topic, generateSelector(getDestination(destination), null)));
+        if (destination instanceof Topic)
+            return new SingleDestinationMessageConsumer(super.createConsumer(topic, generateSelector(getDestination(destination), null)));
+
+        return super.createConsumer(destination);
     }
 
     @Override
     public MessageConsumer createConsumer(Destination destination, String selector) throws JMSException {
-        return new JmsMessageConsumerDecorator(super.createConsumer(topic, generateSelector(getDestination(destination), selector)));
+        if (destination instanceof Topic)
+            return new SingleDestinationMessageConsumer(super.createConsumer(topic, generateSelector(getDestination(destination), selector)));
+
+        return super.createConsumer(destination, selector);
     }
 
     @Override
     public MessageConsumer createConsumer(Destination destination, String selector, boolean noLocal) throws JMSException {
-        return new JmsMessageConsumerDecorator(super.createConsumer(topic, generateSelector(getDestination(destination), selector), noLocal));
+        if (destination instanceof Topic)
+            return new SingleDestinationMessageConsumer(super.createConsumer(topic, generateSelector(getDestination(destination), selector), noLocal));
+
+        return super.createConsumer(destination, selector, noLocal);
     }
 
     @Override
@@ -68,27 +80,8 @@ public class JmsSessionTopicDecorator extends SessionDecorator {
     }
 
     @Override
-    public QueueBrowser createBrowser(Queue queue) throws JMSException {
-        throw new UnsupportedOperationException("Queue Browser not supported as of yet");
-    }
-
-    @Override
-    public QueueBrowser createBrowser(Queue queue, String selector) throws JMSException {
-        throw new UnsupportedOperationException("Queue Browser not supported as of yet");
-    }
-
-    public TemporaryQueue createTemporaryQueue() throws JMSException {
-        return new SelectorDestination(randomUUID().toString());
-    }
-
-    @Override
     public TemporaryTopic createTemporaryTopic() throws JMSException {
         return new SelectorDestination(randomUUID().toString());
-    }
-
-    @Override
-    public Queue createQueue(String name) throws JMSException {
-        return new SelectorDestination(name);
     }
 
     @Override

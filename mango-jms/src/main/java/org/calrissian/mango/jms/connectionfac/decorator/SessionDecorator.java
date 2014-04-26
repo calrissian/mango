@@ -19,7 +19,7 @@ package org.calrissian.mango.jms.connectionfac.decorator;
 import javax.jms.*;
 import java.io.Serializable;
 
-public abstract class SessionDecorator implements Session, TopicSession, QueueSession {
+public abstract class SessionDecorator implements Session {
 
     private final Session session;
 
@@ -175,36 +175,6 @@ public abstract class SessionDecorator implements Session, TopicSession, QueueSe
     @Override
     public void unsubscribe(String name) throws JMSException {
         session.unsubscribe(name);
-    }
-
-    @Override
-    public QueueReceiver createReceiver(Queue queue) throws JMSException {
-        return ((QueueSession)session).createReceiver(queue);
-    }
-
-    @Override
-    public QueueReceiver createReceiver(Queue queue, String s) throws JMSException {
-        return ((QueueSession)session).createReceiver(queue, s);
-    }
-
-    @Override
-    public QueueSender createSender(Queue queue) throws JMSException {
-        return ((QueueSession)session).createSender(queue);
-    }
-
-    @Override
-    public TopicSubscriber createSubscriber(Topic topic) throws JMSException {
-        return ((TopicSession)session).createSubscriber(topic);
-    }
-
-    @Override
-    public TopicSubscriber createSubscriber(Topic topic, String s, boolean b) throws JMSException {
-        return ((TopicSession)session).createSubscriber(topic, s, b);
-    }
-
-    @Override
-    public TopicPublisher createPublisher(Topic topic) throws JMSException {
-        return ((TopicSession)session).createPublisher(topic);
     }
 
     public Session getInternal() {

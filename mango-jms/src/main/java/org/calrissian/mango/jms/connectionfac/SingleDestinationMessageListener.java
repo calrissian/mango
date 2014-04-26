@@ -21,16 +21,16 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 
-import static org.calrissian.mango.jms.connectionfac.JmsDecoratorUtils.postReceiveMessage;
+import static org.calrissian.mango.jms.connectionfac.SingleDestinationUtils.postReceiveMessage;
 
 /**
- * Class JmsMessageListenerDecorator
+ * Class SingleDestinationMessageListener
  * Date: Nov 30, 2011
  * Time: 5:07:28 PM
  */
-public class JmsMessageListenerDecorator extends MessageListenerDecorator {
+class SingleDestinationMessageListener extends MessageListenerDecorator {
 
-    public JmsMessageListenerDecorator(MessageListener messageListener) {
+    public SingleDestinationMessageListener(MessageListener messageListener) {
         super(messageListener);
     }
 
