@@ -15,12 +15,12 @@
  */
 package org.calrissian.mango.json.criteria;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.calrissian.mango.criteria.builder.QueryBuilder;
 import org.calrissian.mango.criteria.domain.EqualsLeaf;
 import org.calrissian.mango.criteria.domain.Node;
 import org.calrissian.mango.criteria.domain.RangeLeaf;
 import org.calrissian.mango.domain.IPv4;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
 
@@ -34,7 +34,7 @@ import static org.junit.Assert.assertEquals;
 public class NodeSerializerTest {
 
     private ObjectMapper objectMapper = new ObjectMapper()
-            .withModule(new CriteriaModule(DEFAULT_TYPES));
+            .registerModule(new CriteriaModule(DEFAULT_TYPES));
 
     @Test
     public void testEqSerialization() throws Exception {

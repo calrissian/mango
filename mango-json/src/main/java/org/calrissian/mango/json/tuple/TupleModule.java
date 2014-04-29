@@ -16,14 +16,13 @@
 package org.calrissian.mango.json.tuple;
 
 
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.calrissian.mango.domain.Tuple;
 import org.calrissian.mango.types.TypeRegistry;
-import org.codehaus.jackson.Version;
-import org.codehaus.jackson.map.module.SimpleModule;
 
 import static org.calrissian.mango.types.GenericTypeEncoders.DEFAULT_TYPES;
 
-public class TupleModule extends SimpleModule{
+public class TupleModule extends SimpleModule {
 
     private final TypeRegistry<String> typeContext;
 
@@ -32,7 +31,7 @@ public class TupleModule extends SimpleModule{
     }
 
     public TupleModule(TypeRegistry<String> typeContext) {
-        super("TupleModule", new Version(0,0,1,null));
+        super("TupleModule");
         this.typeContext = typeContext;
     }
 
