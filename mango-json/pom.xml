@@ -37,7 +37,7 @@ limitations under the License.
       <artifactId>guava</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.calrissian.mango</groupId>
+      <groupId>org.calrissian</groupId>
       <artifactId>mango-core</artifactId>
     </dependency>
     <dependency>

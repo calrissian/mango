@@ -44,7 +44,7 @@ limitations under the License.
       <version>${geronimo.jms.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.calrissian.mango</groupId>
+      <groupId>org.calrissian</groupId>
       <artifactId>mango-core</artifactId>
     </dependency>
     <dependency>
