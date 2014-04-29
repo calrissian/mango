@@ -161,12 +161,35 @@ limitations under the License.
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <version>1.5</version>
+        <executions>
+          <execution>
+            <id>sign-artifacts</id>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+            <phase>verify</phase>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
   <organization>
     <name>Calrissian</name>
     <url>http://www.calrissian.org</url>
   </organization>
+  <url>http://www.calrissian.org</url>
+  <developers>
+    <developer>
+      <name>Corey Nolet</name>
+    </developer>
+    <developer>
+      <name>Edward Wagner</name>
+    </developer>
+  </developers>
   <licenses>
     <license>
       <name>Apache License, Version 2.0</name>
