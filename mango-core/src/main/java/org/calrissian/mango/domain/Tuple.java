@@ -16,13 +16,13 @@
 package org.calrissian.mango.domain;
 
 
-public class Tuple {
+public class Tuple<T> {
 
     protected final String key;
-    protected final Object value;
+    protected final T value;
     protected final String visibility;
 
-    public Tuple(String key, Object value, String visibility) {
+    public Tuple(String key, T value, String visibility) {
         this.key = key;
         this.value = value;
         this.visibility = visibility;
@@ -32,7 +32,7 @@ public class Tuple {
         return key;
     }
 
-    public Object getValue() {
+    public T getValue() {
         return value;
     }
 

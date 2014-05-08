@@ -19,10 +19,7 @@ import org.calrissian.mango.criteria.visitor.NodeVisitor;
 
 import java.util.List;
 
-/**
- * Date: 11/9/12
- * Time: 1:46 PM
- */
+
 public abstract class Leaf implements Node {
     private static final long serialVersionUID = 1L;
 

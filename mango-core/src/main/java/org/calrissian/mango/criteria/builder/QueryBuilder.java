@@ -67,7 +67,6 @@ public class QueryBuilder {
         checkFinished();
         EqualsLeaf equalsLeaf = new EqualsLeaf(type, value, current);
         if (this.current == null) {
-            //single statement, can't add anymore
             this.current = new AndNode();
             finished = true;
         }
@@ -84,7 +83,6 @@ public class QueryBuilder {
         checkFinished();
         NotEqualsLeaf notEqualsLeaf = new NotEqualsLeaf(type, value, current);
         if (this.current == null) {
-            //single statement, can't add anymore
             this.current = new AndNode();
             finished = true;
         }
@@ -92,23 +90,70 @@ public class QueryBuilder {
         return this;
     }
 
-    public QueryBuilder range(String type, Object start, Object end) {
-        checkFinished();
-        RangeLeaf rangeLeaf = new RangeLeaf(type, start, end, current);
-        if (this.current == null) {
-            //single statement, can't add anymore
-            this.current = new AndNode();
-            finished = true;
-        }
-        this.current.addChild(rangeLeaf);
-        return this;
+
+    public QueryBuilder lessThan(String type, Object value) {
+      checkFinished();
+      LessThanLeaf leaf = new LessThanLeaf(type, value, current);
+      if (this.current == null) {
+        this.current = new AndNode();
+        finished = true;
+      }
+      this.current.addChild(leaf);
+      return this;
     }
 
-    public QueryBuilder endStatement() {
-        checkFinished();
+    public QueryBuilder lessThanEq(String type, Object value) {
+      checkFinished();
+      LessThanEqualsLeaf leaf = new LessThanEqualsLeaf(type, value, current);
+      if (this.current == null) {
+        this.current = new AndNode();
         finished = true;
-        if (parentBuilder == null)
-            return this;
-        return parentBuilder;
+      }
+      this.current.addChild(leaf);
+      return this;
+    }
+
+  public QueryBuilder greaterThan(String type, Object value) {
+      checkFinished();
+      GreaterThanLeaf leaf = new GreaterThanLeaf(type, value, current);
+      if (this.current == null) {
+        this.current = new AndNode();
+        finished = true;
+      }
+      this.current.addChild(leaf);
+      return this;
+    }
+
+    public QueryBuilder greaterThanEq(String type, Object value) {
+      checkFinished();
+      GreaterThanEqualsLeaf leaf = new GreaterThanEqualsLeaf(type, value, current);
+      if (this.current == null) {
+        this.current = new AndNode();
+        finished = true;
+      }
+      this.current.addChild(leaf);
+      return this;
+    }
+
+
+    public QueryBuilder range(String type, Object start, Object end) {
+      checkFinished();
+      RangeLeaf rangeLeaf = new RangeLeaf(type, start, end, current);
+      if (this.current == null) {
+          this.current = new AndNode();
+          finished = true;
+      }
+      this.current.addChild(rangeLeaf);
+      return this;
+    }
+
+
+
+    public QueryBuilder endStatement() {
+      checkFinished();
+      finished = true;
+      if (parentBuilder == null)
+        return this;
+      return parentBuilder;
     }
 }

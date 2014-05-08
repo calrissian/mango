@@ -15,14 +15,5 @@
  */
 package org.calrissian.mango.criteria.domain;
 
-/**
- * Date: 11/9/12
- * Time: 1:57 PM
- */
-public class NotEqualsLeaf extends AbstractKeyValueLeaf {
-    private static final long serialVersionUID = 1L;
-
-  public NotEqualsLeaf(String key, Object value, ParentNode parent) {
-    super(key, value, parent);
-  }
+public class InLeaf {
 }

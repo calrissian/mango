@@ -24,10 +24,6 @@ import org.calrissian.mango.types.exception.TypeEncodingException;
 
 import java.io.IOException;
 
-/**
- * Date: 11/15/12
- * Time: 10:01 AM
- */
 public class NodeSerializer extends JsonSerializer<Node> {
 
     private final TypeRegistry<String> typeRegistry;

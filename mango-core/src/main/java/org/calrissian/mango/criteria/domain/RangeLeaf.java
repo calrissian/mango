@@ -19,20 +19,18 @@ package org.calrissian.mango.criteria.domain;
  * Date: 11/9/12
  * Time: 1:51 PM
  */
-public class RangeLeaf extends Leaf {
+public class RangeLeaf extends AbstractKeyValueLeaf {
     private static final long serialVersionUID = 1L;
 
     protected String key;
-    protected Object start;
     protected Object end;
 
     public RangeLeaf() {
     }
 
     public RangeLeaf(String key, Object start, Object end, ParentNode parent) {
-        super(parent);
+        super(key, start, parent);
         this.key = key;
-        this.start = start;
         this.end = end;
     }
 
@@ -45,11 +43,11 @@ public class RangeLeaf extends Leaf {
     }
 
     public Object getStart() {
-        return start;
+        return getValue();
     }
 
     public void setStart(Object start) {
-        this.start = start;
+        this.value = start;
     }
 
     public Object getEnd() {
@@ -60,25 +58,27 @@ public class RangeLeaf extends Leaf {
         this.end = end;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    if (!super.equals(o)) return false;
 
-        RangeLeaf rangeLeaf = (RangeLeaf) o;
+    RangeLeaf rangeLeaf = (RangeLeaf) o;
 
-        if (end != null ? !end.equals(rangeLeaf.end) : rangeLeaf.end != null) return false;
-        if (key != null ? !key.equals(rangeLeaf.key) : rangeLeaf.key != null) return false;
-        if (start != null ? !start.equals(rangeLeaf.start) : rangeLeaf.start != null) return false;
+    if (end != null ? !end.equals(rangeLeaf.end) : rangeLeaf.end != null) return false;
+    if (key != null ? !key.equals(rangeLeaf.key) : rangeLeaf.key != null) return false;
 
-        return true;
-    }
+    return true;
+  }
 
-    @Override
-    public int hashCode() {
-        int result = (key != null ? key.hashCode() : 0);
-        result = 31 * result + (start != null ? start.hashCode() : 0);
-        result = 31 * result + (end != null ? end.hashCode() : 0);
-        return result;
-    }
+  @Override
+  public int hashCode() {
+    int result = super.hashCode();
+    result = 31 * result + (key != null ? key.hashCode() : 0);
+    result = 31 * result + (end != null ? end.hashCode() : 0);
+    return result;
+  }
+
+
 }
