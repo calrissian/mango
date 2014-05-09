@@ -22,7 +22,7 @@ import org.junit.Test;
 
 import java.io.StringWriter;
 
-import static org.calrissian.mango.types.GenericTypeEncoders.DEFAULT_TYPES;
+import static org.calrissian.mango.types.SimpleTypeEncoders.SIMPLE_TYPES;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -32,7 +32,7 @@ import static org.junit.Assert.assertEquals;
 public class NodeDeserializerTest {
 
     private ObjectMapper objectMapper = new ObjectMapper()
-            .registerModule(new CriteriaModule(DEFAULT_TYPES));
+            .registerModule(new CriteriaModule(SIMPLE_TYPES));
 
     @Test
     public void testEqDeserialize() throws Exception {

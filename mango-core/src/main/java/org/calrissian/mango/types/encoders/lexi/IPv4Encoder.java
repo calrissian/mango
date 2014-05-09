@@ -13,26 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.accumulo.types.impl;
+package org.calrissian.mango.types.encoders.lexi;
 
 
-import org.calrissian.mango.types.encoders.AbstractLongEncoder;
+import org.calrissian.mango.domain.IPv4;
+import org.calrissian.mango.types.encoders.AbstractIPv4Encoder;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static org.calrissian.mango.types.encoders.lexi.EncodingUtils.encodeUInt;
+import static org.calrissian.mango.types.encoders.lexi.EncodingUtils.fromHex;
 
-public class LongReverseEncoder extends AbstractLongEncoder<String> {
-
-    private static final LongEncoder longEncoder = new LongEncoder();
-
+public class IPv4Encoder extends AbstractIPv4Encoder<String> {
     @Override
-    public String encode(Long value) {
+    public String encode(IPv4 value) {
         checkNotNull(value, "Null values are not allowed");
-        return longEncoder.encode(~value);
+        return encodeUInt((int)value.getValue());
     }
 
     @Override
-    public Long decode(String value) {
+    public IPv4 decode(String value) {
         checkNotNull(value, "Null values are not allowed");
-        return ~longEncoder.decode(value);
+        return new IPv4(fromHex(value));
     }
 }

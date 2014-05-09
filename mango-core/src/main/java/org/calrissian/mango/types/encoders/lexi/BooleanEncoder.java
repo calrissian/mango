@@ -13,24 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.accumulo.types.impl;
+package org.calrissian.mango.types.encoders.lexi;
 
 
-import org.calrissian.mango.types.encoders.AbstractDoubleEncoder;
+import org.calrissian.mango.types.encoders.AbstractBooleanEncoder;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static org.calrissian.mango.accumulo.types.impl.EncodingUtils.*;
 
-public class DoubleEncoder extends AbstractDoubleEncoder<String> {
+public class BooleanEncoder extends AbstractBooleanEncoder<String> {
     @Override
-    public String encode(Double value) {
+    public String encode(Boolean value) {
         checkNotNull(value, "Null values are not allowed");
-        return encodeULong(normalizeDouble(value));
+        return (value ? "1" : "0");
     }
 
     @Override
-    public Double decode(String value) {
+    public Boolean decode(String value) {
         checkNotNull(value, "Null values are not allowed");
-        return denormalizeDouble(fromHex(value));
+
+        String lowercase = value.toLowerCase();
+        if(!lowercase.equals("1") && !lowercase.equals("0"))
+            throw new RuntimeException("The value " + value + " is not a valid boolean.");
+
+        return value.equals("1");
     }
 }

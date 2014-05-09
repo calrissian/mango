@@ -13,32 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.accumulo.types;
+package org.calrissian.mango.types;
 
 
-import org.calrissian.mango.accumulo.types.impl.*;
+import org.calrissian.mango.types.encoders.lexi.*;
 import org.calrissian.mango.domain.IPv4;
-import org.calrissian.mango.types.GenericTypeEncoders;
-import org.calrissian.mango.types.TypeEncoder;
-import org.calrissian.mango.types.TypeRegistry;
 
 import java.net.URI;
 import java.util.Date;
 
 /**
- * Default type encoders for normalizing data to
+ * Default type encoders for serializing data to strings that are lexicographically sortable.
  *
- * These methods implement the default implementations for the old TypesNormalizer's normalize and denormalize
+ * These methods implement the default implementations for the generic TypesNormalizer's normalize and denormalize
  * functions.
  */
-public class AccumuloTypeEncoders {
+public class LexiTypeEncoders {
 
-    public static final TypeRegistry<String> ACCUMULO_TYPES = new TypeRegistry<String>(
+    public static final TypeRegistry<String> LEXI_TYPES = new TypeRegistry<String>(
             booleanEncoder(), byteEncoder(), dateEncoder(), doubleEncoder(), floatEncoder(),
             integerEncoder(), ipv4Encoder(), longEncoder(), stringEncoder(), uriEncoder()
     );
 
-    public static final TypeRegistry<String> ACCUMULO_REVERSE_TYPES = new TypeRegistry<String>(
+    public static final TypeRegistry<String> LEXI_REV_TYPES = new TypeRegistry<String>(
             booleanRevEncoder(), byteRevEncoder(), dateRevEncoder(), doubleRevEncoder(), floatRevEncoder(),
             integerRevEncoder(), ipv4RevEncoder(), longRevEncoder(), stringRevEncoder(), uriRevEncoder()
     );
@@ -112,7 +109,7 @@ public class AccumuloTypeEncoders {
     }
 
     public static TypeEncoder<String, String> stringEncoder() {
-        return GenericTypeEncoders.stringEncoder();
+        return SimpleTypeEncoders.stringEncoder();
     }
 
     public static TypeEncoder<String, String> stringRevEncoder() {
@@ -120,7 +117,7 @@ public class AccumuloTypeEncoders {
     }
 
     public static TypeEncoder<URI, String> uriEncoder() {
-        return GenericTypeEncoders.uriEncoder();
+        return SimpleTypeEncoders.uriEncoder();
     }
 
     public static TypeEncoder<URI, String> uriRevEncoder() {

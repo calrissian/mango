@@ -13,24 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.accumulo.types.impl;
-
+package org.calrissian.mango.types.encoders.lexi;
 
 import org.calrissian.mango.types.encoders.AbstractByteEncoder;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static org.calrissian.mango.accumulo.types.impl.EncodingUtils.fromHex;
 
-public class ByteEncoder extends AbstractByteEncoder<String> {
+public class ByteReverseEncoder extends AbstractByteEncoder<String> {
+
+    private static final ByteEncoder byteEncoder = new ByteEncoder();
+
     @Override
     public String encode(Byte value) {
         checkNotNull(value, "Null values are not allowed");
-        return String.format("%02x", value);
+        return byteEncoder.encode((byte)~value);
     }
 
     @Override
     public Byte decode(String value) {
         checkNotNull(value, "Null values are not allowed");
-        return (byte) fromHex(value);
+        return (byte)~byteEncoder.decode(value);
     }
 }

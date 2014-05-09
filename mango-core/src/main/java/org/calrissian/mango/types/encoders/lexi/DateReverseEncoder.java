@@ -13,25 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.accumulo.types.impl;
+package org.calrissian.mango.types.encoders.lexi;
 
 
-import org.calrissian.mango.types.encoders.AbstractIntegerEncoder;
+import org.calrissian.mango.types.encoders.AbstractDateEncoder;
+
+import java.util.Date;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static org.calrissian.mango.accumulo.types.impl.EncodingUtils.encodeUInt;
-import static org.calrissian.mango.accumulo.types.impl.EncodingUtils.fromHex;
 
-public class IntegerEncoder extends AbstractIntegerEncoder<String> {
+public class DateReverseEncoder extends AbstractDateEncoder<String> {
+
+    private static final LongEncoder longEncoder = new LongEncoder();
+
     @Override
-    public String encode(Integer value) {
+    public String encode(Date value) {
         checkNotNull(value, "Null values are not allowed");
-        return encodeUInt(value ^ Integer.MIN_VALUE);
+        return longEncoder.encode(~value.getTime());
     }
 
     @Override
-    public Integer decode(String value) {
+    public Date decode(String value) {
         checkNotNull(value, "Null values are not allowed");
-        return (int)fromHex(value) ^ Integer.MIN_VALUE;
+        return new Date(~longEncoder.decode(value));
     }
 }
