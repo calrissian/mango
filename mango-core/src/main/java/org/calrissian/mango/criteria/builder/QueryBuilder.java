@@ -59,7 +59,7 @@ public class QueryBuilder {
     }
 
     public Node build() {
-        if (!finished) throw new IllegalArgumentException("Query Node not built, endStatement first");
+        if (!finished) throw new IllegalArgumentException("Query Node not built, end first");
         return current;
     }
 
@@ -149,7 +149,7 @@ public class QueryBuilder {
 
 
 
-    public QueryBuilder endStatement() {
+    public QueryBuilder end() {
       checkFinished();
       finished = true;
       if (parentBuilder == null)

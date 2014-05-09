@@ -28,7 +28,7 @@ public class QueryBuilderTest {
     @Test
     public void testBuildSimpleAndStatement() throws Exception {
         //and (eq, noteq, range)
-        Node build = new QueryBuilder().and().eq("k1", "v1").notEq("k2", "v2").range("k3", "1", "2").endStatement().build();
+        Node build = new QueryBuilder().and().eq("k1", "v1").notEq("k2", "v2").range("k3", "1", "2").end().build();
 
         StringWriter writer = new StringWriter();
         build.accept(new PrintNodeVisitor(writer));
@@ -47,7 +47,7 @@ public class QueryBuilderTest {
     @Test
     public void testBuildComplexOrAndQuery() throws Exception {
         StringWriter writer = new StringWriter();
-        Node node = new QueryBuilder().or().and().eq("k1", "v1").notEq("k2", "v2").range("k3", "1", "2").endStatement().and().eq("k4", "v4").endStatement().endStatement().build();
+        Node node = new QueryBuilder().or().and().eq("k1", "v1").notEq("k2", "v2").range("k3", "1", "2").end().and().eq("k4", "v4").end().end().build();
         node.accept(new PrintNodeVisitor(writer));
         assertEquals("OrNode(AndNode(Equals[k1,v1],NotEquals[k2,v2],Range[k3,(1,2)],),AndNode(Equals[k4,v4],),),", writer.toString());
     }

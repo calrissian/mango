@@ -15,9 +15,7 @@
  */
 package org.calrissian.mango.criteria.utils;
 
-import org.calrissian.mango.criteria.domain.Leaf;
-import org.calrissian.mango.criteria.domain.Node;
-import org.calrissian.mango.criteria.domain.ParentNode;
+import org.calrissian.mango.criteria.domain.*;
 
 public class NodeUtils {
 
@@ -32,5 +30,10 @@ public class NodeUtils {
             if (!isLeaf(child)) return false;
         }
         return true;
+    }
+
+    public static boolean isRangeLeaf(Leaf leaf) {
+      return leaf instanceof RangeLeaf || leaf instanceof GreaterThanEqualsLeaf || leaf instanceof GreaterThanLeaf ||
+              leaf instanceof LessThanLeaf || leaf instanceof LessThanEqualsLeaf;
     }
 }
