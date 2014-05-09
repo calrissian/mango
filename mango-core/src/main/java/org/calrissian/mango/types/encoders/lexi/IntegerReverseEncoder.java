@@ -13,25 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.accumulo.types.impl;
+package org.calrissian.mango.types.encoders.lexi;
 
 
-import org.calrissian.mango.types.encoders.AbstractBooleanEncoder;
+import org.calrissian.mango.types.encoders.AbstractIntegerEncoder;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class BooleanReverseEncoder extends AbstractBooleanEncoder<String> {
+public class IntegerReverseEncoder extends AbstractIntegerEncoder<String> {
 
-    private static final BooleanEncoder booleanEncoder = new BooleanEncoder();
+    private static final IntegerEncoder intEncoder = new IntegerEncoder();
 
     @Override
-    public String encode(Boolean value) {
+    public String encode(Integer value) {
         checkNotNull(value, "Null values are not allowed");
-        return booleanEncoder.encode(!value);
+        return intEncoder.encode(~value);
     }
 
     @Override
-    public Boolean decode(String value) {
-        return !booleanEncoder.decode(value);
+    public Integer decode(String value) {
+        checkNotNull(value, "Null values are not allowed");
+        return ~intEncoder.decode(value);
     }
 }

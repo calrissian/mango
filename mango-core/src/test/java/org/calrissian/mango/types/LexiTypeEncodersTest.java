@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.accumulo.types;
+package org.calrissian.mango.types;
 
 import org.calrissian.mango.domain.IPv4;
-import org.calrissian.mango.types.TypeEncoder;
 import org.calrissian.mango.types.exception.TypeDecodingException;
 import org.calrissian.mango.types.exception.TypeEncodingException;
 import org.junit.Test;
@@ -24,11 +23,10 @@ import org.junit.Test;
 import java.net.URI;
 import java.util.Date;
 
-
-import static org.calrissian.mango.accumulo.types.AccumuloTypeEncoders.*;
+import static org.calrissian.mango.types.LexiTypeEncoders.*;
 import static org.junit.Assert.assertEquals;
 
-public class AccumuloTypeEncodersTest {
+public class LexiTypeEncodersTest {
 
     private static<T> void verifyBasicFunctionality(String alias, T testObject, TypeEncoder<T, String> encoder) throws TypeEncodingException, TypeDecodingException {
         assertEquals(alias, encoder.getAlias());

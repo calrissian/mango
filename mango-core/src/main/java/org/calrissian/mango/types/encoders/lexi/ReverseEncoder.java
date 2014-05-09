@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.accumulo.types.impl;
+package org.calrissian.mango.types.encoders.lexi;
 
 
 import org.calrissian.mango.types.TypeEncoder;
@@ -21,7 +21,7 @@ import org.calrissian.mango.types.exception.TypeDecodingException;
 import org.calrissian.mango.types.exception.TypeEncodingException;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static org.calrissian.mango.accumulo.types.impl.EncodingUtils.reverse;
+import static org.calrissian.mango.types.encoders.lexi.EncodingUtils.reverse;
 
 public class ReverseEncoder <T> implements TypeEncoder<T, String> {
 

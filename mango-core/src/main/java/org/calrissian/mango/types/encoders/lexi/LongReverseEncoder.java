@@ -13,25 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.accumulo.types.impl;
+package org.calrissian.mango.types.encoders.lexi;
 
-import org.calrissian.mango.types.encoders.AbstractByteEncoder;
+
+import org.calrissian.mango.types.encoders.AbstractLongEncoder;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class ByteReverseEncoder extends AbstractByteEncoder<String> {
+public class LongReverseEncoder extends AbstractLongEncoder<String> {
 
-    private static final ByteEncoder byteEncoder = new ByteEncoder();
+    private static final LongEncoder longEncoder = new LongEncoder();
 
     @Override
-    public String encode(Byte value) {
+    public String encode(Long value) {
         checkNotNull(value, "Null values are not allowed");
-        return byteEncoder.encode((byte)~value);
+        return longEncoder.encode(~value);
     }
 
     @Override
-    public Byte decode(String value) {
+    public Long decode(String value) {
         checkNotNull(value, "Null values are not allowed");
-        return (byte)~byteEncoder.decode(value);
+        return ~longEncoder.decode(value);
     }
 }

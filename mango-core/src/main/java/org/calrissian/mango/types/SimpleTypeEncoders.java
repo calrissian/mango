@@ -32,12 +32,12 @@ import static java.lang.Float.parseFloat;
 import static java.lang.Integer.parseInt;
 import static java.lang.Long.parseLong;
 
-public class GenericTypeEncoders {
+public class SimpleTypeEncoders {
 
-    public GenericTypeEncoders() {/* private constructor */}
+    public SimpleTypeEncoders() {/* private constructor */}
 
     @SuppressWarnings("unchecked")
-    public static final TypeRegistry<String> DEFAULT_TYPES = new TypeRegistry<String>(
+    public static final TypeRegistry<String> SIMPLE_TYPES = new TypeRegistry<String>(
             booleanEncoder(), byteEncoder(), dateEncoder(), doubleEncoder(), floatEncoder(),
             integerEncoder(), ipv4Encoder(), longEncoder(), stringEncoder(), uriEncoder()
     );

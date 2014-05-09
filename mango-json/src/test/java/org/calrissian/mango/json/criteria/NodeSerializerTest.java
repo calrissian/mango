@@ -24,7 +24,7 @@ import org.calrissian.mango.domain.IPv4;
 import org.junit.Test;
 
 
-import static org.calrissian.mango.types.GenericTypeEncoders.DEFAULT_TYPES;
+import static org.calrissian.mango.types.SimpleTypeEncoders.SIMPLE_TYPES;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -34,7 +34,7 @@ import static org.junit.Assert.assertEquals;
 public class NodeSerializerTest {
 
     private ObjectMapper objectMapper = new ObjectMapper()
-            .registerModule(new CriteriaModule(DEFAULT_TYPES));
+            .registerModule(new CriteriaModule(SIMPLE_TYPES));
 
     @Test
     public void testEqSerialization() throws Exception {

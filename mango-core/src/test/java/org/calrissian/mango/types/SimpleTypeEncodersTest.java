@@ -24,10 +24,10 @@ import org.junit.Test;
 import java.net.URI;
 import java.util.Date;
 
-import static org.calrissian.mango.types.GenericTypeEncoders.*;
+import static org.calrissian.mango.types.SimpleTypeEncoders.*;
 import static org.junit.Assert.assertEquals;
 
-public class GenericTypeEncodersTest {
+public class SimpleTypeEncodersTest {
 
 
     private static<T> void verifyBasicFunctionality(String alias, T testObject, TypeEncoder<T, String> encoder) throws TypeEncodingException, TypeDecodingException {

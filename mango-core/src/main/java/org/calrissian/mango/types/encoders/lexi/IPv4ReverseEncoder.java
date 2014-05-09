@@ -13,28 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.accumulo.types.impl;
+package org.calrissian.mango.types.encoders.lexi;
 
 
-import org.calrissian.mango.types.encoders.AbstractBooleanEncoder;
+import org.calrissian.mango.domain.IPv4;
+import org.calrissian.mango.types.encoders.AbstractIPv4Encoder;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static org.calrissian.mango.types.encoders.lexi.EncodingUtils.encodeUInt;
+import static org.calrissian.mango.types.encoders.lexi.EncodingUtils.fromHex;
 
-public class BooleanEncoder extends AbstractBooleanEncoder<String> {
+public class IPv4ReverseEncoder extends AbstractIPv4Encoder<String> {
     @Override
-    public String encode(Boolean value) {
+    public String encode(IPv4 value) {
         checkNotNull(value, "Null values are not allowed");
-        return (value ? "1" : "0");
+        return encodeUInt(~(int)value.getValue());
     }
 
     @Override
-    public Boolean decode(String value) {
+    public IPv4 decode(String value) {
         checkNotNull(value, "Null values are not allowed");
-
-        String lowercase = value.toLowerCase();
-        if(!lowercase.equals("1") && !lowercase.equals("0"))
-            throw new RuntimeException("The value " + value + " is not a valid boolean.");
-
-        return value.equals("1");
+        return new IPv4(~fromHex(value) & 0xffffffffL);
     }
 }

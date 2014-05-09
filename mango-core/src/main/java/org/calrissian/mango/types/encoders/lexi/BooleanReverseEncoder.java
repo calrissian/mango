@@ -13,24 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.accumulo.types.impl;
+package org.calrissian.mango.types.encoders.lexi;
 
-import org.calrissian.mango.types.encoders.AbstractLongEncoder;
+
+import org.calrissian.mango.types.encoders.AbstractBooleanEncoder;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static org.calrissian.mango.accumulo.types.impl.EncodingUtils.encodeULong;
-import static org.calrissian.mango.accumulo.types.impl.EncodingUtils.fromHex;
 
-public class LongEncoder extends AbstractLongEncoder<String> {
+public class BooleanReverseEncoder extends AbstractBooleanEncoder<String> {
+
+    private static final BooleanEncoder booleanEncoder = new BooleanEncoder();
+
     @Override
-    public String encode(Long value) {
+    public String encode(Boolean value) {
         checkNotNull(value, "Null values are not allowed");
-        return encodeULong(value ^ Long.MIN_VALUE);
+        return booleanEncoder.encode(!value);
     }
 
     @Override
-    public Long decode(String value) {
-        checkNotNull(value, "Null values are not allowed");
-        return fromHex(value) ^ Long.MIN_VALUE;
+    public Boolean decode(String value) {
+        return !booleanEncoder.decode(value);
     }
 }

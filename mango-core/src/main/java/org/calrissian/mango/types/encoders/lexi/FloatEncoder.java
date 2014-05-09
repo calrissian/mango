@@ -13,24 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.accumulo.types.impl;
+package org.calrissian.mango.types.encoders.lexi;
 
 
-import org.calrissian.mango.types.encoders.AbstractDoubleEncoder;
+import org.calrissian.mango.types.encoders.AbstractFloatEncoder;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static org.calrissian.mango.accumulo.types.impl.EncodingUtils.*;
+import static org.calrissian.mango.types.encoders.lexi.EncodingUtils.*;
 
-public class DoubleReverseEncoder extends AbstractDoubleEncoder<String> {
+public class FloatEncoder extends AbstractFloatEncoder<String> {
     @Override
-    public String encode(Double value) {
+    public String encode(Float value) {
         checkNotNull(value, "Null values are not allowed");
-        return encodeULong(~normalizeDouble(value));
+        return encodeUInt(normalizeFloat(value));
     }
 
     @Override
-    public Double decode(String value) {
+    public Float decode(String value) {
         checkNotNull(value, "Null values are not allowed");
-        return denormalizeDouble(~fromHex(value));
+        return denormalizeFloat((int) fromHex(value));
     }
 }

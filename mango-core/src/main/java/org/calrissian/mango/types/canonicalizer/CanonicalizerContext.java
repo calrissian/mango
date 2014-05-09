@@ -27,7 +27,7 @@ import java.util.*;
 
 import static java.util.Collections.sort;
 import static java.util.Collections.unmodifiableList;
-import static org.calrissian.mango.types.GenericTypeEncoders.DEFAULT_TYPES;
+import static org.calrissian.mango.types.SimpleTypeEncoders.SIMPLE_TYPES;
 
 public class CanonicalizerContext {
 
@@ -39,7 +39,7 @@ public class CanonicalizerContext {
     private Map<String, Validator> validators;
 
     public CanonicalizerContext() throws IOException {
-        this(DEFAULT_TYPES);
+        this(SIMPLE_TYPES);
     }
 
     public CanonicalizerContext(TypeRegistry<String> typeContext) throws IOException {

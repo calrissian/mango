@@ -20,14 +20,14 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.calrissian.mango.criteria.domain.Node;
 import org.calrissian.mango.types.TypeRegistry;
 
-import static org.calrissian.mango.types.GenericTypeEncoders.DEFAULT_TYPES;
+import static org.calrissian.mango.types.SimpleTypeEncoders.SIMPLE_TYPES;
 
 public class CriteriaModule extends SimpleModule {
 
     private final TypeRegistry<String> typeContext;
 
     public CriteriaModule() {
-        this(DEFAULT_TYPES);
+        this(SIMPLE_TYPES);
     }
 
     public CriteriaModule(TypeRegistry<String> typeContext) {
