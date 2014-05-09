@@ -1,4 +1,4 @@
-package org.calrissian.flowmix.support;
+package org.calrissian.mango.domain;
 
 
 import java.io.Serializable;
