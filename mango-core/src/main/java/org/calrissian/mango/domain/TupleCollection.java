@@ -58,7 +58,9 @@ public interface TupleCollection extends Serializable{
   <T>Tuple<T> remove(Tuple<T> t);
 
   /**
-   * Removes all the tuples belonging to the specified key
+   * Removes the first tuple belonging to the specified key. This method assumed single-valued key
    */
-  Collection<Tuple> remove(String key);
+  <T>Tuple<T> remove(String key);
+
+  Collection<Tuple> removeAll(String key);
 }
