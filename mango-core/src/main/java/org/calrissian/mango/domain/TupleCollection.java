@@ -26,7 +26,7 @@ public interface TupleCollection extends Serializable{
 
   public Collection<Tuple> getTuples();
 
-  public <T>Collection<Tuple<T>> getAll(String key);
+  public Collection<Tuple> getAll(String key);
 
   public <T>Tuple<T> get(String key);
 }
