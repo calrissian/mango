@@ -28,6 +28,10 @@ public class Tuple<T> {
         this.visibility = visibility;
     }
 
+    public Tuple(String key, T value) {
+      this(key, value, "");
+    }
+
     public String getKey() {
         return key;
     }
