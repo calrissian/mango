@@ -15,7 +15,9 @@
  */
 package org.calrissian.mango.domain;
 
-public interface Event extends TupleCollection {
+import java.io.Serializable;
+
+public interface Event extends TupleCollection, Serializable {
 
   String getId();
 

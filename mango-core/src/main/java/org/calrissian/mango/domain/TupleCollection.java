@@ -15,9 +15,10 @@
  */
 package org.calrissian.mango.domain;
 
+import java.io.Serializable;
 import java.util.Collection;
 
-public interface TupleCollection {
+public interface TupleCollection extends Serializable{
 
   public void put(Tuple tuple);
 
