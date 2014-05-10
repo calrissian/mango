@@ -15,32 +15,87 @@
  */
 package org.calrissian.mango.domain;
 
+
 import java.util.UUID;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static java.lang.System.currentTimeMillis;
 
-public class BaseEvent extends AbstractTupleCollection implements Event {
+/**
+ * A store entry acts as a useful common business object for representing different types of models. An optional time
+ * dimension can be set directly or left untouched (defaulting in current time).
+ */
+public class BaseEvent extends AbstractTupleCollection {
 
-  private String id;
-  private long timestamp;
+  protected final String id;
+  protected final long timestamp; // in Millis
 
+  /**
+   * New event with random UUID and timestamp defaulted to current time
+   */
+  public BaseEvent() {
+    this(UUID.randomUUID().toString());
+  }
+
+  /**
+   * New evnet with ID. Timestamp defaults to current time.
+   * @param id
+   */
+  public BaseEvent(String id) {
+    this(id, currentTimeMillis());
+  }
+
+  /**
+   * New store entry with ID and a timestamp
+   * @param id
+   * @param timestamp
+   */
   public BaseEvent(String id, long timestamp) {
-    checkNotNull(id);
     this.id = id;
     this.timestamp = timestamp;
   }
 
-  public BaseEvent() {
-    this.id = UUID.randomUUID().toString();
-    this.timestamp = currentTimeMillis();
-  }
 
+  /**
+   * Accessor for Id
+   * @return
+   */
   public String getId() {
     return id;
   }
 
+  /**
+   * Accessor for timestamp
+   * @return
+   */
   public long getTimestamp() {
     return timestamp;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    BaseEvent baseEvent = (BaseEvent) o;
+
+    if (timestamp != baseEvent.timestamp) return false;
+    if (id != null ? !id.equals(baseEvent.id) : baseEvent.id != null) return false;
+
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = id != null ? id.hashCode() : 0;
+    result = 31 * result + (int) (timestamp ^ (timestamp >>> 32));
+    return result;
+  }
+
+  @Override
+  public String toString() {
+    return "BaseEvent{" +
+            "id='" + id + '\'' +
+            ", timestamp=" + timestamp +
+            '}';
   }
 }

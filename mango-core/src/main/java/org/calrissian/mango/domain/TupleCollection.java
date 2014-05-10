@@ -25,7 +25,7 @@ public interface TupleCollection {
 
   public Collection<Tuple> getTuples();
 
-  public Collection<Tuple> getAll(String key);
+  public <T>Collection<Tuple<T>> getAll(String key);
 
   public <T>Tuple<T> get(String key);
 }
