@@ -17,9 +17,10 @@ package org.calrissian.mango.criteria.domain.criteria;
 
 import org.calrissian.mango.domain.TupleCollection;
 
+import java.io.Serializable;
 import java.util.List;
 
-public interface Criteria {
+public interface Criteria extends Serializable{
 
   boolean matches(TupleCollection obj);
 
