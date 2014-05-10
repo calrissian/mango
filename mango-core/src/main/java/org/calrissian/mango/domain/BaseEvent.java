@@ -24,7 +24,7 @@ import static java.lang.System.currentTimeMillis;
  * A store entry acts as a useful common business object for representing different types of models. An optional time
  * dimension can be set directly or left untouched (defaulting in current time).
  */
-public class BaseEvent extends AbstractTupleCollection {
+public class BaseEvent extends AbstractTupleCollection implements Event {
 
   protected final String id;
   protected final long timestamp; // in Millis
