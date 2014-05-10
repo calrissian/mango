@@ -17,16 +17,48 @@ package org.calrissian.mango.domain;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Set;
 
 public interface TupleCollection extends Serializable{
 
-  public void put(Tuple tuple);
+  /**
+   * Puts a single tuple in the current collection
+   */
+  void put(Tuple tuple);
 
-  public void putAll(Iterable<Tuple> tuples);
+  /**
+   * Adds all the given tuples to the current collection
+   */
+  void putAll(Iterable<Tuple> tuples);
 
-  public Collection<Tuple> getTuples();
+  /**
+   * Retrieves all the tuples.
+   */
+  Collection<Tuple> getTuples();
 
-  public Collection<Tuple> getAll(String key);
+  /**
+   * Retrieves all the tuples for the specified key.
+   */
+  Collection<Tuple> getAll(String key);
 
-  public <T>Tuple<T> get(String key);
+  /**
+   * Retrieves the first tuple returned for the specified key. This method assumes a single-valued key.
+   * Note that multi-vaued keys may give undeterministic results.
+   */
+  <T>Tuple<T> get(String key);
+
+  /**
+   * Returns the keys in the current object
+   */
+  Set<String> keys();
+
+  /**
+   * Removes the specified tuple
+   */
+  <T>Tuple<T> remove(Tuple<T> t);
+
+  /**
+   * Removes all the tuples belonging to the specified key
+   */
+  Collection<Tuple> remove(String key);
 }

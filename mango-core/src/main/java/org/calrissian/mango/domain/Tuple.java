@@ -16,8 +16,6 @@
 package org.calrissian.mango.domain;
 
 
-import com.google.common.base.Preconditions;
-
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class Tuple<T> {

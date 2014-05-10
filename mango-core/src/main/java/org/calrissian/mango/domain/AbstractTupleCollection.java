@@ -76,6 +76,27 @@ public abstract class AbstractTupleCollection implements TupleCollection{
   }
 
   @Override
+  public Set<String> keys() {
+    return tuples.keySet();
+  }
+
+  @Override
+  public <T> Tuple<T> remove(Tuple<T> t) {
+    if(tuples.containsKey(t.getKey())) {
+      Set<Tuple> tupleForKey = tuples.get(t.getKey());
+      Tuple<T> tuple = (Tuple<T>)tuples.remove(t);
+      return tuple;
+    }
+
+    return null;
+  }
+
+  @Override
+  public Collection<Tuple> remove(String key) {
+    return tuples.remove(key);
+  }
+
+  @Override
   public int hashCode() {
     return tuples != null ? tuples.hashCode() : 0;
   }
