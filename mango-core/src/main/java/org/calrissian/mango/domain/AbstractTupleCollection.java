@@ -62,4 +62,21 @@ public abstract class AbstractTupleCollection implements TupleCollection{
   public <T>Tuple<T> get(String key) {
     return tuples.get(key) != null ? tuples.get(key).iterator().next() : null;
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    AbstractTupleCollection that = (AbstractTupleCollection) o;
+
+    if (tuples != null ? !tuples.equals(that.tuples) : that.tuples != null) return false;
+
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    return tuples != null ? tuples.hashCode() : 0;
+  }
 }
