@@ -79,6 +79,17 @@ public class QueryBuilder {
             throw new IllegalArgumentException("Builder finished. Call build() to get constructed Query Node");
     }
 
+    public QueryBuilder hasKey(String key) {
+      checkFinished();
+      HasKeyLeaf hasKeyLeaf = new HasKeyLeaf(key, current);
+      if (this.current == null) {
+        this.current = new AndNode();
+        finished = true;
+      }
+      this.current.addChild(hasKeyLeaf);
+      return this;
+    }
+
     public QueryBuilder notEq(String type, Object value) {
         checkFinished();
         NotEqualsLeaf notEqualsLeaf = new NotEqualsLeaf(type, value, current);
