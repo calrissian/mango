@@ -63,9 +63,6 @@ public class Iterators2 {
 
     /**
      * Generates an iterator that will drain a queue by consistently polling the latest item.
-     * @param queue
-     * @param <T>
-     * @return
      */
     public static <T> Iterator<T> drainingIterator(final Queue<T> queue) {
         checkNotNull(queue);

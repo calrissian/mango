@@ -94,7 +94,7 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
      * elements.
      */
     public final FluentCloseableIterable<T> cycle() {
-        return from(CloseableIterables.wrap(Iterables.cycle(this), this));
+        return from(CloseableIterables.cycle(this));
     }
 
     /**
@@ -111,7 +111,7 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
      * @param type the type of elements desired
      */
     public final <E> FluentCloseableIterable<E> filter(Class<E> type) {
-        return from(CloseableIterables.wrap(Iterables.filter(this, type), this));
+        return from(CloseableIterables.filter(this, type));
     }
 
     /**
@@ -220,7 +220,7 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
      * {@link IllegalStateException}.
      */
     public final FluentCloseableIterable<T> skip(int numberToSkip) {
-        return from(CloseableIterables.wrap(Iterables.skip(this, numberToSkip), this));
+        return from(CloseableIterables.skip(this, numberToSkip));
     }
 
     /**

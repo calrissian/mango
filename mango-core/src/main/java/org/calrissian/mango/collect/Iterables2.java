@@ -30,9 +30,6 @@ public class Iterables2 {
     /**
      * Wraps any iterable into a generic iterable object. This is useful for using complex iterables such as FluentIterable
      * with libraries that use reflection to determine bean definitions such as Jackson.
-     * @param iterable
-     * @param <T>
-     * @return
      */
     public static <T> Iterable<T> simpleIterable(final Iterable<T> iterable) {
         checkNotNull(iterable);
@@ -45,19 +42,14 @@ public class Iterables2 {
     }
 
     /**
-     * Simple method to return an empty iterable.
-     * @param <T>
-     * @return
+     * Generates an empty iterable.
      */
     public static <T> Iterable<T> emptyIterable() {
         return emptyList();
     }
 
     /**
-     * Creates an iterable with a single value.
-     * @param data
-     * @param <T>
-     * @return
+     * Generates an iterable with a single value.
      */
     public static <T> Iterable<T> singletonIterable(T data) {
         return singleton(data);
