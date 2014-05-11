@@ -19,152 +19,158 @@ import org.calrissian.mango.criteria.domain.*;
 
 import java.util.ArrayList;
 
-/**
- * Date: 11/9/12
- * Time: 2:01 PM
- */
 public class QueryBuilder {
-    protected ParentNode current;
-    protected QueryBuilder parentBuilder;
-    protected boolean finished = false;
+  protected ParentNode current;
+  protected QueryBuilder parentBuilder;
+  protected boolean finished = false;
 
-    public QueryBuilder() {
+  public QueryBuilder() {
+  }
+
+  public QueryBuilder(ParentNode current, QueryBuilder parentBuilder) {
+    this.current = current;
+    this.parentBuilder = parentBuilder;
+  }
+
+  public QueryBuilder and() {
+    checkFinished();
+    AndNode andNode = new AndNode(current, new ArrayList<Node>());
+    if (current != null) {
+      current.addChild(andNode);
+      return new QueryBuilder(andNode, this);
     }
+    current = andNode;
+    return new QueryBuilder(andNode, null);
+  }
 
-    public QueryBuilder(ParentNode current, QueryBuilder parentBuilder) {
-        this.current = current;
-        this.parentBuilder = parentBuilder;
+  public QueryBuilder or() {
+    checkFinished();
+    OrNode orNode = new OrNode(current, new ArrayList<Node>());
+    if (current != null) {
+      current.addChild(orNode);
+      return new QueryBuilder(orNode, this);
     }
+    current = orNode;
+    return new QueryBuilder(orNode, null);
+  }
 
-    public QueryBuilder and() {
-        checkFinished();
-        AndNode andNode = new AndNode(current, new ArrayList<Node>());
-        if (current != null) {
-            current.addChild(andNode);
-            return new QueryBuilder(andNode, this);
-        }
-        current = andNode;
-        return new QueryBuilder(andNode, null);
+  public Node build() {
+    if (!finished) throw new IllegalArgumentException("Query Node not built, end first");
+    return current;
+  }
+
+  public QueryBuilder eq(String type, Object value) {
+    checkFinished();
+    EqualsLeaf equalsLeaf = new EqualsLeaf(type, value, current);
+    if (this.current == null) {
+      this.current = new AndNode();
+      finished = true;
     }
+    this.current.addChild(equalsLeaf);
+    return this;
+  }
 
-    public QueryBuilder or() {
-        checkFinished();
-        OrNode orNode = new OrNode(current, new ArrayList<Node>());
-        if (current != null) {
-            current.addChild(orNode);
-            return new QueryBuilder(orNode, this);
-        }
-        current = orNode;
-        return new QueryBuilder(orNode, null);
+  protected void checkFinished() {
+    if (finished)
+      throw new IllegalArgumentException("Builder finished. Call build() to get constructed Query Node");
+  }
+
+  public QueryBuilder has(String key) {
+    checkFinished();
+    HasLeaf hasKeyLeaf = new HasLeaf(key, current);
+    if (this.current == null) {
+      this.current = new AndNode();
+      finished = true;
     }
+    this.current.addChild(hasKeyLeaf);
+    return this;
+  }
 
-    public Node build() {
-        if (!finished) throw new IllegalArgumentException("Query Node not built, end first");
-        return current;
+  public QueryBuilder hasNot(String key) {
+    checkFinished();
+    HasNotLeaf hasNotLeaf = new HasNotLeaf(key, current);
+    if (this.current == null) {
+      this.current = new AndNode();
+      finished = true;
     }
+    this.current.addChild(hasNotLeaf);
+    return this;
+  }
 
-    public QueryBuilder eq(String type, Object value) {
-        checkFinished();
-        EqualsLeaf equalsLeaf = new EqualsLeaf(type, value, current);
-        if (this.current == null) {
-            this.current = new AndNode();
-            finished = true;
-        }
-        this.current.addChild(equalsLeaf);
-        return this;
+  public QueryBuilder notEq(String type, Object value) {
+    checkFinished();
+    NotEqualsLeaf notEqualsLeaf = new NotEqualsLeaf(type, value, current);
+    if (this.current == null) {
+      this.current = new AndNode();
+      finished = true;
     }
+    this.current.addChild(notEqualsLeaf);
+    return this;
+  }
 
-    protected void checkFinished() {
-        if (finished)
-            throw new IllegalArgumentException("Builder finished. Call build() to get constructed Query Node");
+
+  public QueryBuilder lessThan(String type, Object value) {
+    checkFinished();
+    LessThanLeaf leaf = new LessThanLeaf(type, value, current);
+    if (this.current == null) {
+      this.current = new AndNode();
+      finished = true;
     }
+    this.current.addChild(leaf);
+    return this;
+  }
 
-    public QueryBuilder hasKey(String key) {
-      checkFinished();
-      HasKeyLeaf hasKeyLeaf = new HasKeyLeaf(key, current);
-      if (this.current == null) {
-        this.current = new AndNode();
-        finished = true;
-      }
-      this.current.addChild(hasKeyLeaf);
-      return this;
+  public QueryBuilder lessThanEq(String type, Object value) {
+    checkFinished();
+    LessThanEqualsLeaf leaf = new LessThanEqualsLeaf(type, value, current);
+    if (this.current == null) {
+      this.current = new AndNode();
+      finished = true;
     }
-
-    public QueryBuilder notEq(String type, Object value) {
-        checkFinished();
-        NotEqualsLeaf notEqualsLeaf = new NotEqualsLeaf(type, value, current);
-        if (this.current == null) {
-            this.current = new AndNode();
-            finished = true;
-        }
-        this.current.addChild(notEqualsLeaf);
-        return this;
-    }
-
-
-    public QueryBuilder lessThan(String type, Object value) {
-      checkFinished();
-      LessThanLeaf leaf = new LessThanLeaf(type, value, current);
-      if (this.current == null) {
-        this.current = new AndNode();
-        finished = true;
-      }
-      this.current.addChild(leaf);
-      return this;
-    }
-
-    public QueryBuilder lessThanEq(String type, Object value) {
-      checkFinished();
-      LessThanEqualsLeaf leaf = new LessThanEqualsLeaf(type, value, current);
-      if (this.current == null) {
-        this.current = new AndNode();
-        finished = true;
-      }
-      this.current.addChild(leaf);
-      return this;
-    }
+    this.current.addChild(leaf);
+    return this;
+  }
 
   public QueryBuilder greaterThan(String type, Object value) {
-      checkFinished();
-      GreaterThanLeaf leaf = new GreaterThanLeaf(type, value, current);
-      if (this.current == null) {
-        this.current = new AndNode();
-        finished = true;
-      }
-      this.current.addChild(leaf);
-      return this;
-    }
-
-    public QueryBuilder greaterThanEq(String type, Object value) {
-      checkFinished();
-      GreaterThanEqualsLeaf leaf = new GreaterThanEqualsLeaf(type, value, current);
-      if (this.current == null) {
-        this.current = new AndNode();
-        finished = true;
-      }
-      this.current.addChild(leaf);
-      return this;
-    }
-
-
-    public QueryBuilder range(String type, Object start, Object end) {
-      checkFinished();
-      RangeLeaf rangeLeaf = new RangeLeaf(type, start, end, current);
-      if (this.current == null) {
-          this.current = new AndNode();
-          finished = true;
-      }
-      this.current.addChild(rangeLeaf);
-      return this;
-    }
-
-
-
-    public QueryBuilder end() {
-      checkFinished();
+    checkFinished();
+    GreaterThanLeaf leaf = new GreaterThanLeaf(type, value, current);
+    if (this.current == null) {
+      this.current = new AndNode();
       finished = true;
-      if (parentBuilder == null)
-        return this;
-      return parentBuilder;
     }
+    this.current.addChild(leaf);
+    return this;
+  }
+
+  public QueryBuilder greaterThanEq(String type, Object value) {
+    checkFinished();
+    GreaterThanEqualsLeaf leaf = new GreaterThanEqualsLeaf(type, value, current);
+    if (this.current == null) {
+      this.current = new AndNode();
+      finished = true;
+    }
+    this.current.addChild(leaf);
+    return this;
+  }
+
+
+  public QueryBuilder range(String type, Object start, Object end) {
+    checkFinished();
+    RangeLeaf rangeLeaf = new RangeLeaf(type, start, end, current);
+    if (this.current == null) {
+      this.current = new AndNode();
+      finished = true;
+    }
+    this.current.addChild(rangeLeaf);
+    return this;
+  }
+
+
+  public QueryBuilder end() {
+    checkFinished();
+    finished = true;
+    if (parentBuilder == null)
+      return this;
+    return parentBuilder;
+  }
 }

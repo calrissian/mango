@@ -15,18 +15,27 @@
  */
 package org.calrissian.mango.criteria.domain.criteria;
 
+import org.calrissian.mango.domain.BaseEntity;
+import org.calrissian.mango.domain.Entity;
+import org.calrissian.mango.domain.Tuple;
+import org.junit.Test;
 
-import org.calrissian.mango.domain.TupleCollection;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-public class HasKeyCriteria extends AbstractKeyValueLeafCriteria{
-  public HasKeyCriteria(String key, ParentCriteria parentCriteria) {
-    super(key, null, parentCriteria);
+public class HasNotCriteriaTest {
+
+  @Test
+  public void test() {
+
+    HasNotCriteria criteria = new HasNotCriteria("key1", null);
+
+    Entity entity = new BaseEntity("type", "id");
+    entity.put(new Tuple("key2", "val2"));
+
+    assertTrue(criteria.matches(entity));
+
+    entity.put(new Tuple("key1", "val1"));
+    assertFalse(criteria.matches(entity));
   }
-
-  @Override
-  public boolean matches(TupleCollection obj) {
-    return obj.get(key) != null;
-  }
-
-
 }
