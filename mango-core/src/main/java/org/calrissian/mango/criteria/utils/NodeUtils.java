@@ -73,6 +73,10 @@ public class NodeUtils {
       return new EqualsCriteria(leaf.getKey(), leaf.getValue(), parent);
     else if(node instanceof NotEqualsLeaf)
       return new NotEqualsCriteria(leaf.getKey(), leaf.getValue(), parent);
+    else if(node instanceof HasLeaf)
+      return new HasCriteria(leaf.getKey(), parent);
+    else if(node instanceof HasNotLeaf)
+      return new HasNotCriteria(leaf.getKey(), parent);
     else
       throw new IllegalArgumentException("An unsupported leaf was encountered: " + node.getClass());
   }

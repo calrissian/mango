@@ -27,17 +27,17 @@ public interface TupleCollection extends Serializable{
   void put(Tuple tuple);
 
   /**
-   * Adds all the given tuples to the current collection
+   * Adds all the given getTuples to the current collection
    */
   void putAll(Iterable<Tuple> tuples);
 
   /**
-   * Retrieves all the tuples.
+   * Retrieves all the getTuples.
    */
   Collection<Tuple> getTuples();
 
   /**
-   * Retrieves all the tuples for the specified key.
+   * Retrieves all the getTuples for the specified key.
    */
   Collection<Tuple> getAll(String key);
 

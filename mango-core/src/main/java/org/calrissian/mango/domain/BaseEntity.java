@@ -42,7 +42,7 @@ public class BaseEntity extends AbstractTupleCollection implements Entity {
     return "BaseEntity{" +
             "id='" + id + '\'' +
             ", type='" + type + '\'' +
-            ", tuples='" + getTuples() + '\'' +
+            ", getTuples='" + getTuples() + '\'' +
             '}';
   }
 
