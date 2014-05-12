@@ -81,4 +81,8 @@ public class RangeLeaf extends AbstractKeyValueLeaf {
   }
 
 
+  @Override
+  public Node clone(ParentNode node) {
+    return new RangeLeaf(key, value, end, node);
+  }
 }

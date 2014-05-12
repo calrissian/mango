@@ -24,4 +24,9 @@ public class EqualsLeaf extends AbstractKeyValueLeaf {
   public EqualsLeaf(String key, Object value, ParentNode parent) {
     super(key, value, parent);
   }
+
+  @Override
+  public Node clone(ParentNode node) {
+    return new EqualsLeaf(key, value, node);
+  }
 }

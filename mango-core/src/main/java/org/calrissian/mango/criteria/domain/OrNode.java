@@ -15,12 +15,9 @@
  */
 package org.calrissian.mango.criteria.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Date: 11/9/12
- * Time: 1:54 PM
- */
 public class OrNode extends ParentNode {
     private static final long serialVersionUID = 1L;
 
@@ -30,4 +27,16 @@ public class OrNode extends ParentNode {
     public OrNode(ParentNode parent, List<Node> nodes) {
         super(parent, nodes);
     }
+
+  public OrNode(ParentNode parent) {
+    super(parent, new ArrayList<Node>());
+  }
+
+  @Override
+  public Node clone(ParentNode node) {
+    OrNode cloned = new OrNode(node);
+    for(Node child : children())
+      cloned.addChild(child.clone(cloned));
+    return cloned;
+  }
 }

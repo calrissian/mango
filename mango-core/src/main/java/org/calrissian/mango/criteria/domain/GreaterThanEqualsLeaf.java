@@ -23,4 +23,9 @@ public class GreaterThanEqualsLeaf extends AbstractKeyValueLeaf {
   public GreaterThanEqualsLeaf(String key, Object value, ParentNode parent) {
     super(key, value, parent);
   }
+
+  @Override
+  public Node clone(ParentNode node) {
+    return new GreaterThanEqualsLeaf(key, value, node);
+  }
 }

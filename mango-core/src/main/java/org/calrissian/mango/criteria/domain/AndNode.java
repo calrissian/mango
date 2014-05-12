@@ -15,6 +15,7 @@
  */
 package org.calrissian.mango.criteria.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,12 +23,25 @@ import java.util.List;
  * Time: 1:53 PM
  */
 public class AndNode extends ParentNode {
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    public AndNode() {
-    }
+  public AndNode() {
+  }
 
-    public AndNode(ParentNode parent, List<Node> nodes) {
-        super(parent, nodes);
-    }
+  public AndNode(ParentNode parent, List<Node> nodes) {
+    super(parent, nodes);
+  }
+
+  public AndNode(ParentNode parentNode) {
+    super(parentNode, new ArrayList<Node>());
+  }
+
+
+  @Override
+  public Node clone(ParentNode node) {
+    AndNode cloned = new AndNode(node);
+    for (Node child : children())
+      cloned.addChild(child.clone(cloned));
+    return cloned;
+  }
 }

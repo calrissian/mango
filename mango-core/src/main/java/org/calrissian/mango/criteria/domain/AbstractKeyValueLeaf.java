@@ -15,7 +15,7 @@
  */
 package org.calrissian.mango.criteria.domain;
 
-public class AbstractKeyValueLeaf extends Leaf {
+public abstract class AbstractKeyValueLeaf extends Leaf {
   private static final long serialVersionUID = 1L;
 
   protected String key;

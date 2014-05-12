@@ -25,4 +25,9 @@ public class NotEqualsLeaf extends AbstractKeyValueLeaf {
   public NotEqualsLeaf(String key, Object value, ParentNode parent) {
     super(key, value, parent);
   }
+
+  @Override
+  public Node clone(ParentNode node) {
+    return new NotEqualsLeaf(key, value, node);
+  }
 }
