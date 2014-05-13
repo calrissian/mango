@@ -34,19 +34,19 @@ public class RangeCriteriaTest {
     Entity entity = new BaseEntity("type", "id");
 
     // first test without tuple existing
-    assertFalse(criteria.matches(entity));
+    assertFalse(criteria.apply(entity));
 
     entity.put(new Tuple("key1", 11));
-    assertFalse(criteria.matches(entity));
+    assertFalse(criteria.apply(entity));
 
     entity.put(new Tuple("key1", 4));
-    assertFalse(criteria.matches(entity));
+    assertFalse(criteria.apply(entity));
 
     entity.put(new Tuple("key1", 5));
-    assertTrue(criteria.matches(entity));
+    assertTrue(criteria.apply(entity));
 
     entity.put(new Tuple("key1", 6));
-    assertTrue(criteria.matches(entity));
+    assertTrue(criteria.apply(entity));
 
   }
 }

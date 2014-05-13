@@ -34,17 +34,17 @@ public class LessThanEqualsCriteriaTest {
     Entity entity = new BaseEntity("type", "id");
 
     // first test without tuple existing
-    assertFalse(criteria.matches(entity));
+    assertFalse(criteria.apply(entity));
 
     entity.put(new Tuple("key1", 10));
 
-    assertFalse(criteria.matches(entity));
+    assertFalse(criteria.apply(entity));
 
     entity.put(new Tuple("key1", 5));
-    assertTrue(criteria.matches(entity));
+    assertTrue(criteria.apply(entity));
 
     entity.put(new Tuple("key1", 4));
-    assertTrue(criteria.matches(entity));
+    assertTrue(criteria.apply(entity));
 
   }
 }

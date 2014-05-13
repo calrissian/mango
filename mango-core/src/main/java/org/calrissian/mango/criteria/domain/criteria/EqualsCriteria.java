@@ -19,21 +19,21 @@ import org.calrissian.mango.domain.Tuple;
 import org.calrissian.mango.domain.TupleCollection;
 
 import java.util.Collection;
+import java.util.Comparator;
 
-public class EqualsCriteria extends AbstractKeyValueLeafCriteria {
+public class EqualsCriteria extends ComparableKeyValueLeafCriteria {
 
-
-  public EqualsCriteria(String key, Object value, ParentCriteria parentCriteria) {
-    super(key, value, parentCriteria);
+  public EqualsCriteria(String key, Object value, Comparator comparator, ParentCriteria parentCriteria) {
+    super(key, value, comparator, parentCriteria);
   }
 
   @Override
-  public boolean matches(TupleCollection obj) {
+  public boolean apply(TupleCollection obj) {
 
     Collection<Tuple> tuples = obj.getAll(key);
     if(tuples != null) {
       for(Tuple tuple : tuples) {
-        if(tuple.getValue() != null && tuple.getValue().equals(value))
+        if(comparator.compare(value, tuple.getValue()) == 0)
           return true;
       }
     }

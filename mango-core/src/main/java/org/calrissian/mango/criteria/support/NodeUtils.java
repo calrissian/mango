@@ -13,12 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.criteria.utils;
+package org.calrissian.mango.criteria.support;
 
 import org.calrissian.mango.criteria.domain.*;
 import org.calrissian.mango.criteria.domain.criteria.*;
 import org.calrissian.mango.types.LexiTypeEncoders;
 import org.calrissian.mango.types.TypeRegistry;
+
+import java.util.Comparator;
 
 public class NodeUtils {
 
@@ -47,18 +49,18 @@ public class NodeUtils {
    * TODO: It may make more sense in this case to default to string if a custom type is not registered.
    */
   public static Criteria criteriaFromNode(Node node) {
-    return criteriaFromNode(node, LexiTypeEncoders.LEXI_TYPES, null);
+    return criteriaFromNode(node, new ComparableComparator(), null);
   }
 
   /**
    * Creates criteria from a node where the lexicographic type system used for range queries is the given lexitypes.
    * This allows custom types to cascaded down the matching system.
    */
-  public static Criteria criteriaFromNode(Node node, TypeRegistry<String> lexiTypes) {
-    return criteriaFromNode(node, lexiTypes, null);
+  public static Criteria criteriaFromNode(Node node, Comparator rangeComparator) {
+    return criteriaFromNode(node, rangeComparator, null);
   }
 
-  private static Criteria criteriaFromNode(Node node, TypeRegistry<String> lexiTypes, ParentCriteria parent) {
+  private static Criteria criteriaFromNode(Node node, Comparator rangeComparator, ParentCriteria parent) {
 
     Criteria curNode = null;
 
@@ -67,14 +69,14 @@ public class NodeUtils {
     else if(node instanceof OrNode)
       curNode = new OrCriteria(parent);
     else
-      curNode = parseLeaf(node, lexiTypes, parent);
+      curNode = parseLeaf(node, rangeComparator, parent);
 
     if(node.children() != null) {
       for(Node child : node.children()) {
         if(child instanceof Leaf)
-          curNode.addChild(parseLeaf(child, lexiTypes, (ParentCriteria)curNode));
+          curNode.addChild(parseLeaf(child, rangeComparator, (ParentCriteria)curNode));
         else
-          curNode.addChild(criteriaFromNode(child, lexiTypes, (ParentCriteria) curNode));
+          curNode.addChild(criteriaFromNode(child, rangeComparator, (ParentCriteria) curNode));
       }
     }
     if(parent != null)
@@ -83,7 +85,7 @@ public class NodeUtils {
     return curNode;
   }
 
-  private static Criteria parseLeaf(Node node, TypeRegistry<String> registry, ParentCriteria parent) {
+  private static Criteria parseLeaf(Node node, Comparator rangeComparator, ParentCriteria parent) {
     AbstractKeyValueLeaf leaf = ((AbstractKeyValueLeaf)node);
     if(node instanceof EqualsLeaf)
       return new EqualsCriteria(leaf.getKey(), leaf.getValue(), parent);
@@ -94,16 +96,16 @@ public class NodeUtils {
     else if(node instanceof HasNotLeaf)
       return new HasNotCriteria(leaf.getKey(), parent);
     else if(node instanceof LessThanLeaf)
-      return new LessThanCriteria(leaf.getKey(), leaf.getValue(), registry, parent);
+      return new LessThanCriteria(leaf.getKey(), leaf.getValue(), rangeComparator, parent);
     else if(node instanceof LessThanEqualsLeaf)
-      return new LessThanEqualsCriteria(leaf.getKey(), leaf.getValue(), registry, parent);
+      return new LessThanEqualsCriteria(leaf.getKey(), leaf.getValue(), rangeComparator, parent);
     else if(node instanceof GreaterThanLeaf)
-      return new GreaterThanCriteria(leaf.getKey(), leaf.getValue(), registry, parent);
+      return new GreaterThanCriteria(leaf.getKey(), leaf.getValue(), rangeComparator, parent);
     else if(node instanceof GreaterThanEqualsLeaf)
-      return new GreaterThanEqualsCriteria(leaf.getKey(), leaf.getValue(), registry, parent);
+      return new GreaterThanEqualsCriteria(leaf.getKey(), leaf.getValue(), rangeComparator, parent);
     else if(node instanceof RangeCriteria) {
       RangeLeaf rangeLeaf = (RangeLeaf)leaf;
-      return new RangeCriteria(leaf.getKey(), leaf.getValue(), rangeLeaf.getEnd(), registry, parent);
+      return new RangeCriteria(leaf.getKey(), leaf.getValue(), rangeLeaf.getEnd(), rangeComparator, parent);
     }
     else
       throw new IllegalArgumentException("An unsupported leaf was encountered: " + node.getClass());

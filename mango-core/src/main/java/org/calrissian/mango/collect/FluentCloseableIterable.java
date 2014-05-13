@@ -133,7 +133,7 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
      * Returns an {@link com.google.common.base.Optional} containing the first element in this fluent iterable that
      * satisfies the given predicate, if such an element exists.
      *
-     * <p><b>Warning:</b> avoid using a {@code predicate} that matches {@code null}. If {@code null}
+     * <p><b>Warning:</b> avoid using a {@code predicate} that apply {@code null}. If {@code null}
      * is matched in this fluent iterable, a {@link NullPointerException} will be thrown.
      */
     public final Optional<T> firstMatch(Predicate<? super T> predicate) {

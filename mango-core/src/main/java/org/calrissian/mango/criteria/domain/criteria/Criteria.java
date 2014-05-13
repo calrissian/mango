@@ -15,14 +15,15 @@
  */
 package org.calrissian.mango.criteria.domain.criteria;
 
+import com.google.common.base.Predicate;
 import org.calrissian.mango.domain.TupleCollection;
 
 import java.io.Serializable;
 import java.util.List;
 
-public interface Criteria extends Serializable{
+public interface Criteria extends Predicate<TupleCollection>, Serializable {
 
-  boolean matches(TupleCollection obj);
+  boolean apply(TupleCollection obj);
 
   public ParentCriteria parent();
 

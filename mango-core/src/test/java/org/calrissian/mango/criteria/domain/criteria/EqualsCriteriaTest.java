@@ -32,7 +32,7 @@ public class EqualsCriteriaTest {
     Entity entity = new BaseEntity("type", "id");
     entity.put(new Tuple("key1", "val1"));
 
-    assertTrue(eq.matches(entity));
+    assertTrue(eq.apply(entity));
   }
 
   @Test
@@ -42,7 +42,7 @@ public class EqualsCriteriaTest {
     Entity entity = new BaseEntity("type", "id");
     entity.put(new Tuple("key1", "val2"));
 
-    assertFalse(eq.matches(entity));
+    assertFalse(eq.apply(entity));
 
   }
 }
