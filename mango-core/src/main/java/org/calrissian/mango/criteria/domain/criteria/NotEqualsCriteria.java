@@ -32,11 +32,11 @@ public class NotEqualsCriteria extends ComparableKeyValueLeafCriteria {
     Collection<Tuple> tuples = obj.getAll(key);
     if(tuples != null) {
       for(Tuple tuple : tuples) {
-        if(comparator.compare(value, tuple) != 0)
+        if(comparator.compare(value, tuple.getValue()) != 0)
           return true;
       }
     }
 
-    return true;
+    return false;
   }
 }

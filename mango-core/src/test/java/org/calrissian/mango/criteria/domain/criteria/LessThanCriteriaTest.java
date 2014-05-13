@@ -15,12 +15,12 @@
  */
 package org.calrissian.mango.criteria.domain.criteria;
 
+import org.calrissian.mango.criteria.support.ComparableComparator;
 import org.calrissian.mango.domain.BaseEntity;
 import org.calrissian.mango.domain.Entity;
 import org.calrissian.mango.domain.Tuple;
 import org.junit.Test;
 
-import static org.calrissian.mango.types.LexiTypeEncoders.LEXI_TYPES;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -29,7 +29,7 @@ public class LessThanCriteriaTest {
   @Test
   public void test() {
 
-    LessThanCriteria criteria = new LessThanCriteria("key1", 5, LEXI_TYPES, null);
+    LessThanCriteria criteria = new LessThanCriteria("key1", 5, new ComparableComparator(), null);
 
     Entity entity = new BaseEntity("type", "id");
 

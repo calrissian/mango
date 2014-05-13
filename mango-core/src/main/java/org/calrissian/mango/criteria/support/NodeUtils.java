@@ -88,9 +88,9 @@ public class NodeUtils {
   private static Criteria parseLeaf(Node node, Comparator rangeComparator, ParentCriteria parent) {
     AbstractKeyValueLeaf leaf = ((AbstractKeyValueLeaf)node);
     if(node instanceof EqualsLeaf)
-      return new EqualsCriteria(leaf.getKey(), leaf.getValue(), parent);
+      return new EqualsCriteria(leaf.getKey(), leaf.getValue(), rangeComparator, parent);
     else if(node instanceof NotEqualsLeaf)
-      return new NotEqualsCriteria(leaf.getKey(), leaf.getValue(), parent);
+      return new NotEqualsCriteria(leaf.getKey(), leaf.getValue(), rangeComparator, parent);
     else if(node instanceof HasLeaf)
       return new HasCriteria(leaf.getKey(), parent);
     else if(node instanceof HasNotLeaf)
