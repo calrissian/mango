@@ -16,9 +16,11 @@
 package org.calrissian.mango.domain;
 
 
+import java.io.Serializable;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class Tuple<T> {
+public class Tuple<T> implements Serializable{
 
   protected final String key;
   protected final T value;
