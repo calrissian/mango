@@ -10,6 +10,7 @@ import org.calrissian.mango.collect.FluentCloseableIterable;
 import java.io.IOException;
 import java.util.Iterator;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static java.util.Map.Entry;
 
 public class Scanners {
@@ -20,6 +21,7 @@ public class Scanners {
      * Converts a {@link ScannerBase} into a {@link CloseableIterable}
      */
     public static CloseableIterable<Entry<Key, Value>> closeableIterable(final ScannerBase scanner) {
+        checkNotNull(scanner);
         return new FluentCloseableIterable<Entry<Key, Value>>() {
             @Override
             protected void doClose() throws IOException {

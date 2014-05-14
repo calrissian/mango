@@ -57,6 +57,19 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
     }
 
     /**
+     * Returns a fluent iterable where the underlying resources are automatically closed when its iterator has been
+     * exhausted.
+     *
+     * Note that when using this method the order of calls matters. {@code limit()} is an example of one method which can
+     * prevent the completion of an iterator.  For instance from(iterable).autoClose().limit(1) will not close the
+     * resource if there is more than 1 element, but from(iterable).limit(1).autoClose() will close the underlying
+     * resource.
+     */
+    public FluentCloseableIterable<T> autoClose() {
+        return from(CloseableIterables.autoClose(this));
+    }
+
+    /**
      * Returns a string representation of this fluent iterable, with the format
      * {@code [e1, e2, ..., en]}.
      */
@@ -372,5 +385,16 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
      */
     public final T get(int position) {
         return Iterables.get(this, position);
+    }
+
+    /**
+     * Returns a generic iterable with no beanlike properties such as {@code isEmpty()}.  This is useful with libraries
+     * that use reflection to determine bean definitions such as Jackson.
+     *
+     * Note this will prevent access to close the underlying resource.  It is suggested that {@code autoClose()} be used
+     * before calling this method.
+     */
+    public final Iterable<T> toSimpleIterable() {
+        return Iterables2.simpleIterable(this);
     }
 }

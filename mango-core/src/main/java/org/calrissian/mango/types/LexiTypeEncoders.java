@@ -16,8 +16,8 @@
 package org.calrissian.mango.types;
 
 
-import org.calrissian.mango.types.encoders.lexi.*;
 import org.calrissian.mango.domain.IPv4;
+import org.calrissian.mango.types.encoders.lexi.*;
 
 import java.net.URI;
 import java.util.Date;

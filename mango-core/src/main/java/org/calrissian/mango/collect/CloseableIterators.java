@@ -251,8 +251,13 @@ public class CloseableIterators {
     /**
      * Autoclose the iterator when exhausted or if an exception is thrown. It is currently set to protected, so that only
      * classes in this package can use.
+     *
+     * Note that when using this method the order of calls matters. {@code limit()} is an example of one method which can
+     * prevent the completion of an iterator.  For instance limit(autoClose(iterator), 1) will not close the
+     * resource if there is more than 1 element, but autoClose(limit(iterator, 1)) will close the underlying
+     * resource.
      */
-    static <T> CloseableIterator<T> autoClose(final CloseableIterator<? extends T> iterator) {
+    public static <T> CloseableIterator<T> autoClose(final CloseableIterator<? extends T> iterator) {
         checkNotNull(iterator);
         return new CloseableIterator<T>() {
             private boolean closed = false;

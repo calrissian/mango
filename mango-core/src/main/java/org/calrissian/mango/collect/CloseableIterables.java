@@ -212,6 +212,11 @@ public class CloseableIterables {
 
     /**
      * Autoclose the {@code iterable} when its iterator is exhausted or if an exception is thrown.
+     *
+     * Note that when using this method the order of calls matters. {@code limit()} is an example of one method which can
+     * prevent the completion of an iterator.  For instance limit(autoClose(iterable), 1) will not close the
+     * resource if there is more than 1 element, but autoClose(limit(iterable, 1)) will close the underlying
+     * resource.
      */
     public static <T> CloseableIterable<T> autoClose(final CloseableIterable<? extends T> iterable) {
         checkNotNull(iterable);

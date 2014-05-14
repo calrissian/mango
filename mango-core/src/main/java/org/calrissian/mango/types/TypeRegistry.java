@@ -16,7 +16,6 @@
 package org.calrissian.mango.types;
 
 
-import com.google.common.collect.Iterables;
 import org.calrissian.mango.types.exception.TypeDecodingException;
 import org.calrissian.mango.types.exception.TypeEncodingException;
 
@@ -37,11 +36,11 @@ public class TypeRegistry<U> {
         this(asList(normalizers));
     }
 
-  public TypeRegistry(TypeRegistry<U> registry, TypeEncoder<?, U>... normalizers) {
-    this(concat(asList(normalizers), registry.getAllEncoders()));
-  }
+    public TypeRegistry(TypeRegistry<U> registry, TypeEncoder<?, U>... normalizers) {
+        this(concat(asList(normalizers), registry.getAllEncoders()));
+    }
 
-  public TypeRegistry(Iterable<TypeEncoder<?, U>> normalizers) {
+    public TypeRegistry(Iterable<TypeEncoder<?, U>> normalizers) {
         for(TypeEncoder<?, U> resolver: normalizers) {
             if (aliasMapping.containsKey(resolver.getAlias()))
                 throw new IllegalArgumentException("The aliases provided by the normalizers must be unique");
