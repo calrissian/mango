@@ -33,9 +33,9 @@ public class HasNotCriteriaTest {
     Entity entity = new BaseEntity("type", "id");
     entity.put(new Tuple("key2", "val2"));
 
-    assertTrue(criteria.matches(entity));
+    assertTrue(criteria.apply(entity));
 
     entity.put(new Tuple("key1", "val1"));
-    assertFalse(criteria.matches(entity));
+    assertFalse(criteria.apply(entity));
   }
 }

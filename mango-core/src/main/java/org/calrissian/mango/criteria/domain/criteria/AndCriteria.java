@@ -24,9 +24,9 @@ public class AndCriteria extends ParentCriteria{
   }
 
   @Override
-  public boolean matches(TupleCollection obj) {
+  public boolean apply(TupleCollection obj) {
     for(Criteria node : children()) {
-      if(!node.matches(obj))
+      if(!node.apply(obj))
         return false;
     }
 

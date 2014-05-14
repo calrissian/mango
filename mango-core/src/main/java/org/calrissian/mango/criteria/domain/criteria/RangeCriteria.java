@@ -2,37 +2,28 @@ package org.calrissian.mango.criteria.domain.criteria;
 
 import org.calrissian.mango.domain.Tuple;
 import org.calrissian.mango.domain.TupleCollection;
-import org.calrissian.mango.types.TypeRegistry;
-import org.calrissian.mango.types.exception.TypeEncodingException;
 
 import java.util.Collection;
+import java.util.Comparator;
 
-public class RangeCriteria extends AbstractLexiTypedKeyValueLeafCriteria {
+public class RangeCriteria extends ComparableKeyValueLeafCriteria {
 
   protected Object end;
   protected String encodedEnd;
 
-  public RangeCriteria(String key, Object start, Object end, TypeRegistry<String> lexiTypes, ParentCriteria parentCriteria) {
-    super(key, start, lexiTypes, parentCriteria);
+  public RangeCriteria(String key, Object start, Object end, Comparator comparator, ParentCriteria parentCriteria) {
+    super(key, start, comparator, parentCriteria);
     this.end = end;
-    try {
-      this.encodedEnd = lexiTypes.encode(end);
-    } catch (TypeEncodingException e) {
-      throw new RuntimeException(e);
-    }
   }
 
   @Override
-  public boolean matches(TupleCollection obj) {
+  public boolean apply(TupleCollection obj) {
     Collection<Tuple> tuples = obj.getAll(key);
     if(tuples != null) {
       for(Tuple tuple : tuples) {
-        try {
-          String objEncoded = lexiTypes.encode(tuple.getValue());
-          return objEncoded.compareTo(encodedVal) >= 0 && objEncoded.compareTo(encodedEnd) <= 0;
-        } catch (TypeEncodingException e) {
-          throw new RuntimeException(e);
-        }
+          int startCompare = comparator.compare(tuple.getValue(), value);
+          int endCompare = comparator.compare(tuple.getValue(), end);
+          return startCompare >= 0 && endCompare <= 0;
       }
     }
 

@@ -15,12 +15,12 @@
  */
 package org.calrissian.mango.criteria.domain.criteria;
 
-public abstract class AbstractKeyValueLeafCriteria extends LeafCriteria {
+public abstract class KeyValueLeafCriteria extends LeafCriteria {
 
   protected String key;
   protected Object value;
 
-  public AbstractKeyValueLeafCriteria(String key, Object value, ParentCriteria parentCriteria) {
+  public KeyValueLeafCriteria(String key, Object value, ParentCriteria parentCriteria) {
     super(parentCriteria);
     this.key = key;
     this.value = value;
@@ -39,7 +39,7 @@ public abstract class AbstractKeyValueLeafCriteria extends LeafCriteria {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
 
-    AbstractKeyValueLeafCriteria that = (AbstractKeyValueLeafCriteria) o;
+    KeyValueLeafCriteria that = (KeyValueLeafCriteria) o;
 
     if (key != null ? !key.equals(that.key) : that.key != null) return false;
     if (value != null ? !value.equals(that.value) : that.value != null) return false;
@@ -56,7 +56,7 @@ public abstract class AbstractKeyValueLeafCriteria extends LeafCriteria {
 
   @Override
   public String toString() {
-    return "AbstractKeyValueLeafCriteria{" +
+    return "KeyValueLeafCriteria{" +
             "key='" + key + '\'' +
             ", value=" + value +
             ", parent=" + parent.getClass().getSimpleName() +

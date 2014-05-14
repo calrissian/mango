@@ -15,12 +15,12 @@
  */
 package org.calrissian.mango.criteria.domain.criteria;
 
+import org.calrissian.mango.criteria.support.ComparableComparator;
 import org.calrissian.mango.domain.BaseEntity;
 import org.calrissian.mango.domain.Entity;
 import org.calrissian.mango.domain.Tuple;
 import org.junit.Test;
 
-import static org.calrissian.mango.types.LexiTypeEncoders.LEXI_TYPES;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -29,24 +29,24 @@ public class RangeCriteriaTest {
   @Test
   public void test() {
 
-    RangeCriteria criteria = new RangeCriteria("key1", 5, 10, LEXI_TYPES, null);
+    RangeCriteria criteria = new RangeCriteria("key1", 5, 10, new ComparableComparator(), null);
 
     Entity entity = new BaseEntity("type", "id");
 
     // first test without tuple existing
-    assertFalse(criteria.matches(entity));
+    assertFalse(criteria.apply(entity));
 
     entity.put(new Tuple("key1", 11));
-    assertFalse(criteria.matches(entity));
+    assertFalse(criteria.apply(entity));
 
     entity.put(new Tuple("key1", 4));
-    assertFalse(criteria.matches(entity));
+    assertFalse(criteria.apply(entity));
 
     entity.put(new Tuple("key1", 5));
-    assertTrue(criteria.matches(entity));
+    assertTrue(criteria.apply(entity));
 
     entity.put(new Tuple("key1", 6));
-    assertTrue(criteria.matches(entity));
+    assertTrue(criteria.apply(entity));
 
   }
 }

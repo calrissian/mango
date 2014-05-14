@@ -15,6 +15,7 @@
  */
 package org.calrissian.mango.criteria.domain.criteria;
 
+import org.calrissian.mango.criteria.support.ComparableComparator;
 import org.calrissian.mango.domain.BaseEntity;
 import org.calrissian.mango.domain.Entity;
 import org.calrissian.mango.domain.Tuple;
@@ -28,21 +29,20 @@ public class NotEqualsCriteriaTest {
   @Test
   public void testNotEquals() {
 
-    Criteria eq = new NotEqualsCriteria("key1", "val1", null);
+    Criteria eq = new NotEqualsCriteria("key1", "val1", new ComparableComparator(),null);
     Entity entity = new BaseEntity("type", "id");
     entity.put(new Tuple("key1", "val2"));
 
-    assertTrue(eq.matches(entity));
+    assertTrue(eq.apply(entity));
   }
 
   @Test
   public void testEquals() {
 
-    Criteria eq = new NotEqualsCriteria("key1", "val1", null);
+    Criteria eq = new NotEqualsCriteria("key1", "val1", new ComparableComparator(), null);
     Entity entity = new BaseEntity("type", "id");
     entity.put(new Tuple("key1", "val1"));
 
-    assertFalse(eq.matches(entity));
-
+    assertFalse(eq.apply(entity));
   }
 }

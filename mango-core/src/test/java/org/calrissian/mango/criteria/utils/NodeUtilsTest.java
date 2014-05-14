@@ -21,6 +21,7 @@ import org.calrissian.mango.criteria.domain.criteria.AndCriteria;
 import org.calrissian.mango.criteria.domain.criteria.Criteria;
 import org.calrissian.mango.criteria.domain.criteria.EqualsCriteria;
 import org.calrissian.mango.criteria.domain.criteria.OrCriteria;
+import org.calrissian.mango.criteria.support.NodeUtils;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;

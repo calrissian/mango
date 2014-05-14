@@ -18,13 +18,13 @@ package org.calrissian.mango.criteria.domain.criteria;
 
 import org.calrissian.mango.domain.TupleCollection;
 
-public class HasNotCriteria extends AbstractKeyValueLeafCriteria{
+public class HasNotCriteria extends KeyValueLeafCriteria {
   public HasNotCriteria(String key, ParentCriteria parentCriteria) {
     super(key, null, parentCriteria);
   }
 
   @Override
-  public boolean matches(TupleCollection obj) {
+  public boolean apply(TupleCollection obj) {
     return obj.get(key) == null;
   }
 
