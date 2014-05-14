@@ -99,6 +99,7 @@ public class BaseEvent extends AbstractTupleCollection implements Event {
     return "BaseEvent{" +
             "id='" + id + '\'' +
             ", timestamp=" + timestamp +
+            ", tuples=" + getTuples() +
             '}';
   }
 }
