@@ -20,6 +20,11 @@ import org.calrissian.mango.criteria.visitor.NodeVisitor;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * A node represents a query tree. That is, a tree that can be traversed and optimizations made. This tree supports
+ * pluggable algorithms via the visitor pattern. These algorithms can be used for introspecting state or modifying
+ * the tree.
+ */
 public interface Node extends Serializable {
 
   public ParentNode parent();

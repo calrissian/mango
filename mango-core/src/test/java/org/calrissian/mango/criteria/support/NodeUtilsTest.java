@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.criteria.utils;
+package org.calrissian.mango.criteria.support;
 
 import org.calrissian.mango.criteria.builder.QueryBuilder;
 import org.calrissian.mango.criteria.domain.Node;
@@ -21,7 +21,6 @@ import org.calrissian.mango.criteria.domain.criteria.AndCriteria;
 import org.calrissian.mango.criteria.domain.criteria.Criteria;
 import org.calrissian.mango.criteria.domain.criteria.EqualsCriteria;
 import org.calrissian.mango.criteria.domain.criteria.OrCriteria;
-import org.calrissian.mango.criteria.support.NodeUtils;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
@@ -40,5 +39,11 @@ public class NodeUtilsTest {
     assertTrue(criteria.children().get(0).children().get(0) instanceof EqualsCriteria);
     assertTrue(criteria.children().get(0).children().get(1) instanceof EqualsCriteria);
     assertTrue(criteria.children().get(1).children().get(0) instanceof EqualsCriteria);
+  }
+
+  @Test
+  public void test_isEmpty_notEmpty() {
+
+    Node node = new QueryBuilder().or().and().or().and().end().end().end().end().build();
   }
 }

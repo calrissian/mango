@@ -26,14 +26,23 @@ public class NodeUtils {
 
   public NodeUtils() {/* private constructor */}
 
+  /**
+   * Returns true if a node is a leaf. Note that a leaf can also be a parent node that does not have any children.
+   */
   public static boolean isLeaf(Node node) {
     return node instanceof Leaf || node.children() == null || node.children().size() == 0;
   }
 
+  /**
+   * Determines if a node is null, or a single parent node without children.
+   */
   public static boolean isEmpty(Node node) {
     return (node == null || (node.children() != null && node.children().size() == 0));
   }
 
+  /**
+   * Determines if parent node has children that are all leaves
+   */
   public static boolean parentContainsOnlyLeaves(ParentNode parentNode) {
     for (Node child : parentNode.children()) {
       if (!isLeaf(child)) return false;
@@ -41,24 +50,23 @@ public class NodeUtils {
     return true;
   }
 
+  /**
+   * Determines if leaf represents a possible range of values (bounded or unbounded)
+   */
   public static boolean isRangeLeaf(Leaf leaf) {
     return leaf instanceof RangeLeaf || leaf instanceof GreaterThanEqualsLeaf || leaf instanceof GreaterThanLeaf ||
             leaf instanceof LessThanLeaf || leaf instanceof LessThanEqualsLeaf;
   }
 
   /**
-   * Creates criteria from a node where the lexicographic type system used for range queries is the standard lexitypes.
-   * This default type system will not support custom types that may be needed.
-   *
-   * TODO: It may make more sense in this case to default to string if a custom type is not registered.
+   * Creates criteria from a node. A default comparator is used which assumes values implement Comparable.
    */
   public static Criteria criteriaFromNode(Node node) {
     return criteriaFromNode(node, new ComparableComparator(), null);
   }
 
   /**
-   * Creates criteria from a node where the lexicographic type system used for range queries is the given lexitypes.
-   * This allows custom types to cascaded down the matching system.
+   * Creates criteria from a node. A Comparator is injected into all nodes which need to determine order or equality.
    */
   public static Criteria criteriaFromNode(Node node, Comparator rangeComparator) {
     return criteriaFromNode(node, rangeComparator, null);

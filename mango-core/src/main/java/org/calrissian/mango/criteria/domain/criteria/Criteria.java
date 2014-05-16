@@ -21,6 +21,10 @@ import org.calrissian.mango.domain.TupleCollection;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * Criteria represents a predicate tree which can applied to {@link TupleCollection} objects. Custom predicates can
+ * also be plugged in to the tree and evaluated.
+ */
 public interface Criteria extends Predicate<TupleCollection>, Serializable {
 
   boolean apply(TupleCollection obj);
