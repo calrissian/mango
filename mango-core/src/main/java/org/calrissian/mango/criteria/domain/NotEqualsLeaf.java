@@ -19,7 +19,7 @@ package org.calrissian.mango.criteria.domain;
  * Date: 11/9/12
  * Time: 1:57 PM
  */
-public class NotEqualsLeaf extends AbstractKeyValueLeaf {
+public class NotEqualsLeaf extends AbstractKeyValueLeaf implements NegationLeaf {
     private static final long serialVersionUID = 1L;
 
   public NotEqualsLeaf(String key, Object value, ParentNode parent) {
