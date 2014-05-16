@@ -30,6 +30,10 @@ public class NodeUtils {
     return node instanceof Leaf || node.children() == null || node.children().size() == 0;
   }
 
+  public static boolean isEmpty(Node node) {
+    return (node == null || (node.children() != null && node.children().size() == 0));
+  }
+
   public static boolean parentContainsOnlyLeaves(ParentNode parentNode) {
     for (Node child : parentNode.children()) {
       if (!isLeaf(child)) return false;
