@@ -15,7 +15,7 @@
  */
 package org.calrissian.mango.criteria.domain.criteria;
 
-import org.calrissian.mango.domain.TupleCollection;
+import org.calrissian.mango.domain.TupleStore;
 
 public class AndCriteria extends ParentCriteria{
 
@@ -24,7 +24,7 @@ public class AndCriteria extends ParentCriteria{
   }
 
   @Override
-  public boolean apply(TupleCollection obj) {
+  public boolean apply(TupleStore obj) {
     for(Criteria node : children()) {
       if(!node.apply(obj))
         return false;
