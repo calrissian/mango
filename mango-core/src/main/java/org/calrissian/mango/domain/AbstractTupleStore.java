@@ -23,11 +23,11 @@ import static com.google.common.collect.Iterables.concat;
 
 public abstract class AbstractTupleStore implements TupleStore {
 
-    private Map<String,Set<Tuple>> tuples = new HashMap<String, Set<Tuple>>();
+    private Map<String, Set<Tuple>> tuples = new HashMap<String, Set<Tuple>>();
 
     public void put(Tuple tuple) {
         Set<Tuple> keyedTuples = tuples.get(tuple.getKey());
-        if(keyedTuples == null) {
+        if (keyedTuples == null) {
             keyedTuples = new HashSet<Tuple>();
             tuples.put(tuple.getKey(), keyedTuples);
         }
@@ -35,7 +35,7 @@ public abstract class AbstractTupleStore implements TupleStore {
     }
 
     public void putAll(Iterable<Tuple> tuples) {
-        for(Tuple tuple : tuples)
+        for (Tuple tuple : tuples)
             put(tuple);
     }
 
@@ -57,7 +57,7 @@ public abstract class AbstractTupleStore implements TupleStore {
     /**
      * A get operation for single-valued keys
      */
-    public <T>Tuple<T> get(String key) {
+    public <T> Tuple<T> get(String key) {
         return tuples.get(key) != null ? tuples.get(key).iterator().next() : null;
     }
 
@@ -68,15 +68,15 @@ public abstract class AbstractTupleStore implements TupleStore {
 
     @Override
     public <T> Tuple<T> remove(Tuple<T> t) {
-        if(tuples.containsKey(t.getKey()))
-            return (Tuple<T>)tuples.remove(t);
+        if (tuples.containsKey(t.getKey()))
+            return (Tuple<T>) tuples.remove(t);
 
         return null;
     }
 
     @Override
-    public <T>Tuple<T> remove(String key) {
-        if(tuples.containsKey(key))
+    public <T> Tuple<T> remove(String key) {
+        if (tuples.containsKey(key))
             return tuples.remove(key).iterator().next();
 
         return null;

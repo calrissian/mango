@@ -19,7 +19,6 @@ package org.calrissian.mango.collect;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
-
 import org.calrissian.mango.collect.mock.MockIterator;
 import org.junit.Test;
 import org.mockito.Mockito;

@@ -36,6 +36,7 @@ public class BaseEvent extends AbstractTupleStore implements Event {
 
     /**
      * New evnet with ID. Timestamp defaults to current time.
+     *
      * @param id
      */
     public BaseEvent(String id) {
@@ -44,6 +45,7 @@ public class BaseEvent extends AbstractTupleStore implements Event {
 
     /**
      * New store entry with ID and a timestamp
+     *
      * @param id
      * @param timestamp
      */

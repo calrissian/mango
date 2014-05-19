@@ -19,7 +19,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Set;
 
-public interface TupleStore extends Serializable{
+public interface TupleStore extends Serializable {
 
     /**
      * Puts a single tuple in the current data store
@@ -45,7 +45,7 @@ public interface TupleStore extends Serializable{
      * Retrieves the first tuple returned for the specified key. This method assumes a single-valued key.
      * Note that multi-vaued keys may give undeterministic results.
      */
-    <T>Tuple<T> get(String key);
+    <T> Tuple<T> get(String key);
 
     /**
      * Returns the keys in the current object
@@ -55,12 +55,12 @@ public interface TupleStore extends Serializable{
     /**
      * Removes the specified tuple
      */
-    <T>Tuple<T> remove(Tuple<T> t);
+    <T> Tuple<T> remove(Tuple<T> t);
 
     /**
      * Removes the first tuple belonging to the specified key. This method assumed single-valued key
      */
-    <T>Tuple<T> remove(String key);
+    <T> Tuple<T> remove(String key);
 
     /**
      * Revoves all the tuples with the given key.

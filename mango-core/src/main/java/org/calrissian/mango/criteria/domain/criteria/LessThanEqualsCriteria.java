@@ -7,18 +7,18 @@ import java.util.Collection;
 import java.util.Comparator;
 
 public class LessThanEqualsCriteria extends ComparableKeyValueLeafCriteria {
-  public LessThanEqualsCriteria(String key, Object value, Comparator comparator, ParentCriteria parentCriteria) {
-    super(key, value, comparator, parentCriteria);
-  }
-
-  @Override
-  public boolean apply(TupleStore obj) {
-    Collection<Tuple> tuples = obj.getAll(key);
-    if(tuples != null) {
-      for(Tuple tuple : tuples)
-        return comparator.compare(tuple.getValue(), value) <= 0;
+    public LessThanEqualsCriteria(String key, Object value, Comparator comparator, ParentCriteria parentCriteria) {
+        super(key, value, comparator, parentCriteria);
     }
 
-    return false;
-  }
+    @Override
+    public boolean apply(TupleStore obj) {
+        Collection<Tuple> tuples = obj.getAll(key);
+        if (tuples != null) {
+            for (Tuple tuple : tuples)
+                return comparator.compare(tuple.getValue(), value) <= 0;
+        }
+
+        return false;
+    }
 }
