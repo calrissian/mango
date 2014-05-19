@@ -15,13 +15,13 @@
  */
 package org.calrissian.mango.domain;
 
+import com.google.common.collect.ImmutableList;
+
 import java.util.*;
 
-import static com.google.common.collect.Iterables.addAll;
 import static com.google.common.collect.Iterables.concat;
-import static java.util.Collections.unmodifiableCollection;
 
-public abstract class AbstractTupleCollection implements TupleCollection {
+public abstract class AbstractTupleStore implements TupleStore {
 
     private Map<String, Set<Tuple>> tuples = new HashMap<String, Set<Tuple>>();
 
@@ -44,9 +44,7 @@ public abstract class AbstractTupleCollection implements TupleCollection {
      * Returns all the getTuples set on the current entity
      */
     public Collection<Tuple> getTuples() {
-        Collection<Tuple> tupleCollection = new LinkedList<Tuple>();
-        addAll(tupleCollection, concat(tuples.values()));
-        return unmodifiableCollection(tupleCollection);
+        return ImmutableList.copyOf(concat(tuples.values()));
     }
 
     /**
@@ -64,29 +62,14 @@ public abstract class AbstractTupleCollection implements TupleCollection {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        AbstractTupleCollection that = (AbstractTupleCollection) o;
-
-        if (tuples != null ? !tuples.equals(that.tuples) : that.tuples != null) return false;
-
-        return true;
-    }
-
-    @Override
     public Set<String> keys() {
         return tuples.keySet();
     }
 
     @Override
     public <T> Tuple<T> remove(Tuple<T> t) {
-        if (tuples.containsKey(t.getKey())) {
-            Set<Tuple> tupleForKey = tuples.get(t.getKey());
-            Tuple<T> tuple = (Tuple<T>) tuples.remove(t);
-            return tuple;
-        }
+        if (tuples.containsKey(t.getKey()))
+            return (Tuple<T>) tuples.remove(t);
 
         return null;
     }
@@ -95,6 +78,7 @@ public abstract class AbstractTupleCollection implements TupleCollection {
     public <T> Tuple<T> remove(String key) {
         if (tuples.containsKey(key))
             return tuples.remove(key).iterator().next();
+
         return null;
     }
 
@@ -106,5 +90,17 @@ public abstract class AbstractTupleCollection implements TupleCollection {
     @Override
     public int hashCode() {
         return tuples != null ? tuples.hashCode() : 0;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AbstractTupleStore that = (AbstractTupleStore) o;
+
+        if (tuples != null ? !tuples.equals(that.tuples) : that.tuples != null) return false;
+
+        return true;
     }
 }

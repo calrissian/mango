@@ -16,7 +16,6 @@
 package org.calrissian.mango.uri.transform;
 
 import com.google.common.net.MediaType;
-
 import org.calrissian.mango.uri.domain.ResolvedItem;
 import org.calrissian.mango.uri.exception.ContextTransformException;
 import org.calrissian.mango.uri.transform.interceptor.ContextTransformInterceptor;

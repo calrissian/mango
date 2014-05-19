@@ -16,15 +16,13 @@
 package org.calrissian.mango.domain;
 
 
-import java.util.UUID;
-
 import static java.lang.System.currentTimeMillis;
+import static java.util.UUID.randomUUID;
 
 /**
- * A store entry acts as a useful common business object for representing different types of models. An optional time
- * dimension can be set directly or left untouched (defaulting in current time).
+ * Default implementation of {@link org.calrissian.mango.domain.Event}
  */
-public class BaseEvent extends AbstractTupleCollection implements Event {
+public class BaseEvent extends AbstractTupleStore implements Event {
 
     protected final String id;
     protected final long timestamp; // in Millis
@@ -33,7 +31,7 @@ public class BaseEvent extends AbstractTupleCollection implements Event {
      * New event with random UUID and timestamp defaulted to current time
      */
     public BaseEvent() {
-        this(UUID.randomUUID().toString());
+        this(randomUUID().toString());
     }
 
     /**
@@ -58,18 +56,14 @@ public class BaseEvent extends AbstractTupleCollection implements Event {
 
 
     /**
-     * Accessor for Id
-     *
-     * @return
+     * {@inheritDoc}
      */
     public String getId() {
         return id;
     }
 
     /**
-     * Accessor for timestamp
-     *
-     * @return
+     * {@inheritDoc}
      */
     public long getTimestamp() {
         return timestamp;

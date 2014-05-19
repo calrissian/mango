@@ -17,8 +17,6 @@ package org.calrissian.mango.criteria.support;
 
 import org.calrissian.mango.criteria.domain.*;
 import org.calrissian.mango.criteria.domain.criteria.*;
-import org.calrissian.mango.types.LexiTypeEncoders;
-import org.calrissian.mango.types.TypeRegistry;
 
 import java.util.Comparator;
 

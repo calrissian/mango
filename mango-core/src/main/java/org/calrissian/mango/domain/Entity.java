@@ -17,9 +17,15 @@ package org.calrissian.mango.domain;
 
 import java.io.Serializable;
 
-public interface Entity extends TupleCollection, Serializable {
+public interface Entity extends TupleStore, Serializable {
 
+    /**
+     * Accessor for Id
+     */
     String getId();
 
+    /**
+     * Accessor for the type of entity
+     */
     String getType();
 }

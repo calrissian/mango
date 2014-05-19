@@ -19,15 +19,15 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Set;
 
-public interface TupleCollection extends Serializable {
+public interface TupleStore extends Serializable {
 
     /**
-     * Puts a single tuple in the current collection
+     * Puts a single tuple in the current data store
      */
     void put(Tuple tuple);
 
     /**
-     * Adds all the given getTuples to the current collection
+     * Adds all the given getTuples to the current data store
      */
     void putAll(Iterable<Tuple> tuples);
 
@@ -37,7 +37,7 @@ public interface TupleCollection extends Serializable {
     Collection<Tuple> getTuples();
 
     /**
-     * Retrieves all the getTuples for the specified key.
+     * Retrieves all the tuples for the specified key.
      */
     Collection<Tuple> getAll(String key);
 
@@ -62,5 +62,8 @@ public interface TupleCollection extends Serializable {
      */
     <T> Tuple<T> remove(String key);
 
+    /**
+     * Revoves all the tuples with the given key.
+     */
     Collection<Tuple> removeAll(String key);
 }

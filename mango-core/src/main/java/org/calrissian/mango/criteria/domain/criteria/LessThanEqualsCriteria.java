@@ -1,7 +1,7 @@
 package org.calrissian.mango.criteria.domain.criteria;
 
 import org.calrissian.mango.domain.Tuple;
-import org.calrissian.mango.domain.TupleCollection;
+import org.calrissian.mango.domain.TupleStore;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -12,7 +12,7 @@ public class LessThanEqualsCriteria extends ComparableKeyValueLeafCriteria {
     }
 
     @Override
-    public boolean apply(TupleCollection obj) {
+    public boolean apply(TupleStore obj) {
         Collection<Tuple> tuples = obj.getAll(key);
         if (tuples != null) {
             for (Tuple tuple : tuples)

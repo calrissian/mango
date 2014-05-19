@@ -39,6 +39,7 @@ public class DomainMessageUtils {
     private static final String RESPONSE_STATUS = "filetransfer.response.status";
     private static final String RESPONSE_HASH = "filetransfer.response.hash";
     private static final String CONTENT_TYPE = "filestransfer.message.contentType";
+
     private DomainMessageUtils() {/* private constructor */}
 
     public static Message toRequestMessage(Session session, Request request)

@@ -16,11 +16,16 @@
 package org.calrissian.mango.domain;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.UUID.randomUUID;
 
-public class BaseEntity extends AbstractTupleCollection implements Entity {
+public class BaseEntity extends AbstractTupleStore implements Entity {
 
     private String id;
     private String type;
+
+    public BaseEntity(String type) {
+        this(type, randomUUID().toString());
+    }
 
     public BaseEntity(String type, String id) {
         checkNotNull(type);
@@ -29,10 +34,16 @@ public class BaseEntity extends AbstractTupleCollection implements Entity {
         this.type = type;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String getType() {
         return type;
     }

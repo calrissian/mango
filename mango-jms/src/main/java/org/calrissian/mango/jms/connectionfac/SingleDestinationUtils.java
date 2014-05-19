@@ -26,6 +26,7 @@ class SingleDestinationUtils {
 
     private static final String JMS_TOPIC_PROP_STR = "selectTopic";
     private static final String JMS_REPLYTO_PROP_STR = "replyTo";
+
     private SingleDestinationUtils() {/* private constructor */}
 
     public static void preSendMessage(Message msg, Destination topic, Destination destination) throws JMSException {

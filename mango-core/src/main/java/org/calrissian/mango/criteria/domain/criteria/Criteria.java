@@ -16,18 +16,18 @@
 package org.calrissian.mango.criteria.domain.criteria;
 
 import com.google.common.base.Predicate;
-import org.calrissian.mango.domain.TupleCollection;
+import org.calrissian.mango.domain.TupleStore;
 
 import java.io.Serializable;
 import java.util.List;
 
 /**
- * Criteria represents a predicate tree which can applied to {@link TupleCollection} objects. Custom predicates can
+ * Criteria represents a predicate tree which can applied to {@link org.calrissian.mango.domain.TupleStore} objects. Custom predicates can
  * also be plugged in to the tree and evaluated.
  */
-public interface Criteria extends Predicate<TupleCollection>, Serializable {
+public interface Criteria extends Predicate<TupleStore>, Serializable {
 
-    boolean apply(TupleCollection obj);
+    boolean apply(TupleStore obj);
 
     public ParentCriteria parent();
 

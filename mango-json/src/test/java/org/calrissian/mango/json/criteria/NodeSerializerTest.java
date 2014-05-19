@@ -23,7 +23,6 @@ import org.calrissian.mango.criteria.domain.RangeLeaf;
 import org.calrissian.mango.domain.IPv4;
 import org.junit.Test;
 
-
 import static org.calrissian.mango.types.SimpleTypeEncoders.SIMPLE_TYPES;
 import static org.junit.Assert.assertEquals;
 
