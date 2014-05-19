@@ -63,13 +63,13 @@ public class CloseableIterables {
     /**
      * Returns a closeable iterable whose iterators cycle indefinitely over the elements of
      * {@code iterable}.
-     *
+     * <p/>
      * <p>That iterator supports {@code remove()} if {@code iterable.iterator()}
      * does. After {@code remove()} is called, subsequent cycles omit the removed
      * element, which is no longer in {@code iterable}. The iterator's
      * {@code hasNext()} method returns {@code true} until {@code iterable} is
      * empty.
-     *
+     * <p/>
      * <p><b>Warning:</b> Typical uses of the resulting iterator may produce an
      * infinite loop. You should use an explicit {@code break} or be certain that
      * you will eventually remove all the elements.  The close method should be expicitly
@@ -115,7 +115,7 @@ public class CloseableIterables {
      * a closeable iterable containing {@code [a, b, c, d, e]} with a partition size of 3
      * yields {@code [[a, b, c], [d, e, null]]} -- an outer iterable containing
      * two inner lists of three elements each, all in the original order.
-     *
+     * <p/>
      * <p>Iterators returned by the returned closeableiterable do not support the {@link
      * Iterator#remove()} method.
      */
@@ -129,7 +129,7 @@ public class CloseableIterables {
      * {@code [a, b, c, d, e]} with a partition size of 3 yields {@code
      * [[a, b, c], [d, e]]} -- an outer iterable containing two inner lists of
      * three and two elements, all in the original order.
-     *
+     * <p/>
      * <p>Iterators returned by the returned iterable do not support the {@link
      * Iterator#remove()} method.
      */
@@ -142,12 +142,12 @@ public class CloseableIterables {
      * {@code numberToSkip} elements. If {@code iterable} contains fewer than
      * {@code numberToSkip} elements, the returned closeableiterable skips all of its
      * elements.
-     *
+     * <p/>
      * <p>Modifications to the underlying {@link CloseableIterable} before a call to
      * {@code iterator()} are reflected in the returned iterator. That is, the
      * iterator skips the first {@code numberToSkip} elements that exist when the
      * {@code Iterator} is created, not when {@code skip()} is called.
-     *
+     * <p/>
      * <p>The returned closeableiterable's iterator supports {@code remove()} if the
      * iterator of the underlying iterable supports it. Note that it is
      * <i>not</i> possible to delete the last skipped element by immediately
@@ -212,7 +212,7 @@ public class CloseableIterables {
 
     /**
      * Autoclose the {@code iterable} when its iterator is exhausted or if an exception is thrown.
-     *
+     * <p/>
      * Note that when using this method the order of calls matters. {@code limit()} is an example of one method which can
      * prevent the completion of an iterator.  For instance limit(autoClose(iterable), 1) will not close the
      * resource if there is more than 1 element, but autoClose(limit(iterable, 1)) will close the underlying
@@ -248,7 +248,7 @@ public class CloseableIterables {
             @Override
             protected void doClose() throws IOException {
                 if (iterable instanceof Closeable)
-                    ((Closeable)iterable).close();
+                    ((Closeable) iterable).close();
             }
 
             @Override
@@ -261,7 +261,7 @@ public class CloseableIterables {
     /**
      * Creates a {@link CloseableIterable} from a standard iterable, while closing the provided
      * closeable.
-     *
+     * <p/>
      * Intentionally left package private.
      */
     static <T> FluentCloseableIterable<T> wrap(final Iterable<T> iterable, final Closeable closeable) {
@@ -288,6 +288,7 @@ public class CloseableIterables {
             public boolean hasNext() {
                 return iterableIterator.hasNext();
             }
+
             @Override
             public Iterator<? extends T> next() {
                 return iterableIterator.next().iterator();

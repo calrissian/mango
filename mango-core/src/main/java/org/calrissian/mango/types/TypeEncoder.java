@@ -23,18 +23,21 @@ public interface TypeEncoder<T, U> {
 
     /**
      * Returns the "alias" of the types so that the encoded form can be decoded.
+     *
      * @return
      */
     public String getAlias();
 
     /**
      * The java class that the implementations encodes.
+     *
      * @return
      */
     public Class<T> resolves();
 
     /**
      * Encodes a value.
+     *
      * @param value
      * @return
      */
@@ -42,6 +45,7 @@ public interface TypeEncoder<T, U> {
 
     /**
      * Decodes an encoded value.
+     *
      * @param value
      * @return
      */

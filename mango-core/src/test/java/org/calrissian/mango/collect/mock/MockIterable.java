@@ -22,8 +22,8 @@ import java.io.IOException;
 import java.util.Iterator;
 
 public class MockIterable<T> implements CloseableIterable<T> {
-    private boolean closed = false;
     public Iterable<T> internal;
+    private boolean closed = false;
 
     public MockIterable(Iterable<T> internal) {
         this.internal = internal;

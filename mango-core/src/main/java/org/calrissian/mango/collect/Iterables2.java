@@ -61,7 +61,7 @@ public class Iterables2 {
      */
     public static <T> Iterable<T> distinct(final Iterable<T> iterable) {
         checkNotNull(iterable);
-        return new Iterable<T>(){
+        return new Iterable<T>() {
             @Override
             public Iterator<T> iterator() {
                 return Iterators2.distinct(iterable.iterator());
@@ -71,6 +71,7 @@ public class Iterables2 {
 
     /**
      * Generates an iterable that will drain a queue by consistently polling the latest item.
+     *
      * @param queue
      * @param <T>
      * @return

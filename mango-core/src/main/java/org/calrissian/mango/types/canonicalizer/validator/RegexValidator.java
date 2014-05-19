@@ -43,7 +43,7 @@ public class RegexValidator implements Validator {
 
     @Override
     public boolean validate(String str) {
-        if(str == null) return false;
+        if (str == null) return false;
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(str);
         return m.matches();

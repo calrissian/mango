@@ -24,7 +24,7 @@ import java.util.Map;
 public class ResolvedItem {
 
     private final MediaType contentType;
-    private final Map<String,String> additionalHeaders;
+    private final Map<String, String> additionalHeaders;
 
     private final InputStream object;
 

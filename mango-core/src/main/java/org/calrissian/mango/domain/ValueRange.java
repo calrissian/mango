@@ -34,12 +34,12 @@ public class ValueRange<T> {
         return start;
     }
 
-    public T getStop() {
-        return stop;
-    }
-
     public void setStart(T start) {
         this.start = start;
+    }
+
+    public T getStop() {
+        return stop;
     }
 
     public void setStop(T stop) {

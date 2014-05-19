@@ -26,27 +26,27 @@ import static org.junit.Assert.assertTrue;
 
 public class RangeCriteriaTest {
 
-  @Test
-  public void test() {
+    @Test
+    public void test() {
 
-    RangeCriteria criteria = new RangeCriteria("key1", 5, 10, new ComparableComparator(), null);
+        RangeCriteria criteria = new RangeCriteria("key1", 5, 10, new ComparableComparator(), null);
 
-    Entity entity = new BaseEntity("type", "id");
+        Entity entity = new BaseEntity("type", "id");
 
-    // first test without tuple existing
-    assertFalse(criteria.apply(entity));
+        // first test without tuple existing
+        assertFalse(criteria.apply(entity));
 
-    entity.put(new Tuple("key1", 11));
-    assertFalse(criteria.apply(entity));
+        entity.put(new Tuple("key1", 11));
+        assertFalse(criteria.apply(entity));
 
-    entity.put(new Tuple("key1", 4));
-    assertFalse(criteria.apply(entity));
+        entity.put(new Tuple("key1", 4));
+        assertFalse(criteria.apply(entity));
 
-    entity.put(new Tuple("key1", 5));
-    assertTrue(criteria.apply(entity));
+        entity.put(new Tuple("key1", 5));
+        assertTrue(criteria.apply(entity));
 
-    entity.put(new Tuple("key1", 6));
-    assertTrue(criteria.apply(entity));
+        entity.put(new Tuple("key1", 6));
+        assertTrue(criteria.apply(entity));
 
-  }
+    }
 }

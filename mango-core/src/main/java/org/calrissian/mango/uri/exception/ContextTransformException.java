@@ -17,7 +17,7 @@ package org.calrissian.mango.uri.exception;
 
 public class ContextTransformException extends Exception {
     private static final long serialVersionUID = 1L;
-    
+
     public ContextTransformException() {
     }
 

@@ -42,7 +42,7 @@ public abstract class ConnectionDecorator implements Connection {
 
     @Override
     public ConnectionMetaData getMetaData() throws JMSException {
-        return connection.getMetaData() ;
+        return connection.getMetaData();
     }
 
     @Override

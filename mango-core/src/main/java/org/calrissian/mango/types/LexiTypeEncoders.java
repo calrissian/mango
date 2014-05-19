@@ -24,7 +24,7 @@ import java.util.Date;
 
 /**
  * Default type encoders for serializing data to strings that are lexicographically sortable.
- *
+ * <p/>
  * These methods implement the default implementations for the generic TypesNormalizer's normalize and denormalize
  * functions.
  */

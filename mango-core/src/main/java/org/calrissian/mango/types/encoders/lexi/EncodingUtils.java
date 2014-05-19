@@ -26,7 +26,7 @@ class EncodingUtils {
 
     /**
      * Returns the raw bit representation of a string of hex digits.
-     *
+     * <p/>
      * Helper function simply because Long.parseLong(hex,16) does not handle negative numbers that were
      * converted to hex.
      */
@@ -77,7 +77,7 @@ class EncodingUtils {
     protected static byte[] reverse(byte[] bytes) {
         byte[] result = new byte[bytes.length];
 
-        for (int i = 0;i< bytes.length;i++)
+        for (int i = 0; i < bytes.length; i++)
             result[i] = (byte) (0xff - (0xff & bytes[i]));
 
         return result;

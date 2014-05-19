@@ -48,13 +48,13 @@ public class JmsUriReceiver extends JmsFileReceiver {
 
             UriResolver resolver = resolverRegistry.getResolver(requestURI);
 
-            if(resolver == null)
+            if (resolver == null)
                 throw new BadUriException();
 
             URI uriWithAuths = buildRequestURI(theUri, auths);
             InputStream is = receiveStream(uriWithAuths.toString());
 
-            if(is == null)
+            if (is == null)
                 throw new ResourceNotFoundException();
 
 

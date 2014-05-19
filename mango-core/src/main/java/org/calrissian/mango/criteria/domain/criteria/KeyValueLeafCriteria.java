@@ -17,49 +17,49 @@ package org.calrissian.mango.criteria.domain.criteria;
 
 public abstract class KeyValueLeafCriteria extends LeafCriteria {
 
-  protected String key;
-  protected Object value;
+    protected String key;
+    protected Object value;
 
-  public KeyValueLeafCriteria(String key, Object value, ParentCriteria parentCriteria) {
-    super(parentCriteria);
-    this.key = key;
-    this.value = value;
-  }
+    public KeyValueLeafCriteria(String key, Object value, ParentCriteria parentCriteria) {
+        super(parentCriteria);
+        this.key = key;
+        this.value = value;
+    }
 
-  public String getKey() {
-    return key;
-  }
+    public String getKey() {
+        return key;
+    }
 
-  public Object getValue() {
-    return value;
-  }
+    public Object getValue() {
+        return value;
+    }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-    KeyValueLeafCriteria that = (KeyValueLeafCriteria) o;
+        KeyValueLeafCriteria that = (KeyValueLeafCriteria) o;
 
-    if (key != null ? !key.equals(that.key) : that.key != null) return false;
-    if (value != null ? !value.equals(that.value) : that.value != null) return false;
+        if (key != null ? !key.equals(that.key) : that.key != null) return false;
+        if (value != null ? !value.equals(that.value) : that.value != null) return false;
 
-    return true;
-  }
+        return true;
+    }
 
-  @Override
-  public int hashCode() {
-    int result = key != null ? key.hashCode() : 0;
-    result = 31 * result + (value != null ? value.hashCode() : 0);
-    return result;
-  }
+    @Override
+    public int hashCode() {
+        int result = key != null ? key.hashCode() : 0;
+        result = 31 * result + (value != null ? value.hashCode() : 0);
+        return result;
+    }
 
-  @Override
-  public String toString() {
-    return "KeyValueLeafCriteria{" +
-            "key='" + key + '\'' +
-            ", value=" + value +
-            ", parent=" + parent.getClass().getSimpleName() +
-            '}';
-  }
+    @Override
+    public String toString() {
+        return "KeyValueLeafCriteria{" +
+                "key='" + key + '\'' +
+                ", value=" + value +
+                ", parent=" + parent.getClass().getSimpleName() +
+                '}';
+    }
 }

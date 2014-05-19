@@ -26,12 +26,12 @@ public class ByteReverseEncoder extends AbstractByteEncoder<String> {
     @Override
     public String encode(Byte value) {
         checkNotNull(value, "Null values are not allowed");
-        return byteEncoder.encode((byte)~value);
+        return byteEncoder.encode((byte) ~value);
     }
 
     @Override
     public Byte decode(String value) {
         checkNotNull(value, "Null values are not allowed");
-        return (byte)~byteEncoder.decode(value);
+        return (byte) ~byteEncoder.decode(value);
     }
 }

@@ -51,7 +51,7 @@ public class RangeValidator implements Validator {
     @Override
     public boolean validate(String str) {
         try {
-            if(str == null) return false;
+            if (str == null) return false;
             double v = Double.parseDouble(str);
             return v >= start && v <= stop;
         } catch (Exception e) {
@@ -62,7 +62,7 @@ public class RangeValidator implements Validator {
     @Override
     public void configure(String config) {
         String[] split = config.split(",");
-        if(split.length == 2) {
+        if (split.length == 2) {
             start = Double.parseDouble(split[0]);
             stop = Double.parseDouble(split[1]);
         }

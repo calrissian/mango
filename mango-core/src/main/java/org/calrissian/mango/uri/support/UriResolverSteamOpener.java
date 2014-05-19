@@ -37,7 +37,7 @@ public class UriResolverSteamOpener implements UriStreamOpener {
         this.resolverRegistry = resolverRegistry;
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public InputStream openStream(URI uri) throws IOException {
 
@@ -47,18 +47,16 @@ public class UriResolverSteamOpener implements UriStreamOpener {
 
             UriResolver resolver = resolverRegistry.getResolver(requestURI);
 
-            if(resolver == null)
+            if (resolver == null)
                 throw new BadUriException();
 
             Object obj = resolver.resolveUri(requestURI, auths);
 
-            if(obj == null)
+            if (obj == null)
                 throw new ResourceNotFoundException();
 
             return resolver.toStream(obj);
-        }
-
-        catch(Exception e){
+        } catch (Exception e) {
             throw new IOException(e);
         }
     }

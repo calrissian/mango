@@ -34,10 +34,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class CloseableIterators {
 
-    private CloseableIterators() {/* private constructor */}
-
     @SuppressWarnings("rawtypes")
     private static final CloseableIterator EMPTY_ITERATOR = wrap(Iterators.emptyIterator());
+
+    private CloseableIterators() {/* private constructor */}
 
     /**
      * If we can assume the closeable iterator is sorted, return the distinct elements.
@@ -67,7 +67,7 @@ public class CloseableIterators {
      */
     @SuppressWarnings("unchecked")
     public static <T> CloseableIterator<T> emptyIterator() {
-        return (CloseableIterator<T>)EMPTY_ITERATOR;
+        return (CloseableIterator<T>) EMPTY_ITERATOR;
     }
 
     /**
@@ -101,7 +101,7 @@ public class CloseableIterators {
      * a closeable iterator containing {@code [a, b, c, d, e]} with a partition size of 3
      * yields {@code [[a, b, c], [d, e, null]]} -- an outer iterator containing
      * two inner lists of three elements each, all in the original order.
-     *
+     * <p/>
      * <p>The returned lists implement {@link java.util.RandomAccess}.
      */
     public static <T> CloseableIterator<List<T>> paddedParition(final CloseableIterator<T> iterator, final int size) {
@@ -114,7 +114,7 @@ public class CloseableIterators {
      * {@code [a, b, c, d, e]} with a partition size of 3 yields {@code
      * [[a, b, c], [d, e]]} -- an outer iterator containing two inner lists of
      * three and two elements, all in the original order.
-     *
+     * <p/>
      * <p>The returned lists implement {@link java.util.RandomAccess}.
      */
     public static <T> CloseableIterator<List<T>> partition(final CloseableIterator<T> iterator, final int size) {
@@ -123,7 +123,7 @@ public class CloseableIterators {
 
     /**
      * Returns a {@code PeekingCloseableIterator} backed by the given closeable iterator.
-     *
+     * <p/>
      * Calls to peek do not change the state of the iterator.  The subsequent call to next
      * after peeking will always return the same value.
      */
@@ -178,7 +178,7 @@ public class CloseableIterators {
      * Combines multiple closeable iterators into a single closeable iterator. The returned
      * closeable iterator iterates across the elements of each closeable iterator in {@code inputs}.
      * The input iterators are not polled until necessary.
-     *
+     * <p/>
      * As each closeable iterator is exhausted, it is closed before moving onto the next closeable
      * iterator.  A call to close on the returned closeable iterator will quietly close all of
      * the closeable iterators in {@code inputs} which have not been exhausted.
@@ -191,7 +191,7 @@ public class CloseableIterators {
      * Combines multiple closeable iterators into a single closeable iterator. The returned
      * closeable iterator iterates across the elements of each closeable iterator in {@code inputs}.
      * The input iterators are not polled until necessary.
-     *
+     * <p/>
      * As each closeable iterator is exhausted, it is closed before moving onto the next closeable
      * iterator.  A call to close on the returned closeable iterator will quietly close all of
      * the closeable iterators in {@code inputs} which have not been exhausted.
@@ -200,6 +200,7 @@ public class CloseableIterators {
         checkNotNull(iterator);
         return new CloseableIterator<T>() {
             CloseableIterator<? extends T> curr = emptyIterator();
+
             @Override
             public void closeQuietly() {
                 try {
@@ -251,7 +252,7 @@ public class CloseableIterators {
     /**
      * Autoclose the iterator when exhausted or if an exception is thrown. It is currently set to protected, so that only
      * classes in this package can use.
-     *
+     * <p/>
      * Note that when using this method the order of calls matters. {@code limit()} is an example of one method which can
      * prevent the completion of an iterator.  For instance limit(autoClose(iterator), 1) will not close the
      * resource if there is more than 1 element, but autoClose(limit(iterator, 1)) will close the underlying
@@ -261,6 +262,7 @@ public class CloseableIterators {
         checkNotNull(iterator);
         return new CloseableIterator<T>() {
             private boolean closed = false;
+
             @Override
             public void closeQuietly() {
                 try {
@@ -366,7 +368,7 @@ public class CloseableIterators {
     /**
      * Creates a {@link CloseableIterable} from a standard iterable, while closing the provided
      * closeable.
-     *
+     * <p/>
      * Intentionally left package private.
      */
     static <T> CloseableIterator<T> wrap(final Iterator<T> iterator, final Closeable closeable) {

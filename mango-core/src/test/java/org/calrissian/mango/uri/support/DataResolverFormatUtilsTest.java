@@ -46,7 +46,7 @@ public class DataResolverFormatUtilsTest {
 
         URI baseURI = new URI("service://hello?param1=value1#A,B,C");
 
-        assertArrayEquals(new String[] {"A", "B" ,"C"}, DataResolverFormatUtils.extractAuthsFromUri(baseURI));
+        assertArrayEquals(new String[]{"A", "B", "C"}, DataResolverFormatUtils.extractAuthsFromUri(baseURI));
 
     }
 }

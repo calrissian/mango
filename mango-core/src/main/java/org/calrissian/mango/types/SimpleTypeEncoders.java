@@ -34,13 +34,13 @@ import static java.lang.Long.parseLong;
 
 public class SimpleTypeEncoders {
 
-    public SimpleTypeEncoders() {/* private constructor */}
-
     @SuppressWarnings("unchecked")
     public static final TypeRegistry<String> SIMPLE_TYPES = new TypeRegistry<String>(
             booleanEncoder(), byteEncoder(), dateEncoder(), doubleEncoder(), floatEncoder(),
             integerEncoder(), ipv4Encoder(), longEncoder(), stringEncoder(), uriEncoder()
     );
+
+    public SimpleTypeEncoders() {/* private constructor */}
 
     public static TypeEncoder<Boolean, String> booleanEncoder() {
         return new AbstractBooleanEncoder<String>() {
@@ -55,7 +55,7 @@ public class SimpleTypeEncoders {
                 checkNotNull(value, "Null values are not allowed");
 
                 String lowercase = value.toLowerCase();
-                if(!lowercase.equals("true") && !lowercase.equals("false"))
+                if (!lowercase.equals("true") && !lowercase.equals("false"))
                     throw new RuntimeException("The value " + value + " is not a valid boolean.");
 
                 return parseBoolean(lowercase);

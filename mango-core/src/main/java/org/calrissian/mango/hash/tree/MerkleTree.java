@@ -30,25 +30,28 @@ public class MerkleTree<T extends HashLeaf> implements Serializable {
     private int numLeaves;       // keeping this around for future optimizations
     private Node topHash;
 
-    public MerkleTree() {}
+    public MerkleTree() {
+    }
 
     /**
      * Creates Merkle Tree with default dimension with the given leaves
+     *
      * @param leaves
      * @throws IllegalStateException
      */
-    public MerkleTree(List<T> leaves) throws IllegalStateException{
+    public MerkleTree(List<T> leaves) throws IllegalStateException {
         this.topHash = buildTop(leaves);
         this.numLeaves = leaves.size();
     }
 
     /**
      * Creates Merkle Tree with specified dimension with the given leaves
+     *
      * @param leaves
      * @param dimensions
      * @throws IllegalStateException
      */
-    public MerkleTree(List<T> leaves, int dimensions) throws IllegalStateException{
+    public MerkleTree(List<T> leaves, int dimensions) throws IllegalStateException {
         this.dimensions = dimensions;
         this.topHash = buildTop(leaves);
         this.numLeaves = leaves.size();
@@ -56,6 +59,7 @@ public class MerkleTree<T extends HashLeaf> implements Serializable {
 
     /**
      * Accessor for the root of the tree
+     *
      * @return
      */
     public Node getTopHash() {
@@ -72,6 +76,7 @@ public class MerkleTree<T extends HashLeaf> implements Serializable {
 
     /**
      * The merkle tree is constructed from the bottom up.
+     *
      * @param leaves
      * @return
      */
@@ -79,7 +84,7 @@ public class MerkleTree<T extends HashLeaf> implements Serializable {
 
         List<Node> hashNodes = new ArrayList<Node>();
         List<T> curLeaves;
-        for(int i = 0; i < leaves.size(); i+=dimensions) {
+        for (int i = 0; i < leaves.size(); i += dimensions) {
             int idx = i + dimensions > leaves.size() ? leaves.size() : i + dimensions;
             curLeaves = leaves.subList(i, idx);
             hashNodes.add(curLeaves.size() == 1 ? curLeaves.get(0) : new HashNode(new ArrayList<Node>(curLeaves)));
@@ -87,17 +92,16 @@ public class MerkleTree<T extends HashLeaf> implements Serializable {
 
         List<Node> finalTree = build(hashNodes);
 
-        if(finalTree != null && finalTree.size() > 0) {
+        if (finalTree != null && finalTree.size() > 0) {
             return finalTree.get(0);
-        }
-
-        else {
+        } else {
             throw new IllegalStateException("Final tree cannot have 0 root nodes.");
         }
     }
 
     /**
      * Resursive method for hashing children and constructing parents until the top hash (root node) is encountered
+     *
      * @param nodes
      * @return
      */
@@ -105,14 +109,14 @@ public class MerkleTree<T extends HashLeaf> implements Serializable {
 
         List<Node> hashNodes = new ArrayList<Node>();
         List<Node> curNodes;
-        for(int i = 0; i < nodes.size(); i+=dimensions) {
+        for (int i = 0; i < nodes.size(); i += dimensions) {
 
             int idx = i + dimensions > nodes.size() ? nodes.size() : i + dimensions;
             curNodes = nodes.subList(i, idx);
             hashNodes.add(curNodes.size() == 1 ? curNodes.get(0) : new HashNode(new ArrayList<Node>(curNodes)));
         }
 
-        if(hashNodes.size() > 1) {
+        if (hashNodes.size() > 1) {
             hashNodes = build(hashNodes);
         }
 
@@ -123,40 +127,35 @@ public class MerkleTree<T extends HashLeaf> implements Serializable {
      * Diff current tree against another using depth-first. The resulting list contains nodes in the current tree that
      * differ from the other tree. As a property of successfully comparing two merkle trees, it's important that both trees
      * have the same dimension AND number of leaves.
+     *
      * @param other
      * @return
      */
     @SuppressWarnings("rawtypes")
     public List<T> diff(MerkleTree other) {
 
-        if(dimensions != other.dimensions || numLeaves != other.numLeaves) {
+        if (dimensions != other.dimensions || numLeaves != other.numLeaves) {
             throw new IllegalStateException("Trees need to have the same size & dimension to diff.");
         }
 
 
         List<T> differences = new ArrayList<T>();
 
-        if(!other.getTopHash().getHash().equals(getTopHash().getHash())) {
+        if (!other.getTopHash().getHash().equals(getTopHash().getHash())) {
 
             List<Node> nodes1 = topHash.getChildren();
             List<Node> nodes2 = other.getTopHash().getChildren();
 
-            if(nodes1 == null) {
+            if (nodes1 == null) {
                 return differences;
-            }
-
-            else if(nodes1 != null && nodes2 == null) {
+            } else if (nodes1 != null && nodes2 == null) {
                 differences.addAll(getLeaves(nodes2));
-            }
+            } else {
+                for (int i = 0; i < nodes1.size(); i++) {
 
-            else {
-                for(int i = 0; i < nodes1.size(); i++) {
-
-                    if(i < nodes1.size() && nodes2.size() == i) {
+                    if (i < nodes1.size() && nodes2.size() == i) {
                         differences.addAll(getLeaves(nodes1.get(i).getChildren()));
-                    }
-
-                    else {
+                    } else {
                         differences.addAll(diff(nodes1.get(i), nodes2.get(i)));
                     }
                 }
@@ -168,26 +167,27 @@ public class MerkleTree<T extends HashLeaf> implements Serializable {
 
     /**
      * Recursive method for diffing two subtrees against each other
+     *
      * @param one
      * @param two
      * @return
      */
     @SuppressWarnings("unchecked")
-    private  List<T> diff(Node one, Node two) {
+    private List<T> diff(Node one, Node two) {
 
         List<T> differences = new ArrayList<T>();
 
-        if(!one.getHash().equals(two.getHash())) {
+        if (!one.getHash().equals(two.getHash())) {
 
-            if(one.getChildren() == null) {
-                differences.add((T)one);
+            if (one.getChildren() == null) {
+                differences.add((T) one);
 
-            } else if(one.getChildren() != null && two.getChildren() == null) {
+            } else if (one.getChildren() != null && two.getChildren() == null) {
                 differences.addAll(getLeaves(one.getChildren()));
 
             } else {
 
-                for(int i = 0; i < one.getChildren().size(); i++) {
+                for (int i = 0; i < one.getChildren().size(); i++) {
 
                     Node node1 = one.getChildren().get(i);
                     Node noe2 = two.getChildren().get(i);
@@ -203,6 +203,7 @@ public class MerkleTree<T extends HashLeaf> implements Serializable {
 
     /**
      * Visits every subtree in a list of nodes until leaves are encountered and returns them.
+     *
      * @param nodes
      * @return
      */
@@ -210,12 +211,10 @@ public class MerkleTree<T extends HashLeaf> implements Serializable {
     private List<T> getLeaves(List<Node> nodes) {
 
         List<T> leaves = new ArrayList<T>();
-        for(Node child : nodes) {
-            if(child.getChildren() == null) {
-                leaves.add((T)child);
-            }
-
-            else {
+        for (Node child : nodes) {
+            if (child.getChildren() == null) {
+                leaves.add((T) child);
+            } else {
                 leaves.addAll(getLeaves(child.getChildren()));
             }
         }

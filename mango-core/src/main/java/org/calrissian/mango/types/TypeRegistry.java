@@ -41,7 +41,7 @@ public class TypeRegistry<U> {
     }
 
     public TypeRegistry(Iterable<TypeEncoder<?, U>> normalizers) {
-        for(TypeEncoder<?, U> resolver: normalizers) {
+        for (TypeEncoder<?, U> resolver : normalizers) {
             if (aliasMapping.containsKey(resolver.getAlias()))
                 throw new IllegalArgumentException("The aliases provided by the normalizers must be unique");
             if (classMapping.containsKey(resolver.resolves()))
@@ -54,6 +54,7 @@ public class TypeRegistry<U> {
 
     /**
      * Gets a alias for a given java objects class.
+     *
      * @param obj
      * @return
      */
@@ -62,17 +63,17 @@ public class TypeRegistry<U> {
             return null;
 
         TypeEncoder<?, U> encoder = classMapping.get(obj.getClass());
-        if(encoder != null)
+        if (encoder != null)
             return encoder.getAlias();
 
         return null;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public U encode(Object value) throws TypeEncodingException {
         TypeEncoder encoder = classMapping.get(value.getClass());
-        if(encoder != null)
-            return (U)encoder.encode(value);
+        if (encoder != null)
+            return (U) encoder.encode(value);
 
         throw new TypeEncodingException("An unknown type [" + value.getClass() + "] was encountered");
     }
@@ -80,7 +81,7 @@ public class TypeRegistry<U> {
     public Object decode(String alias, U value) throws TypeDecodingException {
 
         TypeEncoder<?, U> encoder = aliasMapping.get(alias);
-        if(encoder != null)
+        if (encoder != null)
             return encoder.decode(value);
 
         throw new TypeDecodingException("An unknown type [" + value + "] was encountered");

@@ -49,9 +49,8 @@ import java.util.UUID;
 
 public abstract class AbstractJmsFileTransferSupport {
 
-    Logger logger = LoggerFactory.getLogger(getClass());
-
     protected JmsTemplate jmsTemplate;
+    Logger logger = LoggerFactory.getLogger(getClass());
     private int pieceSize = 10240;
     private Destination streamRequestDestination;
     private String hashAlgorithm;
@@ -70,7 +69,6 @@ public abstract class AbstractJmsFileTransferSupport {
     }
 
 
-
     protected String generateId() {
         return UUID.randomUUID().toString();
     }
@@ -79,12 +77,24 @@ public abstract class AbstractJmsFileTransferSupport {
         return jmsTemplate;
     }
 
+    public void setJmsTemplate(JmsTemplate jmsTemplate) {
+        this.jmsTemplate = jmsTemplate;
+    }
+
     public int getPieceSize() {
         return pieceSize;
     }
 
+    public void setPieceSize(int pieceSize) {
+        this.pieceSize = pieceSize;
+    }
+
     public Destination getStreamRequestDestination() {
         return streamRequestDestination;
+    }
+
+    public void setStreamRequestDestination(Destination streamRequestDestination) {
+        this.streamRequestDestination = streamRequestDestination;
     }
 
     public InputStream receiveStream(final Request req)
@@ -92,7 +102,8 @@ public abstract class AbstractJmsFileTransferSupport {
         try {
             logger.info(
                     "Broadcasting request for [" + req.getDownloadUri()
-                            + "] and id[" + req.getRequestId() + "]");
+                            + "] and id[" + req.getRequestId() + "]"
+            );
             Message returnMessage = sendWithResponse(new MessageCreator() {
 
                 @Override
@@ -107,7 +118,8 @@ public abstract class AbstractJmsFileTransferSupport {
             if (returnMessage == null) {
                 logger.info(
                         "No one can fullfil this request ["
-                                + req.getDownloadUri() + "]");
+                                + req.getDownloadUri() + "]"
+                );
                 return null;
             }
 
@@ -118,7 +130,8 @@ public abstract class AbstractJmsFileTransferSupport {
 
             logger.info(
                     "Receiver[" + req.getRequestId()
-                            + "]: File Transfer starting");
+                            + "]: File Transfer starting"
+            );
 
             return new JmsFileReceiverInputStream(this, sendDataDestination,
                     receiveAckDestination);
@@ -126,7 +139,6 @@ public abstract class AbstractJmsFileTransferSupport {
             throw new JmsFileTransferException(e);
         }
     }
-
 
     @SuppressWarnings("unchecked")
     public void sendStream(Request req, final Destination replyTo)
@@ -144,7 +156,6 @@ public abstract class AbstractJmsFileTransferSupport {
 
             is = new DigestInputStream(new BufferedInputStream(streamOpener.openStream(downloadUrl)),
                     MessageDigest.getInstance(getHashAlgorithm()));
-
 
 
         } catch (NoSuchAlgorithmException e) {
@@ -178,7 +189,8 @@ public abstract class AbstractJmsFileTransferSupport {
                                 requestor = new DestinationRequestor(
                                         session, replyTo,
                                         streamTransferDestination, jmsTemplate
-                                        .getReceiveTimeout());
+                                        .getReceiveTimeout()
+                                );
                                 Message returnMessage = requestor
                                         .request(responseMessage);
                                 requestor.close();
@@ -189,7 +201,8 @@ public abstract class AbstractJmsFileTransferSupport {
                             }
                         }
 
-                    }, true);
+                    }, true
+            );
 
             // timeout
             if (returnMessage == null)
@@ -210,7 +223,8 @@ public abstract class AbstractJmsFileTransferSupport {
 
             logger.info(
                     "Sender[" + req.getRequestId() + "]: Starting send to: "
-                            + sendDataDestination);
+                            + sendDataDestination
+            );
 
             byte[] buffer = new byte[getPieceSize()];
             int read = is.read(buffer);
@@ -226,7 +240,8 @@ public abstract class AbstractJmsFileTransferSupport {
                         "Sender[" + req.getRequestId()
                                 + "]: Sending piece with position: "
                                 + piece.getPosition() + " Size of piece: "
-                                + pieceData.length);
+                                + pieceData.length
+                );
                 jmsTemplate.send(sendDataDestination, new MessageCreator() {
 
                     @Override
@@ -241,7 +256,8 @@ public abstract class AbstractJmsFileTransferSupport {
                 Message ret = queueListener.getMessageInQueue();
                 logger.info(
                         "Sender[" + req.getRequestId()
-                                + "]: Sent piece and got ack");
+                                + "]: Sent piece and got ack"
+                );
 
                 // no one on the other end any longer, timeout
                 if (ret == null)
@@ -253,7 +269,8 @@ public abstract class AbstractJmsFileTransferSupport {
                     // resend piece
                     logger.info(
                             "Sender[" + req.getRequestId()
-                                    + "]: Resending piece");
+                                    + "]: Resending piece"
+                    );
                 } else if (ResponseStatusEnum.DENY.equals(res.getStatus())) {
                     return;
                 } else {
@@ -305,7 +322,7 @@ public abstract class AbstractJmsFileTransferSupport {
         }
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
     protected Message sendWithResponse(final MessageCreator mc,
                                        final Destination replyTo) {
         return (Message) jmsTemplate.execute(new SessionCallback() {
@@ -338,23 +355,11 @@ public abstract class AbstractJmsFileTransferSupport {
                 session, destinationName, true);
     }
 
-    public void setJmsTemplate(JmsTemplate jmsTemplate) {
-        this.jmsTemplate = jmsTemplate;
-    }
-
-    public void setPieceSize(int pieceSize) {
-        this.pieceSize = pieceSize;
-    }
-
-    public void setStreamRequestDestination(Destination streamRequestDestination) {
-        this.streamRequestDestination = streamRequestDestination;
+    public String getHashAlgorithm() {
+        return hashAlgorithm;
     }
 
     public void setHashAlgorithm(String hashAlgorithm) {
         this.hashAlgorithm = hashAlgorithm;
-    }
-
-    public String getHashAlgorithm() {
-        return hashAlgorithm;
     }
 }
