@@ -30,18 +30,13 @@ public abstract class MessageProducerDecorator implements MessageProducer {
     }
 
     @Override
-    public void setDisableMessageID(boolean b) throws JMSException {
-        messageProducer.setDisableMessageID(b);
-    }
-
-    @Override
     public boolean getDisableMessageID() throws JMSException {
         return messageProducer.getDisableMessageID();
     }
 
     @Override
-    public void setDisableMessageTimestamp(boolean b) throws JMSException {
-        messageProducer.setDisableMessageTimestamp(b);
+    public void setDisableMessageID(boolean b) throws JMSException {
+        messageProducer.setDisableMessageID(b);
     }
 
     @Override
@@ -50,8 +45,8 @@ public abstract class MessageProducerDecorator implements MessageProducer {
     }
 
     @Override
-    public void setDeliveryMode(int i) throws JMSException {
-        messageProducer.setDeliveryMode(i);
+    public void setDisableMessageTimestamp(boolean b) throws JMSException {
+        messageProducer.setDisableMessageTimestamp(b);
     }
 
     @Override
@@ -60,8 +55,8 @@ public abstract class MessageProducerDecorator implements MessageProducer {
     }
 
     @Override
-    public void setPriority(int i) throws JMSException {
-        messageProducer.setPriority(i);
+    public void setDeliveryMode(int i) throws JMSException {
+        messageProducer.setDeliveryMode(i);
     }
 
     @Override
@@ -70,13 +65,18 @@ public abstract class MessageProducerDecorator implements MessageProducer {
     }
 
     @Override
-    public void setTimeToLive(long l) throws JMSException {
-        messageProducer.setTimeToLive(l);
+    public void setPriority(int i) throws JMSException {
+        messageProducer.setPriority(i);
     }
 
     @Override
     public long getTimeToLive() throws JMSException {
         return messageProducer.getTimeToLive();
+    }
+
+    @Override
+    public void setTimeToLive(long l) throws JMSException {
+        messageProducer.setTimeToLive(l);
     }
 
     @Override

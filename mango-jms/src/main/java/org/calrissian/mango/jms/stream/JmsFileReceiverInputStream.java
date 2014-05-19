@@ -89,7 +89,7 @@ public class JmsFileReceiverInputStream extends AbstractBufferedInputStream {
                 if (transferResp.getStatus() == STOPSEND)
                     done = true;
                 else
-                    throw new JmsFileTransferException("Transfer aborted with status["  + transferResp.getStatus() + "] from server");
+                    throw new JmsFileTransferException("Transfer aborted with status[" + transferResp.getStatus() + "] from server");
 
             } else {
                 throw new JmsFileTransferException("Unexpected message received: " + message);
@@ -107,7 +107,8 @@ public class JmsFileReceiverInputStream extends AbstractBufferedInputStream {
                                     session, new Response(toSendStatus));
                         }
 
-                    });
+                    }
+            );
 
             return data; //null is fine, as abstract will simply retry until done is set.
 
@@ -130,7 +131,8 @@ public class JmsFileReceiverInputStream extends AbstractBufferedInputStream {
                             return toResponseMessage(session, new Response(DENY));
                         }
 
-                    });
+                    }
+            );
         }
         super.close();
     }
@@ -147,7 +149,8 @@ public class JmsFileReceiverInputStream extends AbstractBufferedInputStream {
                         return responseMessage;
                     }
 
-                });
+                }
+        );
         started = true;
     }
 }

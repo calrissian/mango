@@ -32,6 +32,6 @@ public class IntegerEncoder extends AbstractIntegerEncoder<String> {
     @Override
     public Integer decode(String value) {
         checkNotNull(value, "Null values are not allowed");
-        return (int)fromHex(value) ^ Integer.MIN_VALUE;
+        return (int) fromHex(value) ^ Integer.MIN_VALUE;
     }
 }

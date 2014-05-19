@@ -53,7 +53,7 @@ public class JmsUriSender extends JmsFileSenderListener
             // filter based on system
             String systemNamePart = DataResolverFormatUtils.extractTargetSystemFromUri(uri);
 
-            if(systemNamePart.equals(systemName) || systemNamePart.equals(DataResolverConstants.SYSTEM_ALL)) {
+            if (systemNamePart.equals(systemName) || systemNamePart.equals(DataResolverConstants.SYSTEM_ALL)) {
 
                 String requestUriPart = uri.toString().replaceFirst(uri.getScheme() + ":", "");
 
@@ -63,9 +63,7 @@ public class JmsUriSender extends JmsFileSenderListener
 
                 getTaskExecutor().execute(new JmsFileSenderRunnable(req, request
                         .getJMSReplyTo()));
-            }
-
-            else {
+            } else {
 
                 logger.info("Ignoring uri download request: " + uri);
             }

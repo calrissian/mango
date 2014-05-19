@@ -20,7 +20,7 @@ import org.calrissian.mango.criteria.domain.ParentNode;
 
 /**
  * A parent node with no children can be deleted.
- *
+ * <p/>
  * Date: 11/13/12
  * Time: 9:15 AM
  */

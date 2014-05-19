@@ -27,7 +27,7 @@ public class IPv4ReverseEncoder extends AbstractIPv4Encoder<String> {
     @Override
     public String encode(IPv4 value) {
         checkNotNull(value, "Null values are not allowed");
-        return encodeUInt(~(int)value.getValue());
+        return encodeUInt(~(int) value.getValue());
     }
 
     @Override

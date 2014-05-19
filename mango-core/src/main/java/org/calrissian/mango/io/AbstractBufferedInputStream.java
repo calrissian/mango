@@ -26,22 +26,24 @@ import java.io.InputStream;
 public abstract class AbstractBufferedInputStream extends InputStream {
 
     private static final int EOF = -1;
-    private byte [] buf = null;
+    private byte[] buf = null;
     private int curr = 0;
     private boolean closed = false;
 
     /**
      * Returns true if there is no more source data.
+     *
      * @return true if at the end of the source data.
      */
     protected abstract boolean isEOF();
 
     /**
      * Retrieves the next set of data from the source.
+     *
      * @return A byte array containing the next set of data.
      * @throws java.io.IOException
      */
-    protected abstract byte [] getNextBuffer() throws IOException;
+    protected abstract byte[] getNextBuffer() throws IOException;
 
     /**
      * {@inheritDoc}
@@ -83,6 +85,7 @@ public abstract class AbstractBufferedInputStream extends InputStream {
 
     /**
      * Retrieves the next set of data and resets the current index.
+     *
      * @throws java.io.IOException
      */
     private void loadBuffer() throws IOException {
@@ -92,6 +95,7 @@ public abstract class AbstractBufferedInputStream extends InputStream {
 
     /**
      * Check if the stream has been closed.  If it has, it will throw an {@link java.io.IOException}.
+     *
      * @throws java.io.IOException
      */
     private void checkClosed() throws IOException {

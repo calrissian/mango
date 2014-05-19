@@ -15,7 +15,7 @@
  */
 package org.calrissian.mango.types.canonicalizer.domain;
 
-public class CanonicalDef implements Comparable<CanonicalDef>{
+public class CanonicalDef implements Comparable<CanonicalDef> {
 
     private final String type;
     private final String dataType;

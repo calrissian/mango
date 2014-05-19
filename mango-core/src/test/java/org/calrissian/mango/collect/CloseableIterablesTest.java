@@ -37,9 +37,9 @@ public class CloseableIterablesTest {
 
     @Test
     public void testWrap() throws Exception {
-        CloseableIterable<Integer> wrapped = CloseableIterables.wrap(asList(1,2,3,4,5));
+        CloseableIterable<Integer> wrapped = CloseableIterables.wrap(asList(1, 2, 3, 4, 5));
 
-        assertTrue(elementsEqual(asList(1,2,3,4,5), wrapped));
+        assertTrue(elementsEqual(asList(1, 2, 3, 4, 5), wrapped));
 
         wrapped.close();
 

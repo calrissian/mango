@@ -30,7 +30,7 @@ public abstract class BasicObjectUriResolver<T> implements UriResolver<T> {
         ObjectInputStream ois = new ObjectInputStream(is);
 
         try {
-            return (T)ois.readObject();
+            return (T) ois.readObject();
         } catch (ClassNotFoundException e) {
             throw new IOException(e);
         }

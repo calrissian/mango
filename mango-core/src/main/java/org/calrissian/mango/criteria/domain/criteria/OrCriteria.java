@@ -17,19 +17,19 @@ package org.calrissian.mango.criteria.domain.criteria;
 
 import org.calrissian.mango.domain.TupleCollection;
 
-public class OrCriteria extends ParentCriteria{
+public class OrCriteria extends ParentCriteria {
 
-  public OrCriteria(ParentCriteria parent) {
-    super(parent);
-  }
-
-  @Override
-  public boolean apply(TupleCollection obj) {
-    for(Criteria node : children()) {
-      if(node.apply(obj))
-        return true;
+    public OrCriteria(ParentCriteria parent) {
+        super(parent);
     }
 
-    return false;
-  }
+    @Override
+    public boolean apply(TupleCollection obj) {
+        for (Criteria node : children()) {
+            if (node.apply(obj))
+                return true;
+        }
+
+        return false;
+    }
 }

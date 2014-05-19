@@ -30,7 +30,7 @@ import static org.junit.Assert.assertEquals;
 public class SimpleTypeEncodersTest {
 
 
-    private static<T> void verifyBasicFunctionality(String alias, T testObject, TypeEncoder<T, String> encoder) throws TypeEncodingException, TypeDecodingException {
+    private static <T> void verifyBasicFunctionality(String alias, T testObject, TypeEncoder<T, String> encoder) throws TypeEncodingException, TypeDecodingException {
         assertEquals(alias, encoder.getAlias());
         assertEquals(testObject.getClass(), encoder.resolves());
 
@@ -39,7 +39,7 @@ public class SimpleTypeEncodersTest {
     }
 
     @Test
-    public void testBasicFunctionality() throws Exception{
+    public void testBasicFunctionality() throws Exception {
 
         verifyBasicFunctionality("boolean", true, booleanEncoder());
         verifyBasicFunctionality("byte", (byte) 3, byteEncoder());
@@ -54,7 +54,7 @@ public class SimpleTypeEncodersTest {
     }
 
     @Test
-    public void testCorrectEncoding () throws Exception {
+    public void testCorrectEncoding() throws Exception {
         assertEquals("true", booleanEncoder().encode(true));
         assertEquals("false", booleanEncoder().encode(false));
 

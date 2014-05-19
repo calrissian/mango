@@ -27,7 +27,8 @@ public abstract class HashLeaf implements Node {
 
     protected String hash;
 
-    public HashLeaf() {}
+    public HashLeaf() {
+    }
 
     public HashLeaf(String hash) {
         this.hash = hash;
@@ -45,7 +46,7 @@ public abstract class HashLeaf implements Node {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() +  "{" +
+        return getClass().getSimpleName() + "{" +
                 "hash='" + hash + '\'' +
                 '}';
     }

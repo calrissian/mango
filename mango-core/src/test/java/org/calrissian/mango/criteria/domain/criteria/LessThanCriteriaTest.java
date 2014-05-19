@@ -26,21 +26,21 @@ import static org.junit.Assert.assertTrue;
 
 public class LessThanCriteriaTest {
 
-  @Test
-  public void test() {
+    @Test
+    public void test() {
 
-    LessThanCriteria criteria = new LessThanCriteria("key1", 5, new ComparableComparator(), null);
+        LessThanCriteria criteria = new LessThanCriteria("key1", 5, new ComparableComparator(), null);
 
-    Entity entity = new BaseEntity("type", "id");
+        Entity entity = new BaseEntity("type", "id");
 
-    // first test without tuple existing
-    assertFalse(criteria.apply(entity));
+        // first test without tuple existing
+        assertFalse(criteria.apply(entity));
 
-    entity.put(new Tuple("key1", 10));
+        entity.put(new Tuple("key1", 10));
 
-    assertFalse(criteria.apply(entity));
+        assertFalse(criteria.apply(entity));
 
-    entity.put(new Tuple("key1", 4));
-    assertTrue(criteria.apply(entity));
-  }
+        entity.put(new Tuple("key1", 4));
+        assertTrue(criteria.apply(entity));
+    }
 }

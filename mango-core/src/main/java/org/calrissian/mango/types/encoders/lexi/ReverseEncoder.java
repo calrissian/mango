@@ -23,7 +23,7 @@ import org.calrissian.mango.types.exception.TypeEncodingException;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static org.calrissian.mango.types.encoders.lexi.EncodingUtils.reverse;
 
-public class ReverseEncoder <T> implements TypeEncoder<T, String> {
+public class ReverseEncoder<T> implements TypeEncoder<T, String> {
 
     private final TypeEncoder<T, String> encoder;
 

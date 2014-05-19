@@ -23,20 +23,20 @@ import java.util.Comparator;
 
 public class NotEqualsCriteria extends ComparableKeyValueLeafCriteria {
 
-  public NotEqualsCriteria(String key, Object value, Comparator comparator, ParentCriteria parentCriteria) {
-    super(key, value, comparator,parentCriteria);
-  }
-
-  @Override
-  public boolean apply(TupleCollection obj) {
-    Collection<Tuple> tuples = obj.getAll(key);
-    if(tuples != null) {
-      for(Tuple tuple : tuples) {
-        if(comparator.compare(value, tuple.getValue()) != 0)
-          return true;
-      }
+    public NotEqualsCriteria(String key, Object value, Comparator comparator, ParentCriteria parentCriteria) {
+        super(key, value, comparator, parentCriteria);
     }
 
-    return false;
-  }
+    @Override
+    public boolean apply(TupleCollection obj) {
+        Collection<Tuple> tuples = obj.getAll(key);
+        if (tuples != null) {
+            for (Tuple tuple : tuples) {
+                if (comparator.compare(value, tuple.getValue()) != 0)
+                    return true;
+            }
+        }
+
+        return false;
+    }
 }

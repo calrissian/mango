@@ -27,13 +27,13 @@ import java.util.List;
  */
 public interface Criteria extends Predicate<TupleCollection>, Serializable {
 
-  boolean apply(TupleCollection obj);
+    boolean apply(TupleCollection obj);
 
-  public ParentCriteria parent();
+    public ParentCriteria parent();
 
-  public List<Criteria> children();
+    public List<Criteria> children();
 
-  public void addChild(Criteria node);
+    public void addChild(Criteria node);
 
-  public void removeChild(Criteria node);
+    public void removeChild(Criteria node);
 }

@@ -24,7 +24,7 @@ import java.util.Iterator;
  * This class represents a skeletal implementation of a {@link CloseableIterable}.
  * The implementation will manage all operations concerned with checks regarding
  * whether a resource has already been closed.
- *
+ * <p/>
  * Implementations of this abstract class will have to implement the logic involved
  * in actually closing and retrieving the {@link Iterator} from the {@link Iterable}.
  */
@@ -34,6 +34,7 @@ public abstract class AbstractCloseableIterable<T> implements CloseableIterable<
 
     /**
      * Performes the logic to cleanup any held resources
+     *
      * @throws IOException
      */
     protected abstract void doClose() throws IOException;

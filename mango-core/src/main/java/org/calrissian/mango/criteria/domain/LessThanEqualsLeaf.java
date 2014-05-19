@@ -16,12 +16,12 @@
 package org.calrissian.mango.criteria.domain;
 
 public class LessThanEqualsLeaf extends AbstractKeyValueLeaf {
-  public LessThanEqualsLeaf(String key, Object value, ParentNode parent) {
-    super(key, value, parent);
-  }
+    public LessThanEqualsLeaf(String key, Object value, ParentNode parent) {
+        super(key, value, parent);
+    }
 
-  @Override
-  public Node clone(ParentNode node) {
-    return new LessThanEqualsLeaf(key, value, node);
-  }
+    @Override
+    public Node clone(ParentNode node) {
+        return new LessThanEqualsLeaf(key, value, node);
+    }
 }

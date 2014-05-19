@@ -49,6 +49,10 @@ public class SendReceiveRequestor implements MessagePostProcessor {
         this.send = send;
     }
 
+    public static String getReplyToId(Message msg) throws JMSException {
+        return msg.getStringProperty(REPLYTO_ID);
+    }
+
     protected String createReceiveSelector() {
         String s = (send) ? replyToId : recvId;
         return new StringBuilder().append(RECV_ID).append(" = '").append(s).append("'").toString();
@@ -60,10 +64,6 @@ public class SendReceiveRequestor implements MessagePostProcessor {
         msg.setStringProperty(RECV_ID, recvS);
         msg.setStringProperty(REPLYTO_ID, replyToS);
         return msg;
-    }
-
-    public static String getReplyToId(Message msg) throws JMSException {
-        return msg.getStringProperty(REPLYTO_ID);
     }
 
     public Message receive() throws JMSException {

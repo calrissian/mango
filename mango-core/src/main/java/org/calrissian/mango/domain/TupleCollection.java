@@ -19,48 +19,48 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Set;
 
-public interface TupleCollection extends Serializable{
+public interface TupleCollection extends Serializable {
 
-  /**
-   * Puts a single tuple in the current collection
-   */
-  void put(Tuple tuple);
+    /**
+     * Puts a single tuple in the current collection
+     */
+    void put(Tuple tuple);
 
-  /**
-   * Adds all the given getTuples to the current collection
-   */
-  void putAll(Iterable<Tuple> tuples);
+    /**
+     * Adds all the given getTuples to the current collection
+     */
+    void putAll(Iterable<Tuple> tuples);
 
-  /**
-   * Retrieves all the getTuples.
-   */
-  Collection<Tuple> getTuples();
+    /**
+     * Retrieves all the getTuples.
+     */
+    Collection<Tuple> getTuples();
 
-  /**
-   * Retrieves all the getTuples for the specified key.
-   */
-  Collection<Tuple> getAll(String key);
+    /**
+     * Retrieves all the getTuples for the specified key.
+     */
+    Collection<Tuple> getAll(String key);
 
-  /**
-   * Retrieves the first tuple returned for the specified key. This method assumes a single-valued key.
-   * Note that multi-vaued keys may give undeterministic results.
-   */
-  <T>Tuple<T> get(String key);
+    /**
+     * Retrieves the first tuple returned for the specified key. This method assumes a single-valued key.
+     * Note that multi-vaued keys may give undeterministic results.
+     */
+    <T> Tuple<T> get(String key);
 
-  /**
-   * Returns the keys in the current object
-   */
-  Set<String> keys();
+    /**
+     * Returns the keys in the current object
+     */
+    Set<String> keys();
 
-  /**
-   * Removes the specified tuple
-   */
-  <T>Tuple<T> remove(Tuple<T> t);
+    /**
+     * Removes the specified tuple
+     */
+    <T> Tuple<T> remove(Tuple<T> t);
 
-  /**
-   * Removes the first tuple belonging to the specified key. This method assumed single-valued key
-   */
-  <T>Tuple<T> remove(String key);
+    /**
+     * Removes the first tuple belonging to the specified key. This method assumed single-valued key
+     */
+    <T> Tuple<T> remove(String key);
 
-  Collection<Tuple> removeAll(String key);
+    Collection<Tuple> removeAll(String key);
 }

@@ -27,23 +27,23 @@ import static org.junit.Assert.assertTrue;
 
 public class NodeUtilsTest {
 
-  @Test
-  public void testCriteriaFromNode_fullTree() {
+    @Test
+    public void testCriteriaFromNode_fullTree() {
 
-    Node node = new QueryBuilder().or().and().eq("key1", "val1").eq("key2", "val2").end().eq("key3", "val3").end().build();
+        Node node = new QueryBuilder().or().and().eq("key1", "val1").eq("key2", "val2").end().eq("key3", "val3").end().build();
 
-    Criteria criteria = NodeUtils.criteriaFromNode(node);
+        Criteria criteria = NodeUtils.criteriaFromNode(node);
 
-    assertTrue(criteria instanceof OrCriteria);
-    assertTrue(criteria.children().get(0) instanceof AndCriteria);
-    assertTrue(criteria.children().get(0).children().get(0) instanceof EqualsCriteria);
-    assertTrue(criteria.children().get(0).children().get(1) instanceof EqualsCriteria);
-    assertTrue(criteria.children().get(1).children().get(0) instanceof EqualsCriteria);
-  }
+        assertTrue(criteria instanceof OrCriteria);
+        assertTrue(criteria.children().get(0) instanceof AndCriteria);
+        assertTrue(criteria.children().get(0).children().get(0) instanceof EqualsCriteria);
+        assertTrue(criteria.children().get(0).children().get(1) instanceof EqualsCriteria);
+        assertTrue(criteria.children().get(1).children().get(0) instanceof EqualsCriteria);
+    }
 
-  @Test
-  public void test_isEmpty_notEmpty() {
+    @Test
+    public void test_isEmpty_notEmpty() {
 
-    Node node = new QueryBuilder().or().and().or().and().end().end().end().end().build();
-  }
+        Node node = new QueryBuilder().or().and().or().and().end().end().end().end().build();
+    }
 }

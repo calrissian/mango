@@ -32,7 +32,7 @@ public class BooleanEncoder extends AbstractBooleanEncoder<String> {
         checkNotNull(value, "Null values are not allowed");
 
         String lowercase = value.toLowerCase();
-        if(!lowercase.equals("1") && !lowercase.equals("0"))
+        if (!lowercase.equals("1") && !lowercase.equals("0"))
             throw new RuntimeException("The value " + value + " is not a valid boolean.");
 
         return value.equals("1");

@@ -19,7 +19,7 @@ import java.io.Serializable;
 
 public interface Event extends TupleCollection, Serializable {
 
-  String getId();
+    String getId();
 
-  long getTimestamp();
+    long getTimestamp();
 }

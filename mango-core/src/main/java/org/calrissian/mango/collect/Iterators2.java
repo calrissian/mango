@@ -37,6 +37,7 @@ public class Iterators2 {
         checkNotNull(iterator);
         return new AbstractIterator<T>() {
             T current = null;
+
             @Override
             protected T computeNext() {
                 if (iterator.hasNext()) {

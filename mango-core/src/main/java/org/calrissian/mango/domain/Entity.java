@@ -19,7 +19,7 @@ import java.io.Serializable;
 
 public interface Entity extends TupleCollection, Serializable {
 
-  String getId();
+    String getId();
 
-  String getType();
+    String getType();
 }

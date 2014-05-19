@@ -20,66 +20,66 @@ import java.io.Serializable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class Tuple<T> implements Serializable{
+public class Tuple<T> implements Serializable {
 
-  protected final String key;
-  protected final T value;
-  protected final String visibility;
+    protected final String key;
+    protected final T value;
+    protected final String visibility;
 
-  public Tuple(String key, T value, String visibility) {
-    checkNotNull(key);
-    checkNotNull(value);
-    checkNotNull(visibility);
-    this.key = key;
-    this.value = value;
-    this.visibility = visibility;
-  }
+    public Tuple(String key, T value, String visibility) {
+        checkNotNull(key);
+        checkNotNull(value);
+        checkNotNull(visibility);
+        this.key = key;
+        this.value = value;
+        this.visibility = visibility;
+    }
 
-  public Tuple(String key, T value) {
-    this(key, value, "");
-  }
+    public Tuple(String key, T value) {
+        this(key, value, "");
+    }
 
-  public String getKey() {
-    return key;
-  }
+    public String getKey() {
+        return key;
+    }
 
-  public T getValue() {
-    return value;
-  }
+    public T getValue() {
+        return value;
+    }
 
-  public String getVisibility() {
-    return visibility;
-  }
+    public String getVisibility() {
+        return visibility;
+    }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (!(o instanceof Tuple)) return false;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Tuple)) return false;
 
-    Tuple tuple = (Tuple) o;
+        Tuple tuple = (Tuple) o;
 
-    if (key != null ? !key.equals(tuple.key) : tuple.key != null) return false;
-    if (value != null ? !value.equals(tuple.value) : tuple.value != null) return false;
-    if (visibility != null ? !visibility.equals(tuple.visibility) : tuple.visibility != null) return false;
+        if (key != null ? !key.equals(tuple.key) : tuple.key != null) return false;
+        if (value != null ? !value.equals(tuple.value) : tuple.value != null) return false;
+        if (visibility != null ? !visibility.equals(tuple.visibility) : tuple.visibility != null) return false;
 
-    return true;
-  }
+        return true;
+    }
 
-  @Override
-  public int hashCode() {
-    int result = key != null ? key.hashCode() : 0;
-    result = 31 * result + (value != null ? value.hashCode() : 0);
-    result = 31 * result + (visibility != null ? visibility.hashCode() : 0);
-    return result;
-  }
+    @Override
+    public int hashCode() {
+        int result = key != null ? key.hashCode() : 0;
+        result = 31 * result + (value != null ? value.hashCode() : 0);
+        result = 31 * result + (visibility != null ? visibility.hashCode() : 0);
+        return result;
+    }
 
-  @Override
-  public String toString() {
-    return "Tuple{" +
-            "key='" + key + '\'' +
-            ", value=" + value +
-            ", type=" + value.getClass() +
-            ", visibility='" + visibility + '\'' +
-            '}';
-  }
+    @Override
+    public String toString() {
+        return "Tuple{" +
+                "key='" + key + '\'' +
+                ", value=" + value +
+                ", type=" + value.getClass() +
+                ", visibility='" + visibility + '\'' +
+                '}';
+    }
 }

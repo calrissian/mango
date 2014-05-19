@@ -19,12 +19,12 @@ package org.calrissian.mango.criteria.domain.criteria;
 import org.calrissian.mango.domain.TupleCollection;
 
 public class HasCriteria extends KeyValueLeafCriteria {
-  public HasCriteria(String key, ParentCriteria parentCriteria) {
-    super(key, null, parentCriteria);
-  }
+    public HasCriteria(String key, ParentCriteria parentCriteria) {
+        super(key, null, parentCriteria);
+    }
 
-  @Override
-  public boolean apply(TupleCollection obj) {
-    return obj.get(key) != null;
-  }
+    @Override
+    public boolean apply(TupleCollection obj) {
+        return obj.get(key) != null;
+    }
 }
