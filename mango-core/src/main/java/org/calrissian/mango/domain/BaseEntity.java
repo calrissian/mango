@@ -34,6 +34,11 @@ public class BaseEntity extends AbstractTupleStore implements Entity {
         this.type = type;
     }
 
+    public BaseEntity(Entity entity) {
+        this(entity.getType(), entity.getId());
+        getTuples().addAll(entity.getTuples());
+    }
+
     /**
      * {@inheritDoc}
      */

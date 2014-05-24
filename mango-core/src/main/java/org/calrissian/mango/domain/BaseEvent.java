@@ -54,6 +54,11 @@ public class BaseEvent extends AbstractTupleStore implements Event {
         this.timestamp = timestamp;
     }
 
+    public BaseEvent(Event event) {
+        this(event.getId(), event.getTimestamp());
+        getTuples().addAll(event.getTuples());
+    }
+
 
     /**
      * {@inheritDoc}
