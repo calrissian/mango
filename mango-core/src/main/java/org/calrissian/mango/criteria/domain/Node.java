@@ -25,7 +25,7 @@ import java.util.List;
  * pluggable algorithms via the visitor pattern. These algorithms can be used for introspecting state or modifying
  * the tree.
  */
-public interface Node extends Serializable {
+public interface Node extends Serializable, Cloneable {
 
     public ParentNode parent();
 
