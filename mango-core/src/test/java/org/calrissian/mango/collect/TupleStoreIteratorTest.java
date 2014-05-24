@@ -22,9 +22,9 @@ import org.calrissian.mango.domain.Tuple;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
-
+import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class TupleStoreIteratorTest {
 
@@ -35,7 +35,7 @@ public class TupleStoreIteratorTest {
     Tuple e1T2 = new Tuple("key3", "val3", "vis");
 
     Tuple e2T1 = new Tuple("key2", "val2", "vis");
-    Tuple e2T2 = new Tuple("key2", "val2", "vis");
+    Tuple e2T2 = new Tuple("key1", "val1", "vis");
 
     @Before
     public void setup() {
@@ -50,10 +50,11 @@ public class TupleStoreIteratorTest {
     @Test
     public void test() {
 
-        TupleStoreIterator<Entity> entityTupleStoreIterator = new TupleStoreIterator<Entity>(Arrays.asList(new Entity[]{entity, entity2}));
+        TupleStoreIterator<Entity> entityTupleStoreIterator = new TupleStoreIterator<Entity>(asList(new Entity[]{entity, entity2}));
         int count = 0;
         while (entityTupleStoreIterator.hasNext()) {
             Tuple curTuple = entityTupleStoreIterator.next();
+            System.out.println(curTuple);
             if (count == 0) {
                 assertEquals(entity.getType(), entityTupleStoreIterator.getTopStore().getType());
                 assertEquals(entity.getId(), entityTupleStoreIterator.getTopStore().getId());
@@ -65,18 +66,19 @@ public class TupleStoreIteratorTest {
             } else if (count == 2) {
                 assertEquals(entity2.getType(), entityTupleStoreIterator.getTopStore().getType());
                 assertEquals(entity2.getId(), entityTupleStoreIterator.getTopStore().getId());
-                assertEquals(e2T2, curTuple);
+                assertEquals(e2T1, curTuple);
             } else if (count == 3) {
                 assertEquals(entity2.getType(), entityTupleStoreIterator.getTopStore().getType());
                 assertEquals(entity2.getId(), entityTupleStoreIterator.getTopStore().getId());
-                assertEquals(e2T1, curTuple);
+                assertEquals(e2T2, curTuple);
+            } else {
+                fail();
             }
 
             count++;
-
         }
 
-        assertEquals(3, count);
+        assertEquals(4, count);
 
     }
 

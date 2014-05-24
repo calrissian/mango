@@ -15,58 +15,42 @@
  */
 package org.calrissian.mango.collect;
 
-import com.google.common.collect.PeekingIterator;
+import com.google.common.collect.AbstractIterator;
 import org.calrissian.mango.domain.Tuple;
 import org.calrissian.mango.domain.TupleStore;
 
 import java.util.Iterator;
 
-import static com.google.common.collect.Iterators.peekingIterator;
+import static com.google.common.base.Preconditions.checkNotNull;
 
-public class TupleStoreIterator<T extends TupleStore> implements Iterator<Tuple> {
+public class TupleStoreIterator<T extends TupleStore> extends AbstractIterator<Tuple> {
 
-    private PeekingIterator<T> itr = null;
-    private T curTupleCollection = null;
-    private Iterator<Tuple> tuples = null;
+
+    Iterator<T> tupleCollections;
+    T curTupleCollection;
+    Iterator<Tuple> tuples;
+
 
     public TupleStoreIterator(Iterable<T> tupleCollections) {
-        this.itr = peekingIterator(tupleCollections.iterator());
+        checkNotNull(tupleCollections);
+        this.tupleCollections = tupleCollections.iterator();
     }
 
     @Override
-    public boolean hasNext() {
-        if (tuples != null && tuples.hasNext())
-            return true;
-        else if (itr.hasNext()) {
-            return itr.peek().getTuples().size() > 0;
+    protected Tuple computeNext() {
+
+        if((tuples == null || !tuples.hasNext()) &&
+                tupleCollections.hasNext()) {
+            curTupleCollection = tupleCollections.next();
+            tuples = curTupleCollection.getTuples().iterator();
         }
-        return false;
-    }
 
-    @Override
-    public Tuple next() {
-
-        Tuple next = null;
-        if (tuples != null && tuples.hasNext())
+        if(tuples.hasNext())
             return tuples.next();
-        else if (itr.hasNext()) {
-            while (tuples == null || !tuples.hasNext()) {
-                curTupleCollection = itr.next();
-                tuples = curTupleCollection.getTuples().iterator();
-            }
-            if (tuples.hasNext()) {
-                next = tuples.next();
-            } else
-                throw new RuntimeException("Iteration interrupted");
-        }
 
-        return next;
+        return endOfData();
     }
 
-    @Override
-    public void remove() {
-
-    }
 
     public T getTopStore() {
         return curTupleCollection;
