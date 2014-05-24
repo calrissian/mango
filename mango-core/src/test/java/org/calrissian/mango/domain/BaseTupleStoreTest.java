@@ -10,14 +10,14 @@ import java.util.Collection;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 
-public class BaseTupleCollectionTest {
+public class BaseTupleStoreTest {
 
     Tuple tuple1 = new Tuple("key1", "val1");
     Tuple tuple2 = new Tuple("key1", "val2");
     Tuple tuple3 = new Tuple("key2", "val2");
     Tuple tuple4 = new Tuple("key3", "val3");
 
-    BaseTupleCollection tupleCollection = new BaseTupleCollection();
+    BaseTupleStore tupleCollection = new BaseTupleStore();
 
     @Before
     public void setup() {
@@ -40,6 +40,13 @@ public class BaseTupleCollectionTest {
     public void testRemoveAll_singleTuple() {
         Tuple removed = tupleCollection.remove(tuple1);
         assertEquals(tuple1, removed);
+        assertEquals(1, tupleCollection.getAll(tuple1.getKey()).size());
+    }
+
+    @Test
+    public void testRemove_singleByKey() {
+        Tuple removed = tupleCollection.remove(tuple1.getKey());
+        assertEquals(removed, tuple2);
         assertEquals(1, tupleCollection.getAll(tuple1.getKey()).size());
     }
 }

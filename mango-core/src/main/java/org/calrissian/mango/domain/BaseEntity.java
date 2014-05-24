@@ -21,7 +21,7 @@ import static java.util.UUID.randomUUID;
 /**
  * Default implementation of {@link org.calrissian.mango.domain.Entity}.
  */
-public class BaseEntity extends BaseTupleCollection implements Entity {
+public class BaseEntity extends BaseTupleStore implements Entity {
 
     private String id;
     private String type;

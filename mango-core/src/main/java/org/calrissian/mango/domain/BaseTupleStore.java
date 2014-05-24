@@ -25,7 +25,7 @@ import static com.google.common.collect.Iterables.concat;
  * A base tuple collection providing reusable implementations for interacting with a tuple store backed by
  * a hash map with sets in the value representing a multimap.
  */
-public class BaseTupleCollection implements TupleStore {
+public class BaseTupleStore implements TupleStore {
 
     private Map<String, Set<Tuple>> tuples = new HashMap<String, Set<Tuple>>();
 
@@ -82,8 +82,12 @@ public class BaseTupleCollection implements TupleStore {
 
     @Override
     public <T> Tuple<T> remove(String key) {
-        if (tuples.containsKey(key))
-            return tuples.remove(key).iterator().next();
+        if (tuples.containsKey(key)) {
+            Set<Tuple> tupleSet = tuples.get(key);
+            Tuple t = tupleSet.size() > 0 ? tupleSet.iterator().next() : null;
+            if(t != null && tuples.get(key).remove(t))
+                return t;
+        }
 
         return null;
     }
@@ -112,7 +116,7 @@ public class BaseTupleCollection implements TupleStore {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        BaseTupleCollection that = (BaseTupleCollection) o;
+        BaseTupleStore that = (BaseTupleStore) o;
 
         if (tuples != null ? !tuples.equals(that.tuples) : that.tuples != null) return false;
 
