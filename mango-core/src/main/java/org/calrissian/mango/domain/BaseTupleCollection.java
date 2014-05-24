@@ -21,7 +21,11 @@ import java.util.*;
 
 import static com.google.common.collect.Iterables.concat;
 
-public abstract class AbstractTupleStore implements TupleStore {
+/**
+ * A base tuple collection providing reusable implementations for interacting with a tuple store backed by
+ * a hash map with sets in the value representing a multimap.
+ */
+public class BaseTupleCollection implements TupleStore {
 
     private Map<String, Set<Tuple>> tuples = new HashMap<String, Set<Tuple>>();
 
@@ -68,9 +72,11 @@ public abstract class AbstractTupleStore implements TupleStore {
 
     @Override
     public <T> Tuple<T> remove(Tuple<T> t) {
-        if (tuples.containsKey(t.getKey()))
-            return (Tuple<T>) tuples.remove(t);
-
+        if (tuples.containsKey(t.getKey())) {
+            Set<Tuple> tupelSet = tuples.get(t.getKey());
+            if(tupelSet.remove(t))
+                return t;
+        }
         return null;
     }
 
@@ -87,6 +93,15 @@ public abstract class AbstractTupleStore implements TupleStore {
         return tuples.remove(key);
     }
 
+
+    @Override
+    public Collection<Tuple> removeAll(Collection<Tuple> tuples) {
+        Collection<Tuple> removedTuples = new LinkedList<Tuple>();
+        for (Tuple tuple : tuples)
+            removedTuples.add(remove(tuple));
+        return removedTuples;
+    }
+
     @Override
     public int hashCode() {
         return tuples != null ? tuples.hashCode() : 0;
@@ -97,7 +112,7 @@ public abstract class AbstractTupleStore implements TupleStore {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        AbstractTupleStore that = (AbstractTupleStore) o;
+        BaseTupleCollection that = (BaseTupleCollection) o;
 
         if (tuples != null ? !tuples.equals(that.tuples) : that.tuples != null) return false;
 

@@ -22,7 +22,7 @@ import static java.util.UUID.randomUUID;
 /**
  * Default implementation of {@link org.calrissian.mango.domain.Event}
  */
-public class BaseEvent extends AbstractTupleStore implements Event {
+public class BaseEvent extends BaseTupleCollection implements Event {
 
     protected final String id;
     protected final long timestamp; // in Millis
@@ -73,7 +73,7 @@ public class BaseEvent extends AbstractTupleStore implements Event {
     /**
      * {@inheritDoc}
      */
-    public long getTimestamp() {
+    public Long getTimestamp() {
         return timestamp;
     }
 

@@ -66,4 +66,6 @@ public interface TupleStore extends Serializable {
      * Revoves all the tuples with the given key.
      */
     Collection<Tuple> removeAll(String key);
+
+    Collection<Tuple> removeAll(Collection<Tuple> tuples);
 }
