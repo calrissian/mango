@@ -13,23 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.domain;
+package org.calrissian.mango.domain.entity;
 
-import org.apache.commons.net.util.SubnetUtils;
+import org.calrissian.mango.domain.TupleStore;
+import org.calrissian.mango.domain.TypedIdentifiable;
 
+import java.io.Serializable;
 
-public class CidrValueRangeIPv4 extends ValueRange<IPv4> {
+/**
+ * A common business object for modelling things in the real-world.
+ */
+public interface Entity extends TupleStore, Serializable, TypedIdentifiable {
 
-    public CidrValueRangeIPv4(String cidrString) {
-
-        SubnetUtils utils = new SubnetUtils(cidrString);
-        SubnetUtils.SubnetInfo info = utils.getInfo();
-
-        setStart(new IPv4(info.getNetworkAddress()));
-        setStop(new IPv4(info.getBroadcastAddress()));
-    }
-
-    public CidrValueRangeIPv4(IPv4 start, IPv4 stop) {
-        super(start, stop);
-    }
 }

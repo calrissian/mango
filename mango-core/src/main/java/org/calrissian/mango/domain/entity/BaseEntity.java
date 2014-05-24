@@ -13,15 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.domain;
+package org.calrissian.mango.domain.entity;
+
+import org.calrissian.mango.domain.BaseTupleStore;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.util.UUID.randomUUID;
 
 /**
- * Default implementation of {@link org.calrissian.mango.domain.Entity}.
+ * Default implementation of {@link Entity}.
  */
-public class BaseEntity extends AbstractTupleStore implements Entity {
+public class BaseEntity extends BaseTupleStore implements Entity {
 
     private String id;
     private String type;

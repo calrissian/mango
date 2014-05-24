@@ -15,6 +15,10 @@
  */
 package org.calrissian.mango.domain;
 
+/**
+ * Specifies a bounded range of values for a given type
+ * @param <T>
+ */
 public class ValueRange<T> {
 
     private T start;

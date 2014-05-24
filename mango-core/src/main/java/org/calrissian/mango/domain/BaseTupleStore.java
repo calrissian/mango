@@ -21,7 +21,11 @@ import java.util.*;
 
 import static com.google.common.collect.Iterables.concat;
 
-public abstract class AbstractTupleStore implements TupleStore {
+/**
+ * A base tuple collection providing reusable implementations for interacting with a tuple store backed by
+ * a hash map with sets in the value representing a multimap.
+ */
+public class BaseTupleStore implements TupleStore {
 
     private Map<String, Set<Tuple>> tuples = new HashMap<String, Set<Tuple>>();
 
@@ -68,16 +72,22 @@ public abstract class AbstractTupleStore implements TupleStore {
 
     @Override
     public <T> Tuple<T> remove(Tuple<T> t) {
-        if (tuples.containsKey(t.getKey()))
-            return (Tuple<T>) tuples.remove(t);
-
+        if (tuples.containsKey(t.getKey())) {
+            Set<Tuple> tupelSet = tuples.get(t.getKey());
+            if(tupelSet.remove(t))
+                return t;
+        }
         return null;
     }
 
     @Override
     public <T> Tuple<T> remove(String key) {
-        if (tuples.containsKey(key))
-            return tuples.remove(key).iterator().next();
+        if (tuples.containsKey(key)) {
+            Set<Tuple> tupleSet = tuples.get(key);
+            Tuple t = tupleSet.size() > 0 ? tupleSet.iterator().next() : null;
+            if(t != null && tuples.get(key).remove(t))
+                return t;
+        }
 
         return null;
     }
@@ -85,6 +95,15 @@ public abstract class AbstractTupleStore implements TupleStore {
     @Override
     public Collection<Tuple> removeAll(String key) {
         return tuples.remove(key);
+    }
+
+
+    @Override
+    public Collection<Tuple> removeAll(Collection<Tuple> tuples) {
+        Collection<Tuple> removedTuples = new LinkedList<Tuple>();
+        for (Tuple tuple : tuples)
+            removedTuples.add(remove(tuple));
+        return removedTuples;
     }
 
     @Override
@@ -97,7 +116,7 @@ public abstract class AbstractTupleStore implements TupleStore {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        AbstractTupleStore that = (AbstractTupleStore) o;
+        BaseTupleStore that = (BaseTupleStore) o;
 
         if (tuples != null ? !tuples.equals(that.tuples) : that.tuples != null) return false;
 

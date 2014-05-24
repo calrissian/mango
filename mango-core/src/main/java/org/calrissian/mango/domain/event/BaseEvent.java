@@ -13,16 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.domain;
+package org.calrissian.mango.domain.event;
 
+
+import org.calrissian.mango.domain.BaseTupleStore;
 
 import static java.lang.System.currentTimeMillis;
 import static java.util.UUID.randomUUID;
 
 /**
- * Default implementation of {@link org.calrissian.mango.domain.Event}
+ * Default implementation of {@link Event}
  */
-public class BaseEvent extends AbstractTupleStore implements Event {
+public class BaseEvent extends BaseTupleStore implements Event {
 
     protected final String id;
     protected final long timestamp; // in Millis
@@ -73,7 +75,7 @@ public class BaseEvent extends AbstractTupleStore implements Event {
     /**
      * {@inheritDoc}
      */
-    public long getTimestamp() {
+    public Long getTimestamp() {
         return timestamp;
     }
 

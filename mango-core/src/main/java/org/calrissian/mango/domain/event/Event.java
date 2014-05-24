@@ -13,23 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.domain;
+package org.calrissian.mango.domain.event;
+
+import org.calrissian.mango.domain.TemporalIdentifiable;
+import org.calrissian.mango.domain.TupleStore;
 
 import java.io.Serializable;
 
 /**
- * An entry acts as a useful common business object for representing different types of models. An optional time
- * dimension can be set directly or left untouched (defaulting in current time).
+ * An event acts as a useful common business object for representing different types of models with a time
+ * dimension tha can be set directly or left untouched (defaulting in current time).
  */
-public interface Event extends TupleStore, Serializable {
-
-    /**
-     * Accessor for Id
-     */
-    String getId();
-
-    /**
-     * Accessor for timestamp
-     */
-    long getTimestamp();
+public interface Event extends TupleStore, Serializable, TemporalIdentifiable {
 }
