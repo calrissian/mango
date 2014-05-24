@@ -17,110 +17,107 @@ package org.calrissian.mango.criteria.support;
 
 import org.calrissian.mango.criteria.domain.*;
 import org.calrissian.mango.criteria.domain.criteria.*;
-import org.calrissian.mango.types.LexiTypeEncoders;
-import org.calrissian.mango.types.TypeRegistry;
 
 import java.util.Comparator;
 
 public class NodeUtils {
 
-  public NodeUtils() {/* private constructor */}
+    public NodeUtils() {/* private constructor */}
 
-  /**
-   * Returns true if a node is a leaf. Note that a leaf can also be a parent node that does not have any children.
-   */
-  public static boolean isLeaf(Node node) {
-    return node instanceof Leaf || node.children() == null || node.children().size() == 0;
-  }
-
-  /**
-   * Determines if a node is null, or a single parent node without children.
-   */
-  public static boolean isEmpty(Node node) {
-    return (node == null || (node.children() != null && node.children().size() == 0));
-  }
-
-  /**
-   * Determines if parent node has children that are all leaves
-   */
-  public static boolean parentContainsOnlyLeaves(ParentNode parentNode) {
-    for (Node child : parentNode.children()) {
-      if (!isLeaf(child)) return false;
+    /**
+     * Returns true if a node is a leaf. Note that a leaf can also be a parent node that does not have any children.
+     */
+    public static boolean isLeaf(Node node) {
+        return node instanceof Leaf || node.children() == null || node.children().size() == 0;
     }
-    return true;
-  }
 
-  /**
-   * Determines if leaf represents a possible range of values (bounded or unbounded)
-   */
-  public static boolean isRangeLeaf(Leaf leaf) {
-    return leaf instanceof RangeLeaf || leaf instanceof GreaterThanEqualsLeaf || leaf instanceof GreaterThanLeaf ||
-            leaf instanceof LessThanLeaf || leaf instanceof LessThanEqualsLeaf;
-  }
+    /**
+     * Determines if a node is null, or a single parent node without children.
+     */
+    public static boolean isEmpty(Node node) {
+        return (node == null || (node.children() != null && node.children().size() == 0));
+    }
 
-  /**
-   * Creates criteria from a node. A default comparator is used which assumes values implement Comparable.
-   */
-  public static Criteria criteriaFromNode(Node node) {
-    return criteriaFromNode(node, new ComparableComparator(), null);
-  }
+    /**
+     * Determines if parent node has children that are all leaves
+     */
+    public static boolean parentContainsOnlyLeaves(ParentNode parentNode) {
+        for (Node child : parentNode.children()) {
+            if (!isLeaf(child)) return false;
+        }
+        return true;
+    }
 
-  /**
-   * Creates criteria from a node. A Comparator is injected into all nodes which need to determine order or equality.
-   */
-  public static Criteria criteriaFromNode(Node node, Comparator rangeComparator) {
-    return criteriaFromNode(node, rangeComparator, null);
-  }
+    /**
+     * Determines if leaf represents a possible range of values (bounded or unbounded)
+     */
+    public static boolean isRangeLeaf(Leaf leaf) {
+        return leaf instanceof RangeLeaf || leaf instanceof GreaterThanEqualsLeaf || leaf instanceof GreaterThanLeaf ||
+                leaf instanceof LessThanLeaf || leaf instanceof LessThanEqualsLeaf;
+    }
 
-  private static Criteria criteriaFromNode(Node node, Comparator rangeComparator, ParentCriteria parent) {
+    /**
+     * Creates criteria from a node. A default comparator is used which assumes values implement Comparable.
+     */
+    public static Criteria criteriaFromNode(Node node) {
+        return criteriaFromNode(node, new ComparableComparator(), null);
+    }
 
-    Criteria curNode = null;
+    /**
+     * Creates criteria from a node. A Comparator is injected into all nodes which need to determine order or equality.
+     */
+    public static Criteria criteriaFromNode(Node node, Comparator rangeComparator) {
+        return criteriaFromNode(node, rangeComparator, null);
+    }
 
-    if(node instanceof AndNode)
-      curNode = new AndCriteria(parent);
-    else if(node instanceof OrNode)
-      curNode = new OrCriteria(parent);
-    else
-      curNode = parseLeaf(node, rangeComparator, parent);
+    private static Criteria criteriaFromNode(Node node, Comparator rangeComparator, ParentCriteria parent) {
 
-    if(node.children() != null) {
-      for(Node child : node.children()) {
-        if(child instanceof Leaf)
-          curNode.addChild(parseLeaf(child, rangeComparator, (ParentCriteria)curNode));
+        Criteria curNode = null;
+
+        if (node instanceof AndNode)
+            curNode = new AndCriteria(parent);
+        else if (node instanceof OrNode)
+            curNode = new OrCriteria(parent);
         else
-          curNode.addChild(criteriaFromNode(child, rangeComparator, (ParentCriteria) curNode));
-      }
-    }
-    if(parent != null)
-      parent.addChild(curNode);
+            curNode = parseLeaf(node, rangeComparator, parent);
 
-    return curNode;
-  }
+        if (node.children() != null) {
+            for (Node child : node.children()) {
+                if (child instanceof Leaf)
+                    curNode.addChild(parseLeaf(child, rangeComparator, (ParentCriteria) curNode));
+                else
+                    curNode.addChild(criteriaFromNode(child, rangeComparator, (ParentCriteria) curNode));
+            }
+        }
+        if (parent != null)
+            parent.addChild(curNode);
 
-  private static Criteria parseLeaf(Node node, Comparator rangeComparator, ParentCriteria parent) {
-    AbstractKeyValueLeaf leaf = ((AbstractKeyValueLeaf)node);
-    if(node instanceof EqualsLeaf)
-      return new EqualsCriteria(leaf.getKey(), leaf.getValue(), rangeComparator, parent);
-    else if(node instanceof NotEqualsLeaf)
-      return new NotEqualsCriteria(leaf.getKey(), leaf.getValue(), rangeComparator, parent);
-    else if(node instanceof HasLeaf)
-      return new HasCriteria(leaf.getKey(), parent);
-    else if(node instanceof HasNotLeaf)
-      return new HasNotCriteria(leaf.getKey(), parent);
-    else if(node instanceof LessThanLeaf)
-      return new LessThanCriteria(leaf.getKey(), leaf.getValue(), rangeComparator, parent);
-    else if(node instanceof LessThanEqualsLeaf)
-      return new LessThanEqualsCriteria(leaf.getKey(), leaf.getValue(), rangeComparator, parent);
-    else if(node instanceof GreaterThanLeaf)
-      return new GreaterThanCriteria(leaf.getKey(), leaf.getValue(), rangeComparator, parent);
-    else if(node instanceof GreaterThanEqualsLeaf)
-      return new GreaterThanEqualsCriteria(leaf.getKey(), leaf.getValue(), rangeComparator, parent);
-    else if(node instanceof RangeCriteria) {
-      RangeLeaf rangeLeaf = (RangeLeaf)leaf;
-      return new RangeCriteria(leaf.getKey(), leaf.getValue(), rangeLeaf.getEnd(), rangeComparator, parent);
+        return curNode;
     }
-    else
-      throw new IllegalArgumentException("An unsupported leaf was encountered: " + node.getClass());
-  }
+
+    private static Criteria parseLeaf(Node node, Comparator rangeComparator, ParentCriteria parent) {
+        AbstractKeyValueLeaf leaf = ((AbstractKeyValueLeaf) node);
+        if (node instanceof EqualsLeaf)
+            return new EqualsCriteria(leaf.getKey(), leaf.getValue(), rangeComparator, parent);
+        else if (node instanceof NotEqualsLeaf)
+            return new NotEqualsCriteria(leaf.getKey(), leaf.getValue(), rangeComparator, parent);
+        else if (node instanceof HasLeaf)
+            return new HasCriteria(leaf.getKey(), parent);
+        else if (node instanceof HasNotLeaf)
+            return new HasNotCriteria(leaf.getKey(), parent);
+        else if (node instanceof LessThanLeaf)
+            return new LessThanCriteria(leaf.getKey(), leaf.getValue(), rangeComparator, parent);
+        else if (node instanceof LessThanEqualsLeaf)
+            return new LessThanEqualsCriteria(leaf.getKey(), leaf.getValue(), rangeComparator, parent);
+        else if (node instanceof GreaterThanLeaf)
+            return new GreaterThanCriteria(leaf.getKey(), leaf.getValue(), rangeComparator, parent);
+        else if (node instanceof GreaterThanEqualsLeaf)
+            return new GreaterThanEqualsCriteria(leaf.getKey(), leaf.getValue(), rangeComparator, parent);
+        else if (node instanceof RangeCriteria) {
+            RangeLeaf rangeLeaf = (RangeLeaf) leaf;
+            return new RangeCriteria(leaf.getKey(), leaf.getValue(), rangeLeaf.getEnd(), rangeComparator, parent);
+        } else
+            throw new IllegalArgumentException("An unsupported leaf was encountered: " + node.getClass());
+    }
 
 }

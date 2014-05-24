@@ -28,20 +28,19 @@ import javax.jms.Session;
 
 public class DomainMessageUtils {
 
-    private DomainMessageUtils() {/* private constructor */}
-
-    private static final String PIECE_POSITION = "filetransfer.piece.position";
-    private static final String PIECE_HASH = "filetransfer.piece.hash";
-    private static final String RESPONSE_STATUS = "filetransfer.response.status";
-    private static final String RESPONSE_HASH = "filetransfer.response.hash";
-    private static final String CONTENT_TYPE = "filestransfer.message.contentType";
-
     public static final String REQUEST_ID = "filetransfer.request.id";
     public static final String REQUEST_DOWNLOADURL = "filetransfer.request.downloadurl";
     public static final String MESSAGETYPE = "filetransfer.message.type";
     public static final String MESSAGETYPE_REQUEST = "filetransfer.message.type.request";
     public static final String MESSAGETYPE_RESPONSE = "filetransfer.message.type.response";
     public static final String MESSAGETYPE_PIECE = "filetransfer.message.type.piece";
+    private static final String PIECE_POSITION = "filetransfer.piece.position";
+    private static final String PIECE_HASH = "filetransfer.piece.hash";
+    private static final String RESPONSE_STATUS = "filetransfer.response.status";
+    private static final String RESPONSE_HASH = "filetransfer.response.hash";
+    private static final String CONTENT_TYPE = "filestransfer.message.contentType";
+
+    private DomainMessageUtils() {/* private constructor */}
 
     public static Message toRequestMessage(Session session, Request request)
             throws JMSException {

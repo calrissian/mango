@@ -59,7 +59,7 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
     /**
      * Returns a fluent iterable where the underlying resources are automatically closed when its iterator has been
      * exhausted.
-     *
+     * <p/>
      * Note that when using this method the order of calls matters. {@code limit()} is an example of one method which can
      * prevent the completion of an iterator.  For instance from(iterable).autoClose().limit(1) will not close the
      * resource if there is more than 1 element, but from(iterable).limit(1).autoClose() will close the underlying
@@ -96,12 +96,12 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
     /**
      * Returns a fluent iterable whose {@code Iterator} cycles indefinitely over the elements of
      * this fluent iterable.
-     *
+     * <p/>
      * <p>That iterator supports {@code remove()} if {@code iterable.iterator()} does. After
      * {@code remove()} is called, subsequent cycles omit the removed element, which is no longer in
      * this fluent iterable. The iterator's {@code hasNext()} method returns {@code true} until
      * this fluent iterable is empty.
-     *
+     * <p/>
      * <p><b>Warning:</b> Typical uses of the resulting iterator may produce an infinite loop. You
      * should use an explicit {@code break} or be certain that you will eventually remove all the
      * elements.
@@ -145,7 +145,7 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
     /**
      * Returns an {@link com.google.common.base.Optional} containing the first element in this fluent iterable that
      * satisfies the given predicate, if such an element exists.
-     *
+     * <p/>
      * <p><b>Warning:</b> avoid using a {@code predicate} that matches {@code null}. If {@code null}
      * is matched in this fluent iterable, a {@link NullPointerException} will be thrown.
      */
@@ -156,7 +156,7 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
     /**
      * Returns a fluent iterable that applies {@code function} to each element of this
      * fluent iterable.
-     *
+     * <p/>
      * <p>The returned fluent iterable's iterator supports {@code remove()} if this iterable's
      * iterator does. After a successful {@code remove()} call, this fluent iterable no longer
      * contains the corresponding element.
@@ -169,7 +169,7 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
      * Applies {@code function} to each element of this fluent iterable and returns
      * a fluent iterable with the concatenated combination of results.  {@code function}
      * returns an Iterable of results.
-     *
+     * <p/>
      * <p>The returned fluent iterable's iterator supports {@code remove()} if this
      * function-returned iterables' iterator does. After a successful {@code remove()} call,
      * the returned fluent iterable no longer contains the corresponding element.
@@ -184,7 +184,7 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
      * If the iterable is empty, {@code Optional.absent()} is returned.
      *
      * @throws NullPointerException if the first element is null; if this is a possibility, use
-     *     {@code iterator().next()} or {@link Iterables#getFirst} instead.
+     *                              {@code iterator().next()} or {@link Iterables#getFirst} instead.
      */
     public final Optional<T> first() {
         Iterator<T> iterator = this.iterator();
@@ -198,7 +198,7 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
      * If the iterable is empty, {@code Optional.absent()} is returned.
      *
      * @throws NullPointerException if the last element is null; if this is a possibility, use
-     *     {@link Iterables#getLast} instead.
+     *                              {@link Iterables#getLast} instead.
      */
     public final Optional<T> last() {
         // Iterables#getLast was inlined here so we don't have to throw/catch a NSEE
@@ -219,12 +219,12 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
      * Returns a view of this fluent iterable that skips its first {@code numberToSkip}
      * elements. If this fluent iterable contains fewer than {@code numberToSkip} elements,
      * the returned fluent iterable skips all of its elements.
-     *
+     * <p/>
      * <p>Modifications to this fluent iterable before a call to {@code iterator()} are
      * reflected in the returned fluent iterable. That is, the its iterator skips the first
      * {@code numberToSkip} elements that exist when the iterator is created, not when {@code skip()}
      * is called.
-     *
+     * <p/>
      * <p>The returned fluent iterable's iterator supports {@code remove()} if the
      * {@code Iterator} of this fluent iterable supports it. Note that it is <i>not</i>
      * possible to delete the last skipped element by immediately calling {@code remove()} on the
@@ -307,7 +307,7 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
      * appears.
      *
      * @throws NullPointerException if any element of this iterable is {@code null}, or if {@code
-     *     valueFunction} produces {@code null} for any key
+     *                              valueFunction} produces {@code null} for any key
      */
     public final <V> ImmutableMap<T, V> toMap(Function<? super T, V> valueFunction) {
         return Maps.toMap(this, valueFunction);
@@ -324,11 +324,11 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
      *
      * @param keyFunction the function used to produce the key for each value
      * @throws NullPointerException if any of the following cases is true:
-     *     <ul>
-     *       <li>{@code keyFunction} is null
-     *       <li>An element in this fluent iterable is null
-     *       <li>{@code keyFunction} returns {@code null} for any element of this iterable
-     *     </ul>
+     *                              <ul>
+     *                              <li>{@code keyFunction} is null
+     *                              <li>An element in this fluent iterable is null
+     *                              <li>{@code keyFunction} returns {@code null} for any element of this iterable
+     *                              </ul>
      */
     public final <K> ImmutableListMultimap<K, T> index(Function<? super T, K> keyFunction) {
         return Multimaps.index(this, keyFunction);
@@ -341,9 +341,9 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
      *
      * @param keyFunction the function used to produce the key for each value
      * @throws IllegalArgumentException if {@code keyFunction} produces the same key for more than one
-     *     value in this fluent iterable
-     * @throws NullPointerException if any element of this fluent iterable is null, or if
-     *     {@code keyFunction} produces {@code null} for any value
+     *                                  value in this fluent iterable
+     * @throws NullPointerException     if any element of this fluent iterable is null, or if
+     *                                  {@code keyFunction} produces {@code null} for any value
      */
     public final <K> ImmutableMap<K, T> uniqueIndex(Function<? super T, K> keyFunction) {
         return Maps.uniqueIndex(this, keyFunction);
@@ -354,7 +354,7 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
      *
      * @param type the type of the elements
      * @return a newly-allocated array into which all the elements of this fluent iterable have
-     *     been copied
+     * been copied
      */
     public final T[] toArray(Class<T> type) {
         return Iterables.toArray(this, type);
@@ -381,7 +381,7 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
      * @param position position of the element to return
      * @return the element at the specified position in this fluent iterable
      * @throws IndexOutOfBoundsException if {@code position} is negative or greater than or equal to
-     *     the size of this fluent iterable
+     *                                   the size of this fluent iterable
      */
     public final T get(int position) {
         return Iterables.get(this, position);
@@ -390,7 +390,7 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
     /**
      * Returns a generic iterable with no beanlike properties such as {@code isEmpty()}.  This is useful with libraries
      * that use reflection to determine bean definitions such as Jackson.
-     *
+     * <p/>
      * Note this will prevent access to close the underlying resource.  It is suggested that {@code autoClose()} be used
      * before calling this method.
      */

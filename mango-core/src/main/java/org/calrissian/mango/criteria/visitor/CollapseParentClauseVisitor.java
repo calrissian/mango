@@ -22,13 +22,11 @@ import org.calrissian.mango.criteria.domain.ParentNode;
 /**
  * Multiple And/Or descending down the tree can be rolled up. And(And(children)) becomes And(children).
  * Requires that the parent classes be the same.
- *
+ * <p/>
  * Date: 11/13/12
  * Time: 9:56 AM
  */
-public class CollapseParentClauseVisitor implements OptimizerVisitor {
-
-    boolean wasOptimized = false;
+public class CollapseParentClauseVisitor implements NodeVisitor {
 
     @Override
     public void begin(ParentNode node) {
@@ -53,9 +51,4 @@ public class CollapseParentClauseVisitor implements OptimizerVisitor {
     public void visit(Leaf node) {
 
     }
-
-  @Override
-  public boolean optimized() {
-    return wasOptimized;
-  }
 }

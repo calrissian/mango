@@ -20,11 +20,8 @@ import org.calrissian.mango.criteria.domain.ParentNode;
 
 /**
  * If the parent has only one child, the child can be rolled up into the parent's parent. (if it exists)
- *
- * Date: 11/13/12
- * Time: 9:30 AM
  */
-public class SingleClauseCollapseVisitor implements OptimizerVisitor {
+public class SingleClauseCollapseVisitor implements NodeVisitor {
 
     private boolean wasOptimized = false;
 
@@ -48,8 +45,4 @@ public class SingleClauseCollapseVisitor implements OptimizerVisitor {
 
     }
 
-  @Override
-  public boolean optimized() {
-    return wasOptimized;
-  }
 }

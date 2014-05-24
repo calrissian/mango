@@ -24,10 +24,10 @@ import javax.jms.*;
  */
 class SingleDestinationUtils {
 
-    private SingleDestinationUtils() {/* private constructor */}
-
     private static final String JMS_TOPIC_PROP_STR = "selectTopic";
     private static final String JMS_REPLYTO_PROP_STR = "replyTo";
+
+    private SingleDestinationUtils() {/* private constructor */}
 
     public static void preSendMessage(Message msg, Destination topic, Destination destination) throws JMSException {
         if (destination != null) {
@@ -44,7 +44,7 @@ class SingleDestinationUtils {
 
     public static void postReceiveMessage(Message message) throws JMSException {
         String selectTopic = message.getStringProperty(JMS_TOPIC_PROP_STR);
-        if(selectTopic != null) {
+        if (selectTopic != null) {
             //set the destination
             message.setJMSDestination(new SelectorDestination(selectTopic));
         }

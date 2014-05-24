@@ -26,6 +26,7 @@ public interface UriResolver<T> {
 
     /**
      * Null should be returned if uri couldn't be resolved or item referenced doesn't exist
+     *
      * @param uri
      * @param auths
      * @return

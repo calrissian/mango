@@ -19,13 +19,12 @@ import javax.jms.*;
 
 public class DestinationRequestor {
 
-    private long timeout = 0;
-
     protected Session session; // The session the topic belongs to.
     protected Destination topic; // The topic to perform the request/reply on.
     protected Destination tempDestination;
     protected MessageProducer publisher;
     protected MessageConsumer subscriber;
+    private long timeout = 0;
 
     public DestinationRequestor(Session session, Destination destination)
             throws JMSException {

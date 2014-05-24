@@ -19,7 +19,6 @@ package org.calrissian.mango.collect;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
-
 import org.calrissian.mango.collect.mock.MockIterator;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -110,7 +109,7 @@ public class CloseableIteratorsTest {
         distinct.close();
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Test
     public void testChain() throws Exception {
         //test empty
@@ -120,7 +119,8 @@ public class CloseableIteratorsTest {
         try {
             iterator.next();
             fail();
-        } catch (NoSuchElementException ne) {}
+        } catch (NoSuchElementException ne) {
+        }
         iterator.close();
 
         //Verify 1 element
@@ -142,7 +142,7 @@ public class CloseableIteratorsTest {
                 wrap(asList(5, 6).iterator()));
 
         assertTrue(iterator.hasNext());
-        assertTrue(Iterators.elementsEqual(asList(1,2,3,4,5,6).iterator(), iterator));
+        assertTrue(Iterators.elementsEqual(asList(1, 2, 3, 4, 5, 6).iterator(), iterator));
         assertFalse(iterator.hasNext());
         iterator.close();
     }
@@ -186,7 +186,7 @@ public class CloseableIteratorsTest {
     }
 
     private MockIterator<Integer> testIterator() {
-        return new MockIterator<Integer>(asList(1,2,3,4,5).iterator());
+        return new MockIterator<Integer>(asList(1, 2, 3, 4, 5).iterator());
     }
 
     private MockIterator<Integer> testExceptionThrowingIterator() {

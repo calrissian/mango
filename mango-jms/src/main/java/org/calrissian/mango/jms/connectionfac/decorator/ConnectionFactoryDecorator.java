@@ -19,7 +19,7 @@ import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
 
-public abstract class ConnectionFactoryDecorator implements ConnectionFactory{
+public abstract class ConnectionFactoryDecorator implements ConnectionFactory {
 
     private final ConnectionFactory connectionFactory;
 

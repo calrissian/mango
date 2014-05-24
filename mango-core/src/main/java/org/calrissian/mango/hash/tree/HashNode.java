@@ -30,13 +30,14 @@ public class HashNode implements Node {
     protected String hash;
     protected List<Node> children;
 
-    public HashNode() {}
+    public HashNode() {
+    }
 
     public HashNode(List<Node> children) {
         this.children = children;
 
         MessageDigest digest = getMd5Digest();
-        for(Node node : children)
+        for (Node node : children)
             digest.update((node.getHash() + "\u0000").getBytes());
 
         hash = encodeHexString(digest.digest());
@@ -44,6 +45,7 @@ public class HashNode implements Node {
 
     /**
      * Accessor for the children that this Node's hash is comprised of
+     *
      * @return
      */
     @Override
@@ -54,6 +56,7 @@ public class HashNode implements Node {
     /**
      * If this node has children, aggregates the hashes of the children. If this node is a leaf, represents the hash
      * of the data.
+     *
      * @return
      */
     @Override

@@ -17,13 +17,13 @@ package org.calrissian.mango.collect;
 
 import com.google.common.collect.PeekingIterator;
 import org.calrissian.mango.domain.Tuple;
-import org.calrissian.mango.domain.TupleCollection;
+import org.calrissian.mango.domain.TupleStore;
 
 import java.util.Iterator;
 
 import static com.google.common.collect.Iterators.peekingIterator;
 
-public class TupleStoreIterator<T extends TupleCollection> implements Iterator<Tuple> {
+public class TupleStoreIterator<T extends TupleStore> implements Iterator<Tuple> {
 
     private PeekingIterator<T> itr = null;
     private T curTupleCollection = null;

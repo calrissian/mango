@@ -22,14 +22,12 @@ package org.calrissian.mango.criteria.domain;
 public class NotEqualsLeaf extends AbstractKeyValueLeaf implements NegationLeaf {
     private static final long serialVersionUID = 1L;
 
-  public NotEqualsLeaf(String key, Object value, ParentNode parent) {
-    super(key, value, parent);
-  }
+    public NotEqualsLeaf(String key, Object value, ParentNode parent) {
+        super(key, value, parent);
+    }
 
-  @Override
-  public Node clone(ParentNode node) {
-    return new NotEqualsLeaf(key, value, node);
-  }
-
-
+    @Override
+    public Node clone(ParentNode node) {
+        return new NotEqualsLeaf(key, value, node);
+    }
 }

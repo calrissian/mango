@@ -16,7 +16,6 @@
 package org.calrissian.mango.uri.transform;
 
 import com.google.common.net.MediaType;
-
 import org.calrissian.mango.uri.domain.ResolvedItem;
 import org.calrissian.mango.uri.exception.ContextTransformException;
 import org.calrissian.mango.uri.transform.interceptor.ContextTransformInterceptor;
@@ -28,45 +27,45 @@ import java.util.Map;
 public class ContextTransformService {
 
     @SuppressWarnings("rawtypes")
-    private final Map<String, ContextTransformer> contextTransformMap = new HashMap<String,ContextTransformer>();
+    private final Map<String, ContextTransformer> contextTransformMap = new HashMap<String, ContextTransformer>();
     @SuppressWarnings("rawtypes")
-    private final Map<Class, ContextTransformInterceptor> transformInterceptorMap = new HashMap<Class,ContextTransformInterceptor>();
+    private final Map<Class, ContextTransformInterceptor> transformInterceptorMap = new HashMap<Class, ContextTransformInterceptor>();
 
     @SuppressWarnings("rawtypes")
     public ContextTransformService(Collection<ContextTransformer> contextTransforms,
                                    Collection<ContextTransformInterceptor> contextTransformInterceptors) {
 
-        if(contextTransforms != null) {
-            for(ContextTransformer transform : contextTransforms) {
+        if (contextTransforms != null) {
+            for (ContextTransformer transform : contextTransforms) {
                 contextTransformMap.put(transform.getContextName(), transform);
             }
         }
 
-        if(contextTransformInterceptors != null) {
-            for(ContextTransformInterceptor interceptor : contextTransformInterceptors) {
+        if (contextTransformInterceptors != null) {
+            for (ContextTransformInterceptor interceptor : contextTransformInterceptors) {
                 transformInterceptorMap.put(interceptor.intercepts(), interceptor);
             }
         }
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public ResolvedItem transform(String contextName, Object obj) throws ContextTransformException {
 
         ContextTransformInterceptor interceptor = transformInterceptorMap.get(obj.getClass());
 
-        if(interceptor != null)
+        if (interceptor != null)
             return interceptor.transform(obj);
         else
             return contextTransformMap.get(contextName).transform(obj);
 
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public MediaType getMediaType(String contextName, Object obj) throws ContextTransformException {
 
         ContextTransformInterceptor interceptor = transformInterceptorMap.get(obj.getClass());
 
-        if(interceptor != null)
+        if (interceptor != null)
             return interceptor.getMediaType(obj);
         else
             return contextTransformMap.get(contextName).getMediaType(obj);

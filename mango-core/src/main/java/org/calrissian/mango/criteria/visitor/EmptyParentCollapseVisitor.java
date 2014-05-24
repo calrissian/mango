@@ -18,15 +18,13 @@ package org.calrissian.mango.criteria.visitor;
 import org.calrissian.mango.criteria.domain.Leaf;
 import org.calrissian.mango.criteria.domain.ParentNode;
 
-public class EmptyParentCollapseVisitor implements OptimizerVisitor {
-
-    private boolean wasOptimized = false;
+public class EmptyParentCollapseVisitor implements NodeVisitor {
 
     @Override
     public void begin(ParentNode node) {
         if (node.children() == null || node.children().size() == 0) {
             if (node.parent() != null) {
-              node.parent().removeChild(node);
+                node.parent().removeChild(node);
             }
         }
     }
@@ -41,8 +39,4 @@ public class EmptyParentCollapseVisitor implements OptimizerVisitor {
 
     }
 
-  @Override
-  public boolean optimized() {
-    return wasOptimized;
-  }
 }

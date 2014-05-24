@@ -66,7 +66,7 @@ class SingleDestinationMessageConsumer extends MessageConsumerDecorator {
     @Override
     public Message receiveNoWait() throws JMSException {
         Message msg = super.receiveNoWait();
-        if(msg != null) {
+        if (msg != null) {
             postReceiveMessage(msg);
         }
         return msg;

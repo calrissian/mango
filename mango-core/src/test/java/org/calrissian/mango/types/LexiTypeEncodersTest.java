@@ -28,7 +28,7 @@ import static org.junit.Assert.assertEquals;
 
 public class LexiTypeEncodersTest {
 
-    private static<T> void verifyBasicFunctionality(String alias, T testObject, TypeEncoder<T, String> encoder) throws TypeEncodingException, TypeDecodingException {
+    private static <T> void verifyBasicFunctionality(String alias, T testObject, TypeEncoder<T, String> encoder) throws TypeEncodingException, TypeDecodingException {
         assertEquals(alias, encoder.getAlias());
         assertEquals(testObject.getClass(), encoder.resolves());
 
@@ -37,7 +37,7 @@ public class LexiTypeEncodersTest {
     }
 
     @Test
-    public void testBasicFunctionality() throws Exception{
+    public void testBasicFunctionality() throws Exception {
         verifyBasicFunctionality("boolean", true, booleanEncoder());
         verifyBasicFunctionality("byte", (byte) 3, byteEncoder());
         verifyBasicFunctionality("date", new Date(), dateEncoder());
@@ -60,7 +60,7 @@ public class LexiTypeEncodersTest {
     }
 
     @Test
-    public void testCorrectEncoding () throws Exception {
+    public void testCorrectEncoding() throws Exception {
 
         assertEquals("1", booleanEncoder().encode(true));
         assertEquals("0", booleanEncoder().encode(false));
@@ -90,7 +90,7 @@ public class LexiTypeEncodersTest {
     }
 
     @Test
-    public void testCorrectReverseEncoding () throws Exception {
+    public void testCorrectReverseEncoding() throws Exception {
 
         assertEquals("0", booleanRevEncoder().encode(true));
         assertEquals("1", booleanRevEncoder().encode(false));

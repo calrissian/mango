@@ -29,5 +29,4 @@ public class AliasConstants {
     public static String URI_ALIAS = "uri";
 
 
-
 }

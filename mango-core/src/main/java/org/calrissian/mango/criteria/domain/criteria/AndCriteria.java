@@ -15,28 +15,29 @@
  */
 package org.calrissian.mango.criteria.domain.criteria;
 
-import org.calrissian.mango.domain.TupleCollection;
+import org.calrissian.mango.domain.TupleStore;
 
-public class AndCriteria extends ParentCriteria{
+public class AndCriteria extends ParentCriteria {
 
-  public AndCriteria(ParentCriteria parent) {
-    super(parent);
-  }
-
-  @Override
-  public boolean apply(TupleCollection obj) {
-    for(Criteria node : children()) {
-      if(!node.apply(obj))
-        return false;
+    public AndCriteria(ParentCriteria parent) {
+        super(parent);
     }
 
-    return true;
-  }
+    @Override
+    public boolean apply(TupleStore obj) {
+        for (Criteria node : children()) {
+            if (!node.apply(obj))
+                return false;
+        }
 
-  @Override
-  public Criteria clone(ParentCriteria node) {
-    AndCriteria cloned = new AndCriteria(node);
-    for(Criteria child : children())
-      cloned.addChild(child.clone(cloned));
-    return cloned;
-  }}
+        return true;
+    }
+
+    @Override
+    public Criteria clone(ParentCriteria node) {
+        AndCriteria cloned = new AndCriteria(node);
+        for (Criteria child : children())
+            cloned.addChild(child.clone(cloned));
+        return cloned;
+    }
+}

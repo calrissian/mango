@@ -16,6 +16,7 @@
 package org.calrissian.mango.jms.stream;
 
 
+import junit.framework.TestCase;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQTopic;
 import org.calrissian.mango.jms.connectionfac.SingleTopicConnectionFactory;
@@ -26,7 +27,6 @@ import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.MessageConsumer;
 import javax.jms.Session;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,8 +34,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLStreamHandler;
 import java.net.URLStreamHandlerFactory;
-
-import junit.framework.TestCase;
 
 public class JmsFileTransferSupportTest extends TestCase {
 

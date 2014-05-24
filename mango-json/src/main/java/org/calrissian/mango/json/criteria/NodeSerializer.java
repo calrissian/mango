@@ -63,7 +63,7 @@ public class NodeSerializer extends JsonSerializer<Node> {
             jsonGenerator.writeObjectFieldStart("or");
         } else throw new IllegalArgumentException("Unsupported parent: " + node);
         jsonGenerator.writeArrayFieldStart("children");
-        for(Node child: node.children()) {
+        for (Node child : node.children()) {
             serialize(child, jsonGenerator, serializerProvider);
         }
         jsonGenerator.writeEndArray();

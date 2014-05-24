@@ -23,7 +23,6 @@ import java.util.Arrays;
 
 /**
  * Utility class to allow for the management of writing a {@link java.io.OutputStream} data to a destination in chunks.
- *
  */
 public abstract class AbstractBufferedOutputStream extends OutputStream {
 
@@ -37,10 +36,11 @@ public abstract class AbstractBufferedOutputStream extends OutputStream {
 
     /**
      * Writes the buffer to the destination after it is either full, or has been flushed.
+     *
      * @param buf data to write
      * @throws java.io.IOException
      */
-    protected abstract void writeBuffer(byte [] buf) throws IOException;
+    protected abstract void writeBuffer(byte[] buf) throws IOException;
 
     /**
      * {@inheritDoc}
@@ -51,7 +51,7 @@ public abstract class AbstractBufferedOutputStream extends OutputStream {
         if (available() < 1)
             flush();
 
-        buf[curr++] = (byte)b;
+        buf[curr++] = (byte) b;
     }
 
     /**
@@ -79,6 +79,7 @@ public abstract class AbstractBufferedOutputStream extends OutputStream {
 
     /**
      * Provides the amount of buffer that is left to be written to.
+     *
      * @return number of bytes available in the buffer
      */
     protected int available() {
@@ -87,6 +88,7 @@ public abstract class AbstractBufferedOutputStream extends OutputStream {
 
     /**
      * Check if the stream has been closed.  If it has, it will throw an {@link java.io.IOException}.
+     *
      * @throws java.io.IOException
      */
     private void checkClosed() throws IOException {

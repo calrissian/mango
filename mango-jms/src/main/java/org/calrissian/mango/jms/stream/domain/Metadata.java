@@ -19,41 +19,41 @@ import java.io.Serializable;
 
 public class Metadata implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 2106165237211114549L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 2106165237211114549L;
 
-	private int numberOfPieces;
+    private int numberOfPieces;
 
-	private long pieceSize;
+    private long pieceSize;
 
-	private String fileName;
+    private String fileName;
 
-	private long fileSize;
+    private long fileSize;
 
-	public Metadata(int numberOfPieces, long pieceSize, String fileName,
-			long fileSize) {
-		super();
-		this.numberOfPieces = numberOfPieces;
-		this.pieceSize = pieceSize;
-		this.fileName = fileName;
-		this.fileSize = fileSize;
-	}
+    public Metadata(int numberOfPieces, long pieceSize, String fileName,
+                    long fileSize) {
+        super();
+        this.numberOfPieces = numberOfPieces;
+        this.pieceSize = pieceSize;
+        this.fileName = fileName;
+        this.fileSize = fileSize;
+    }
 
-	public long getFileSize() {
-		return fileSize;
-	}
+    public long getFileSize() {
+        return fileSize;
+    }
 
-	public int getNumberOfPieces() {
-		return numberOfPieces;
-	}
+    public int getNumberOfPieces() {
+        return numberOfPieces;
+    }
 
-	public long getPieceSize() {
-		return pieceSize;
-	}
+    public long getPieceSize() {
+        return pieceSize;
+    }
 
-	public String getFileName() {
-		return fileName;
-	}
+    public String getFileName() {
+        return fileName;
+    }
 }

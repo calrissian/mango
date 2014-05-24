@@ -24,7 +24,7 @@ import static org.junit.Assert.assertTrue;
 
 public class AbstractCloseableIterableTest {
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Test
     public void closeTest() throws Exception {
         MockIterable iterable = new MockIterable(emptyList());
@@ -32,7 +32,7 @@ public class AbstractCloseableIterableTest {
         assertTrue(iterable.isClosed());
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Test(expected = IllegalStateException.class)
     public void errorAfterCloseTest() throws Exception {
         MockIterable iterable = new MockIterable(emptyList());

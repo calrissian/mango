@@ -20,7 +20,7 @@ import java.io.IOException;
 
 public class BadUriException extends IOException {
     private static final long serialVersionUID = 1L;
-    
+
     public BadUriException() {
     }
 

@@ -62,7 +62,8 @@ public class MerkleTreeTest {
         try {
             tree.diff(tree2);
             fail("Should have thrown exception");
-        } catch(IllegalStateException e) { }
+        } catch (IllegalStateException e) {
+        }
     }
 
     @Test
@@ -77,7 +78,8 @@ public class MerkleTreeTest {
         try {
             tree.diff(tree2);
             fail("Should have thrown exception");
-        } catch(IllegalStateException e) { }
+        } catch (IllegalStateException e) {
+        }
     }
 
     @Test

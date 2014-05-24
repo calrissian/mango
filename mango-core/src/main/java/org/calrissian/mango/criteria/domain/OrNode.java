@@ -28,17 +28,15 @@ public class OrNode extends ParentNode {
         super(parent, nodes);
     }
 
-  public OrNode(ParentNode parent) {
-    super(parent, new ArrayList<Node>());
-  }
+    public OrNode(ParentNode parent) {
+        super(parent, new ArrayList<Node>());
+    }
 
-  @Override
-  public Node clone(ParentNode node) {
-    OrNode cloned = new OrNode(node);
-    for(Node child : children())
-      cloned.addChild(child.clone(cloned));
-    return cloned;
-  }
-
-
+    @Override
+    public Node clone(ParentNode node) {
+        OrNode cloned = new OrNode(node);
+        for (Node child : children())
+            cloned.addChild(child.clone(cloned));
+        return cloned;
+    }
 }

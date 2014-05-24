@@ -28,6 +28,14 @@ public class IPv4 implements Comparable<IPv4>, Serializable {
 
     private final long value;
 
+    public IPv4(String ip) {
+        this(ipToLong(ip));
+    }
+
+    public IPv4(long ip) {
+        this.value = ip;
+    }
+
     private static long ipToLong(String addr) {
         checkNotNull(addr);
 
@@ -47,14 +55,6 @@ public class IPv4 implements Comparable<IPv4>, Serializable {
 
         }
         return num;
-    }
-
-    public IPv4(String ip) {
-        this(ipToLong(ip));
-    }
-
-    public IPv4(long ip) {
-        this.value = ip;
     }
 
     public long getValue() {
