@@ -28,5 +28,10 @@ public class HasNotCriteria extends KeyValueLeafCriteria {
     return obj.get(key) == null;
   }
 
+  @Override
+  public Criteria clone(ParentCriteria parentCriteria) {
+    return new HasNotCriteria(key, parentCriteria);
+  }
+
 
 }

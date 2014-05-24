@@ -25,17 +25,17 @@ import static org.junit.Assert.assertTrue;
 
 public class HasNotCriteriaTest {
 
-  @Test
-  public void test() {
+    @Test
+    public void test() {
 
-    HasNotCriteria criteria = new HasNotCriteria("key1", null);
+        HasNotCriteria criteria = new HasNotCriteria("key1", null);
 
-    Entity entity = new BaseEntity("type", "id");
-    entity.put(new Tuple("key2", "val2"));
+        Entity entity = new BaseEntity("type", "id");
+        entity.put(new Tuple("key2", "val2"));
 
-    assertTrue(criteria.apply(entity));
+        assertTrue(criteria.apply(entity));
 
-    entity.put(new Tuple("key1", "val1"));
-    assertFalse(criteria.apply(entity));
-  }
+        entity.put(new Tuple("key1", "val1"));
+        assertFalse(criteria.apply(entity));
+    }
 }

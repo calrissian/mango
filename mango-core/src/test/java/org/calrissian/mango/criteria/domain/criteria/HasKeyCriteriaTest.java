@@ -25,17 +25,17 @@ import static org.junit.Assert.assertTrue;
 
 public class HasKeyCriteriaTest {
 
-  @Test
-  public void test() {
+    @Test
+    public void test() {
 
-    HasCriteria criteria = new HasCriteria("key1", null);
+        HasCriteria criteria = new HasCriteria("key1", null);
 
-    Entity entity = new BaseEntity("type", "id");
-    entity.put(new Tuple("key2", "val2"));
+        Entity entity = new BaseEntity("type", "id");
+        entity.put(new Tuple("key2", "val2"));
 
-    assertFalse(criteria.apply(entity));
+        assertFalse(criteria.apply(entity));
 
-    entity.put(new Tuple("key1", "val1"));
-    assertTrue(criteria.apply(entity));
-  }
+        entity.put(new Tuple("key1", "val1"));
+        assertTrue(criteria.apply(entity));
+    }
 }

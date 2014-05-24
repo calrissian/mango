@@ -33,5 +33,10 @@ public class AndCriteria extends ParentCriteria{
     return true;
   }
 
-
-}
+  @Override
+  public Criteria clone(ParentCriteria node) {
+    AndCriteria cloned = new AndCriteria(node);
+    for(Criteria child : children())
+      cloned.addChild(child.clone(cloned));
+    return cloned;
+  }}

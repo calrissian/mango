@@ -16,6 +16,7 @@
 package org.calrissian.mango.criteria.domain.criteria;
 
 import com.google.common.base.Predicate;
+import org.calrissian.mango.criteria.domain.ParentNode;
 import org.calrissian.mango.domain.TupleCollection;
 
 import java.io.Serializable;
@@ -36,4 +37,6 @@ public interface Criteria extends Predicate<TupleCollection>, Serializable {
   public void addChild(Criteria node);
 
   public void removeChild(Criteria node);
+
+  public Criteria clone(ParentCriteria parentCriteria);
 }

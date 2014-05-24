@@ -26,7 +26,9 @@ import org.calrissian.mango.criteria.domain.ParentNode;
  * Date: 11/13/12
  * Time: 9:56 AM
  */
-public class CollapseParentClauseVisitor implements NodeVisitor {
+public class CollapseParentClauseVisitor implements OptimizerVisitor {
+
+    boolean wasOptimized = false;
 
     @Override
     public void begin(ParentNode node) {
@@ -38,7 +40,6 @@ public class CollapseParentClauseVisitor implements NodeVisitor {
                 for (Node child : node.children()) {
                     node.parent().addChild(child);
                 }
-                node.parent().removeChild(node);
             }
         }
     }
@@ -52,4 +53,9 @@ public class CollapseParentClauseVisitor implements NodeVisitor {
     public void visit(Leaf node) {
 
     }
+
+  @Override
+  public boolean optimized() {
+    return wasOptimized;
+  }
 }

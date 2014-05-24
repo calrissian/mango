@@ -21,4 +21,9 @@ public class LessThanCriteria extends ComparableKeyValueLeafCriteria {
 
     return false;
   }
+
+  @Override
+  public Criteria clone(ParentCriteria parentCriteria) {
+    return new LessThanCriteria(key, value, comparator, parentCriteria);
+  }
 }

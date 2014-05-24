@@ -40,4 +40,9 @@ public class EqualsCriteria extends ComparableKeyValueLeafCriteria {
 
     return false;
   }
+
+  @Override
+  public Criteria clone(ParentCriteria parentCriteria) {
+    return new EqualsCriteria(key, value, comparator, parentCriteria);
+  }
 }

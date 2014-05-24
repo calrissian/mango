@@ -27,4 +27,9 @@ public class HasCriteria extends KeyValueLeafCriteria {
   public boolean apply(TupleCollection obj) {
     return obj.get(key) != null;
   }
+
+  @Override
+  public Criteria clone(ParentCriteria parentCriteria) {
+    return new HasCriteria(key, parentCriteria);
+  }
 }

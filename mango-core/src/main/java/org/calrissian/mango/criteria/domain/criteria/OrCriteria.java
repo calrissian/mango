@@ -32,4 +32,12 @@ public class OrCriteria extends ParentCriteria{
 
     return false;
   }
+
+  @Override
+  public Criteria clone(ParentCriteria node) {
+    OrCriteria cloned = new OrCriteria(node);
+    for(Criteria child : children())
+      cloned.addChild(child.clone(cloned));
+    return cloned;
+  }
 }

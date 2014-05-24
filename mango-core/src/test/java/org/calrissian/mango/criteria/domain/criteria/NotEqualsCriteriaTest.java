@@ -26,23 +26,23 @@ import static org.junit.Assert.assertTrue;
 
 public class NotEqualsCriteriaTest {
 
-  @Test
-  public void testNotEquals() {
+    @Test
+    public void testNotEquals() {
 
-    Criteria eq = new NotEqualsCriteria("key1", "val1", new ComparableComparator(),null);
-    Entity entity = new BaseEntity("type", "id");
-    entity.put(new Tuple("key1", "val2"));
+        Criteria eq = new NotEqualsCriteria("key1", "val1", new ComparableComparator(), null);
+        Entity entity = new BaseEntity("type", "id");
+        entity.put(new Tuple("key1", "val2"));
 
-    assertTrue(eq.apply(entity));
-  }
+        assertTrue(eq.apply(entity));
+    }
 
-  @Test
-  public void testEquals() {
+    @Test
+    public void testEquals() {
 
-    Criteria eq = new NotEqualsCriteria("key1", "val1", new ComparableComparator(), null);
-    Entity entity = new BaseEntity("type", "id");
-    entity.put(new Tuple("key1", "val1"));
+        Criteria eq = new NotEqualsCriteria("key1", "val1", new ComparableComparator(), null);
+        Entity entity = new BaseEntity("type", "id");
+        entity.put(new Tuple("key1", "val1"));
 
-    assertFalse(eq.apply(entity));
-  }
+        assertFalse(eq.apply(entity));
+    }
 }

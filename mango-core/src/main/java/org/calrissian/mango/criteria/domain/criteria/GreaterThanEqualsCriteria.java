@@ -21,4 +21,9 @@ public class GreaterThanEqualsCriteria extends ComparableKeyValueLeafCriteria {
 
     return false;
   }
+
+  @Override
+  public Criteria clone(ParentCriteria parentCriteria) {
+    return new GreaterThanEqualsCriteria(key, value, comparator, parentCriteria);
+  }
 }

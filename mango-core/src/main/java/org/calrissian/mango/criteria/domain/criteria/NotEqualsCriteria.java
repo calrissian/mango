@@ -39,4 +39,9 @@ public class NotEqualsCriteria extends ComparableKeyValueLeafCriteria {
 
     return false;
   }
+
+  @Override
+  public Criteria clone(ParentCriteria parentCriteria) {
+    return new NotEqualsCriteria(key, value, comparator, parentCriteria);
+  }
 }
