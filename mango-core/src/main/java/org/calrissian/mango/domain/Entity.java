@@ -17,7 +17,10 @@ package org.calrissian.mango.domain;
 
 import java.io.Serializable;
 
-public interface Entity extends TupleStore, Serializable {
+/**
+ * A common business object for modelling things in the real-world.
+ */
+public interface Entity extends TupleStore, Serializable, Identifiable {
 
     /**
      * Accessor for Id

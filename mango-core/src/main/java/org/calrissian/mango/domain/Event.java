@@ -18,10 +18,10 @@ package org.calrissian.mango.domain;
 import java.io.Serializable;
 
 /**
- * An entry acts as a useful common business object for representing different types of models. An optional time
- * dimension can be set directly or left untouched (defaulting in current time).
+ * An event acts as a useful common business object for representing different types of models with a time
+ * dimension tha can be set directly or left untouched (defaulting in current time).
  */
-public interface Event extends TupleStore, Serializable {
+public interface Event extends TupleStore, Serializable, Identifiable, Temporal {
 
     /**
      * Accessor for Id
@@ -31,5 +31,5 @@ public interface Event extends TupleStore, Serializable {
     /**
      * Accessor for timestamp
      */
-    long getTimestamp();
+    Long getTimestamp();
 }
