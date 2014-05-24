@@ -18,15 +18,24 @@ package org.calrissian.mango.domain;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.util.UUID.randomUUID;
 
+/**
+ * Default implementation of {@link org.calrissian.mango.domain.Entity}.
+ */
 public class BaseEntity extends AbstractTupleStore implements Entity {
 
     private String id;
     private String type;
 
+    /**
+     * Defines an {@link Entity} object for the given type and a random uuid.
+     */
     public BaseEntity(String type) {
         this(type, randomUUID().toString());
     }
 
+    /**
+     * Defines an {@link Entity} for the given type and id
+     */
     public BaseEntity(String type, String id) {
         checkNotNull(type);
         checkNotNull(id);
@@ -34,6 +43,9 @@ public class BaseEntity extends AbstractTupleStore implements Entity {
         this.type = type;
     }
 
+    /**
+     * Copy constructor.
+     */
     public BaseEntity(Entity entity) {
         this(entity.getType(), entity.getId());
         getTuples().addAll(entity.getTuples());

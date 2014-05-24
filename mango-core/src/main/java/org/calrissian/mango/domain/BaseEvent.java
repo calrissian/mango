@@ -35,7 +35,7 @@ public class BaseEvent extends AbstractTupleStore implements Event {
     }
 
     /**
-     * New evnet with ID. Timestamp defaults to current time.
+     * New event with ID. Timestamp defaults to current time.
      *
      * @param id
      */
@@ -54,6 +54,9 @@ public class BaseEvent extends AbstractTupleStore implements Event {
         this.timestamp = timestamp;
     }
 
+    /**
+     * Copy constructor
+     */
     public BaseEvent(Event event) {
         this(event.getId(), event.getTimestamp());
         getTuples().addAll(event.getTuples());
