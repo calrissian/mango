@@ -23,11 +23,6 @@ import java.io.Serializable;
 public interface Entity extends TupleStore, Serializable, Identifiable {
 
     /**
-     * Accessor for Id
-     */
-    String getId();
-
-    /**
      * Accessor for the type of entity
      */
     String getType();

@@ -23,13 +23,4 @@ import java.io.Serializable;
  */
 public interface Event extends TupleStore, Serializable, Identifiable, Temporal {
 
-    /**
-     * Accessor for Id
-     */
-    String getId();
-
-    /**
-     * Accessor for timestamp
-     */
-    Long getTimestamp();
 }
