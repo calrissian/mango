@@ -15,7 +15,7 @@
  */
 package org.calrissian.mango.types;
 
-import org.calrissian.mango.domain.IPv4;
+import org.calrissian.mango.domain.ip.IPv4;
 import org.calrissian.mango.types.exception.TypeDecodingException;
 import org.calrissian.mango.types.exception.TypeEncodingException;
 import org.junit.Test;

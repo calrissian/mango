@@ -13,14 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.domain;
+package org.calrissian.mango.domain.entity;
+
+import org.calrissian.mango.domain.TupleStore;
+import org.calrissian.mango.domain.TypedIdentifiable;
 
 import java.io.Serializable;
 
 /**
- * An event acts as a useful common business object for representing different types of models with a time
- * dimension tha can be set directly or left untouched (defaulting in current time).
+ * A common business object for modelling things in the real-world.
  */
-public interface Event extends TupleStore, Serializable, Identifiable, Temporal {
+public interface Entity extends TupleStore, Serializable, TypedIdentifiable {
 
 }

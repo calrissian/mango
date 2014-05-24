@@ -16,8 +16,8 @@
 package org.calrissian.mango.criteria.domain.criteria;
 
 import org.calrissian.mango.criteria.support.ComparableComparator;
-import org.calrissian.mango.domain.BaseEntity;
-import org.calrissian.mango.domain.Entity;
+import org.calrissian.mango.domain.entity.BaseEntity;
+import org.calrissian.mango.domain.entity.Entity;
 import org.calrissian.mango.domain.Tuple;
 import org.junit.Test;
 

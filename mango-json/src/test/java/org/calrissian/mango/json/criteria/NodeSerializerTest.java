@@ -20,7 +20,7 @@ import org.calrissian.mango.criteria.builder.QueryBuilder;
 import org.calrissian.mango.criteria.domain.EqualsLeaf;
 import org.calrissian.mango.criteria.domain.Node;
 import org.calrissian.mango.criteria.domain.RangeLeaf;
-import org.calrissian.mango.domain.IPv4;
+import org.calrissian.mango.domain.ip.IPv4;
 import org.junit.Test;
 
 import static org.calrissian.mango.types.SimpleTypeEncoders.SIMPLE_TYPES;
