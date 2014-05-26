@@ -37,7 +37,9 @@ public class SimpleTypeEncoders {
     @SuppressWarnings("unchecked")
     public static final TypeRegistry<String> SIMPLE_TYPES = new TypeRegistry<String>(
             booleanEncoder(), byteEncoder(), dateEncoder(), doubleEncoder(), floatEncoder(),
-            integerEncoder(), ipv4Encoder(), longEncoder(), stringEncoder(), uriEncoder()
+            integerEncoder(), ipv4Encoder(), longEncoder(), stringEncoder(), uriEncoder(),
+            new EntityRelationshipEncoder()
+
     );
 
     public SimpleTypeEncoders() {/* private constructor */}
