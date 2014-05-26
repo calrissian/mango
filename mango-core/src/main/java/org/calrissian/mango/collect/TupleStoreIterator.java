@@ -25,11 +25,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class TupleStoreIterator<T extends TupleStore> extends AbstractIterator<Tuple> {
 
-
     Iterator<T> tupleCollections;
     T curTupleCollection;
     Iterator<Tuple> tuples;
-
 
     public TupleStoreIterator(Iterable<T> tupleCollections) {
         checkNotNull(tupleCollections);
