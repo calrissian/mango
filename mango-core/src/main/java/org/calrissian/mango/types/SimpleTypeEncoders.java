@@ -16,8 +16,10 @@
 package org.calrissian.mango.types;
 
 
+import org.calrissian.mango.domain.entity.EntityRelationship;
 import org.calrissian.mango.domain.ip.IPv4;
 import org.calrissian.mango.types.encoders.*;
+import org.calrissian.mango.types.encoders.simple.EntityRelationshipEncoder;
 import org.calrissian.mango.types.exception.TypeDecodingException;
 
 import java.net.URI;
@@ -38,7 +40,7 @@ public class SimpleTypeEncoders {
     public static final TypeRegistry<String> SIMPLE_TYPES = new TypeRegistry<String>(
             booleanEncoder(), byteEncoder(), dateEncoder(), doubleEncoder(), floatEncoder(),
             integerEncoder(), ipv4Encoder(), longEncoder(), stringEncoder(), uriEncoder(),
-            new EntityRelationshipEncoder()
+            entityRelationshipEncoder()
 
     );
 
@@ -211,5 +213,9 @@ public class SimpleTypeEncoders {
                 }
             }
         };
+    }
+
+    public static TypeEncoder<EntityRelationship, String> entityRelationshipEncoder() {
+        return new EntityRelationshipEncoder();
     }
 }

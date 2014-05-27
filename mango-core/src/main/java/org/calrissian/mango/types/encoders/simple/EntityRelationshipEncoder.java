@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.types.encoders;
+package org.calrissian.mango.types.encoders.simple;
 
 import org.calrissian.mango.domain.entity.EntityRelationship;
 import org.calrissian.mango.types.TypeEncoder;
@@ -26,6 +26,7 @@ import static org.apache.commons.lang.StringUtils.splitPreserveAllTokens;
 public class EntityRelationshipEncoder implements TypeEncoder<EntityRelationship, String> {
 
     public static final String ALIAS = "entityRelationship";
+    private static final String SCHEME = "entity://";
 
     @Override
     public String getAlias() {
@@ -39,13 +40,21 @@ public class EntityRelationshipEncoder implements TypeEncoder<EntityRelationship
 
     @Override
     public String encode(EntityRelationship entityRelationship) throws TypeEncodingException {
-        return format("entity://%s#%s", entityRelationship.getTargetType(), entityRelationship.getTargetId());
+        return format("%s%s#%s", SCHEME, entityRelationship.getTargetType(), entityRelationship.getTargetId());
+    }
+
+    private void validateEncodedString(String s) throws TypeDecodingException {
+        if(!s.startsWith(SCHEME) || s.indexOf("#") == -1)
+            throw new TypeDecodingException("The encoded string is not valid. string=[" + s + "]");
     }
 
     @Override
     public EntityRelationship decode(String s) throws TypeDecodingException {
-        String rel = s.substring(9, s.length());
+        validateEncodedString(s);
+
+        String rel = s.substring(SCHEME.length(), s.length());
         String[] parts = splitPreserveAllTokens(rel, "#");
+
         return new EntityRelationship(parts[0], parts[1]);
     }
 }

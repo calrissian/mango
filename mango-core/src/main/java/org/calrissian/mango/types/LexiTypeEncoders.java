@@ -16,8 +16,8 @@
 package org.calrissian.mango.types;
 
 
+import org.calrissian.mango.domain.entity.EntityRelationship;
 import org.calrissian.mango.domain.ip.IPv4;
-import org.calrissian.mango.types.encoders.EntityRelationshipEncoder;
 import org.calrissian.mango.types.encoders.lexi.*;
 
 import java.net.URI;
@@ -34,13 +34,13 @@ public class LexiTypeEncoders {
     public static final TypeRegistry<String> LEXI_TYPES = new TypeRegistry<String>(
             booleanEncoder(), byteEncoder(), dateEncoder(), doubleEncoder(), floatEncoder(),
             integerEncoder(), ipv4Encoder(), longEncoder(), stringEncoder(), uriEncoder(),
-            new EntityRelationshipEncoder()
+            entityRelationshipEncoder()
     );
 
     public static final TypeRegistry<String> LEXI_REV_TYPES = new TypeRegistry<String>(
             booleanRevEncoder(), byteRevEncoder(), dateRevEncoder(), doubleRevEncoder(), floatRevEncoder(),
             integerRevEncoder(), ipv4RevEncoder(), longRevEncoder(), stringRevEncoder(), uriRevEncoder(),
-            reverseEncoder(new EntityRelationshipEncoder())
+            entityRelationshipRevEncoder()
     );
 
     public static <T> TypeEncoder<T, String> reverseEncoder(TypeEncoder<T, String> sourceEncoder) {
@@ -125,5 +125,13 @@ public class LexiTypeEncoders {
 
     public static TypeEncoder<URI, String> uriRevEncoder() {
         return reverseEncoder(uriEncoder());
+    }
+
+    public static TypeEncoder<EntityRelationship, String> entityRelationshipEncoder() {
+        return SimpleTypeEncoders.entityRelationshipEncoder();
+    }
+
+    public static TypeEncoder<EntityRelationship, String> entityRelationshipRevEncoder() {
+        return new ReverseEncoder(SimpleTypeEncoders.entityRelationshipEncoder());
     }
 }
