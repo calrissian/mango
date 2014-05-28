@@ -30,13 +30,4 @@ public class EntityRelationship extends EntityIndex implements Serializable {
     public EntityRelationship(Entity entity) {
         this(entity.getType(), entity.getId());
     }
-
-    public String getTargetType() {
-        return type;
-    }
-
-    public String getTargetId() {
-        return id;
-    }
-
 }

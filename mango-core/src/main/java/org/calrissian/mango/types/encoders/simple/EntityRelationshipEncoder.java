@@ -40,7 +40,7 @@ public class EntityRelationshipEncoder implements TypeEncoder<EntityRelationship
 
     @Override
     public String encode(EntityRelationship entityRelationship) throws TypeEncodingException {
-        return format("%s%s#%s", SCHEME, entityRelationship.getTargetType(), entityRelationship.getTargetId());
+        return format("%s%s#%s", SCHEME, entityRelationship.getType(), entityRelationship.getId());
     }
 
     private void validateEncodedString(String s) throws TypeDecodingException {
