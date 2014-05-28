@@ -15,10 +15,12 @@
  */
 package org.calrissian.mango.domain.entity;
 
+import java.io.Serializable;
+
 /**
  * Models a relationship to another entity.
  */
-public class EntityRelationship extends EntityIndex {
+public class EntityRelationship extends EntityIndex implements Serializable {
 
 
     public EntityRelationship(String type, String id) {
