@@ -21,6 +21,7 @@ import org.calrissian.mango.types.exception.TypeDecodingException;
 import org.calrissian.mango.types.exception.TypeEncodingException;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -28,7 +29,7 @@ public class ReverseEncoder<T> implements TypeEncoder<T, String> {
     private static final long serialVersionUID = 1L;
 
     //This is defined in Java 7 under StandardCharsets and should be replaced in the future.
-    private static final Charset UTF_8 = Charset.forName("UTF-8");
+    private static final Charset US-ASCII = Charset.forName("US-ASCII");
 
     private final TypeEncoder<T, String> encoder;
 
@@ -49,13 +50,13 @@ public class ReverseEncoder<T> implements TypeEncoder<T, String> {
     @Override
     public String encode(T value) throws TypeEncodingException {
         String encoded = encoder.encode(value);
-        return new String(reverse(encoded.getBytes()), UTF_8);
+        return new String(reverse(encoded.getBytes()), US-ASCII);
     }
 
     @Override
     public T decode(String value) throws TypeDecodingException {
         checkNotNull(value, "Null values are not allowed");
-        String reversed = new String(reverse(value.getBytes(UTF_8)));
+        String reversed = new String(reverse(value.getBytes(US-ASCII)));
         return encoder.decode(reversed);
     }
 
