@@ -29,9 +29,9 @@ public class TupleStoreIterator<T extends TupleStore> extends AbstractIterator<T
     T curTupleCollection;
     Iterator<Tuple> tuples;
 
-    public TupleStoreIterator(Iterable<T> tupleCollections) {
+    public TupleStoreIterator(Iterator<T> tupleCollections) {
         checkNotNull(tupleCollections);
-        this.tupleCollections = tupleCollections.iterator();
+        this.tupleCollections = tupleCollections;
     }
 
     @Override

@@ -19,6 +19,7 @@ package org.calrissian.mango.types;
 import org.calrissian.mango.types.exception.TypeDecodingException;
 import org.calrissian.mango.types.exception.TypeEncodingException;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -27,7 +28,7 @@ import static com.google.common.collect.Iterables.concat;
 import static java.util.Arrays.asList;
 import static java.util.Collections.unmodifiableCollection;
 
-public class TypeRegistry<U> {
+public class TypeRegistry<U> implements Serializable {
 
     private final Map<String, TypeEncoder<?, U>> aliasMapping = new LinkedHashMap<String, TypeEncoder<?, U>>();
     private final Map<Class<?>, TypeEncoder<?, U>> classMapping = new LinkedHashMap<Class<?>, TypeEncoder<?, U>>();

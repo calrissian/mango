@@ -15,6 +15,8 @@
  */
 package org.calrissian.mango.criteria.domain;
 
+import com.google.common.collect.AbstractIterator;
+
 public abstract class AbstractKeyValueLeaf extends Leaf {
     private static final long serialVersionUID = 1L;
 
@@ -52,7 +54,7 @@ public abstract class AbstractKeyValueLeaf extends Leaf {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        EqualsLeaf that = (EqualsLeaf) o;
+        AbstractKeyValueLeaf that = (AbstractKeyValueLeaf) o;
 
         if (key != null ? !key.equals(that.key) : that.key != null) return false;
         if (value != null ? !value.equals(that.value) : that.value != null) return false;

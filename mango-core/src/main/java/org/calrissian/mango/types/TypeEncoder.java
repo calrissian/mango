@@ -19,7 +19,9 @@ package org.calrissian.mango.types;
 import org.calrissian.mango.types.exception.TypeDecodingException;
 import org.calrissian.mango.types.exception.TypeEncodingException;
 
-public interface TypeEncoder<T, U> {
+import java.io.Serializable;
+
+public interface TypeEncoder<T, U> extends Serializable {
 
     /**
      * Returns the "alias" of the types so that the encoded form can be decoded.

@@ -50,7 +50,7 @@ public class TupleStoreIteratorTest {
     @Test
     public void test() {
 
-        TupleStoreIterator<Entity> entityTupleStoreIterator = new TupleStoreIterator<Entity>(asList(new Entity[]{entity, entity2}));
+        TupleStoreIterator<Entity> entityTupleStoreIterator = new TupleStoreIterator<Entity>(asList(new Entity[]{entity, entity2}).iterator());
         int count = 0;
         while (entityTupleStoreIterator.hasNext()) {
             Tuple curTuple = entityTupleStoreIterator.next();
