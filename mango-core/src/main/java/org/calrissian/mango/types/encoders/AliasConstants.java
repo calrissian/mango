@@ -27,6 +27,6 @@ public class AliasConstants {
     public static String LONG_ALIAS = "long";
     public static String STRING_ALIAS = "string";
     public static String URI_ALIAS = "uri";
-
+    public static String ENTITY_RELATIONSHIP_ALIAS = "entityRelationship";
 
 }

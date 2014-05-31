@@ -132,6 +132,6 @@ public class LexiTypeEncoders {
     }
 
     public static TypeEncoder<EntityRelationship, String> entityRelationshipRevEncoder() {
-        return new ReverseEncoder(SimpleTypeEncoders.entityRelationshipEncoder());
+        return reverseEncoder(SimpleTypeEncoders.entityRelationshipEncoder());
     }
 }

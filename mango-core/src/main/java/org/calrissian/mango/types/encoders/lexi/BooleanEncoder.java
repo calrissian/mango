@@ -21,6 +21,8 @@ import org.calrissian.mango.types.encoders.AbstractBooleanEncoder;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class BooleanEncoder extends AbstractBooleanEncoder<String> {
+    private static final long serialVersionUID = 1L;
+
     @Override
     public String encode(Boolean value) {
         checkNotNull(value, "Null values are not allowed");

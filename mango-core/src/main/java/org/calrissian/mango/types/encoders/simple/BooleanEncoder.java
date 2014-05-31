@@ -13,26 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.types.encoders.lexi;
+package org.calrissian.mango.types.encoders.simple;
 
-import org.calrissian.mango.types.encoders.AbstractByteEncoder;
+
+import org.calrissian.mango.types.encoders.AbstractBooleanEncoder;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.lang.Boolean.parseBoolean;
 
-public class ByteReverseEncoder extends AbstractByteEncoder<String> {
+public class BooleanEncoder extends AbstractBooleanEncoder<String> {
     private static final long serialVersionUID = 1L;
 
-    private static final ByteEncoder byteEncoder = new ByteEncoder();
-
     @Override
-    public String encode(Byte value) {
+    public String encode(Boolean value) {
         checkNotNull(value, "Null values are not allowed");
-        return byteEncoder.encode((byte) ~value);
+        return value.toString();
     }
 
     @Override
-    public Byte decode(String value) {
+    public Boolean decode(String value) {
         checkNotNull(value, "Null values are not allowed");
-        return (byte) ~byteEncoder.decode(value);
+
+        String lowercase = value.toLowerCase();
+        if (!lowercase.equals("true") && !lowercase.equals("false"))
+            throw new RuntimeException("The value " + value + " is not a valid boolean.");
+
+        return parseBoolean(lowercase);
     }
 }

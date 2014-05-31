@@ -13,26 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.types.encoders.lexi;
+package org.calrissian.mango.types.encoders.simple;
 
-import org.calrissian.mango.types.encoders.AbstractByteEncoder;
+import org.calrissian.mango.types.encoders.AbstractURIEncoder;
+import org.calrissian.mango.types.exception.TypeDecodingException;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class ByteReverseEncoder extends AbstractByteEncoder<String> {
+public class UriEncoder extends AbstractURIEncoder<String> {
     private static final long serialVersionUID = 1L;
 
-    private static final ByteEncoder byteEncoder = new ByteEncoder();
-
     @Override
-    public String encode(Byte value) {
+    public String encode(URI value) {
         checkNotNull(value, "Null values are not allowed");
-        return byteEncoder.encode((byte) ~value);
+        return value.toString();
     }
 
     @Override
-    public Byte decode(String value) {
+    public URI decode(String value) throws TypeDecodingException {
         checkNotNull(value, "Null values are not allowed");
-        return (byte) ~byteEncoder.decode(value);
+        try {
+            return new URI(value);
+        } catch (URISyntaxException e) {
+            throw new TypeDecodingException(e);
+        }
     }
 }

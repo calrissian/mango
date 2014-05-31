@@ -21,6 +21,7 @@ import org.calrissian.mango.types.encoders.AbstractLongEncoder;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class LongReverseEncoder extends AbstractLongEncoder<String> {
+    private static final long serialVersionUID = 1L;
 
     private static final LongEncoder longEncoder = new LongEncoder();
 

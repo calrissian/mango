@@ -22,6 +22,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static org.calrissian.mango.types.encoders.lexi.EncodingUtils.*;
 
 public class FloatReverseEncoder extends AbstractFloatEncoder<String> {
+    private static final long serialVersionUID = 1L;
+
     @Override
     public String encode(Float value) {
         checkNotNull(value, "Null values are not allowed");

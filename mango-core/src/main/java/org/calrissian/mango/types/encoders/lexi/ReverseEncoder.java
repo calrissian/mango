@@ -24,6 +24,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static org.calrissian.mango.types.encoders.lexi.EncodingUtils.reverse;
 
 public class ReverseEncoder<T> implements TypeEncoder<T, String> {
+    private static final long serialVersionUID = 1L;
 
     private final TypeEncoder<T, String> encoder;
 

@@ -9,18 +9,28 @@ public class Serializables {
 
     private Serializables() {}
 
-    public static final byte[] toBase64(Serializable serializable) throws IOException {
+    public static byte[] serialize(Serializable serializable) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream  oos = new ObjectOutputStream( baos );
         oos.writeObject(serializable);
-        return encodeBase64(baos.toByteArray());
+        oos.flush();
+        oos.close();
+        return baos.toByteArray();
+    }
+
+    public static <T extends Serializable> T deserialize(byte[] bytes) throws IOException, ClassNotFoundException {
+        ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+        ObjectInputStream ois = new ObjectInputStream(bais);
+        T retVal = (T) ois.readObject();
+        ois.close();
+        return retVal;
+    }
+
+    public static final byte[] toBase64(Serializable serializable) throws IOException {
+        return encodeBase64(serialize(serializable));
     }
 
     public static final <T extends Serializable>T fromBase64(byte[] bytes) throws IOException, ClassNotFoundException {
-
-        byte[] obj = decodeBase64(bytes);
-        ByteArrayInputStream bais = new ByteArrayInputStream(obj);
-        ObjectInputStream ois = new ObjectInputStream(bais);
-        return (T) ois.readObject();
+        return deserialize(decodeBase64(bytes));
     }
 }

@@ -15,6 +15,7 @@
  */
 package org.calrissian.mango.types;
 
+import org.calrissian.mango.domain.entity.EntityRelationship;
 import org.calrissian.mango.domain.ip.IPv4;
 import org.calrissian.mango.types.exception.TypeDecodingException;
 import org.calrissian.mango.types.exception.TypeEncodingException;
@@ -24,6 +25,7 @@ import java.net.URI;
 import java.util.Date;
 
 import static org.calrissian.mango.types.LexiTypeEncoders.*;
+import static org.calrissian.mango.types.encoders.AliasConstants.*;
 import static org.junit.Assert.assertEquals;
 
 public class LexiTypeEncodersTest {
@@ -38,25 +40,26 @@ public class LexiTypeEncodersTest {
 
     @Test
     public void testBasicFunctionality() throws Exception {
-        verifyBasicFunctionality("boolean", true, booleanEncoder());
-        verifyBasicFunctionality("byte", (byte) 3, byteEncoder());
-        verifyBasicFunctionality("date", new Date(), dateEncoder());
-        verifyBasicFunctionality("double", -1.5D, doubleEncoder());
-        verifyBasicFunctionality("float", -1.5F, floatEncoder());
-        verifyBasicFunctionality("integer", 3, integerEncoder());
-        verifyBasicFunctionality("ipv4", new IPv4("192.168.1.1"), ipv4Encoder());
-        verifyBasicFunctionality("long", 3L, longEncoder());
-        verifyBasicFunctionality("string", "testing", stringEncoder());
-        verifyBasicFunctionality("uri", new URI("http://testing.org"), uriEncoder());
+        verifyBasicFunctionality(BOOLEAN_ALIAS, true, booleanEncoder());
+        verifyBasicFunctionality(BYTE_ALIAS, (byte) 3, byteEncoder());
+        verifyBasicFunctionality(DATE_ALIAS, new Date(), dateEncoder());
+        verifyBasicFunctionality(DOUBLE_ALIAS, -1.5D, doubleEncoder());
+        verifyBasicFunctionality(FLOAT_ALIAS, -1.5F, floatEncoder());
+        verifyBasicFunctionality(INTEGER_ALIAS, 3, integerEncoder());
+        verifyBasicFunctionality(IPV4_ALIAS, new IPv4("192.168.1.1"), ipv4Encoder());
+        verifyBasicFunctionality(LONG_ALIAS, 3L, longEncoder());
+        verifyBasicFunctionality(STRING_ALIAS, "testing", stringEncoder());
+        verifyBasicFunctionality(URI_ALIAS, new URI("http://testing.org"), uriEncoder());
+        verifyBasicFunctionality(ENTITY_RELATIONSHIP_ALIAS, new EntityRelationship("type", "id"), entityRelationshipEncoder());
 
-        verifyBasicFunctionality("boolean", true, booleanRevEncoder());
-        verifyBasicFunctionality("byte", (byte) 3, byteRevEncoder());
-        verifyBasicFunctionality("date", new Date(), dateRevEncoder());
-        verifyBasicFunctionality("double", -1.5D, doubleRevEncoder());
-        verifyBasicFunctionality("float", -1.5F, floatRevEncoder());
-        verifyBasicFunctionality("integer", 3, integerRevEncoder());
-        verifyBasicFunctionality("ipv4", new IPv4("192.168.1.1"), ipv4RevEncoder());
-        verifyBasicFunctionality("long", 3L, longRevEncoder());
+        verifyBasicFunctionality(BOOLEAN_ALIAS, true, booleanRevEncoder());
+        verifyBasicFunctionality(BYTE_ALIAS, (byte) 3, byteRevEncoder());
+        verifyBasicFunctionality(DATE_ALIAS, new Date(), dateRevEncoder());
+        verifyBasicFunctionality(DOUBLE_ALIAS, -1.5D, doubleRevEncoder());
+        verifyBasicFunctionality(FLOAT_ALIAS, -1.5F, floatRevEncoder());
+        verifyBasicFunctionality(INTEGER_ALIAS, 3, integerRevEncoder());
+        verifyBasicFunctionality(IPV4_ALIAS, new IPv4("192.168.1.1"), ipv4RevEncoder());
+        verifyBasicFunctionality(LONG_ALIAS, 3L, longRevEncoder());
     }
 
     @Test

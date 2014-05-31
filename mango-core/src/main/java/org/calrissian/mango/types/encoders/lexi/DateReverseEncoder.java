@@ -23,6 +23,7 @@ import java.util.Date;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class DateReverseEncoder extends AbstractDateEncoder<String> {
+    private static final long serialVersionUID = 1L;
 
     private static final LongEncoder longEncoder = new LongEncoder();
 

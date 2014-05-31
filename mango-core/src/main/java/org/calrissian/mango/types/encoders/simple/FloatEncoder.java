@@ -13,26 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.types.encoders.lexi;
+package org.calrissian.mango.types.encoders.simple;
 
-import org.calrissian.mango.types.encoders.AbstractByteEncoder;
+
+import org.calrissian.mango.types.encoders.AbstractFloatEncoder;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.lang.Float.parseFloat;
 
-public class ByteReverseEncoder extends AbstractByteEncoder<String> {
+public class FloatEncoder extends AbstractFloatEncoder<String> {
     private static final long serialVersionUID = 1L;
 
-    private static final ByteEncoder byteEncoder = new ByteEncoder();
-
     @Override
-    public String encode(Byte value) {
+    public String encode(Float value) {
         checkNotNull(value, "Null values are not allowed");
-        return byteEncoder.encode((byte) ~value);
+        return value.toString();
     }
 
     @Override
-    public Byte decode(String value) {
+    public Float decode(String value) {
         checkNotNull(value, "Null values are not allowed");
-        return (byte) ~byteEncoder.decode(value);
+        return parseFloat(value);
     }
 }

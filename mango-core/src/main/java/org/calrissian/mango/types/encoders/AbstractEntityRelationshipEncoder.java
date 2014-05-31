@@ -13,26 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.types.encoders.lexi;
+package org.calrissian.mango.types.encoders;
 
+import org.calrissian.mango.domain.entity.EntityRelationship;
+import org.calrissian.mango.types.TypeEncoder;
 
-import org.calrissian.mango.types.encoders.AbstractBooleanEncoder;
+import static org.calrissian.mango.types.encoders.AliasConstants.ENTITY_RELATIONSHIP_ALIAS;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
-public class BooleanReverseEncoder extends AbstractBooleanEncoder<String> {
-    private static final long serialVersionUID = 1L;
-
-    private static final BooleanEncoder booleanEncoder = new BooleanEncoder();
+public abstract class AbstractEntityRelationshipEncoder<U> implements TypeEncoder<EntityRelationship, U> {
 
     @Override
-    public String encode(Boolean value) {
-        checkNotNull(value, "Null values are not allowed");
-        return booleanEncoder.encode(!value);
+    public String getAlias() {
+        return ENTITY_RELATIONSHIP_ALIAS;
     }
 
     @Override
-    public Boolean decode(String value) {
-        return !booleanEncoder.decode(value);
+    public Class<EntityRelationship> resolves() {
+        return EntityRelationship.class;
     }
 }

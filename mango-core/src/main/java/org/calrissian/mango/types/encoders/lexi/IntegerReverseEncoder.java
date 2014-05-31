@@ -21,6 +21,7 @@ import org.calrissian.mango.types.encoders.AbstractIntegerEncoder;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class IntegerReverseEncoder extends AbstractIntegerEncoder<String> {
+    private static final long serialVersionUID = 1L;
 
     private static final IntegerEncoder intEncoder = new IntegerEncoder();
 

@@ -22,6 +22,8 @@ import static org.calrissian.mango.types.encoders.lexi.EncodingUtils.encodeULong
 import static org.calrissian.mango.types.encoders.lexi.EncodingUtils.fromHex;
 
 public class LongEncoder extends AbstractLongEncoder<String> {
+    private static final long serialVersionUID = 1L;
+
     @Override
     public String encode(Long value) {
         checkNotNull(value, "Null values are not allowed");

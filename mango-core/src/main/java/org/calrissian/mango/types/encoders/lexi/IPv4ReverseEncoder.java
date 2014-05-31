@@ -24,6 +24,8 @@ import static org.calrissian.mango.types.encoders.lexi.EncodingUtils.encodeUInt;
 import static org.calrissian.mango.types.encoders.lexi.EncodingUtils.fromHex;
 
 public class IPv4ReverseEncoder extends AbstractIPv4Encoder<String> {
+    private static final long serialVersionUID = 1L;
+
     @Override
     public String encode(IPv4 value) {
         checkNotNull(value, "Null values are not allowed");

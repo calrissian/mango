@@ -17,35 +17,30 @@ package org.calrissian.mango.types.encoders.simple;
 
 import org.calrissian.mango.domain.entity.EntityRelationship;
 import org.calrissian.mango.types.TypeEncoder;
+import org.calrissian.mango.types.encoders.AbstractEntityRelationshipEncoder;
 import org.calrissian.mango.types.exception.TypeDecodingException;
 import org.calrissian.mango.types.exception.TypeEncodingException;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static java.lang.String.format;
 import static org.apache.commons.lang.StringUtils.splitPreserveAllTokens;
 
-public class EntityRelationshipEncoder implements TypeEncoder<EntityRelationship, String> {
+public class EntityRelationshipEncoder extends AbstractEntityRelationshipEncoder<String> {
+    private static final long serialVersionUID = 1L;
 
-    public static final String ALIAS = "entityRelationship";
     private static final String SCHEME = "entity://";
 
     @Override
-    public String getAlias() {
-        return ALIAS;
+    public String encode(EntityRelationship value) throws TypeEncodingException {
+        checkNotNull(value, "Null values are not allowed");
+        return format("%s%s#%s", SCHEME, value.getType(), value.getId());
     }
 
-    @Override
-    public Class<EntityRelationship> resolves() {
-        return EntityRelationship.class;
-    }
+    private void validateEncodedString(String value) throws TypeDecodingException {
+        checkNotNull(value, "Null values are not allowed");
 
-    @Override
-    public String encode(EntityRelationship entityRelationship) throws TypeEncodingException {
-        return format("%s%s#%s", SCHEME, entityRelationship.getType(), entityRelationship.getId());
-    }
-
-    private void validateEncodedString(String s) throws TypeDecodingException {
-        if(!s.startsWith(SCHEME) || s.indexOf("#") == -1)
-            throw new TypeDecodingException("The encoded string is not valid. string=[" + s + "]");
+        if(!value.startsWith(SCHEME) || !value.contains("#"))
+            throw new TypeDecodingException("The encoded string is not valid. string=[" + value + "]");
     }
 
     @Override
