@@ -16,11 +16,11 @@ public class Serializables {
         return encodeBase64(baos.toByteArray());
     }
 
-    public static final Serializable fromBase64(byte[] bytes) throws IOException, ClassNotFoundException {
+    public static final <T extends Serializable>T fromBase64(byte[] bytes) throws IOException, ClassNotFoundException {
 
         byte[] obj = decodeBase64(bytes);
         ByteArrayInputStream bais = new ByteArrayInputStream(obj);
         ObjectInputStream ois = new ObjectInputStream(bais);
-        return (Serializable) ois.readObject();
+        return (T) ois.readObject();
     }
 }
