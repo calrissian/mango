@@ -74,12 +74,4 @@ class EncodingUtils {
             return longBitsToDouble(value ^ Long.MIN_VALUE);
     }
 
-    protected static byte[] reverse(byte[] bytes) {
-        byte[] result = new byte[bytes.length];
-
-        for (int i = 0; i < bytes.length; i++)
-            result[i] = (byte) (0xff - (0xff & bytes[i]));
-
-        return result;
-    }
 }

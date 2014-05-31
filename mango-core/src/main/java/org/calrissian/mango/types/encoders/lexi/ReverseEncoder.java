@@ -20,11 +20,15 @@ import org.calrissian.mango.types.TypeEncoder;
 import org.calrissian.mango.types.exception.TypeDecodingException;
 import org.calrissian.mango.types.exception.TypeEncodingException;
 
+import java.nio.charset.Charset;
+
 import static com.google.common.base.Preconditions.checkNotNull;
-import static org.calrissian.mango.types.encoders.lexi.EncodingUtils.reverse;
 
 public class ReverseEncoder<T> implements TypeEncoder<T, String> {
     private static final long serialVersionUID = 1L;
+
+    //This is defined in Java 7 under StandardCharsets and should be replaced in the future.
+    private static final Charset UTF_8 = Charset.forName("UTF-8");
 
     private final TypeEncoder<T, String> encoder;
 
@@ -45,14 +49,22 @@ public class ReverseEncoder<T> implements TypeEncoder<T, String> {
     @Override
     public String encode(T value) throws TypeEncodingException {
         String encoded = encoder.encode(value);
-        return new String(reverse(encoded.getBytes()));
+        return new String(reverse(encoded.getBytes()), UTF_8);
     }
 
     @Override
     public T decode(String value) throws TypeDecodingException {
         checkNotNull(value, "Null values are not allowed");
-
-        String reversed = new String(reverse(value.getBytes()));
+        String reversed = new String(reverse(value.getBytes(UTF_8)));
         return encoder.decode(reversed);
+    }
+
+    private static byte[] reverse(byte[] bytes) {
+        byte[] result = new byte[bytes.length];
+
+        for (int i = 0; i < bytes.length; i++)
+            result[i] = (byte) (0x8f - (0xff & bytes[i]));
+
+        return result;
     }
 }

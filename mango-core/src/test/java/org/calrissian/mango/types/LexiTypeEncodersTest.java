@@ -60,6 +60,9 @@ public class LexiTypeEncodersTest {
         verifyBasicFunctionality(INTEGER_ALIAS, 3, integerRevEncoder());
         verifyBasicFunctionality(IPV4_ALIAS, new IPv4("192.168.1.1"), ipv4RevEncoder());
         verifyBasicFunctionality(LONG_ALIAS, 3L, longRevEncoder());
+        verifyBasicFunctionality(STRING_ALIAS, "testing", stringRevEncoder());
+        verifyBasicFunctionality(URI_ALIAS, new URI("http://testing.org"), uriRevEncoder());
+        verifyBasicFunctionality(ENTITY_RELATIONSHIP_ALIAS, new EntityRelationship("type", "id"), entityRelationshipRevEncoder());
     }
 
     @Test

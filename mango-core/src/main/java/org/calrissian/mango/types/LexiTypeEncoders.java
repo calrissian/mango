@@ -43,7 +43,7 @@ public class LexiTypeEncoders {
             entityRelationshipRevEncoder()
     );
 
-    public static <T> TypeEncoder<T, String> reverseEncoder(TypeEncoder<T, String> sourceEncoder) {
+    private static <T> TypeEncoder<T, String> reverseEncoder(TypeEncoder<T, String> sourceEncoder) {
         return new ReverseEncoder<T>(sourceEncoder);
     }
 
