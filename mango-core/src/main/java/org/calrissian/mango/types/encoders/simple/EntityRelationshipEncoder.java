@@ -16,7 +16,6 @@
 package org.calrissian.mango.types.encoders.simple;
 
 import org.calrissian.mango.domain.entity.EntityRelationship;
-import org.calrissian.mango.types.TypeEncoder;
 import org.calrissian.mango.types.encoders.AbstractEntityRelationshipEncoder;
 import org.calrissian.mango.types.exception.TypeDecodingException;
 import org.calrissian.mango.types.exception.TypeEncodingException;

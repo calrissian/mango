@@ -22,6 +22,7 @@ import org.calrissian.mango.types.encoders.*;
 import org.calrissian.mango.types.encoders.simple.*;
 import org.calrissian.mango.types.exception.TypeDecodingException;
 
+import java.math.BigInteger;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Date;
@@ -40,8 +41,7 @@ public class SimpleTypeEncoders {
     public static final TypeRegistry<String> SIMPLE_TYPES = new TypeRegistry<String>(
             booleanEncoder(), byteEncoder(), dateEncoder(), doubleEncoder(), floatEncoder(),
             integerEncoder(), ipv4Encoder(), longEncoder(), stringEncoder(), uriEncoder(),
-            entityRelationshipEncoder()
-
+            bigIntegerEncoder(), entityRelationshipEncoder()
     );
 
     public SimpleTypeEncoders() {/* private constructor */}
@@ -84,6 +84,10 @@ public class SimpleTypeEncoders {
 
     public static TypeEncoder<URI, String> uriEncoder() {
         return new UriEncoder();
+    }
+
+    public static TypeEncoder<BigInteger, String> bigIntegerEncoder() {
+        return new BigIntegerEncoder();
     }
 
     public static TypeEncoder<EntityRelationship, String> entityRelationshipEncoder() {

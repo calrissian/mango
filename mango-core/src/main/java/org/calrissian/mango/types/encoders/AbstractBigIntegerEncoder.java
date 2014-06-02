@@ -15,19 +15,20 @@
  */
 package org.calrissian.mango.types.encoders;
 
-public class AliasConstants {
+import org.calrissian.mango.types.TypeEncoder;
 
-    public static String BOOLEAN_ALIAS = "boolean";
-    public static String BYTE_ALIAS = "byte";
-    public static String DATE_ALIAS = "date";
-    public static String DOUBLE_ALIAS = "double";
-    public static String FLOAT_ALIAS = "float";
-    public static String INTEGER_ALIAS = "integer";
-    public static String IPV4_ALIAS = "ipv4";
-    public static String LONG_ALIAS = "long";
-    public static String STRING_ALIAS = "string";
-    public static String URI_ALIAS = "uri";
-    public static String BIGINTEGER_ALIAS = "bigint";
-    public static String ENTITY_RELATIONSHIP_ALIAS = "entityRelationship";
+import java.math.BigInteger;
 
+import static org.calrissian.mango.types.encoders.AliasConstants.BIGINTEGER_ALIAS;
+
+public abstract class AbstractBigIntegerEncoder<U> implements TypeEncoder<BigInteger, U> {
+    @Override
+    public String getAlias() {
+        return BIGINTEGER_ALIAS;
+    }
+
+    @Override
+    public Class<BigInteger> resolves() {
+        return BigInteger.class;
+    }
 }

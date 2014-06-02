@@ -21,6 +21,7 @@ import org.calrissian.mango.types.exception.TypeDecodingException;
 import org.calrissian.mango.types.exception.TypeEncodingException;
 import org.junit.Test;
 
+import java.math.BigInteger;
 import java.net.URI;
 import java.util.Date;
 
@@ -50,6 +51,7 @@ public class LexiTypeEncodersTest {
         verifyBasicFunctionality(LONG_ALIAS, 3L, longEncoder());
         verifyBasicFunctionality(STRING_ALIAS, "testing", stringEncoder());
         verifyBasicFunctionality(URI_ALIAS, new URI("http://testing.org"), uriEncoder());
+        verifyBasicFunctionality(BIGINTEGER_ALIAS, new BigInteger(Integer.toString(Integer.MAX_VALUE)).pow(10), bigIntegerEncoder());
         verifyBasicFunctionality(ENTITY_RELATIONSHIP_ALIAS, new EntityRelationship("type", "id"), entityRelationshipEncoder());
 
         verifyBasicFunctionality(BOOLEAN_ALIAS, true, booleanRevEncoder());
@@ -93,6 +95,11 @@ public class LexiTypeEncodersTest {
         assertEquals("test", stringEncoder().encode("test"));
 
         assertEquals("http://testing.org", uriEncoder().encode(new URI("http://testing.org")));
+
+        assertEquals("800000103fffffffffffffff0000000000000001", bigIntegerEncoder().encode(BigInteger.valueOf(Long.MAX_VALUE).pow(2)));
+        assertEquals("7ffffff0c000000000000000ffffffffffffffff", bigIntegerEncoder().encode(BigInteger.valueOf(Long.MAX_VALUE).pow(2).negate()));
+
+        assertEquals("entity://type#id", entityRelationshipEncoder().encode(new EntityRelationship("type", "id")));
     }
 
     @Test

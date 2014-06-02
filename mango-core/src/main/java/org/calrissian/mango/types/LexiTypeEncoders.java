@@ -20,6 +20,7 @@ import org.calrissian.mango.domain.entity.EntityRelationship;
 import org.calrissian.mango.domain.ip.IPv4;
 import org.calrissian.mango.types.encoders.lexi.*;
 
+import java.math.BigInteger;
 import java.net.URI;
 import java.util.Date;
 
@@ -34,7 +35,7 @@ public class LexiTypeEncoders {
     public static final TypeRegistry<String> LEXI_TYPES = new TypeRegistry<String>(
             booleanEncoder(), byteEncoder(), dateEncoder(), doubleEncoder(), floatEncoder(),
             integerEncoder(), ipv4Encoder(), longEncoder(), stringEncoder(), uriEncoder(),
-            entityRelationshipEncoder()
+            bigIntegerEncoder(), entityRelationshipEncoder()
     );
 
     public static final TypeRegistry<String> LEXI_REV_TYPES = new TypeRegistry<String>(
@@ -125,6 +126,10 @@ public class LexiTypeEncoders {
 
     public static TypeEncoder<URI, String> uriRevEncoder() {
         return reverseEncoder(uriEncoder());
+    }
+
+    public static TypeEncoder<BigInteger, String> bigIntegerEncoder() {
+        return new BigIntegerEncoder();
     }
 
     public static TypeEncoder<EntityRelationship, String> entityRelationshipEncoder() {

@@ -16,17 +16,15 @@
 package org.calrissian.mango.types;
 
 
-import org.calrissian.mango.domain.entity.BaseEntity;
 import org.calrissian.mango.domain.entity.EntityRelationship;
 import org.calrissian.mango.domain.ip.IPv4;
-import org.calrissian.mango.types.encoders.AliasConstants;
 import org.calrissian.mango.types.exception.TypeDecodingException;
 import org.calrissian.mango.types.exception.TypeEncodingException;
 import org.junit.Test;
 
+import java.math.BigInteger;
 import java.net.URI;
 import java.util.Date;
-import java.util.UUID;
 
 import static org.calrissian.mango.types.SimpleTypeEncoders.*;
 import static org.calrissian.mango.types.encoders.AliasConstants.*;
@@ -56,6 +54,7 @@ public class SimpleTypeEncodersTest {
         verifyBasicFunctionality(LONG_ALIAS, 3L, longEncoder());
         verifyBasicFunctionality(STRING_ALIAS, "testing", stringEncoder());
         verifyBasicFunctionality(URI_ALIAS, new URI("http://testing.org"), uriEncoder());
+        verifyBasicFunctionality(BIGINTEGER_ALIAS, BigInteger.valueOf(Long.MAX_VALUE).pow(2), bigIntegerEncoder());
         verifyBasicFunctionality(ENTITY_RELATIONSHIP_ALIAS, new EntityRelationship("type", "id"), entityRelationshipEncoder());
     }
 
@@ -81,6 +80,8 @@ public class SimpleTypeEncodersTest {
         assertEquals("test", stringEncoder().encode("test"));
 
         assertEquals("http://testing.org", uriEncoder().encode(new URI("http://testing.org")));
+
+        assertEquals("85070591730234615847396907784232501249", bigIntegerEncoder().encode(BigInteger.valueOf(Long.MAX_VALUE).pow(2)));
 
         assertEquals("entity://type#id", entityRelationshipEncoder().encode(new EntityRelationship("type", "id")));
     }
