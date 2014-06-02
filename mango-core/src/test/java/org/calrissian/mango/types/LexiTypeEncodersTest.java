@@ -64,6 +64,7 @@ public class LexiTypeEncodersTest {
         verifyBasicFunctionality(LONG_ALIAS, 3L, longRevEncoder());
         verifyBasicFunctionality(STRING_ALIAS, "testing", stringRevEncoder());
         verifyBasicFunctionality(URI_ALIAS, new URI("http://testing.org"), uriRevEncoder());
+        verifyBasicFunctionality(BIGINTEGER_ALIAS, new BigInteger(Integer.toString(Integer.MAX_VALUE)).pow(10), bigIntegerRevEncoder());
         verifyBasicFunctionality(ENTITY_RELATIONSHIP_ALIAS, new EntityRelationship("type", "id"), entityRelationshipRevEncoder());
     }
 
@@ -125,6 +126,8 @@ public class LexiTypeEncodersTest {
         assertEquals("00000000", ipv4RevEncoder().encode(new IPv4("255.255.255.255")));
 
         assertEquals("7ffffffffffffffc", longRevEncoder().encode(3L));
-        assertEquals("8000000000000002", longRevEncoder().encode(-3L));
+
+        assertEquals("7ffffff0c000000000000000fffffffffffffffe", bigIntegerRevEncoder().encode(BigInteger.valueOf(Long.MAX_VALUE).pow(2)));
+        assertEquals("800000103fffffffffffffff0000000000000000", bigIntegerRevEncoder().encode(BigInteger.valueOf(Long.MAX_VALUE).pow(2).negate()));
     }
 }
