@@ -28,6 +28,7 @@ public class AliasConstants {
     public static String STRING_ALIAS = "string";
     public static String URI_ALIAS = "uri";
     public static String BIGINTEGER_ALIAS = "bigint";
+    public static String BIGDECIMAL_ALIAS = "bigdec";
     public static String ENTITY_RELATIONSHIP_ALIAS = "entityRelationship";
 
 }
