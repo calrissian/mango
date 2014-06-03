@@ -61,7 +61,7 @@ public class BaseTupleStoreTest {
     @Test
     public void testRemove_singleByKey() {
         Tuple removed = tupleCollection.remove(tuple1.getKey());
-        assertEquals(removed, tuple2);
+        assertEquals(removed, tuple1);
         assertEquals(1, tupleCollection.getAll(tuple1.getKey()).size());
     }
 }

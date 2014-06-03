@@ -22,7 +22,8 @@ public class GreaterThanCriteria extends ComparableKeyValueLeafCriteria {
         Collection<Tuple> tuples = obj.getAll(key);
         if (tuples != null) {
             for (Tuple tuple : tuples) {
-                return comparator.compare(tuple.getValue(), value) > 0;
+                if(comparator.compare(tuple.getValue(), value) > 0)
+                    return true;
             }
         }
 
