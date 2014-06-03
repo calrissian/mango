@@ -59,6 +59,9 @@ public class Tuple<T> implements Serializable {
     }
 
 
+    public String getId() {
+        return id;
+    }
 
     @Override
     public boolean equals(Object o) {
