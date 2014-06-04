@@ -22,6 +22,7 @@ import org.calrissian.mango.types.exception.TypeDecodingException;
 import org.calrissian.mango.types.exception.TypeEncodingException;
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URI;
 import java.util.Date;
@@ -33,7 +34,7 @@ import static org.junit.Assert.assertEquals;
 public class SimpleTypeEncodersTest {
 
 
-    private static <T> void verifyBasicFunctionality(String alias, T testObject, TypeEncoder<T, String> encoder) throws TypeEncodingException, TypeDecodingException {
+    protected static <T> void verifyBasicFunctionality(String alias, T testObject, TypeEncoder<T, String> encoder) throws TypeEncodingException, TypeDecodingException {
         assertEquals(alias, encoder.getAlias());
         assertEquals(testObject.getClass(), encoder.resolves());
 
@@ -55,6 +56,8 @@ public class SimpleTypeEncodersTest {
         verifyBasicFunctionality(STRING_ALIAS, "testing", stringEncoder());
         verifyBasicFunctionality(URI_ALIAS, new URI("http://testing.org"), uriEncoder());
         verifyBasicFunctionality(BIGINTEGER_ALIAS, BigInteger.valueOf(Long.MAX_VALUE).pow(2), bigIntegerEncoder());
+        verifyBasicFunctionality(BIGDECIMAL_ALIAS, BigDecimal.valueOf(Double.MAX_VALUE).pow(2), bigDecimalEncoder());
+        verifyBasicFunctionality(BIGDECIMAL_ALIAS, new BigDecimal("1.00000"), bigDecimalEncoder());
         verifyBasicFunctionality(ENTITY_RELATIONSHIP_ALIAS, new EntityRelationship("type", "id"), entityRelationshipEncoder());
     }
 

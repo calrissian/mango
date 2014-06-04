@@ -18,22 +18,12 @@ package org.calrissian.mango.types;
 
 import org.calrissian.mango.domain.entity.EntityRelationship;
 import org.calrissian.mango.domain.ip.IPv4;
-import org.calrissian.mango.types.encoders.*;
 import org.calrissian.mango.types.encoders.simple.*;
-import org.calrissian.mango.types.exception.TypeDecodingException;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Date;
-
-import static com.google.common.base.Preconditions.checkNotNull;
-import static java.lang.Boolean.parseBoolean;
-import static java.lang.Byte.parseByte;
-import static java.lang.Double.parseDouble;
-import static java.lang.Float.parseFloat;
-import static java.lang.Integer.parseInt;
-import static java.lang.Long.parseLong;
 
 public class SimpleTypeEncoders {
 
@@ -41,7 +31,7 @@ public class SimpleTypeEncoders {
     public static final TypeRegistry<String> SIMPLE_TYPES = new TypeRegistry<String>(
             booleanEncoder(), byteEncoder(), dateEncoder(), doubleEncoder(), floatEncoder(),
             integerEncoder(), ipv4Encoder(), longEncoder(), stringEncoder(), uriEncoder(),
-            bigIntegerEncoder(), entityRelationshipEncoder()
+            bigIntegerEncoder(), bigDecimalEncoder(), entityRelationshipEncoder()
     );
 
     public SimpleTypeEncoders() {/* private constructor */}
@@ -88,6 +78,10 @@ public class SimpleTypeEncoders {
 
     public static TypeEncoder<BigInteger, String> bigIntegerEncoder() {
         return new BigIntegerEncoder();
+    }
+
+    public static TypeEncoder<BigDecimal, String> bigDecimalEncoder() {
+        return new BigDecimalEncoder();
     }
 
     public static TypeEncoder<EntityRelationship, String> entityRelationshipEncoder() {
