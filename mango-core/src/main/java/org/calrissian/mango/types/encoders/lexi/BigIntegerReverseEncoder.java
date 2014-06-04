@@ -17,7 +17,6 @@ package org.calrissian.mango.types.encoders.lexi;
 
 import org.calrissian.mango.types.encoders.AbstractBigIntegerEncoder;
 import org.calrissian.mango.types.exception.TypeDecodingException;
-import org.calrissian.mango.types.exception.TypeEncodingException;
 
 import java.math.BigInteger;
 
@@ -29,14 +28,13 @@ public class BigIntegerReverseEncoder extends AbstractBigIntegerEncoder<String> 
     private static BigIntegerEncoder bigIntEncoder = new BigIntegerEncoder();
 
     @Override
-    public String encode(BigInteger value) throws TypeEncodingException {
+    public String encode(BigInteger value) {
         checkNotNull(value, "Null values are not allowed");
         return bigIntEncoder.encode(value.not());
     }
 
     @Override
     public BigInteger decode(String value) throws TypeDecodingException {
-        checkNotNull(value, "Null values are not allowed");
         return bigIntEncoder.decode(value).not();
     }
 }

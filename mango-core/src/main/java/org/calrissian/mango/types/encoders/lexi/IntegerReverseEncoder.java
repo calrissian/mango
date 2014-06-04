@@ -33,7 +33,6 @@ public class IntegerReverseEncoder extends AbstractIntegerEncoder<String> {
 
     @Override
     public Integer decode(String value) {
-        checkNotNull(value, "Null values are not allowed");
         return ~intEncoder.decode(value);
     }
 }

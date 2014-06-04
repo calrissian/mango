@@ -35,7 +35,6 @@ public class DateReverseEncoder extends AbstractDateEncoder<String> {
 
     @Override
     public Date decode(String value) {
-        checkNotNull(value, "Null values are not allowed");
         return new Date(~longEncoder.decode(value));
     }
 }

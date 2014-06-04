@@ -18,10 +18,10 @@ package org.calrissian.mango.types.encoders.lexi;
 import org.apache.commons.codec.DecoderException;
 import org.calrissian.mango.types.encoders.AbstractBigIntegerEncoder;
 import org.calrissian.mango.types.exception.TypeDecodingException;
-import org.calrissian.mango.types.exception.TypeEncodingException;
 
 import java.math.BigInteger;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static org.apache.commons.codec.binary.Hex.decodeHex;
 import static org.apache.commons.codec.binary.Hex.encodeHex;
@@ -32,8 +32,9 @@ public class BigIntegerEncoder extends AbstractBigIntegerEncoder<String> {
     private static IntegerEncoder integerEncoder = new IntegerEncoder();
 
     @Override
-    public String encode(BigInteger value) throws TypeEncodingException {
+    public String encode(BigInteger value) {
         checkNotNull(value, "Null values are not allowed");
+
         byte[] bytes = value.toByteArray();
         int length = bytes.length;
 
@@ -47,6 +48,7 @@ public class BigIntegerEncoder extends AbstractBigIntegerEncoder<String> {
     @Override
     public BigInteger decode(String value) throws TypeDecodingException {
         checkNotNull(value, "Null values are not allowed");
+        checkArgument(value.length() > 8, "The value is not a valid encoding");
         try {
             return new BigInteger(decodeHex(value.substring(8).toCharArray()));
         } catch (DecoderException e) {

@@ -19,6 +19,7 @@ package org.calrissian.mango.types.encoders.lexi;
 import org.calrissian.mango.domain.ip.IPv4;
 import org.calrissian.mango.types.encoders.AbstractIPv4Encoder;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static org.calrissian.mango.types.encoders.lexi.EncodingUtils.encodeUInt;
 import static org.calrissian.mango.types.encoders.lexi.EncodingUtils.fromHex;
@@ -35,6 +36,7 @@ public class IPv4ReverseEncoder extends AbstractIPv4Encoder<String> {
     @Override
     public IPv4 decode(String value) {
         checkNotNull(value, "Null values are not allowed");
+        checkArgument(value.length() == 8, "The value is not a valid encoding");
         return new IPv4(~fromHex(value) & 0xffffffffL);
     }
 }

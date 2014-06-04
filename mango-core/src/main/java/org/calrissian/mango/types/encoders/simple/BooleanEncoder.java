@@ -18,6 +18,7 @@ package org.calrissian.mango.types.encoders.simple;
 
 import org.calrissian.mango.types.encoders.AbstractBooleanEncoder;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.lang.Boolean.parseBoolean;
 
@@ -36,7 +37,7 @@ public class BooleanEncoder extends AbstractBooleanEncoder<String> {
 
         String lowercase = value.toLowerCase();
         if (!lowercase.equals("true") && !lowercase.equals("false"))
-            throw new RuntimeException("The value " + value + " is not a valid boolean.");
+            throw new IllegalArgumentException("The value is not a valid encoding");
 
         return parseBoolean(lowercase);
     }

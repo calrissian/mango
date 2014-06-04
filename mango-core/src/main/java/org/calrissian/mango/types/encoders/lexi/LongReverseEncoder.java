@@ -33,7 +33,6 @@ public class LongReverseEncoder extends AbstractLongEncoder<String> {
 
     @Override
     public Long decode(String value) {
-        checkNotNull(value, "Null values are not allowed");
         return ~longEncoder.decode(value);
     }
 }

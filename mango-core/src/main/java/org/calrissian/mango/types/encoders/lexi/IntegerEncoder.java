@@ -18,6 +18,7 @@ package org.calrissian.mango.types.encoders.lexi;
 
 import org.calrissian.mango.types.encoders.AbstractIntegerEncoder;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static org.calrissian.mango.types.encoders.lexi.EncodingUtils.encodeUInt;
 import static org.calrissian.mango.types.encoders.lexi.EncodingUtils.fromHex;
@@ -34,6 +35,7 @@ public class IntegerEncoder extends AbstractIntegerEncoder<String> {
     @Override
     public Integer decode(String value) {
         checkNotNull(value, "Null values are not allowed");
+        checkArgument(value.length() == 8, "The value is not a valid encoding");
         return (int) fromHex(value) ^ Integer.MIN_VALUE;
     }
 }

@@ -18,6 +18,7 @@ package org.calrissian.mango.types.encoders.lexi;
 
 import org.calrissian.mango.types.encoders.AbstractDoubleEncoder;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static org.calrissian.mango.types.encoders.lexi.EncodingUtils.*;
 
@@ -33,6 +34,7 @@ public class DoubleReverseEncoder extends AbstractDoubleEncoder<String> {
     @Override
     public Double decode(String value) {
         checkNotNull(value, "Null values are not allowed");
+        checkArgument(value.length() == 16, "The value is not a valid encoding");
         return denormalizeDouble(~fromHex(value));
     }
 }

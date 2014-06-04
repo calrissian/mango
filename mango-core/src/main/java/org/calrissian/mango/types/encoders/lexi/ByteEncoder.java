@@ -18,6 +18,7 @@ package org.calrissian.mango.types.encoders.lexi;
 
 import org.calrissian.mango.types.encoders.AbstractByteEncoder;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static org.calrissian.mango.types.encoders.lexi.EncodingUtils.fromHex;
 
@@ -33,6 +34,7 @@ public class ByteEncoder extends AbstractByteEncoder<String> {
     @Override
     public Byte decode(String value) {
         checkNotNull(value, "Null values are not allowed");
+        checkArgument(value.length() == 2, "The value is not a valid encoding");
         return (byte) fromHex(value);
     }
 }

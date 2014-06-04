@@ -18,6 +18,7 @@ package org.calrissian.mango.types.encoders.lexi;
 
 import org.calrissian.mango.types.encoders.AbstractBooleanEncoder;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class BooleanEncoder extends AbstractBooleanEncoder<String> {
@@ -32,11 +33,7 @@ public class BooleanEncoder extends AbstractBooleanEncoder<String> {
     @Override
     public Boolean decode(String value) {
         checkNotNull(value, "Null values are not allowed");
-
-        String lowercase = value.toLowerCase();
-        if (!lowercase.equals("1") && !lowercase.equals("0"))
-            throw new RuntimeException("The value " + value + " is not a valid boolean.");
-
+        checkArgument(value.equals("1") || value.equals("0"), "The value is not a valid encoding");
         return value.equals("1");
     }
 }

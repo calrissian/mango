@@ -16,12 +16,11 @@
 package org.calrissian.mango.types.encoders.lexi;
 
 import org.calrissian.mango.types.encoders.AbstractBigDecimalEncoder;
-import org.calrissian.mango.types.exception.TypeDecodingException;
-import org.calrissian.mango.types.exception.TypeEncodingException;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class BigDecimalEncoder extends AbstractBigDecimalEncoder<String> {
@@ -58,8 +57,9 @@ public class BigDecimalEncoder extends AbstractBigDecimalEncoder<String> {
     }
 
     @Override
-    public String encode(BigDecimal value) throws TypeEncodingException {
+    public String encode(BigDecimal value) {
         checkNotNull(value, "Null values are not allowed");
+
         int exp = value.precision() - value.scale() - 1;
         String mantissa;
 
@@ -79,8 +79,9 @@ public class BigDecimalEncoder extends AbstractBigDecimalEncoder<String> {
     }
 
     @Override
-    public BigDecimal decode(String value) throws TypeDecodingException {
+    public BigDecimal decode(String value) {
         checkNotNull(value, "Null values are not allowed");
+        checkArgument(value.length() > 9, "The value is not a valid encoding");
 
         int exp = intEncoder.decode(value.substring(1, 9));
         String mantissa = value.substring(9);
