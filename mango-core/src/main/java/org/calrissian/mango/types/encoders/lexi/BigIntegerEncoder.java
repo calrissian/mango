@@ -25,7 +25,6 @@ import java.math.BigInteger;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static org.apache.commons.codec.binary.Hex.decodeHex;
 import static org.apache.commons.codec.binary.Hex.encodeHex;
-import static org.calrissian.mango.types.encoders.lexi.EncodingUtils.encodeUInt;
 
 public class BigIntegerEncoder extends AbstractBigIntegerEncoder<String> {
     private static final long serialVersionUID = 1L;
