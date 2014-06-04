@@ -27,18 +27,11 @@ import java.net.URI;
 import java.util.Date;
 
 import static org.calrissian.mango.types.LexiTypeEncoders.*;
+import static org.calrissian.mango.types.SimpleTypeEncodersTest.verifyBasicFunctionality;
 import static org.calrissian.mango.types.encoders.AliasConstants.*;
 import static org.junit.Assert.assertEquals;
 
 public class LexiTypeEncodersTest {
-
-    private static <T> void verifyBasicFunctionality(String alias, T testObject, TypeEncoder<T, String> encoder) throws TypeEncodingException, TypeDecodingException {
-        assertEquals(alias, encoder.getAlias());
-        assertEquals(testObject.getClass(), encoder.resolves());
-
-        //test encode decode returns same value
-        assertEquals(testObject, encoder.decode(encoder.encode(testObject)));
-    }
 
     @Test
     public void testBasicFunctionality() throws Exception {
@@ -69,6 +62,9 @@ public class LexiTypeEncodersTest {
         verifyBasicFunctionality(STRING_ALIAS, "testing", stringRevEncoder());
         verifyBasicFunctionality(URI_ALIAS, new URI("http://testing.org"), uriRevEncoder());
         verifyBasicFunctionality(BIGINTEGER_ALIAS, new BigInteger(Integer.toString(Integer.MAX_VALUE)).pow(10), bigIntegerRevEncoder());
+        verifyBasicFunctionality(BIGDECIMAL_ALIAS, BigDecimal.valueOf(Double.MAX_VALUE).pow(2), bigDecimalRevEncoder());
+        verifyBasicFunctionality(BIGDECIMAL_ALIAS, new BigDecimal("1.00000"), bigDecimalRevEncoder());
+        verifyBasicFunctionality(BIGDECIMAL_ALIAS, new BigDecimal("0.00000"), bigDecimalRevEncoder()); //zero is special case
         verifyBasicFunctionality(ENTITY_RELATIONSHIP_ALIAS, new EntityRelationship("type", "id"), entityRelationshipRevEncoder());
     }
 
@@ -140,5 +136,13 @@ public class LexiTypeEncodersTest {
 
         assertEquals("7ffffff0c000000000000000fffffffffffffffe", bigIntegerRevEncoder().encode(BigInteger.valueOf(Long.MAX_VALUE).pow(2)));
         assertEquals("800000103fffffffffffffff0000000000000000", bigIntegerRevEncoder().encode(BigInteger.valueOf(Long.MAX_VALUE).pow(2).negate()));
+
+        //0 is a special case that requires different handling to preserve the scale.
+        assertEquals("18000000000000000", bigDecimalRevEncoder().encode(new BigDecimal("0.0000000")));
+        assertEquals("07ffffd98676829939286890001679560403353351", bigDecimalRevEncoder().encode(BigDecimal.valueOf(Double.MAX_VALUE).pow(2)));
+        assertEquals("180000268323170060713109998320439596646649", bigDecimalRevEncoder().encode(BigDecimal.valueOf(Double.MAX_VALUE).pow(2).negate()));
+        assertEquals("0800000009000", bigDecimalRevEncoder().encode(new BigDecimal("1.000")));
+        assertEquals("0800000009", bigDecimalRevEncoder().encode(new BigDecimal("1")));
+
     }
 }

@@ -37,24 +37,24 @@ public class BigDecimalEncoder extends AbstractBigDecimalEncoder<String> {
      */
     private static String tensComplement(String digitStr) {
         byte[] digits = digitStr.getBytes();
-        byte[] flipped = new byte[digits.length];
+        byte[] comp = new byte[digits.length];
 
         //9's complement
         for (int i = 0;i< digits.length;i++)
-            flipped[i] = (byte)((9 - (digits[i] & 0x0f)) ^ 0x30);
+            comp[i] = (byte)((9 - (digits[i] & 0x0f)) ^ 0x30);
 
         //add 1
-        for (int i = flipped.length -1; i >=0 ;i--) {
-            flipped[i] += 1;
+        for (int i = comp.length -1; i >=0 ;i--) {
+            comp[i] += 1;
 
             //handle overlow if exceeded 0x39 and continue backward.
-            if (flipped[i] != 0x3A)
+            if (comp[i] != 0x3A)
                 break;
 
-            flipped[i] = 0x30;
+            comp[i] = 0x30;
         }
 
-        return new String(flipped);
+        return new String(comp);
     }
 
     @Override
@@ -65,12 +65,12 @@ public class BigDecimalEncoder extends AbstractBigDecimalEncoder<String> {
 
         if (value.signum() == 0) {
             //Zero requires special handling as BigInteger.toString() has a special shortcutting for zeros which
-            //ignores the least significant zeros.  These are required however to reproduce the original scale.
-            mantissa = new String(new char[-exp + 1]).replace('\0', '0');
+            //ignores the least significant zeros.  These are required however to reconstruct the original scale.
+            mantissa = new String(new char[1 - exp]).replace('\0', '0');
             exp = 0;
         } else if (value.signum() < 0) {
-            exp = -exp;
             mantissa = tensComplement(value.unscaledValue().negate().toString());
+            exp = -exp;
         } else {
             mantissa = value.unscaledValue().toString();
         }

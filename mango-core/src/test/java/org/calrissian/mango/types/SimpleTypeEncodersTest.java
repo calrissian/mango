@@ -34,7 +34,7 @@ import static org.junit.Assert.assertEquals;
 public class SimpleTypeEncodersTest {
 
 
-    private static <T> void verifyBasicFunctionality(String alias, T testObject, TypeEncoder<T, String> encoder) throws TypeEncodingException, TypeDecodingException {
+    protected static <T> void verifyBasicFunctionality(String alias, T testObject, TypeEncoder<T, String> encoder) throws TypeEncodingException, TypeDecodingException {
         assertEquals(alias, encoder.getAlias());
         assertEquals(testObject.getClass(), encoder.resolves());
 

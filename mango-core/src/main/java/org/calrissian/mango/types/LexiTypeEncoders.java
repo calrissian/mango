@@ -42,7 +42,7 @@ public class LexiTypeEncoders {
     public static final TypeRegistry<String> LEXI_REV_TYPES = new TypeRegistry<String>(
             booleanRevEncoder(), byteRevEncoder(), dateRevEncoder(), doubleRevEncoder(), floatRevEncoder(),
             integerRevEncoder(), ipv4RevEncoder(), longRevEncoder(), stringRevEncoder(), uriRevEncoder(),
-            bigIntegerRevEncoder(), entityRelationshipRevEncoder()
+            bigIntegerRevEncoder(), bigDecimalRevEncoder(), entityRelationshipRevEncoder()
     );
 
     private static <T> TypeEncoder<T, String> reverseEncoder(TypeEncoder<T, String> sourceEncoder) {
@@ -139,6 +139,10 @@ public class LexiTypeEncoders {
 
     public static TypeEncoder<BigDecimal, String> bigDecimalEncoder() {
         return new BigDecimalEncoder();
+    }
+
+    public static TypeEncoder<BigDecimal, String> bigDecimalRevEncoder() {
+        return new BigDecimalReverseEncoder();
     }
 
     public static TypeEncoder<EntityRelationship, String> entityRelationshipEncoder() {
