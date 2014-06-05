@@ -1,11 +1,11 @@
 package org.calrissian.mango.domain.entity;
 
 
-import org.calrissian.mango.domain.TypedIdentifiable;
+import org.calrissian.mango.domain.Identifiable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class EntityIndex implements TypedIdentifiable {
+public class EntityIndex implements Identifiable {
 
     protected String type;
     protected String id;

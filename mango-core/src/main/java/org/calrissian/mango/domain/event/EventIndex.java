@@ -1,8 +1,9 @@
 package org.calrissian.mango.domain.event;
 
-import org.calrissian.mango.domain.TemporalIdentifiable;
+import org.calrissian.mango.domain.Identifiable;
+import org.calrissian.mango.domain.Temporal;
 
-public class EventIndex implements TemporalIdentifiable {
+public class EventIndex implements Temporal, Identifiable {
 
     private String id;
     private long timestamp;

@@ -16,7 +16,6 @@
 package org.calrissian.mango.domain.entity;
 
 import org.calrissian.mango.domain.TupleStore;
-import org.calrissian.mango.domain.TypedIdentifiable;
 
 import java.io.Serializable;
 

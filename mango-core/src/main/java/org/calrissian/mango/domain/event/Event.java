@@ -15,7 +15,8 @@
  */
 package org.calrissian.mango.domain.event;
 
-import org.calrissian.mango.domain.TemporalIdentifiable;
+import org.calrissian.mango.domain.Identifiable;
+import org.calrissian.mango.domain.Temporal;
 import org.calrissian.mango.domain.TupleStore;
 
 import java.io.Serializable;
@@ -24,5 +25,5 @@ import java.io.Serializable;
  * An event acts as a useful common business object for representing different types of models with a time
  * dimension tha can be set directly or left untouched (defaulting in current time).
  */
-public interface Event extends TupleStore, Serializable, TemporalIdentifiable {
+public interface Event extends TupleStore, Serializable, Temporal, Identifiable {
 }
