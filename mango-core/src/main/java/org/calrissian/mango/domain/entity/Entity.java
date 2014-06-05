@@ -15,6 +15,7 @@
  */
 package org.calrissian.mango.domain.entity;
 
+import org.calrissian.mango.domain.Identifiable;
 import org.calrissian.mango.domain.TupleStore;
 
 import java.io.Serializable;
@@ -22,6 +23,7 @@ import java.io.Serializable;
 /**
  * A common business object for modelling things in the real-world.
  */
-public interface Entity extends TupleStore, Serializable, TypedIdentifiable {
+public interface Entity extends TupleStore, Serializable, Identifiable {
 
+    String getType();
 }
