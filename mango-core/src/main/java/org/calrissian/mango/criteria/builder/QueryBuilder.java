@@ -64,11 +64,11 @@ public class QueryBuilder {
 
     public QueryBuilder eq(String type, Object value) {
         checkFinished();
-        EqualsLeaf equalsLeaf = new EqualsLeaf(type, value, current);
         if (this.current == null) {
             this.current = new AndNode();
             finished = true;
         }
+        EqualsLeaf equalsLeaf = new EqualsLeaf(type, value, current);
         this.current.addChild(equalsLeaf);
         return this;
     }
@@ -80,33 +80,33 @@ public class QueryBuilder {
 
     public QueryBuilder has(String key) {
         checkFinished();
-        HasLeaf hasKeyLeaf = new HasLeaf(key, current);
         if (this.current == null) {
             this.current = new AndNode();
             finished = true;
         }
+        HasLeaf hasKeyLeaf = new HasLeaf(key, current);
         this.current.addChild(hasKeyLeaf);
         return this;
     }
 
     public QueryBuilder hasNot(String key) {
         checkFinished();
-        HasNotLeaf hasNotLeaf = new HasNotLeaf(key, current);
         if (this.current == null) {
             this.current = new AndNode();
             finished = true;
         }
+        HasNotLeaf hasNotLeaf = new HasNotLeaf(key, current);
         this.current.addChild(hasNotLeaf);
         return this;
     }
 
     public QueryBuilder in(String key, Collection<Object> values) {
         checkFinished();
-        InLeaf leaf = new InLeaf(key, values, current);
         if(this.current == null) {
             this.current = new AndNode();
             finished = true;
         }
+        InLeaf leaf = new InLeaf(key, values, current);
         this.current.addChild(leaf);
         return this;
     }
@@ -117,11 +117,11 @@ public class QueryBuilder {
 
     public QueryBuilder notIn(String key, Collection<Object> values) {
         checkFinished();
-        NotInLeaf leaf = new NotInLeaf(key, values, current);
         if(this.current == null) {
             this.current = new AndNode();
             finished = true;
         }
+        NotInLeaf leaf = new NotInLeaf(key, values, current);
         this.current.addChild(leaf);
         return this;
     }
@@ -133,11 +133,11 @@ public class QueryBuilder {
 
     public QueryBuilder notEq(String type, Object value) {
         checkFinished();
-        NotEqualsLeaf notEqualsLeaf = new NotEqualsLeaf(type, value, current);
         if (this.current == null) {
             this.current = new AndNode();
             finished = true;
         }
+        NotEqualsLeaf notEqualsLeaf = new NotEqualsLeaf(type, value, current);
         this.current.addChild(notEqualsLeaf);
         return this;
     }
@@ -145,44 +145,44 @@ public class QueryBuilder {
 
     public QueryBuilder lessThan(String type, Object value) {
         checkFinished();
-        LessThanLeaf leaf = new LessThanLeaf(type, value, current);
         if (this.current == null) {
             this.current = new AndNode();
             finished = true;
         }
+        LessThanLeaf leaf = new LessThanLeaf(type, value, current);
         this.current.addChild(leaf);
         return this;
     }
 
     public QueryBuilder lessThanEq(String type, Object value) {
         checkFinished();
-        LessThanEqualsLeaf leaf = new LessThanEqualsLeaf(type, value, current);
         if (this.current == null) {
             this.current = new AndNode();
             finished = true;
         }
+        LessThanEqualsLeaf leaf = new LessThanEqualsLeaf(type, value, current);
         this.current.addChild(leaf);
         return this;
     }
 
     public QueryBuilder greaterThan(String type, Object value) {
         checkFinished();
-        GreaterThanLeaf leaf = new GreaterThanLeaf(type, value, current);
         if (this.current == null) {
             this.current = new AndNode();
             finished = true;
         }
+        GreaterThanLeaf leaf = new GreaterThanLeaf(type, value, current);
         this.current.addChild(leaf);
         return this;
     }
 
     public QueryBuilder greaterThanEq(String type, Object value) {
         checkFinished();
-        GreaterThanEqualsLeaf leaf = new GreaterThanEqualsLeaf(type, value, current);
         if (this.current == null) {
             this.current = new AndNode();
             finished = true;
         }
+        GreaterThanEqualsLeaf leaf = new GreaterThanEqualsLeaf(type, value, current);
         this.current.addChild(leaf);
         return this;
     }
@@ -190,11 +190,11 @@ public class QueryBuilder {
 
     public QueryBuilder range(String type, Object start, Object end) {
         checkFinished();
-        RangeLeaf rangeLeaf = new RangeLeaf(type, start, end, current);
         if (this.current == null) {
             this.current = new AndNode();
             finished = true;
         }
+        RangeLeaf rangeLeaf = new RangeLeaf(type, start, end, current);
         this.current.addChild(rangeLeaf);
         return this;
     }
