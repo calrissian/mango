@@ -18,6 +18,9 @@ package org.calrissian.mango.criteria.builder;
 import org.calrissian.mango.criteria.domain.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
+
+import static java.util.Arrays.asList;
 
 public class QueryBuilder {
     protected ParentNode current;
@@ -96,6 +99,37 @@ public class QueryBuilder {
         this.current.addChild(hasNotLeaf);
         return this;
     }
+
+    public QueryBuilder in(String key, Collection<Object> values) {
+        checkFinished();
+        InLeaf leaf = new InLeaf(key, values, current);
+        if(this.current == null) {
+            this.current = new AndNode();
+            finished = true;
+        }
+        this.current.addChild(leaf);
+        return this;
+    }
+
+    public QueryBuilder in(String key, Object... values) {
+        return in(key, asList(values));
+    }
+
+    public QueryBuilder notIn(String key, Collection<Object> values) {
+        checkFinished();
+        NotInLeaf leaf = new NotInLeaf(key, values, current);
+        if(this.current == null) {
+            this.current = new AndNode();
+            finished = true;
+        }
+        this.current.addChild(leaf);
+        return this;
+    }
+
+    public QueryBuilder notIn(String key, Object... values) {
+        return notIn(key, asList(values));
+    }
+
 
     public QueryBuilder notEq(String type, Object value) {
         checkFinished();

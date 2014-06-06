@@ -15,5 +15,16 @@
  */
 package org.calrissian.mango.criteria.domain;
 
-public class NotInLeaf {
+import java.util.Collection;
+
+public class NotInLeaf extends AbstractKeyValueLeaf {
+
+    public NotInLeaf(String key, Collection<Object> value, ParentNode parent) {
+        super(key, value, parent);
+    }
+
+    @Override
+    public Node clone(ParentNode node) {
+        return new NotInLeaf(key, (Collection<Object>) value, node);
+    }
 }

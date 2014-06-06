@@ -15,5 +15,16 @@
  */
 package org.calrissian.mango.criteria.domain;
 
-public class InLeaf {
+import java.util.Collection;
+
+public class InLeaf extends AbstractKeyValueLeaf {
+
+    public InLeaf(String key, Collection<Object> value, ParentNode parent) {
+        super(key, value, parent);
+    }
+
+    @Override
+    public Node clone(ParentNode node) {
+        return new InLeaf(key, (Collection<Object>) value, node);
+    }
 }
