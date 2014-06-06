@@ -22,21 +22,28 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class Tuple<T> implements Serializable {
 
+    protected final String id;
     protected final String key;
     protected final T value;
     protected final String visibility;
 
     public Tuple(String key, T value, String visibility) {
-        checkNotNull(key);
-        checkNotNull(value);
-        checkNotNull(visibility);
-        this.key = key;
-        this.value = value;
-        this.visibility = visibility;
+        this(key, key, value, visibility);
     }
 
     public Tuple(String key, T value) {
         this(key, value, "");
+    }
+
+    public Tuple(String id, String key, T value, String visibility) {
+        checkNotNull(id);
+        checkNotNull(key);
+        checkNotNull(value);
+        checkNotNull(visibility);
+        this.key = key;
+        this.id = key;
+        this.value = value;
+        this.visibility = visibility;
     }
 
     public String getKey() {
@@ -51,6 +58,11 @@ public class Tuple<T> implements Serializable {
         return visibility;
     }
 
+
+    public String getId() {
+        return id;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -58,6 +70,7 @@ public class Tuple<T> implements Serializable {
 
         Tuple tuple = (Tuple) o;
 
+        if (id != null ? !id.equals(tuple.id) : tuple.id != null) return false;
         if (key != null ? !key.equals(tuple.key) : tuple.key != null) return false;
         if (value != null ? !value.equals(tuple.value) : tuple.value != null) return false;
         if (visibility != null ? !visibility.equals(tuple.visibility) : tuple.visibility != null) return false;
@@ -68,6 +81,7 @@ public class Tuple<T> implements Serializable {
     @Override
     public int hashCode() {
         int result = key != null ? key.hashCode() : 0;
+        result = 31 * result + (id != null ? id.hashCode() : 0);
         result = 31 * result + (value != null ? value.hashCode() : 0);
         result = 31 * result + (visibility != null ? visibility.hashCode() : 0);
         return result;
@@ -77,6 +91,7 @@ public class Tuple<T> implements Serializable {
     public String toString() {
         return "Tuple{" +
                 "key='" + key + '\'' +
+                ", id='" + id + '\'' +
                 ", value=" + value +
                 ", type=" + value.getClass() +
                 ", visibility='" + visibility + '\'' +

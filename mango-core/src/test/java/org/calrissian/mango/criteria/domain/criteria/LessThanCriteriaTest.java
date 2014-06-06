@@ -41,6 +41,7 @@ public class LessThanCriteriaTest {
         assertFalse(criteria.apply(entity));
 
         entity.put(new Tuple("key1", 4));
+
         assertTrue(criteria.apply(entity));
     }
 }
