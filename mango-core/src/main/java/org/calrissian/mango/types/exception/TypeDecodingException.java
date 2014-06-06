@@ -16,7 +16,7 @@
 package org.calrissian.mango.types.exception;
 
 
-public class TypeDecodingException extends Exception {
+public class TypeDecodingException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
     public TypeDecodingException() {

@@ -16,9 +16,6 @@
 package org.calrissian.mango.types;
 
 
-import org.calrissian.mango.types.exception.TypeDecodingException;
-import org.calrissian.mango.types.exception.TypeEncodingException;
-
 import java.io.Serializable;
 
 public interface TypeEncoder<T, U> extends Serializable {
@@ -43,7 +40,7 @@ public interface TypeEncoder<T, U> extends Serializable {
      * @param value
      * @return
      */
-    U encode(T value) throws TypeEncodingException;
+    U encode(T value);
 
     /**
      * Decodes an encoded value.
@@ -51,6 +48,6 @@ public interface TypeEncoder<T, U> extends Serializable {
      * @param value
      * @return
      */
-    T decode(U value) throws TypeDecodingException;
+    T decode(U value);
 
 }

@@ -72,7 +72,7 @@ public class NodeSerializer extends JsonSerializer<Node> {
     }
 
     public void serialize(Leaf node, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
-            throws IOException, TypeEncodingException {
+            throws IOException {
 
         if (node instanceof EqualsLeaf) {
             //eq
@@ -117,8 +117,8 @@ public class NodeSerializer extends JsonSerializer<Node> {
             jsonGenerator.writeStringField("end", val_str);
 
             jsonGenerator.writeEndObject();
-        } else throw new IllegalArgumentException("Unsupported leaf: " + node);
-
-
+        } else {
+            throw new IllegalArgumentException("Unsupported leaf: " + node);
+        }
     }
 }

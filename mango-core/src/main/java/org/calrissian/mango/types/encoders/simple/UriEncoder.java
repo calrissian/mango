@@ -33,7 +33,7 @@ public class UriEncoder extends AbstractURIEncoder<String> {
     }
 
     @Override
-    public URI decode(String value) throws TypeDecodingException {
+    public URI decode(String value) {
         checkNotNull(value, "Null values are not allowed");
         try {
             return new URI(value);

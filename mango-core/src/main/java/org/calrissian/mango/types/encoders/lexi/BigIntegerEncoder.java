@@ -46,7 +46,7 @@ public class BigIntegerEncoder extends AbstractBigIntegerEncoder<String> {
     }
 
     @Override
-    public BigInteger decode(String value) throws TypeDecodingException {
+    public BigInteger decode(String value) {
         checkNotNull(value, "Null values are not allowed");
         checkArgument(value.length() > 8, "The value is not a valid encoding");
         try {

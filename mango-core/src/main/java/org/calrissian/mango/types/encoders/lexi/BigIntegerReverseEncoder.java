@@ -16,7 +16,6 @@
 package org.calrissian.mango.types.encoders.lexi;
 
 import org.calrissian.mango.types.encoders.AbstractBigIntegerEncoder;
-import org.calrissian.mango.types.exception.TypeDecodingException;
 
 import java.math.BigInteger;
 
@@ -34,7 +33,7 @@ public class BigIntegerReverseEncoder extends AbstractBigIntegerEncoder<String> 
     }
 
     @Override
-    public BigInteger decode(String value) throws TypeDecodingException {
+    public BigInteger decode(String value) {
         return bigIntEncoder.decode(value).not();
     }
 }

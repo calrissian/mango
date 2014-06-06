@@ -15,9 +15,9 @@
  */
 package org.calrissian.mango.criteria.domain.criteria;
 
+import org.calrissian.mango.domain.Tuple;
 import org.calrissian.mango.domain.entity.BaseEntity;
 import org.calrissian.mango.domain.entity.Entity;
-import org.calrissian.mango.domain.Tuple;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;

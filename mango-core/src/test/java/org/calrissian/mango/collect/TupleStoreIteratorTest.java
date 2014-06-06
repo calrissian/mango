@@ -16,9 +16,9 @@
 package org.calrissian.mango.collect;
 
 
+import org.calrissian.mango.domain.Tuple;
 import org.calrissian.mango.domain.entity.BaseEntity;
 import org.calrissian.mango.domain.entity.Entity;
-import org.calrissian.mango.domain.Tuple;
 import org.junit.Before;
 import org.junit.Test;
 

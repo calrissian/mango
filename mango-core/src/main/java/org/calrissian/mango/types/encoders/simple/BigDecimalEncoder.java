@@ -16,7 +16,6 @@
 package org.calrissian.mango.types.encoders.simple;
 
 import org.calrissian.mango.types.encoders.AbstractBigDecimalEncoder;
-import org.calrissian.mango.types.exception.TypeEncodingException;
 
 import java.math.BigDecimal;
 
@@ -26,7 +25,7 @@ public class BigDecimalEncoder extends AbstractBigDecimalEncoder<String> {
     private static final long serialVersionUID = 1L;
 
     @Override
-    public String encode(BigDecimal value) throws TypeEncodingException {
+    public String encode(BigDecimal value) {
         checkNotNull(value, "Null values are not allowed");
         return value.toString();
     }

@@ -4,7 +4,6 @@ package org.calrissian.mango.io;
 import com.google.common.collect.Lists;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.io.Serializable;
 
 import static org.calrissian.mango.io.Serializables.*;

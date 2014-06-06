@@ -17,8 +17,6 @@ package org.calrissian.mango.types.encoders.lexi;
 
 
 import org.calrissian.mango.types.TypeEncoder;
-import org.calrissian.mango.types.exception.TypeDecodingException;
-import org.calrissian.mango.types.exception.TypeEncodingException;
 
 import java.nio.charset.Charset;
 
@@ -47,13 +45,13 @@ public class ReverseEncoder<T> implements TypeEncoder<T, String> {
     }
 
     @Override
-    public String encode(T value) throws TypeEncodingException {
+    public String encode(T value) {
         String encoded = encoder.encode(value);
         return new String(reverse(encoded.getBytes()), ISO_8859_1);
     }
 
     @Override
-    public T decode(String value) throws TypeDecodingException {
+    public T decode(String value) {
         checkNotNull(value, "Null values are not allowed");
         String reversed = new String(reverse(value.getBytes(ISO_8859_1)));
         return encoder.decode(reversed);

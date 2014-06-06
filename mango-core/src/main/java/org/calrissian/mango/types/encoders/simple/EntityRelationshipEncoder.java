@@ -17,8 +17,6 @@ package org.calrissian.mango.types.encoders.simple;
 
 import org.calrissian.mango.domain.entity.EntityRelationship;
 import org.calrissian.mango.types.encoders.AbstractEntityRelationshipEncoder;
-import org.calrissian.mango.types.exception.TypeDecodingException;
-import org.calrissian.mango.types.exception.TypeEncodingException;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -31,17 +29,13 @@ public class EntityRelationshipEncoder extends AbstractEntityRelationshipEncoder
     private static final String SCHEME = "entity://";
 
     @Override
-    public String encode(EntityRelationship value) throws TypeEncodingException {
+    public String encode(EntityRelationship value) {
         checkNotNull(value, "Null values are not allowed");
         return format("%s%s#%s", SCHEME, value.getType(), value.getId());
     }
 
-    private void validateEncodedString(String value) throws TypeDecodingException {
-
-    }
-
     @Override
-    public EntityRelationship decode(String value) throws TypeDecodingException {
+    public EntityRelationship decode(String value) {
         checkNotNull(value, "Null values are not allowed");
         checkArgument(value.startsWith(SCHEME) && value.contains("#"), "The value is not a valid encoding");
 

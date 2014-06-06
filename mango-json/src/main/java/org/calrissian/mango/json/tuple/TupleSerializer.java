@@ -20,7 +20,6 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import org.calrissian.mango.domain.Tuple;
 import org.calrissian.mango.types.TypeRegistry;
-import org.calrissian.mango.types.exception.TypeEncodingException;
 
 import java.io.IOException;
 
@@ -45,16 +44,13 @@ public class TupleSerializer extends JsonSerializer<Tuple> {
         String visibility = tuple.getVisibility();
         if (visibility != null)
             jsonGenerator.writeStringField("visibility", visibility);
-        try {
-            Object value = tuple.getValue();
-            if (value != null) {
-                String type = typeContext.getAlias(value);
-                String val_str = typeContext.encode(value);
-                jsonGenerator.writeStringField("type", type);
-                jsonGenerator.writeStringField("value", val_str);
-            }
-        } catch (TypeEncodingException e) {
-            throw new RuntimeException(e);
+
+        Object value = tuple.getValue();
+        if (value != null) {
+            String type = typeContext.getAlias(value);
+            String val_str = typeContext.encode(value);
+            jsonGenerator.writeStringField("type", type);
+            jsonGenerator.writeStringField("value", val_str);
         }
 
         jsonGenerator.writeEndObject();

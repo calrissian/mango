@@ -16,7 +16,7 @@
 package org.calrissian.mango.types.exception;
 
 
-public class TypeEncodingException extends Exception {
+public class TypeEncodingException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
     public TypeEncodingException() {

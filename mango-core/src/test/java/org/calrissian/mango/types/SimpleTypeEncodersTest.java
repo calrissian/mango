@@ -18,8 +18,6 @@ package org.calrissian.mango.types;
 
 import org.calrissian.mango.domain.entity.EntityRelationship;
 import org.calrissian.mango.domain.ip.IPv4;
-import org.calrissian.mango.types.exception.TypeDecodingException;
-import org.calrissian.mango.types.exception.TypeEncodingException;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -34,7 +32,7 @@ import static org.junit.Assert.assertEquals;
 public class SimpleTypeEncodersTest {
 
 
-    protected static <T> void verifyBasicFunctionality(String alias, T testObject, TypeEncoder<T, String> encoder) throws TypeEncodingException, TypeDecodingException {
+    protected static <T> void verifyBasicFunctionality(String alias, T testObject, TypeEncoder<T, String> encoder) {
         assertEquals(alias, encoder.getAlias());
         assertEquals(testObject.getClass(), encoder.resolves());
 
