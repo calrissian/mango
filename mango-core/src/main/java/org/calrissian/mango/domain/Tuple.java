@@ -32,7 +32,6 @@ public class Tuple<T> implements Serializable {
 
     protected final String key;
     protected final T value;
-    protected final String visibility;
 
     /**
      * Metadata allows the tuple to be extensible so that different services can read different properties without
@@ -40,17 +39,11 @@ public class Tuple<T> implements Serializable {
      */
     protected final Map<String,Object> metadata = new HashMap<String, Object>();
 
-    public Tuple(String key, T value, String visibility) {
+    public Tuple(String key, T value) {
         checkNotNull(key);
         checkNotNull(value);
-        checkNotNull(visibility);
         this.key = key;
         this.value = value;
-        this.visibility = visibility;
-    }
-
-    public Tuple(String key, T value) {
-        this(key, value, "");
     }
 
     public String getKey() {
@@ -59,10 +52,6 @@ public class Tuple<T> implements Serializable {
 
     public T getValue() {
         return value;
-    }
-
-    public String getVisibility() {
-        return visibility;
     }
 
     /**
@@ -100,7 +89,6 @@ public class Tuple<T> implements Serializable {
         if (key != null ? !key.equals(tuple.key) : tuple.key != null) return false;
         if (metadata != null ? !metadata.equals(tuple.metadata) : tuple.metadata != null) return false;
         if (value != null ? !value.equals(tuple.value) : tuple.value != null) return false;
-        if (visibility != null ? !visibility.equals(tuple.visibility) : tuple.visibility != null) return false;
 
         return true;
     }
@@ -109,7 +97,6 @@ public class Tuple<T> implements Serializable {
     public int hashCode() {
         int result = key != null ? key.hashCode() : 0;
         result = 31 * result + (value != null ? value.hashCode() : 0);
-        result = 31 * result + (visibility != null ? visibility.hashCode() : 0);
         result = 31 * result + (metadata != null ? metadata.hashCode() : 0);
         return result;
     }
@@ -119,7 +106,6 @@ public class Tuple<T> implements Serializable {
         return "Tuple{" +
                 "key='" + key + '\'' +
                 ", value=" + value +
-                ", visibility='" + visibility + '\'' +
                 ", metadata=" + metadata +
                 '}';
     }
