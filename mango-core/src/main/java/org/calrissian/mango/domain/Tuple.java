@@ -16,17 +16,18 @@
 package org.calrissian.mango.domain;
 
 
-import com.google.common.collect.Maps;
-
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Collections.unmodifiableMap;
+import static java.util.Collections.unmodifiableSet;
 
 /**
- * A value class representing a key/value pair with a visiblity. This class is immutable.
+ * A value class representing a key/value pair with metadata. This class is immutable.
  */
 public class Tuple<T> implements Serializable {
 
@@ -37,13 +38,18 @@ public class Tuple<T> implements Serializable {
      * Metadata allows the tuple to be extensible so that different services can read different properties without
      * the need for inheritance.
      */
-    protected final Map<String,Object> metadata = new HashMap<String, Object>();
+    protected final Map<String,Object> metadata;
 
     public Tuple(String key, T value) {
+        this(key, value, Collections.<String,Object>emptyMap());
+    }
+
+    public Tuple(String key, T value, Map<String,Object> metadata) {
         checkNotNull(key);
         checkNotNull(value);
         this.key = key;
         this.value = value;
+        this.metadata = new HashMap<String, Object>(metadata);
     }
 
     public String getKey() {
@@ -55,28 +61,24 @@ public class Tuple<T> implements Serializable {
     }
 
     /**
-     * Sets a key/value pair on the metadata for the current tuple.
+     * Gets all keys from the metadata
      */
-    public void setMetadataValue(String key, Object value) {
-        metadata.put(key, value);
+    public Set<String> metadataKeys() {
+        return unmodifiableSet(metadata.keySet());
     }
 
     /**
-     * Gets a key/value pair from the metadata for the current tuple.
+     * Gets a value for the metadata key for the current tuple.
      */
     public <T>T getMetadataValue(String key) {
         return (T)metadata.get(key);
     }
 
-    public Set<String> metadataKeys() {
-        return metadata.keySet();
-    }
-
     /**
-     * Gets a copy of the current metadata
+     * Gets an immutable view of the current metadata
      */
     public Map<String,Object> getMetadata() {
-        return Maps.newHashMap(metadata);
+        return unmodifiableMap(metadata);
     }
 
     @Override
