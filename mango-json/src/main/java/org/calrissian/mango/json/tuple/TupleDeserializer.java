@@ -25,6 +25,7 @@ import org.calrissian.mango.types.TypeRegistry;
 import org.calrissian.mango.types.exception.TypeDecodingException;
 
 import java.io.IOException;
+import java.util.Iterator;
 
 /**
  * Date: 9/12/12
@@ -55,6 +56,27 @@ public class TupleDeserializer extends JsonDeserializer<Tuple> {
                 throw new RuntimeException(e);
             }
         }
-        return new Tuple(key, value, visibility);
+
+        Tuple tuple = new Tuple(key, value, visibility);
+
+        JsonNode metadataArray = root.get("metadata");
+
+        if(metadataArray != null) {
+            Iterator<JsonNode> metadata = metadataArray.iterator();
+            while(metadata.hasNext()) {
+                JsonNode metadataItem = metadata.next();
+                String metaKey = metadataItem.get("key").asText();
+                String alias = metadataItem.get("type").asText();
+                String normalized = metadataItem.get("value").asText();
+
+                try {
+                    tuple.setMetadataValue(metaKey, typeRegistry.decode(alias, normalized));
+                } catch (TypeDecodingException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
+        return tuple;
     }
 }
