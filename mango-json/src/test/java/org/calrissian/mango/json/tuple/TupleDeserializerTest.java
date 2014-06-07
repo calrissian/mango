@@ -20,18 +20,16 @@ public class TupleDeserializerTest {
     @Test
     public void testBasicSerialization() throws IOException {
 
-        Tuple tuple = objectMapper.readValue("{\"key\":\"key\",\"visibility\":\"visibility\",\"type\":\"string\",\"value\":\"value\",\"metadata\":[]}", Tuple.class);
+        Tuple tuple = objectMapper.readValue("{\"key\":\"key\",\"type\":\"string\",\"value\":\"value\",\"metadata\":[]}", Tuple.class);
         assertEquals("key", tuple.getKey());
-        assertEquals("visibility", tuple.getVisibility());
         assertEquals("value", tuple.getValue());
         assertEquals(0, tuple.getMetadata().size());
     }
 
     @Test
     public void testSerialization_withMetadata() throws IOException {
-        Tuple tuple = objectMapper.readValue("{\"key\":\"key\",\"visibility\":\"visibility\",\"type\":\"string\",\"value\":\"value\",\"metadata\":[{\"value\":\"metaVal\",\"type\":\"string\",\"key\":\"metaKey\"}]}", Tuple.class);
+        Tuple tuple = objectMapper.readValue("{\"key\":\"key\",\"type\":\"string\",\"value\":\"value\",\"metadata\":[{\"value\":\"metaVal\",\"type\":\"string\",\"key\":\"metaKey\"}]}", Tuple.class);
         assertEquals("key", tuple.getKey());
-        assertEquals("visibility", tuple.getVisibility());
         assertEquals("value", tuple.getValue());
         assertEquals(1, tuple.getMetadata().size());
 

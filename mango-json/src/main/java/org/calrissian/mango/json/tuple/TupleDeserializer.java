@@ -43,8 +43,6 @@ public class TupleDeserializer extends JsonDeserializer<Tuple> {
     public Tuple deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         JsonNode root = jsonParser.getCodec().readTree(jsonParser);
         String key = root.get("key").asText();
-        JsonNode vis_json = root.get("visibility");
-        String visibility = vis_json != null ? vis_json.asText() : null;
         Object value = null;
         JsonNode type_json = root.get("type");
         if (type_json != null) {
@@ -57,7 +55,7 @@ public class TupleDeserializer extends JsonDeserializer<Tuple> {
             }
         }
 
-        Tuple tuple = new Tuple(key, value, visibility);
+        Tuple tuple = new Tuple(key, value);
 
         JsonNode metadataArray = root.get("metadata");
 

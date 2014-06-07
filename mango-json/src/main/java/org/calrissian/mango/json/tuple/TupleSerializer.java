@@ -40,9 +40,6 @@ public class TupleSerializer extends JsonSerializer<Tuple> {
         jsonGenerator.writeStartObject();
 
         jsonGenerator.writeStringField("key", tuple.getKey());
-        String visibility = tuple.getVisibility();
-        if (visibility != null)
-            jsonGenerator.writeStringField("visibility", visibility);
         try {
             Object value = tuple.getValue();
             if (value != null) {
