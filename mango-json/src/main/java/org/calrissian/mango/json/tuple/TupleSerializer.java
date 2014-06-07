@@ -20,7 +20,6 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import org.calrissian.mango.domain.Tuple;
 import org.calrissian.mango.types.TypeRegistry;
-import org.calrissian.mango.types.exception.TypeEncodingException;
 
 import java.io.IOException;
 import java.util.Map;
@@ -40,30 +39,27 @@ public class TupleSerializer extends JsonSerializer<Tuple> {
         jsonGenerator.writeStartObject();
 
         jsonGenerator.writeStringField("key", tuple.getKey());
-        try {
-            Object value = tuple.getValue();
-            if (value != null) {
-                String type = typeContext.getAlias(value);
-                String val_str = typeContext.encode(value);
-                jsonGenerator.writeStringField("type", type);
-                jsonGenerator.writeStringField("value", val_str);
+        Object value = tuple.getValue();
+        if (value != null) {
+            String type = typeContext.getAlias(value);
+            String val_str = typeContext.encode(value);
+            jsonGenerator.writeStringField("type", type);
+            jsonGenerator.writeStringField("value", val_str);
 
-                jsonGenerator.writeArrayFieldStart("metadata");
+            jsonGenerator.writeArrayFieldStart("metadata");
 
-                Set<Map.Entry<String,Object>> entries = tuple.getMetadata().entrySet();
-                for(Map.Entry<String,Object> objectEntry : entries) {
-                    jsonGenerator.writeStartObject();
-                    jsonGenerator.writeObjectField("value", typeContext.encode(objectEntry.getValue()));
-                    jsonGenerator.writeObjectField("type", typeContext.getAlias(objectEntry.getValue()));
-                    jsonGenerator.writeObjectField("key", objectEntry.getKey());
-                    jsonGenerator.writeEndObject();
-                }
-                jsonGenerator.writeEndArray();
-
+            Set<Map.Entry<String,Object>> entries = tuple.getMetadata().entrySet();
+            for(Map.Entry<String,Object> objectEntry : entries) {
+                jsonGenerator.writeStartObject();
+                jsonGenerator.writeObjectField("value", typeContext.encode(objectEntry.getValue()));
+                jsonGenerator.writeObjectField("type", typeContext.getAlias(objectEntry.getValue()));
+                jsonGenerator.writeObjectField("key", objectEntry.getKey());
+                jsonGenerator.writeEndObject();
             }
-        } catch (TypeEncodingException e) {
-            throw new RuntimeException(e);
+            jsonGenerator.writeEndArray();
+
         }
+
 
         jsonGenerator.writeEndObject();
     }

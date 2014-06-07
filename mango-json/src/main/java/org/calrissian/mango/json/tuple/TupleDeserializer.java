@@ -22,7 +22,6 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.calrissian.mango.domain.Tuple;
 import org.calrissian.mango.types.TypeRegistry;
-import org.calrissian.mango.types.exception.TypeDecodingException;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -48,11 +47,8 @@ public class TupleDeserializer extends JsonDeserializer<Tuple> {
         if (type_json != null) {
             String type = type_json.asText();
             String val_str = root.get("value").asText();
-            try {
-                value = typeRegistry.decode(type, val_str);
-            } catch (TypeDecodingException e) {
-                throw new RuntimeException(e);
-            }
+
+            value = typeRegistry.decode(type, val_str);
         }
 
         Tuple tuple = new Tuple(key, value);
@@ -67,11 +63,7 @@ public class TupleDeserializer extends JsonDeserializer<Tuple> {
                 String alias = metadataItem.get("type").asText();
                 String normalized = metadataItem.get("value").asText();
 
-                try {
-                    tuple.setMetadataValue(metaKey, typeRegistry.decode(alias, normalized));
-                } catch (TypeDecodingException e) {
-                    throw new RuntimeException(e);
-                }
+                tuple.setMetadataValue(metaKey, typeRegistry.decode(alias, normalized));
             }
         }
 

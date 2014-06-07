@@ -19,7 +19,6 @@ package org.calrissian.mango.types.canonicalizer;
 import org.calrissian.mango.types.TypeRegistry;
 import org.calrissian.mango.types.canonicalizer.domain.CanonicalDef;
 import org.calrissian.mango.types.canonicalizer.validator.Validator;
-import org.calrissian.mango.types.exception.TypeDecodingException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -120,15 +119,7 @@ public class CanonicalizerContext {
         if (validator != null && !validator.validate(value))
             throw new IllegalArgumentException(value + " did not validate with validator: " + validator.getClass());
 
-        try {
-
-            return typeContext.decode(datatype, value.trim());
-
-        } catch (RuntimeException re) {
-            throw re;
-        } catch (TypeDecodingException e) {
-            throw new IllegalArgumentException(e);
-        }
+        return typeContext.decode(datatype, value.trim());
     }
 
     public List<CanonicalDef> getCanonicalDefs() {

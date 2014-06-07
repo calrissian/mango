@@ -20,7 +20,6 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import org.calrissian.mango.criteria.domain.*;
 import org.calrissian.mango.types.TypeRegistry;
-import org.calrissian.mango.types.exception.TypeEncodingException;
 
 import java.io.IOException;
 
@@ -37,17 +36,14 @@ public class NodeSerializer extends JsonSerializer<Node> {
             throws IOException {
 
         jsonGenerator.writeStartObject();
-        try {
-            if (node instanceof ParentNode) {
-                serialize((ParentNode) node, jsonGenerator, serializerProvider);
-            } else if (node instanceof Leaf) {
-                serialize((Leaf) node, jsonGenerator, serializerProvider);
-            } else {
-                throw new IllegalArgumentException("Unsupported node: " + node);
-            }
-        } catch (TypeEncodingException e) {
-            throw new IOException(e);
+        if (node instanceof ParentNode) {
+            serialize((ParentNode) node, jsonGenerator, serializerProvider);
+        } else if (node instanceof Leaf) {
+            serialize((Leaf) node, jsonGenerator, serializerProvider);
+        } else {
+            throw new IllegalArgumentException("Unsupported node: " + node);
         }
+
         jsonGenerator.writeEndObject();
     }
 
@@ -72,7 +68,7 @@ public class NodeSerializer extends JsonSerializer<Node> {
     }
 
     public void serialize(Leaf node, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
-            throws IOException, TypeEncodingException {
+            throws IOException {
 
         if (node instanceof EqualsLeaf) {
             //eq

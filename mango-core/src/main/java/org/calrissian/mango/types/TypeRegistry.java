@@ -71,7 +71,7 @@ public class TypeRegistry<U> implements Serializable {
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public U encode(Object value) throws TypeEncodingException {
+    public U encode(Object value) {
         TypeEncoder encoder = classMapping.get(value.getClass());
         if (encoder != null)
             return (U) encoder.encode(value);
@@ -79,7 +79,7 @@ public class TypeRegistry<U> implements Serializable {
         throw new TypeEncodingException("An unknown type [" + value.getClass() + "] was encountered");
     }
 
-    public Object decode(String alias, U value) throws TypeDecodingException {
+    public Object decode(String alias, U value) {
 
         TypeEncoder<?, U> encoder = aliasMapping.get(alias);
         if (encoder != null)
