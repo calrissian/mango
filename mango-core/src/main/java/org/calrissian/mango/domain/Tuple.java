@@ -75,8 +75,8 @@ public class Tuple<T> implements Serializable {
     /**
      * Gets a key/value pair from the metadata for the current tuple.
      */
-    public void getMetadataValue(String key) {
-        metadata.get(key);
+    public <T>T getMetadataValue(String key) {
+        return (T)metadata.get(key);
     }
 
     public Set<String> metadataKeys() {
