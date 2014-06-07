@@ -31,11 +31,11 @@ public class TupleStoreIteratorTest {
     Entity entity = new BaseEntity("type", "id1");
     Entity entity2 = new BaseEntity("type", "id2");
 
-    Tuple e1T1 = new Tuple("key", "val", "vis");
-    Tuple e1T2 = new Tuple("key3", "val3", "vis");
+    Tuple e1T1 = new Tuple("key", "val");
+    Tuple e1T2 = new Tuple("key3", "val3");
 
-    Tuple e2T1 = new Tuple("key2", "val2", "vis");
-    Tuple e2T2 = new Tuple("key1", "val1", "vis");
+    Tuple e2T1 = new Tuple("key2", "val2");
+    Tuple e2T2 = new Tuple("key1", "val1");
 
     @Before
     public void setup() {
