@@ -36,10 +36,6 @@ public class EntityRelationshipEncoder extends AbstractEntityRelationshipEncoder
         return format("%s%s#%s", SCHEME, value.getType(), value.getId());
     }
 
-    private void validateEncodedString(String value) throws TypeDecodingException {
-
-    }
-
     @Override
     public EntityRelationship decode(String value) throws TypeDecodingException {
         checkNotNull(value, "Null values are not allowed");
