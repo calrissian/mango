@@ -24,7 +24,8 @@ import org.calrissian.mango.domain.Tuple;
 import org.calrissian.mango.types.TypeRegistry;
 
 import java.io.IOException;
-import java.util.Iterator;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Date: 9/12/12
@@ -51,22 +52,19 @@ public class TupleDeserializer extends JsonDeserializer<Tuple> {
             value = typeRegistry.decode(type, val_str);
         }
 
-        Tuple tuple = new Tuple(key, value);
-
+        Map<String, Object> metadata = new HashMap<String, Object>();
         JsonNode metadataArray = root.get("metadata");
-
         if(metadataArray != null) {
-            Iterator<JsonNode> metadata = metadataArray.iterator();
-            while(metadata.hasNext()) {
-                JsonNode metadataItem = metadata.next();
+            for (JsonNode metadataItem : metadataArray) {
                 String metaKey = metadataItem.get("key").asText();
                 String alias = metadataItem.get("type").asText();
                 String normalized = metadataItem.get("value").asText();
 
-                tuple.setMetadataValue(metaKey, typeRegistry.decode(alias, normalized));
+                metadata.put(metaKey, typeRegistry.decode(alias, normalized));
             }
         }
 
-        return tuple;
+        return new Tuple(key, value, metadata);
+
     }
 }

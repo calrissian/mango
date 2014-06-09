@@ -2,6 +2,7 @@ package org.calrissian.mango.json.tuple;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableMap;
 import org.calrissian.mango.domain.Tuple;
 import org.junit.Test;
 
@@ -22,8 +23,7 @@ public class TupleSerializerTest {
 
     @Test
     public void testSerialization_withMetadata() throws Exception {
-        Tuple tuple = new Tuple("key", "value");
-        tuple.setMetadataValue("metaKey", "metaVal");
+        Tuple tuple = new Tuple("key", "value", ImmutableMap.of("metaKey", "metaVal"));
         String json = objectMapper.writeValueAsString(tuple);
         assertEquals(json, "{\"key\":\"key\",\"type\":\"string\",\"value\":\"value\",\"metadata\":[{\"value\":\"metaVal\",\"type\":\"string\",\"key\":\"metaKey\"}]}");
     }
