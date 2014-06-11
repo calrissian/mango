@@ -18,7 +18,7 @@ limitations under the License.
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.calrissian.mango</groupId>
   <artifactId>mango-parent</artifactId>
-  <version>1.1.2-SNAPSHOT</version>
+  <version>1.1.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Mango Parent</name>
   <description>Mango provides common reusable utilities.</description>
