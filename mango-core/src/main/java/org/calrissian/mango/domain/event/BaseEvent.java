@@ -26,8 +26,8 @@ import static java.util.UUID.randomUUID;
  */
 public class BaseEvent extends BaseTupleStore implements Event {
 
-    protected final String id;
-    protected final long timestamp; // in Millis
+    private final String id;
+    private final long timestamp; // in Millis
 
     /**
      * New event with random UUID and timestamp defaulted to current time
@@ -61,7 +61,7 @@ public class BaseEvent extends BaseTupleStore implements Event {
      */
     public BaseEvent(Event event) {
         this(event.getId(), event.getTimestamp());
-        getTuples().addAll(event.getTuples());
+        putAll(event.getTuples());
     }
 
 

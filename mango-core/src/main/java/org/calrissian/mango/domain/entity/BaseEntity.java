@@ -50,7 +50,7 @@ public class BaseEntity extends BaseTupleStore implements Entity {
      */
     public BaseEntity(Entity entity) {
         this(entity.getType(), entity.getId());
-        getTuples().addAll(entity.getTuples());
+        putAll(entity.getTuples());
     }
 
     /**
