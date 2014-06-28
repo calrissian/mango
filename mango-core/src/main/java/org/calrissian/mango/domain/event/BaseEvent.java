@@ -75,7 +75,7 @@ public class BaseEvent extends BaseTupleStore implements Event {
     /**
      * {@inheritDoc}
      */
-    public Long getTimestamp() {
+    public long getTimestamp() {
         return timestamp;
     }
 

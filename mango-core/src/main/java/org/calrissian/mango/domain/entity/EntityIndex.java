@@ -32,6 +32,10 @@ public class EntityIndex implements Identifiable {
         this.id = id;
     }
 
+    public EntityIndex(Entity entity) {
+        this(entity.getType(), entity.getId());
+    }
+
     public String getType() {
         return type;
     }
