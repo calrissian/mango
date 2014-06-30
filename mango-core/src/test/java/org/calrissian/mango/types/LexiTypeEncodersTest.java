@@ -36,7 +36,9 @@ public class LexiTypeEncodersTest {
         verifyBasicFunctionality(BOOLEAN_ALIAS, true, booleanEncoder());
         verifyBasicFunctionality(BYTE_ALIAS, (byte) 3, byteEncoder());
         verifyBasicFunctionality(DATE_ALIAS, new Date(), dateEncoder());
+        verifyBasicFunctionality(DOUBLE_ALIAS, 0.0D, doubleEncoder());
         verifyBasicFunctionality(DOUBLE_ALIAS, -1.5D, doubleEncoder());
+        verifyBasicFunctionality(FLOAT_ALIAS, 0.0F, floatEncoder());
         verifyBasicFunctionality(FLOAT_ALIAS, -1.5F, floatEncoder());
         verifyBasicFunctionality(INTEGER_ALIAS, 3, integerEncoder());
         verifyBasicFunctionality(IPV4_ALIAS, new IPv4("192.168.1.1"), ipv4Encoder());
@@ -52,7 +54,9 @@ public class LexiTypeEncodersTest {
         verifyBasicFunctionality(BOOLEAN_ALIAS, true, booleanRevEncoder());
         verifyBasicFunctionality(BYTE_ALIAS, (byte) 3, byteRevEncoder());
         verifyBasicFunctionality(DATE_ALIAS, new Date(), dateRevEncoder());
+        verifyBasicFunctionality(DOUBLE_ALIAS, 0.0D, doubleRevEncoder());
         verifyBasicFunctionality(DOUBLE_ALIAS, -1.5D, doubleRevEncoder());
+        verifyBasicFunctionality(FLOAT_ALIAS, 0.0F, floatRevEncoder());
         verifyBasicFunctionality(FLOAT_ALIAS, -1.5F, floatRevEncoder());
         verifyBasicFunctionality(INTEGER_ALIAS, 3, integerRevEncoder());
         verifyBasicFunctionality(IPV4_ALIAS, new IPv4("192.168.1.1"), ipv4RevEncoder());

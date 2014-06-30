@@ -47,7 +47,7 @@ class EncodingUtils {
     }
 
     protected static int normalizeFloat(float value) {
-        if (value > 0)
+        if (value >= 0)
             return floatToIntBits(value) ^ Integer.MIN_VALUE;
         else
             return ~floatToIntBits(value);
@@ -61,7 +61,7 @@ class EncodingUtils {
     }
 
     protected static long normalizeDouble(double value) {
-        if (value > 0)
+        if (value >= 0)
             return doubleToRawLongBits(value) ^ Long.MIN_VALUE;
         else
             return ~doubleToRawLongBits(value);
