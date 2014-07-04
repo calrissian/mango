@@ -18,6 +18,7 @@ package org.calrissian.mango.domain.event;
 
 import org.calrissian.mango.domain.BaseTupleStore;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static java.lang.System.currentTimeMillis;
 import static java.util.UUID.randomUUID;
 
@@ -52,6 +53,7 @@ public class BaseEvent extends BaseTupleStore implements Event {
      * @param timestamp
      */
     public BaseEvent(String id, long timestamp) {
+        checkNotNull(id);
         this.id = id;
         this.timestamp = timestamp;
     }
@@ -60,7 +62,7 @@ public class BaseEvent extends BaseTupleStore implements Event {
      * Copy constructor
      */
     public BaseEvent(Event event) {
-        this(event.getId(), event.getTimestamp());
+        this(checkNotNull(event).getId(), event.getTimestamp());
         putAll(event.getTuples());
     }
 
@@ -79,6 +81,14 @@ public class BaseEvent extends BaseTupleStore implements Event {
         return timestamp;
     }
 
+    @Override
+    public String toString() {
+        return "BaseEvent{" +
+                "id='" + id + '\'' +
+                ", timestamp=" + timestamp +
+                ", tuples=" + getTuples() +
+                '}';
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -89,7 +99,7 @@ public class BaseEvent extends BaseTupleStore implements Event {
         BaseEvent baseEvent = (BaseEvent) o;
 
         if (timestamp != baseEvent.timestamp) return false;
-        if (id != null ? !id.equals(baseEvent.id) : baseEvent.id != null) return false;
+        if (!id.equals(baseEvent.id)) return false;
 
         return true;
     }
@@ -97,17 +107,8 @@ public class BaseEvent extends BaseTupleStore implements Event {
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (id != null ? id.hashCode() : 0);
+        result = 31 * result + id.hashCode();
         result = 31 * result + (int) (timestamp ^ (timestamp >>> 32));
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return "BaseEvent{" +
-                "id='" + id + '\'' +
-                ", timestamp=" + timestamp +
-                ", tuples=" + getTuples() +
-                '}';
     }
 }

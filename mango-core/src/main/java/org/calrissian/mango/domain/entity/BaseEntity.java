@@ -25,10 +25,12 @@ import static java.util.UUID.randomUUID;
  */
 public class BaseEntity extends BaseTupleStore implements Entity {
 
-    private String id;
+    private final String id;
     private String type;
 
-    public BaseEntity() {}
+    public BaseEntity() {
+        this("");
+    }
 
     /**
      * Defines an {@link Entity} object for the given type and a random uuid.
@@ -69,6 +71,11 @@ public class BaseEntity extends BaseTupleStore implements Entity {
         return type;
     }
 
+    public void setType(String type) {
+        checkNotNull(type);
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return "BaseEntity{" +
@@ -86,8 +93,8 @@ public class BaseEntity extends BaseTupleStore implements Entity {
 
         BaseEntity that = (BaseEntity) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (type != null ? !type.equals(that.type) : that.type != null) return false;
+        if (!id.equals(that.id)) return false;
+        if (!type.equals(that.type)) return false;
 
         return true;
     }
@@ -95,8 +102,8 @@ public class BaseEntity extends BaseTupleStore implements Entity {
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (id != null ? id.hashCode() : 0);
-        result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + id.hashCode();
+        result = 31 * result + type.hashCode();
         return result;
     }
 }

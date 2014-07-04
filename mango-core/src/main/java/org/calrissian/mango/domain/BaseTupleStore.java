@@ -19,6 +19,7 @@ import com.google.common.collect.ImmutableList;
 
 import java.util.*;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Iterables.concat;
 
 /**
@@ -30,6 +31,9 @@ public class BaseTupleStore implements TupleStore {
     private Map<String, Set<Tuple>> tuples = new HashMap<String, Set<Tuple>>();
 
     public void put(Tuple tuple) {
+        checkNotNull(tuple);
+        checkNotNull(tuple.getKey());
+
         Set<Tuple> keyedTuples = tuples.get(tuple.getKey());
         if (keyedTuples == null) {
             keyedTuples = new HashSet<Tuple>();
@@ -39,6 +43,7 @@ public class BaseTupleStore implements TupleStore {
     }
 
     public void putAll(Iterable<Tuple> tuples) {
+        checkNotNull(tuples);
         for (Tuple tuple : tuples)
             put(tuple);
     }
@@ -55,6 +60,7 @@ public class BaseTupleStore implements TupleStore {
      * A get operation for multi-valued keys
      */
     public Collection<Tuple> getAll(String key) {
+        checkNotNull(key);
         return tuples.get(key);
     }
 
@@ -72,6 +78,8 @@ public class BaseTupleStore implements TupleStore {
 
     @Override
     public <T> Tuple<T> remove(Tuple<T> t) {
+        checkNotNull(t);
+        checkNotNull(t.getKey());
         if (tuples.containsKey(t.getKey())) {
             Set<Tuple> tupelSet = tuples.get(t.getKey());
             if(tupelSet.remove(t))
@@ -82,6 +90,7 @@ public class BaseTupleStore implements TupleStore {
 
     @Override
     public <T> Tuple<T> remove(String key) {
+        checkNotNull(key);
         if (tuples.containsKey(key)) {
             Set<Tuple> tupleSet = tuples.get(key);
             Tuple t = tupleSet.size() > 0 ? tupleSet.iterator().next() : null;
@@ -93,13 +102,15 @@ public class BaseTupleStore implements TupleStore {
     }
 
     @Override
-    public Collection<Tuple> removeAll(String key) {
+    public Collection<Tuple> removeAll(String key){
+        checkNotNull(key);
         return tuples.remove(key);
     }
 
 
     @Override
     public Collection<Tuple> removeAll(Collection<Tuple> tuples) {
+        checkNotNull(tuples);
         Collection<Tuple> removedTuples = new LinkedList<Tuple>();
         for (Tuple tuple : tuples)
             removedTuples.add(remove(tuple));
