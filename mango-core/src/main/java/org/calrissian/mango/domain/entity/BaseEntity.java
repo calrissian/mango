@@ -79,7 +79,7 @@ public class BaseEntity extends BaseTupleStore implements Entity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof BaseEntity)) return false;
         if (!super.equals(o)) return false;
 
         BaseEntity that = (BaseEntity) o;

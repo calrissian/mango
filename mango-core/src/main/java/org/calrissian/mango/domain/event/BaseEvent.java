@@ -93,7 +93,7 @@ public class BaseEvent extends BaseTupleStore implements Event {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof BaseEvent)) return false;
         if (!super.equals(o)) return false;
 
         BaseEvent baseEvent = (BaseEvent) o;

@@ -118,19 +118,19 @@ public class BaseTupleStore implements TupleStore {
     }
 
     @Override
-    public int hashCode() {
-        return tuples != null ? tuples.hashCode() : 0;
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof BaseTupleStore)) return false;
 
         BaseTupleStore that = (BaseTupleStore) o;
 
-        if (tuples != null ? !tuples.equals(that.tuples) : that.tuples != null) return false;
+        if (!tuples.equals(that.tuples)) return false;
 
         return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return tuples.hashCode();
     }
 }
