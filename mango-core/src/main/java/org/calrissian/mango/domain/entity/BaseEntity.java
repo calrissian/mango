@@ -28,6 +28,8 @@ public class BaseEntity extends BaseTupleStore implements Entity {
     private String id;
     private String type;
 
+    public BaseEntity() {}
+
     /**
      * Defines an {@link Entity} object for the given type and a random uuid.
      */
