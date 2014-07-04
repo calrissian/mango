@@ -15,17 +15,19 @@
  */
 package org.calrissian.mango.collect;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Queue;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.util.Collections.emptyList;
-import static java.util.Collections.singleton;
 
 /**
  * Additional functions for working on Iterables
  */
 public class Iterables2 {
+
+    private Iterables2() {/* private constructor */}
 
     /**
      * Wraps any iterable into a generic iterable object. This is useful for using complex iterables such as FluentIterable
@@ -51,8 +53,8 @@ public class Iterables2 {
     /**
      * Generates an iterable with a single value.
      */
-    public static <T> Iterable<T> singletonIterable(T data) {
-        return singleton(data);
+    public static <T> Iterable<T> singleton(T data) {
+        return Collections.singleton(data);
     }
 
     /**

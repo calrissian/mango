@@ -65,7 +65,7 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
      * resource if there is more than 1 element, but from(iterable).limit(1).autoClose() will close the underlying
      * resource.
      */
-    public FluentCloseableIterable<T> autoClose() {
+    public final FluentCloseableIterable<T> autoClose() {
         return from(CloseableIterables.autoClose(this));
     }
 
@@ -174,7 +174,7 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
      * function-returned iterables' iterator does. After a successful {@code remove()} call,
      * the returned fluent iterable no longer contains the corresponding element.
      */
-    public <E> FluentCloseableIterable<E> transformAndConcat(
+    public final <E> FluentCloseableIterable<E> transformAndConcat(
             Function<? super T, ? extends Iterable<E>> function) {
         return from(CloseableIterables.concat(transform(function)));
     }

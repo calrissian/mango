@@ -29,6 +29,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class Iterators2 {
 
+    private Iterators2() {/* private constructor */}
+
     /**
      * If we can assume the iterator is sorted, return the distinct elements. This only works
      * if the data provided is sorted.

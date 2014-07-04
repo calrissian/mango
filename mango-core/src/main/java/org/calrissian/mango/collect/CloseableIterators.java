@@ -163,6 +163,16 @@ public class CloseableIterators {
     }
 
     /**
+     * Returns an iterator containing only {@code value}.
+     *
+     * <p>The {@link Iterable} equivalent of this method is {@link
+     * java.util.Collections#singleton}.
+     */
+    public static <T> CloseableIterator<T> singletonIterator(T value) {
+        return wrap(Iterators.singletonIterator(value));
+    }
+
+    /**
      * Returns a closeable iterator that applies {@code function} to each element of {@code
      * fromIterator}.
      */

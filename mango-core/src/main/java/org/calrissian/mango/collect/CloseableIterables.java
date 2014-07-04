@@ -23,18 +23,23 @@ import com.google.common.collect.UnmodifiableIterator;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptySet;
 
 /**
  * Utility class to develop commonly used closeable iterables functions.
  */
 public class CloseableIterables {
 
-    public CloseableIterables() {/* private constructor */}
+    @SuppressWarnings("rawtypes")
+    private static final CloseableIterable EMPTY_ITERABLE = wrap(emptySet());
+
+    private CloseableIterables() {/* private constructor */}
 
     /**
      * If we can assume the closeable iterable is sorted, return the distinct elements.
@@ -234,6 +239,26 @@ public class CloseableIterables {
                 );
             }
         };
+    }
+
+    /**
+     * Returns an empty closeable iterable
+     *
+     * <p>The equivalent of this method is {@link
+     * java.util.Collections#emptySet()}.
+     */
+    public static <T> CloseableIterable<T> emptyIterable() {
+        return EMPTY_ITERABLE;
+    }
+
+    /**
+     * Returns a closeable iterable containing only {@code value}.
+     *
+     * <p>The equivalent of this method is {@link
+     * java.util.Collections#singleton}.
+     */
+    public static <T> CloseableIterable<T> singleton(T value) {
+        return wrap(Collections.singleton(value));
     }
 
     /**
