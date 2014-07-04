@@ -25,8 +25,8 @@ import static java.util.UUID.randomUUID;
  */
 public class BaseEntity extends BaseTupleStore implements Entity {
 
-    private String id;
-    private String type;
+    private final String id;
+    private final String type;
 
     /**
      * Defines an {@link Entity} object for the given type and a random uuid.
