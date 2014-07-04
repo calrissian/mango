@@ -53,7 +53,7 @@ public class BaseEntity extends BaseTupleStore implements Entity {
      * Copy constructor.
      */
     public BaseEntity(Entity entity) {
-        this(entity.getType(), entity.getId());
+        this(checkNotNull(entity).getType(), entity.getId());
         putAll(entity.getTuples());
     }
 
