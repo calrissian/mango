@@ -33,6 +33,8 @@ import java.util.Date;
  */
 public class LexiTypeEncoders {
 
+    private LexiTypeEncoders() {/*private constructor*/}
+
     public static final TypeRegistry<String> LEXI_TYPES = new TypeRegistry<String>(
             booleanEncoder(), byteEncoder(), dateEncoder(), doubleEncoder(), floatEncoder(),
             integerEncoder(), ipv4Encoder(), longEncoder(), stringEncoder(), uriEncoder(),

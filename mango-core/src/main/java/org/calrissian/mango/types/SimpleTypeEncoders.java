@@ -27,14 +27,14 @@ import java.util.Date;
 
 public class SimpleTypeEncoders {
 
+    private SimpleTypeEncoders() {/* private constructor */}
+
     @SuppressWarnings("unchecked")
     public static final TypeRegistry<String> SIMPLE_TYPES = new TypeRegistry<String>(
             booleanEncoder(), byteEncoder(), dateEncoder(), doubleEncoder(), floatEncoder(),
             integerEncoder(), ipv4Encoder(), longEncoder(), stringEncoder(), uriEncoder(),
             bigIntegerEncoder(), bigDecimalEncoder(), entityRelationshipEncoder()
     );
-
-    public SimpleTypeEncoders() {/* private constructor */}
 
     public static TypeEncoder<Boolean, String> booleanEncoder() {
         return new BooleanEncoder();

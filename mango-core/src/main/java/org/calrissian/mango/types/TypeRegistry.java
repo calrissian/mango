@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Iterables.concat;
 import static java.util.Arrays.asList;
 import static java.util.Collections.unmodifiableCollection;
@@ -42,6 +43,8 @@ public class TypeRegistry<U> implements Serializable {
     }
 
     public TypeRegistry(Iterable<TypeEncoder<?, U>> normalizers) {
+        checkNotNull(normalizers);
+
         for (TypeEncoder<?, U> resolver : normalizers) {
             if (aliasMapping.containsKey(resolver.getAlias()))
                 throw new IllegalArgumentException("The aliases provided by the normalizers must be unique");
@@ -72,6 +75,8 @@ public class TypeRegistry<U> implements Serializable {
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     public U encode(Object value) {
+        checkNotNull(value, "Value for encoding can not be null");
+
         TypeEncoder encoder = classMapping.get(value.getClass());
         if (encoder != null)
             return (U) encoder.encode(value);
@@ -80,6 +85,8 @@ public class TypeRegistry<U> implements Serializable {
     }
 
     public Object decode(String alias, U value) {
+        checkNotNull(alias, "Not allowed to have a null alias");
+        checkNotNull(value, "Value for decoding can not be null");
 
         TypeEncoder<?, U> encoder = aliasMapping.get(alias);
         if (encoder != null)
