@@ -45,14 +45,20 @@ public class Iterables2 {
 
     /**
      * Generates an empty iterable.
+     *
+     * @deprecated use {@link Collections}.emptySet() instead
      */
+    @Deprecated
     public static <T> Iterable<T> emptyIterable() {
         return emptyList();
     }
 
     /**
      * Generates an iterable with a single value.
+     *
+     * @deprecated use {@link Collections}.singleton() instead
      */
+    @Deprecated
     public static <T> Iterable<T> singleton(T data) {
         return Collections.singleton(data);
     }
