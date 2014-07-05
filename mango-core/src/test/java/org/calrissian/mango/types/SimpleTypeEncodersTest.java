@@ -46,7 +46,11 @@ public class SimpleTypeEncodersTest {
         verifyBasicFunctionality(BOOLEAN_ALIAS, true, booleanEncoder());
         verifyBasicFunctionality(BYTE_ALIAS, (byte) 3, byteEncoder());
         verifyBasicFunctionality(DATE_ALIAS, new Date(), dateEncoder());
+        verifyBasicFunctionality(DOUBLE_ALIAS, 0.0D, doubleEncoder());
+        verifyBasicFunctionality(DOUBLE_ALIAS, -0.0D, doubleEncoder());
         verifyBasicFunctionality(DOUBLE_ALIAS, 1.5D, doubleEncoder());
+        verifyBasicFunctionality(FLOAT_ALIAS, 0.0F, floatEncoder());
+        verifyBasicFunctionality(FLOAT_ALIAS, -0.0F, floatEncoder());
         verifyBasicFunctionality(FLOAT_ALIAS, 1.5F, floatEncoder());
         verifyBasicFunctionality(INTEGER_ALIAS, 3, integerEncoder());
         verifyBasicFunctionality(IPV4_ALIAS, new IPv4("192.168.1.1"), ipv4Encoder());
@@ -68,8 +72,12 @@ public class SimpleTypeEncodersTest {
 
         assertEquals("10", dateEncoder().encode(new Date(10)));
 
+        assertEquals("0.0", doubleEncoder().encode(0.0D));
+        assertEquals("-0.0", doubleEncoder().encode(-0.0D));
         assertEquals("1.5", doubleEncoder().encode(1.5D));
 
+        assertEquals("0.0", floatEncoder().encode(0.0F));
+        assertEquals("-0.0", floatEncoder().encode(-0.0F));
         assertEquals("1.5", floatEncoder().encode(1.5F));
 
         assertEquals("3", integerEncoder().encode(3));

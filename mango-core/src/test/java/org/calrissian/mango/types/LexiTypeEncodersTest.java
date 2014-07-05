@@ -37,8 +37,10 @@ public class LexiTypeEncodersTest {
         verifyBasicFunctionality(BYTE_ALIAS, (byte) 3, byteEncoder());
         verifyBasicFunctionality(DATE_ALIAS, new Date(), dateEncoder());
         verifyBasicFunctionality(DOUBLE_ALIAS, 0.0D, doubleEncoder());
+        verifyBasicFunctionality(DOUBLE_ALIAS, -0.0D, doubleEncoder());
         verifyBasicFunctionality(DOUBLE_ALIAS, -1.5D, doubleEncoder());
         verifyBasicFunctionality(FLOAT_ALIAS, 0.0F, floatEncoder());
+        verifyBasicFunctionality(FLOAT_ALIAS, -0.0F, floatEncoder());
         verifyBasicFunctionality(FLOAT_ALIAS, -1.5F, floatEncoder());
         verifyBasicFunctionality(INTEGER_ALIAS, 3, integerEncoder());
         verifyBasicFunctionality(IPV4_ALIAS, new IPv4("192.168.1.1"), ipv4Encoder());
@@ -55,8 +57,10 @@ public class LexiTypeEncodersTest {
         verifyBasicFunctionality(BYTE_ALIAS, (byte) 3, byteRevEncoder());
         verifyBasicFunctionality(DATE_ALIAS, new Date(), dateRevEncoder());
         verifyBasicFunctionality(DOUBLE_ALIAS, 0.0D, doubleRevEncoder());
+        verifyBasicFunctionality(DOUBLE_ALIAS, -0.0D, doubleRevEncoder());
         verifyBasicFunctionality(DOUBLE_ALIAS, -1.5D, doubleRevEncoder());
         verifyBasicFunctionality(FLOAT_ALIAS, 0.0F, floatRevEncoder());
+        verifyBasicFunctionality(FLOAT_ALIAS, -0.0F, floatRevEncoder());
         verifyBasicFunctionality(FLOAT_ALIAS, -1.5F, floatRevEncoder());
         verifyBasicFunctionality(INTEGER_ALIAS, 3, integerRevEncoder());
         verifyBasicFunctionality(IPV4_ALIAS, new IPv4("192.168.1.1"), ipv4RevEncoder());
@@ -81,9 +85,13 @@ public class LexiTypeEncodersTest {
         assertEquals("800000000000000a", dateEncoder().encode(new Date(10)));
 
         assertEquals("bff8000000000000", doubleEncoder().encode(1.5D));
+        assertEquals("8000000000000000", doubleEncoder().encode(0.0));
+        assertEquals("7fffffffffffffff", doubleEncoder().encode(-0.0));
         assertEquals("4007ffffffffffff", doubleEncoder().encode(-1.5D));
 
         assertEquals("bfc00000", floatEncoder().encode(1.5F));
+        assertEquals("80000000", floatEncoder().encode(0.0F));
+        assertEquals("7fffffff", floatEncoder().encode(-0.0F));
         assertEquals("403fffff", floatEncoder().encode(-1.5F));
 
         assertEquals("80000003", integerEncoder().encode(3));

@@ -47,10 +47,11 @@ class EncodingUtils {
     }
 
     protected static int normalizeFloat(float value) {
-        if (value >= 0)
-            return floatToIntBits(value) ^ Integer.MIN_VALUE;
+        int intBits = floatToIntBits(value);
+        if (intBits < 0)
+            return ~intBits;
         else
-            return ~floatToIntBits(value);
+            return intBits ^ Integer.MIN_VALUE;
     }
 
     protected static float denormalizeFloat(int value) {
@@ -61,10 +62,11 @@ class EncodingUtils {
     }
 
     protected static long normalizeDouble(double value) {
-        if (value >= 0)
-            return doubleToRawLongBits(value) ^ Long.MIN_VALUE;
+        long longBits = doubleToRawLongBits(value);
+        if (longBits < 0)
+            return ~longBits;
         else
-            return ~doubleToRawLongBits(value);
+            return longBits ^ Long.MIN_VALUE;
     }
 
     protected static double denormalizeDouble(long value) {
