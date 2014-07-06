@@ -13,15 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.json.tuplestore;
+package org.calrissian.mango.json.deser;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.calrissian.mango.domain.Tuple;
 import org.calrissian.mango.domain.entity.BaseEntity;
 import org.calrissian.mango.domain.entity.Entity;
-import org.calrissian.mango.json.tuple.TupleModule;
-import org.calrissian.mango.json.tuplestore.EntityModule;
+import org.calrissian.mango.json.MangoModule;
 import org.junit.Test;
 
 import java.util.HashSet;
@@ -32,8 +31,7 @@ import static org.junit.Assert.assertEquals;
 public class EntityDeserializerTest {
 
     private ObjectMapper objectMapper = new ObjectMapper()
-            .registerModule(new TupleModule(SIMPLE_TYPES))
-            .registerModule(new EntityModule());
+            .registerModule(new MangoModule(SIMPLE_TYPES));
 
     @Test
     public void testBasicDeserialization() throws Exception {

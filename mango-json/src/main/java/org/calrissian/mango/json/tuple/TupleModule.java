@@ -18,10 +18,13 @@ package org.calrissian.mango.json.tuple;
 
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.calrissian.mango.domain.Tuple;
+import org.calrissian.mango.json.deser.TupleDeserializer;
+import org.calrissian.mango.json.ser.TupleSerializer;
 import org.calrissian.mango.types.TypeRegistry;
 
 import static org.calrissian.mango.types.SimpleTypeEncoders.SIMPLE_TYPES;
 
+@Deprecated
 public class TupleModule extends SimpleModule {
 
     private final TypeRegistry<String> typeContext;

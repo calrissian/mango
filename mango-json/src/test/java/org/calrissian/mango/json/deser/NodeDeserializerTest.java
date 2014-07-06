@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.json.criteria;
+package org.calrissian.mango.json.deser;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.calrissian.mango.criteria.domain.Node;
 import org.calrissian.mango.criteria.visitor.PrintNodeVisitor;
+import org.calrissian.mango.json.MangoModule;
 import org.junit.Test;
 
 import java.io.StringWriter;
@@ -25,14 +26,10 @@ import java.io.StringWriter;
 import static org.calrissian.mango.types.SimpleTypeEncoders.SIMPLE_TYPES;
 import static org.junit.Assert.assertEquals;
 
-/**
- * Date: 11/15/12
- * Time: 11:50 AM
- */
 public class NodeDeserializerTest {
 
     private ObjectMapper objectMapper = new ObjectMapper()
-            .registerModule(new CriteriaModule(SIMPLE_TYPES));
+            .registerModule(new MangoModule(SIMPLE_TYPES));
 
     @Test
     public void testEqDeserialize() throws Exception {

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.json.tuplestore;
+package org.calrissian.mango.json.deser;
 
 
 import com.fasterxml.jackson.core.JsonParser;
@@ -28,10 +28,6 @@ import org.calrissian.mango.domain.entity.BaseEntity;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * Date: 9/12/12
- * Time: 2:56 PM
- */
 public class EntityDeserializer extends JsonDeserializer<BaseEntity> {
 
     @Override
@@ -43,7 +39,8 @@ public class EntityDeserializer extends JsonDeserializer<BaseEntity> {
 
         BaseEntity toReturn =  new BaseEntity(type, id);
 
-        List<Tuple> tuples = jsonParser.getCodec().readValue(jsonParser.getCodec().treeAsTokens(tuplesArray), new TypeReference<List<Tuple>>() {});
+        List<Tuple> tuples = jsonParser.getCodec().readValue(jsonParser.getCodec().treeAsTokens(tuplesArray), new TypeReference<List<Tuple>>() {
+        });
 
         toReturn.putAll(tuples);
 

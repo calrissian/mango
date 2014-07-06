@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.json.tuple;
+package org.calrissian.mango.json.deser;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.calrissian.mango.domain.Tuple;
+import org.calrissian.mango.json.MangoModule;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -29,7 +30,7 @@ import static org.junit.Assert.assertEquals;
 public class TupleDeserializerTest {
 
     private ObjectMapper objectMapper = new ObjectMapper()
-            .registerModule(new TupleModule(SIMPLE_TYPES));
+            .registerModule(new MangoModule(SIMPLE_TYPES));
 
 
     @Test

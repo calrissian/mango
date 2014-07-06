@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.json.tuple;
+package org.calrissian.mango.json.ser;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import org.calrissian.mango.domain.Tuple;
+import org.calrissian.mango.json.MangoModule;
 import org.junit.Test;
 
 import static org.calrissian.mango.types.SimpleTypeEncoders.SIMPLE_TYPES;
@@ -27,7 +28,7 @@ import static org.junit.Assert.assertEquals;
 public class TupleSerializerTest {
 
     private ObjectMapper objectMapper = new ObjectMapper()
-            .registerModule(new TupleModule(SIMPLE_TYPES));
+            .registerModule(new MangoModule(SIMPLE_TYPES));
 
     @Test
     public void testBasicSerialization() throws Exception {

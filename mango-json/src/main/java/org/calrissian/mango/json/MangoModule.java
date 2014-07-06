@@ -13,35 +13,46 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.json.criteria;
-
+package org.calrissian.mango.json;
 
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.calrissian.mango.criteria.domain.Node;
+import org.calrissian.mango.domain.Tuple;
+import org.calrissian.mango.domain.entity.Entity;
+import org.calrissian.mango.json.deser.EntityDeserializer;
 import org.calrissian.mango.json.deser.NodeDeserializer;
+import org.calrissian.mango.json.deser.TupleDeserializer;
 import org.calrissian.mango.json.ser.NodeSerializer;
+import org.calrissian.mango.json.ser.TupleSerializer;
 import org.calrissian.mango.types.TypeRegistry;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static org.calrissian.mango.types.SimpleTypeEncoders.SIMPLE_TYPES;
 
-@Deprecated
-public class CriteriaModule extends SimpleModule {
+
+public class MangoModule extends SimpleModule {
 
     private final TypeRegistry<String> typeContext;
 
-    public CriteriaModule() {
+    public MangoModule() {
         this(SIMPLE_TYPES);
     }
 
-    public CriteriaModule(TypeRegistry<String> typeContext) {
-        super("NodeModule");
-        this.typeContext = typeContext;
+    public MangoModule(TypeRegistry<String> typeContext) {
+        super("MangoModule");
+        this.typeContext = checkNotNull(typeContext);
     }
 
     @Override
     public void setupModule(SetupContext context) {
+        addSerializer(Tuple.class, new TupleSerializer(typeContext));
+        addDeserializer(Tuple.class, new TupleDeserializer(typeContext));
+
+        addDeserializer(Entity.class, new EntityDeserializer());
+
         addSerializer(Node.class, new NodeSerializer(typeContext));
         addDeserializer(Node.class, new NodeDeserializer(typeContext));
+
         super.setupModule(context);
     }
 }

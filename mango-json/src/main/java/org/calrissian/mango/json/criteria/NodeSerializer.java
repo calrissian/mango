@@ -15,106 +15,12 @@
  */
 package org.calrissian.mango.json.criteria;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import org.calrissian.mango.criteria.domain.*;
 import org.calrissian.mango.types.TypeRegistry;
 
-import java.io.IOException;
-
-public class NodeSerializer extends JsonSerializer<Node> {
-
-    private final TypeRegistry<String> typeRegistry;
+@Deprecated
+public class NodeSerializer extends org.calrissian.mango.json.ser.NodeSerializer {
 
     public NodeSerializer(TypeRegistry<String> typeRegistry) {
-        this.typeRegistry = typeRegistry;
-    }
-
-    @Override
-    public void serialize(Node node, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
-            throws IOException {
-
-        jsonGenerator.writeStartObject();
-        if (node instanceof ParentNode) {
-            serialize((ParentNode) node, jsonGenerator, serializerProvider);
-        } else if (node instanceof Leaf) {
-            serialize((Leaf) node, jsonGenerator, serializerProvider);
-        } else {
-            throw new IllegalArgumentException("Unsupported node: " + node);
-        }
-
-        jsonGenerator.writeEndObject();
-    }
-
-    public void serialize(ParentNode node, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
-            throws IOException {
-
-        if (node instanceof AndNode) {
-            //and
-            jsonGenerator.writeObjectFieldStart("and");
-
-        } else if (node instanceof OrNode) {
-            //or
-            jsonGenerator.writeObjectFieldStart("or");
-        } else throw new IllegalArgumentException("Unsupported parent: " + node);
-        jsonGenerator.writeArrayFieldStart("children");
-        for (Node child : node.children()) {
-            serialize(child, jsonGenerator, serializerProvider);
-        }
-        jsonGenerator.writeEndArray();
-        jsonGenerator.writeEndObject();
-
-    }
-
-    public void serialize(Leaf node, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
-            throws IOException {
-
-        if (node instanceof EqualsLeaf) {
-            //eq
-            jsonGenerator.writeObjectFieldStart("eq");
-            EqualsLeaf equalsLeaf = (EqualsLeaf) node;
-            jsonGenerator.writeStringField("key", equalsLeaf.getKey());
-
-            Object value = equalsLeaf.getValue();
-            String type = typeRegistry.getAlias(value);
-            String val_str = typeRegistry.encode(value);
-            jsonGenerator.writeStringField("type", type);
-            jsonGenerator.writeStringField("value", val_str);
-
-            jsonGenerator.writeEndObject();
-        } else if (node instanceof NotEqualsLeaf) {
-            //neq
-            NotEqualsLeaf leaf = (NotEqualsLeaf) node;
-            jsonGenerator.writeObjectFieldStart("neq");
-            jsonGenerator.writeStringField("key", leaf.getKey());
-
-            Object value = leaf.getValue();
-            String type = typeRegistry.getAlias(value);
-            String val_str = typeRegistry.encode(value);
-            jsonGenerator.writeStringField("type", type);
-            jsonGenerator.writeStringField("value", val_str);
-
-            jsonGenerator.writeEndObject();
-        } else if (node instanceof RangeLeaf) {
-            //range
-            RangeLeaf leaf = (RangeLeaf) node;
-            jsonGenerator.writeObjectFieldStart("range");
-            jsonGenerator.writeStringField("key", leaf.getKey());
-
-            Object start = leaf.getStart();
-            String type = typeRegistry.getAlias(start);
-            String val_str = typeRegistry.encode(start);
-            jsonGenerator.writeStringField("type", type);
-            jsonGenerator.writeStringField("start", val_str);
-
-            Object end = leaf.getEnd();
-            val_str = typeRegistry.encode(end);
-            jsonGenerator.writeStringField("end", val_str);
-
-            jsonGenerator.writeEndObject();
-        } else throw new IllegalArgumentException("Unsupported leaf: " + node);
-
-
+        super(typeRegistry);
     }
 }
