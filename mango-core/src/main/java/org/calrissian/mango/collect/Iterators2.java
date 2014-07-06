@@ -17,11 +17,13 @@ package org.calrissian.mango.collect;
 
 
 import com.google.common.collect.AbstractIterator;
+import com.google.common.collect.Iterators;
 
 import java.util.Iterator;
 import java.util.Queue;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.Iterators.consumingIterator;
 
 
 /**
@@ -66,24 +68,12 @@ public class Iterators2 {
 
     /**
      * Generates an iterator that will drain a queue by consistently polling the latest item.
+     *
+     * @deprecated use {@link Iterators}.consumingIterator instead
      */
+    @Deprecated
     public static <T> Iterator<T> drainingIterator(final Queue<T> queue) {
         checkNotNull(queue);
-        return new Iterator<T>() {
-            @Override
-            public boolean hasNext() {
-                return queue.size() != 0;
-            }
-
-            @Override
-            public T next() {
-                return queue.poll();
-            }
-
-            @Override
-            public void remove() {
-                queue.remove();
-            }
-        };
+        return consumingIterator(queue.iterator());
     }
 }
