@@ -23,8 +23,7 @@ import java.io.IOException;
 public class EventSerializer extends BaseTupleStoreSerializer<Event> {
 
     @Override
-    protected void generateObject(Event event, JsonGenerator jsonGenerator) throws IOException {
-        jsonGenerator.writeStartObject();
+    protected void writeUniqueFields(Event event, JsonGenerator jsonGenerator) throws IOException {
         jsonGenerator.writeObjectField("timestamp", event.getTimestamp());
         jsonGenerator.writeObjectField("id", event.getId());
 

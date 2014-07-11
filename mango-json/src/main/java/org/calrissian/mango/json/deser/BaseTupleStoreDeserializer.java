@@ -22,16 +22,16 @@ public abstract class BaseTupleStoreDeserializer<T extends TupleStore> extends J
     @Override
     public T deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
         JsonNode root = jsonParser.getCodec().readTree(jsonParser);
-        T tupelStore = deserialize(root);
+        T tupleStore = deserialize(root);
 
         ObjectNode tuplesObject = (ObjectNode) root.get("tuples");
 
         Map<String, Collection<Tuple>> tuples =
                 jsonParser.getCodec().readValue(jsonParser.getCodec().treeAsTokens(tuplesObject), TR);
 
-        tupelStore.putAll(concat(tuples.values()));
+        tupleStore.putAll(concat(tuples.values()));
 
-        return tupelStore;
+        return tupleStore;
 
 
     }

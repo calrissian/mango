@@ -15,7 +15,9 @@ public abstract class BaseTupleStoreSerializer<T extends TupleStore> extends Jso
     @Override
     public void serialize(T t, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
 
-        generateObject(t, jsonGenerator);
+        jsonGenerator.writeStartObject();
+
+        writeUniqueFields(t, jsonGenerator);
 
         jsonGenerator.writeObjectFieldStart("tuples");
 
@@ -26,5 +28,5 @@ public abstract class BaseTupleStoreSerializer<T extends TupleStore> extends Jso
 
     }
 
-    protected abstract void generateObject(T t, JsonGenerator generator) throws IOException;
+    protected abstract void writeUniqueFields(T t, JsonGenerator generator) throws IOException;
 }

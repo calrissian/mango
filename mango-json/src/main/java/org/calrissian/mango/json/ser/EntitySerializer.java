@@ -23,8 +23,7 @@ import java.io.IOException;
 public class EntitySerializer extends BaseTupleStoreSerializer<Entity> {
 
     @Override
-    protected void generateObject(Entity entity, JsonGenerator generator) throws IOException {
-        generator.writeStartObject();
+    protected void writeUniqueFields(Entity entity, JsonGenerator generator) throws IOException {
         generator.writeObjectField("type", entity.getType());
         generator.writeObjectField("id", entity.getId());
     }
