@@ -13,20 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.json.deser;
+package org.calrissian.mango.json.ser;
 
+import com.fasterxml.jackson.core.JsonGenerator;
+import org.calrissian.mango.domain.entity.Entity;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import org.calrissian.mango.domain.entity.BaseEntity;
+import java.io.IOException;
 
-public class EntityDeserializer extends BaseTupleStoreDeserializer<BaseEntity> {
+public class EntitySerializer extends BaseTupleStoreSerializer<Entity> {
 
     @Override
-    public BaseEntity deserialize(JsonNode root) {
-        String type = root.get("type").asText();
-        String id = root.get("id").asText();
-
-        BaseEntity toReturn =  new BaseEntity(type, id);
-        return toReturn;
+    protected void writeUniqueFields(Entity entity, JsonGenerator generator) throws IOException {
+        generator.writeObjectField("type", entity.getType());
+        generator.writeObjectField("id", entity.getId());
     }
 }

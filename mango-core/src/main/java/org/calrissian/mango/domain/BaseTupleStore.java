@@ -77,6 +77,11 @@ public class BaseTupleStore implements TupleStore {
     }
 
     @Override
+    public boolean containsKey(String key) {
+        return tuples.containsKey(key);
+    }
+
+    @Override
     public <T> Tuple<T> remove(Tuple<T> t) {
         checkNotNull(t);
         checkNotNull(t.getKey());
