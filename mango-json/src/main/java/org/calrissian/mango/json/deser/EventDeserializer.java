@@ -16,39 +16,18 @@
 package org.calrissian.mango.json.deser;
 
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import org.calrissian.mango.domain.Tuple;
 import org.calrissian.mango.domain.event.BaseEvent;
 
-import java.io.IOException;
-import java.util.List;
-
-public class EventDeserializer extends JsonDeserializer<BaseEvent> {
+public class EventDeserializer extends BaseTupleStoreDeserializer<BaseEvent> {
 
     @Override
-    public BaseEvent deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-        JsonNode root = jsonParser.getCodec().readTree(jsonParser);
-        ArrayNode tuplesArray = (ArrayNode) root.get("tuples");
-
+    public BaseEvent deserialize(JsonNode root) {
         String id = root.get("id").asText();
         long timestamp = root.get("timestamp").asLong();
 
         BaseEvent toReturn =  new BaseEvent(id, timestamp);
-
-        List<Tuple> tuples = jsonParser.getCodec().readValue(jsonParser.getCodec().treeAsTokens(tuplesArray), new TypeReference<List<Tuple>>() {
-        });
-
-        toReturn.putAll(tuples);
-
         return toReturn;
-
     }
 
 }

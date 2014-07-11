@@ -26,6 +26,8 @@ import org.calrissian.mango.json.deser.EntityDeserializer;
 import org.calrissian.mango.json.deser.EventDeserializer;
 import org.calrissian.mango.json.deser.NodeDeserializer;
 import org.calrissian.mango.json.deser.TupleDeserializer;
+import org.calrissian.mango.json.ser.EntitySerializer;
+import org.calrissian.mango.json.ser.EventSerializer;
 import org.calrissian.mango.json.ser.NodeSerializer;
 import org.calrissian.mango.json.ser.TupleSerializer;
 import org.calrissian.mango.types.TypeRegistry;
@@ -49,12 +51,17 @@ public class MangoModule extends SimpleModule {
 
     @Override
     public void setupModule(SetupContext context) {
+
         addSerializer(Tuple.class, new TupleSerializer(typeContext));
         addDeserializer(Tuple.class, new TupleDeserializer(typeContext));
 
-        //Register the class and a default deserializer for the interface.
+        //Register the class and a default serializer/deserializer for the interface.
+        addSerializer(Entity.class, new EntitySerializer());
+        addSerializer(BaseEntity.class, new EntitySerializer());
         addDeserializer(Entity.class, new EntityDeserializer());
         addDeserializer(BaseEntity.class, new EntityDeserializer());
+        addSerializer(Event.class, new EventSerializer());
+        addSerializer(BaseEvent.class, new EventSerializer());
         addDeserializer(Event.class, new EventDeserializer());
         addDeserializer(BaseEvent.class, new EventDeserializer());
 
