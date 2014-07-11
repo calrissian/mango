@@ -53,6 +53,11 @@ public interface TupleStore extends Serializable {
     Set<String> keys();
 
     /**
+     * Returns true of there exist tuples with the specified key
+     */
+    boolean containsKey(String key);
+
+    /**
      * Removes the specified tuple
      */
     <T> Tuple<T> remove(Tuple<T> t);
