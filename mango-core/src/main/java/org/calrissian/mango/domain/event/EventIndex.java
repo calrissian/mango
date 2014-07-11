@@ -20,15 +20,19 @@ import org.calrissian.mango.domain.Identifiable;
 public class EventIndex implements Identifiable {
 
     private String id;
-    private long timestamp;
+    private Long timestamp;
 
-    public EventIndex(String id, long timestamp) {
+    public EventIndex(String id, Long timestamp) {
         this.id = id;
         this.timestamp = timestamp;
     }
 
     public EventIndex(Event event) {
         this(event.getId(), event.getTimestamp());
+    }
+
+    public EventIndex(String id) {
+        this(id, null);
     }
 
     public String getId() {
