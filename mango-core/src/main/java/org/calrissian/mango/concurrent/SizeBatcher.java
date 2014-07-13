@@ -80,7 +80,7 @@ final class SizeBatcher<T> implements Batcher<T> {
         @Override
         public void run() {
             try {
-                while (!runService.isShutdown() && !handler.isShutdown() && !interrupted()) {
+                while (!interrupted() && !runService.isShutdown() && !handler.isShutdown()) {
 
                     while (batch.size() != maxSize) {
                         //First try to drain the queue into the batch, but if there is no data then fall back to a

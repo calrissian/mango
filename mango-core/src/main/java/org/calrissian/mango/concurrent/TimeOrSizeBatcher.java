@@ -84,10 +84,10 @@ final class TimeOrSizeBatcher<T> implements Batcher<T> {
         @Override
         public void run() {
             try {
-                while (!runService.isShutdown() && !handler.isShutdown() && !interrupted()) {
+                while (!interrupted() && !runService.isShutdown() && !handler.isShutdown()) {
 
                     long startTime = nanoTime();
-                    long remaining = (startTime + interval) - nanoTime();
+                    long remaining = interval;
 
                     while (batch.size() != maxSize && remaining >= 0) {
                         //First try to drain the queue into the batch, but if there is no data then fall back to a
@@ -100,7 +100,7 @@ final class TimeOrSizeBatcher<T> implements Batcher<T> {
                             batch.add(item);
                         }
 
-                        remaining = (startTime + interval) - nanoTime();
+                        remaining = startTime - nanoTime() + interval;
                     }
 
                     //Do nothing if empty.  Also good faith shutdown check
