@@ -26,13 +26,13 @@ import static java.util.concurrent.Executors.newCachedThreadPool;
  * pass off batches to a {@code listenerService()} to allow for handling of batches asynchronously via a
  * {@link BatchListener}.  If no {@code listenerService()} is provided then a cached thread pool will be used.
  */
-public final class BatcherBuilder<T> {
+public final class BatcherBuilder {
 
     /**
      * Creates a new builder for creating a {@link Batcher}
      */
-    public static <T> BatcherBuilder<T> create() {
-        return new BatcherBuilder<T>();
+    public static BatcherBuilder create() {
+        return new BatcherBuilder();
     }
 
     private Integer maxSize = null;
@@ -47,7 +47,7 @@ public final class BatcherBuilder<T> {
      * Add a max size component for a batcher.  If specified a batcher will call the {@link BatchListener}
      * as soon as the maxSize is reached.
      */
-    public BatcherBuilder<T> maxSize(int maxSize) {
+    public BatcherBuilder maxSize(int maxSize) {
         checkArgument(maxSize > 0, "Required to have a max size greater than 0");
         this.maxSize = maxSize;
         return this;
@@ -57,7 +57,7 @@ public final class BatcherBuilder<T> {
      * Add a max time component for a batcher.  If specified a batcher will call the {@link BatchListener}
      * at most once for the time specified if there are any elements in the batch.
      */
-    public BatcherBuilder<T> maxTime(long maxTime, TimeUnit timeUnit) {
+    public BatcherBuilder maxTime(long maxTime, TimeUnit timeUnit) {
         checkArgument(maxTime > 0, "Required to have a max time greater than 0");
         checkNotNull(timeUnit);
         this.maxTime = maxTime;
@@ -69,13 +69,13 @@ public final class BatcherBuilder<T> {
      * Provide a configured {@link ExecutorService} to use for running the {@link BatchListener} on.
      * This {@link ExecutorService} will be shutdown when the created batcher is closed.
      */
-    public BatcherBuilder<T> listenerService(ExecutorService listenerService) {
+    public BatcherBuilder listenerService(ExecutorService listenerService) {
         checkNotNull(listenerService);
         this.listenerService = listenerService;
         return this;
     }
 
-    public Batcher<T> build(BatchListener<? extends T> listener) {
+    public <T> Batcher<T> build(BatchListener<? extends T> listener) {
         checkNotNull(listener);
         checkArgument(maxSize != null || maxTime != null, "All batchers are required to have either a time or size bound.");
 
