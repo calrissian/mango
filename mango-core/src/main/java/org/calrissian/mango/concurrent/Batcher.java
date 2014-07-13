@@ -16,18 +16,31 @@
 package org.calrissian.mango.concurrent;
 
 import java.io.Closeable;
+import java.util.concurrent.TimeUnit;
 
 public interface Batcher<T> extends Closeable {
 
     /**
-     * Adds a new item to be batched.
+     * Adds a new item to be batched. If this batcher was constructed with a max queue size, this
+     * method will attempt to add a new item if there is room, otherwise will return false immediately.
      */
-    public void add(T item) throws InterruptedException;
+    public boolean add(T item);
 
     /**
-     * Adds several items to be batched.
+     * Adds a new item to be batched. If this batcher was constructed with a max queue size, this
+     * method will wait until there is room in the queue to add the data or it has timed out.
      */
-    public void addAll(Iterable<? extends T> items) throws InterruptedException;
+    public boolean add(T item, long timeout, TimeUnit unit) throws InterruptedException;
+
+    /**
+     * Adds a new item to be batched. If this batcher was constructed with a max queue size, this
+     * method will wait until there is room in the queue to add the data.
+     *
+     * Note: Ff this batcher is closed and there are producers blocking on this call, they may be stuck until
+     * they are interrupted.  If using a max queue size, it is suggested that one of the other add methods
+     * be used.
+     */
+    public boolean addOrWait(T item) throws InterruptedException;
 
     /**
      * {@inheritDoc}
