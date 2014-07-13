@@ -40,6 +40,7 @@ public final class BatcherBuilder {
     private TimeUnit timeUnit = null;
 
     private ExecutorService listenerService = null;
+    private Integer maxQueueSize;
 
     private BatcherBuilder() {/**private constructor*/}
 
@@ -66,6 +67,17 @@ public final class BatcherBuilder {
     }
 
     /**
+     * Bound the queue size used by the batchers.  By specifying a max size, all producers to the {@link Batcher}
+     * the batcher will at most keep {@code maxQueueSize} elements.  Producers can determine how to handle
+     * a full queue using one of the {@link Batcher}'s add methods.
+     */
+    public BatcherBuilder maxQueueSize(int maxQueueSize) {
+        checkArgument(maxQueueSize > 0, "Required to have a max queue size greater than 0");
+        this.maxQueueSize = maxQueueSize;
+        return this;
+    }
+
+    /**
      * Provide a configured {@link ExecutorService} to use for running the {@link BatchListener} on.
      * This {@link ExecutorService} will be shutdown when the created batcher is closed.
      */
@@ -80,10 +92,11 @@ public final class BatcherBuilder {
         checkArgument(maxSize != null || maxTime != null, "All batchers are required to have either a time or size bound.");
 
         ExecutorService handler = (listenerService == null ? newCachedThreadPool() : listenerService);
+        BlockingQueue<T> backingQueue = (maxQueueSize == null ? new LinkedBlockingQueue<T>() : new ArrayBlockingQueue<T>(maxQueueSize));
 
         if (maxSize != null && maxTime != null) {
             return new TimeOrSizeBatcher<T>(
-                    new LinkedBlockingQueue<T>(),
+                    backingQueue,
                     listener,
                     handler,
                     maxSize,
@@ -92,14 +105,14 @@ public final class BatcherBuilder {
             );
         } else if (maxSize != null) {
             return new SizeBatcher<T>(
-                    new LinkedBlockingQueue<T>(),
+                    backingQueue,
                     listener,
                     handler,
                     maxSize
             );
         } else {
             return new TimeBatcher<T>(
-                    new LinkedBlockingQueue<T>(),
+                    backingQueue,
                     listener,
                     handler,
                     maxTime,

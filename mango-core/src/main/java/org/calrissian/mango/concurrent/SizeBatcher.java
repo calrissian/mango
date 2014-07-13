@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.lang.Thread.interrupted;
@@ -47,16 +48,23 @@ final class SizeBatcher<T> implements Batcher<T> {
     }
 
     @Override
-    public void add(T item) throws InterruptedException {
+    public boolean add(T item) {
         checkNotNull(item);
-        backingQueue.put(item);
+        return backingQueue.offer(item);
     }
 
     @Override
-    public void addAll(Iterable<? extends T> items) throws InterruptedException {
-        checkNotNull(items);
-        for (T item : items)
-            add(item);
+    public boolean add(T item, long timeout, TimeUnit unit) throws InterruptedException {
+        checkNotNull(item);
+        checkNotNull(unit);
+        return backingQueue.offer(item, timeout, unit);
+    }
+
+    @Override
+    public boolean addOrWait(T item) throws InterruptedException {
+        checkNotNull(item);
+        backingQueue.put(item);
+        return true;
     }
 
     @Override

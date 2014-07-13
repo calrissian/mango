@@ -52,16 +52,23 @@ final class TimeOrSizeBatcher<T> implements Batcher<T> {
     }
 
     @Override
-    public void add(T item) throws InterruptedException {
+    public boolean add(T item) {
         checkNotNull(item);
-        backingQueue.put(item);
+        return backingQueue.offer(item);
     }
 
     @Override
-    public void addAll(Iterable<? extends T> items) throws InterruptedException {
-        checkNotNull(items);
-        for (T item : items)
-            add(item);
+    public boolean add(T item, long timeout, TimeUnit unit) throws InterruptedException {
+        checkNotNull(item);
+        checkNotNull(unit);
+        return backingQueue.offer(item, timeout, unit);
+    }
+
+    @Override
+    public boolean addOrWait(T item) throws InterruptedException {
+        checkNotNull(item);
+        backingQueue.put(item);
+        return true;
     }
 
     @Override
