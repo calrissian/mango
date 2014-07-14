@@ -33,11 +33,11 @@ final class SizeBatcher<T> implements Batcher<T> {
     private final ExecutorService runService;
 
     private final BlockingQueue<T> backingQueue;
-    private final BatchListener<? extends T> listener;
+    private final BatchListener<T> listener;
     private final ExecutorService handler;
     private final int maxSize;
 
-    SizeBatcher(BlockingQueue<T> backingQueue, BatchListener<? extends T> listener, ExecutorService handler, int maxSize) {
+    SizeBatcher(BlockingQueue<T> backingQueue, BatchListener<T> listener, ExecutorService handler, int maxSize) {
         this.backingQueue = backingQueue;
         this.listener = listener;
         this.handler = handler;

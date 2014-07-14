@@ -35,11 +35,11 @@ final class TimeBatcher<T> implements Batcher<T> {
     private final ExecutorService runService;
 
     private final BlockingQueue<T> backingQueue;
-    private final BatchListener<? extends T> listener;
+    private final BatchListener<T> listener;
     private final ExecutorService handler;
     private final long interval;
 
-    TimeBatcher(BlockingQueue<T> backingQueue, BatchListener<? extends T> listener, ExecutorService handler, long maxTime, TimeUnit timeUnit) {
+    TimeBatcher(BlockingQueue<T> backingQueue, BatchListener<T> listener, ExecutorService handler, long maxTime, TimeUnit timeUnit) {
         this.backingQueue = backingQueue;
         this.listener = listener;
         this.handler = handler;
@@ -98,7 +98,8 @@ final class TimeBatcher<T> implements Batcher<T> {
                             batch.add(item);
                         }
 
-                        remaining = startTime - nanoTime() + interval;
+                        //Order of operations matters to minimize overflows
+                        remaining = interval - (nanoTime() - startTime);
                     }
 
                     //Do nothing if empty.  Also good faith shutdown check

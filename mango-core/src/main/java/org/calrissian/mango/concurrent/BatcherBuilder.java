@@ -87,7 +87,7 @@ public final class BatcherBuilder {
         return this;
     }
 
-    public <T> Batcher<T> build(BatchListener<? extends T> listener) {
+    public <T> Batcher<T> build(BatchListener<T> listener) {
         checkNotNull(listener);
         checkArgument(maxSize != null || maxTime != null, "All batchers are required to have either a time or size bound.");
 

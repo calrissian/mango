@@ -22,6 +22,6 @@ public interface BatchListener<T> {
     /**
      * Process a batch of items.
      */
-    public void onBatch(Collection<? super T> batch);
+    public void onBatch(Collection<T> batch);
 
 }
