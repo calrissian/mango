@@ -43,7 +43,7 @@ public final class BatcherBuilder {
     private long interval = -1;
 
     private ExecutorService listenerService = null;
-    private Integer maxQueueSize;
+    private int maxQueueSize = -1;
 
     private BatcherBuilder() {/**private constructor*/}
 
@@ -94,7 +94,7 @@ public final class BatcherBuilder {
         checkArgument(maxSize > 0 || interval > 0, "All batchers are required to have either a time or size bound.");
 
         ExecutorService handler = (listenerService == null ? newCachedThreadPool() : listenerService);
-        BlockingQueue<T> backingQueue = (maxQueueSize == null ? new LinkedBlockingQueue<T>() : new ArrayBlockingQueue<T>(maxQueueSize));
+        BlockingQueue<T> backingQueue = (maxQueueSize < 0 ? new LinkedBlockingQueue<T>() : new ArrayBlockingQueue<T>(maxQueueSize));
 
         if (maxSize > 0 && interval > 0) {
             return new TimeOrSizeBatcher<T>(backingQueue, listener, handler, maxSize, interval)
@@ -145,13 +145,13 @@ public final class BatcherBuilder {
         @Override
         protected void populateBatch(BlockingQueue<T> backingQueue, Collection<T> batch) throws InterruptedException {
             long startTime = nanoTime();
-            long remaining = interval;
+            long remainingTime = interval;
 
-            while (remaining >= 0) {
+            while (remainingTime > 0) {
                 //First try to drain the queue into the batch, but if there is no data then fall back to a
                 //blocking call to wait for data to enter the queue.
                 if (backingQueue.drainTo(batch) == 0) {
-                    T item = backingQueue.poll(remaining, NANOSECONDS);
+                    T item = backingQueue.poll(remainingTime, NANOSECONDS);
                     if (item == null)
                         break; //poll timed out, should try and send batch
 
@@ -159,7 +159,7 @@ public final class BatcherBuilder {
                 }
 
                 //Order of operations matters to minimize overflows
-                remaining = interval - (nanoTime() - startTime);
+                remainingTime = interval - (nanoTime() - startTime);
             }
         }
     }
@@ -181,7 +181,7 @@ public final class BatcherBuilder {
             long remainingTime = interval;
             int remainingSize = maxSize;
 
-            while (remainingSize > 0 && remainingTime >= 0) {
+            while (remainingSize > 0 && remainingTime > 0) {
                 //First try to drain the queue into the batch, but if there is not enough data then fall back to a
                 //blocking call to wait for data to enter the queue.
                 if (backingQueue.drainTo(batch, remainingSize) != remainingSize) {
