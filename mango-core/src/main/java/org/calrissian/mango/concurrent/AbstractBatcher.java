@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2013 The Calrissian Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.calrissian.mango.concurrent;
 
 
@@ -31,22 +46,31 @@ abstract class AbstractBatcher<T> implements Batcher<T> {
         batchRunnable = new BatchRunnable(batch);
     }
 
+    /**
+     * Method responsible for populating the provided {@code batch} with data from the provided {@code backingQueue}
+     */
     protected abstract void populateBatch(BlockingQueue<T> backingQueue, Collection<T> batch) throws InterruptedException;
 
     /**
-     * To be called at the end of the constructor of every subclass.
+     * To be called after construction of any subclass to instantiate the batching thread.
      */
     protected AbstractBatcher<T> start() {
         batchFuture = batchService.submit(batchRunnable);
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final boolean add(T item) {
         checkNotNull(item);
         return backingQueue.offer(item);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final boolean add(T item, long timeout, TimeUnit unit) throws InterruptedException {
         checkNotNull(item);
@@ -54,6 +78,9 @@ abstract class AbstractBatcher<T> implements Batcher<T> {
         return backingQueue.offer(item, timeout, unit);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final boolean addOrWait(T item) throws InterruptedException {
         checkNotNull(item);
@@ -61,6 +88,9 @@ abstract class AbstractBatcher<T> implements Batcher<T> {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void close() {
         //Force an interrupt on running thread and shutdown executor cleanly.
