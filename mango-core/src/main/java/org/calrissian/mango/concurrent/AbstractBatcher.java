@@ -15,7 +15,8 @@ import static java.util.concurrent.Executors.newSingleThreadExecutor;
 abstract class AbstractBatcher<T> implements Batcher<T> {
 
     private final ExecutorService batchService;
-    private final Future<?> batchFuture;
+    private final BatchRunnable batchRunnable;
+    private Future<?> batchFuture;
 
     private final BlockingQueue<T> backingQueue;
     private final BatchListener<T> listener;
@@ -27,10 +28,18 @@ abstract class AbstractBatcher<T> implements Batcher<T> {
         this.handler = handler;
 
         batchService = newSingleThreadExecutor();
-        batchFuture = batchService.submit(new BatchRunnable(batch));
+        batchRunnable = new BatchRunnable(batch);
     }
 
     protected abstract void populateBatch(BlockingQueue<T> backingQueue, Collection<T> batch) throws InterruptedException;
+
+    /**
+     * To be called at the end of the constructor of every subclass.
+     */
+    protected AbstractBatcher<T> start() {
+        batchFuture = batchService.submit(batchRunnable);
+        return this;
+    }
 
     @Override
     public final boolean add(T item) {
@@ -83,7 +92,6 @@ abstract class AbstractBatcher<T> implements Batcher<T> {
 
                     //Good faith shutdown check
                     if (!batch.isEmpty() && !handler.isShutdown()) {
-
                         //copy the batch and clear it.
                         final Collection<T> copy = new ArrayList<T>(batch);
                         batch.clear();

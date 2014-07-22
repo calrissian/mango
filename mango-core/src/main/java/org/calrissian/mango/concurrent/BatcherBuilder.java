@@ -97,14 +97,14 @@ public final class BatcherBuilder {
         BlockingQueue<T> backingQueue = (maxQueueSize == null ? new LinkedBlockingQueue<T>() : new ArrayBlockingQueue<T>(maxQueueSize));
 
         if (maxSize > 0 && interval > 0) {
-            return new TimeOrSizeBatcher<T>(backingQueue, listener, handler,
-                    maxSize, interval);
+            return new TimeOrSizeBatcher<T>(backingQueue, listener, handler, maxSize, interval)
+                    .start();
         } else if (maxSize > 0) {
-            return new SizeBatcher<T>(backingQueue, listener, handler,
-                    maxSize);
+            return new SizeBatcher<T>(backingQueue, listener, handler, maxSize)
+                    .start();
         } else {
-            return new TimeBatcher<T>(backingQueue, listener, handler,
-                    interval);
+            return new TimeBatcher<T>(backingQueue, listener, handler, interval)
+                    .start();
         }
     }
 
