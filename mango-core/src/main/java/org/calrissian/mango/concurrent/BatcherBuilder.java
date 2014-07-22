@@ -15,11 +15,15 @@
  */
 package org.calrissian.mango.concurrent;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.concurrent.*;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.lang.System.nanoTime;
 import static java.util.concurrent.Executors.newCachedThreadPool;
+import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
 /**
  * Constructs a {@link Batcher} implementation that creates batches with one or more bounding conditions.  All batchers
@@ -35,9 +39,8 @@ public final class BatcherBuilder {
         return new BatcherBuilder();
     }
 
-    private Integer maxSize = null;
-    private Long maxTime = null;
-    private TimeUnit timeUnit = null;
+    private int maxSize = -1;
+    private long interval = -1;
 
     private ExecutorService listenerService = null;
     private Integer maxQueueSize;
@@ -61,8 +64,7 @@ public final class BatcherBuilder {
     public BatcherBuilder maxTime(long maxTime, TimeUnit timeUnit) {
         checkArgument(maxTime > 0, "Required to have a max time greater than 0");
         checkNotNull(timeUnit);
-        this.maxTime = maxTime;
-        this.timeUnit = timeUnit;
+        this.interval = timeUnit.toNanos(maxTime);
         return this;
     }
 
@@ -89,35 +91,111 @@ public final class BatcherBuilder {
 
     public <T> Batcher<T> build(BatchListener<T> listener) {
         checkNotNull(listener);
-        checkArgument(maxSize != null || maxTime != null, "All batchers are required to have either a time or size bound.");
+        checkArgument(maxSize > 0 || interval > 0, "All batchers are required to have either a time or size bound.");
 
         ExecutorService handler = (listenerService == null ? newCachedThreadPool() : listenerService);
         BlockingQueue<T> backingQueue = (maxQueueSize == null ? new LinkedBlockingQueue<T>() : new ArrayBlockingQueue<T>(maxQueueSize));
 
-        if (maxSize != null && maxTime != null) {
-            return new TimeOrSizeBatcher<T>(
-                    backingQueue,
-                    listener,
-                    handler,
-                    maxSize,
-                    maxTime,
-                    timeUnit
-            );
-        } else if (maxSize != null) {
-            return new SizeBatcher<T>(
-                    backingQueue,
-                    listener,
-                    handler,
-                    maxSize
-            );
+        if (maxSize > 0 && interval > 0) {
+            return new TimeOrSizeBatcher<T>(backingQueue, listener, handler,
+                    maxSize, interval);
+        } else if (maxSize > 0) {
+            return new SizeBatcher<T>(backingQueue, listener, handler,
+                    maxSize);
         } else {
-            return new TimeBatcher<T>(
-                    backingQueue,
-                    listener,
-                    handler,
-                    maxTime,
-                    timeUnit
-            );
+            return new TimeBatcher<T>(backingQueue, listener, handler,
+                    interval);
+        }
+    }
+
+    private static final class SizeBatcher<T> extends AbstractBatcher<T> {
+
+        private final int maxSize;
+
+        SizeBatcher(BlockingQueue<T> backingQueue, BatchListener<T> listener, ExecutorService handler, int maxSize) {
+            super(backingQueue, listener, handler, new ArrayList<T>(maxSize));
+            this.maxSize = maxSize;
+        }
+
+        @Override
+        protected void populateBatch(BlockingQueue<T> backingQueue, Collection<T> batch) throws InterruptedException {
+            int remainingSize = maxSize;
+
+            while (remainingSize > 0) {
+                //First try to drain the queue into the batch, but if there is not enough data then fall back to a
+                //blocking call to wait for data to enter the queue.
+                if (backingQueue.drainTo(batch, remainingSize) != remainingSize) {
+                    batch.add(backingQueue.take());
+                }
+
+                remainingSize = maxSize - batch.size();
+            }
+        }
+    }
+
+    private static final class TimeBatcher<T> extends AbstractBatcher<T> {
+
+        private final long interval;
+
+        TimeBatcher(BlockingQueue<T> backingQueue, BatchListener<T> listener, ExecutorService handler, long interval) {
+            super(backingQueue, listener, handler, new ArrayList<T>());
+            this.interval = interval;
+        }
+
+        @Override
+        protected void populateBatch(BlockingQueue<T> backingQueue, Collection<T> batch) throws InterruptedException {
+            long startTime = nanoTime();
+            long remaining = interval;
+
+            while (remaining >= 0) {
+                //First try to drain the queue into the batch, but if there is no data then fall back to a
+                //blocking call to wait for data to enter the queue.
+                if (backingQueue.drainTo(batch) == 0) {
+                    T item = backingQueue.poll(remaining, NANOSECONDS);
+                    if (item == null)
+                        break; //poll timed out, should try and send batch
+
+                    batch.add(item);
+                }
+
+                //Order of operations matters to minimize overflows
+                remaining = interval - (nanoTime() - startTime);
+            }
+        }
+    }
+
+    private static final class TimeOrSizeBatcher<T> extends AbstractBatcher<T> {
+
+        private final int maxSize;
+        private final long interval;
+
+        TimeOrSizeBatcher(BlockingQueue<T> backingQueue, BatchListener<T> listener, ExecutorService handler, int maxSize, long interval) {
+            super(backingQueue, listener, handler, new ArrayList<T>(maxSize));
+            this.maxSize = maxSize;
+            this.interval = interval;
+        }
+
+        @Override
+        protected void populateBatch(BlockingQueue<T> backingQueue, Collection<T> batch) throws InterruptedException {
+            long startTime = nanoTime();
+            long remainingTime = interval;
+            int remainingSize = maxSize;
+
+            while (remainingSize > 0 && remainingTime >= 0) {
+                //First try to drain the queue into the batch, but if there is not enough data then fall back to a
+                //blocking call to wait for data to enter the queue.
+                if (backingQueue.drainTo(batch, remainingSize) != remainingSize) {
+                    T item = backingQueue.poll(remainingTime, NANOSECONDS);
+                    if (item == null)
+                        break; //poll timed out, should try and send batch
+
+                    batch.add(item);
+                }
+
+                //Order of operations matters to minimize overflows
+                remainingTime = interval - (nanoTime() - startTime);
+                remainingSize = maxSize - batch.size();
+            }
         }
     }
 }
