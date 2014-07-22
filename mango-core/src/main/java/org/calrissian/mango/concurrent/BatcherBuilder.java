@@ -19,8 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.*;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 import static java.lang.System.nanoTime;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
@@ -32,18 +31,28 @@ import static java.util.concurrent.TimeUnit.NANOSECONDS;
  */
 public final class BatcherBuilder {
 
+    private static final int UNSET_INT = -1;
+
     /**
-     * Creates a new builder for creating a {@link Batcher}
+     * Creates a new builder for creating a {@link Batcher} with a max batch size
      */
-    public static BatcherBuilder create() {
-        return new BatcherBuilder();
+    public static BatcherBuilder create(int maxSize) {
+        return new BatcherBuilder()
+                .maxSize(maxSize);
     }
 
-    private int maxSize = -1;
-    private long interval = -1;
+    /**
+     * Creates a new builder for creating a {@link Batcher} with a max batch time.
+     */
+    public static BatcherBuilder create(long maxTime, TimeUnit timeUnit) {
+        return new BatcherBuilder()
+                .maxTime(maxTime, timeUnit);
+    }
 
+    private int maxSize = UNSET_INT;
+    private long interval = UNSET_INT;
+    private int maxQueueSize = UNSET_INT;
     private ExecutorService listenerService = null;
-    private int maxQueueSize = -1;
 
     private BatcherBuilder() {/**private constructor*/}
 
@@ -52,6 +61,7 @@ public final class BatcherBuilder {
      * as soon as the maxSize is reached.
      */
     public BatcherBuilder maxSize(int maxSize) {
+        checkState(this.maxSize == UNSET_INT, "Max size already set to %s", this.maxSize);
         checkArgument(maxSize > 0, "Required to have a max size greater than 0");
         this.maxSize = maxSize;
         return this;
@@ -62,6 +72,7 @@ public final class BatcherBuilder {
      * at most once for the time specified if there are any elements in the batch.
      */
     public BatcherBuilder maxTime(long maxTime, TimeUnit timeUnit) {
+        checkState(this.interval == UNSET_INT, "Max time already set");
         checkArgument(maxTime > 0, "Required to have a max time greater than 0");
         checkNotNull(timeUnit);
         this.interval = timeUnit.toNanos(maxTime);
@@ -74,6 +85,7 @@ public final class BatcherBuilder {
      * a full queue using one of the {@link Batcher}'s add methods.
      */
     public BatcherBuilder maxQueueSize(int maxQueueSize) {
+        checkState(this.maxQueueSize == UNSET_INT, "Max queue size already set to %d", this.maxQueueSize);
         checkArgument(maxQueueSize > 0, "Required to have a max queue size greater than 0");
         this.maxQueueSize = maxQueueSize;
         return this;
@@ -84,6 +96,7 @@ public final class BatcherBuilder {
      * This {@link ExecutorService} will be shutdown when the created batcher is closed.
      */
     public BatcherBuilder listenerService(ExecutorService listenerService) {
+        checkState(this.listenerService == null, "A listener service has already been set");
         checkNotNull(listenerService);
         this.listenerService = listenerService;
         return this;
@@ -91,15 +104,15 @@ public final class BatcherBuilder {
 
     public <T> Batcher<T> build(BatchListener<T> listener) {
         checkNotNull(listener);
-        checkArgument(maxSize > 0 || interval > 0, "All batchers are required to have either a time or size bound.");
+        checkState(maxSize != UNSET_INT || interval != UNSET_INT, "All batchers are required to have either a time or size bound.");
 
         ExecutorService handler = (listenerService == null ? newCachedThreadPool() : listenerService);
-        BlockingQueue<T> backingQueue = (maxQueueSize < 0 ? new LinkedBlockingQueue<T>() : new ArrayBlockingQueue<T>(maxQueueSize));
+        BlockingQueue<T> backingQueue = (maxQueueSize == UNSET_INT ? new LinkedBlockingQueue<T>() : new ArrayBlockingQueue<T>(maxQueueSize));
 
-        if (maxSize > 0 && interval > 0) {
+        if (maxSize != UNSET_INT && interval != UNSET_INT) {
             return new TimeOrSizeBatcher<T>(backingQueue, listener, handler, maxSize, interval)
                     .start();
-        } else if (maxSize > 0) {
+        } else if (maxSize != UNSET_INT) {
             return new SizeBatcher<T>(backingQueue, listener, handler, maxSize)
                     .start();
         } else {
