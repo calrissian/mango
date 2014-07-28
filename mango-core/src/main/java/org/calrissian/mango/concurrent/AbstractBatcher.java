@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 The Calrissian Authors
+ * Copyright (C) 2014 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,6 +30,9 @@ import static java.util.Collections.unmodifiableCollection;
 import static java.util.concurrent.Executors.newSingleThreadExecutor;
 import static java.util.logging.Level.SEVERE;
 
+/**
+ * Intentionally left package private
+ */
 abstract class AbstractBatcher<T> implements Batcher<T> {
 
     private static final Logger logger = Logger.getLogger(AbstractBatcher.class.getName());
