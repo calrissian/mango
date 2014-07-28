@@ -15,7 +15,6 @@
  */
 package org.calrissian.mango.concurrent;
 
-import com.google.common.util.concurrent.MoreExecutors;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -284,7 +283,7 @@ public class BatcherTest {
         batcher.add(1);
 
         //Wait to make sure that the batcher has time
-        Thread.sleep(20);
+        Thread.sleep(100);
 
         assertTrue(wasCalled.get());
         batcher.add(1);
