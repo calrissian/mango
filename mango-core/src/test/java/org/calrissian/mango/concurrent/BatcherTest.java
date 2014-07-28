@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.google.common.collect.Iterables.consumingIterable;
@@ -236,6 +237,57 @@ public class BatcherTest {
     public void invalidListener() {
         BatcherBuilder.create(100)
                 .build(null);
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void addAfterClose() {
+        Batcher<Integer> batcher = BatcherBuilder.create(100)
+                .maxTime(10, MILLISECONDS)
+                .build(new TestListenter<Integer>());
+        batcher.close();
+        batcher.add(1);
+
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void addTimeBasedAfterClose() throws InterruptedException {
+        Batcher<Integer> batcher = BatcherBuilder.create(100)
+                .maxTime(10, MILLISECONDS)
+                .build(new TestListenter<Integer>());
+        batcher.close();
+        batcher.add(1, 10, MILLISECONDS);
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void addOrWaiteAfterClose() throws InterruptedException {
+        Batcher<Integer> batcher = BatcherBuilder.create(100)
+                .maxTime(10, MILLISECONDS)
+                .build(new TestListenter<Integer>());
+        batcher.close();
+        batcher.addOrWait(1);
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void handlerExceptionClose() throws InterruptedException {
+        final AtomicBoolean wasCalled = new AtomicBoolean(false);
+        Batcher<Integer> batcher = BatcherBuilder.create(1)
+                .listenerService(sameThreadExecutor()) //Required to send exception to batch thread
+                .build(new BatchListener<Integer>() {
+                    @Override
+                    public void onBatch(Collection<Integer> batch) {
+                        wasCalled.set(true);
+
+                        //Force exception that will fall into t
+                        throw new RuntimeException();
+                    }
+                });
+        batcher.add(1);
+
+        //Wait to make sure that the batcher has time
+        Thread.sleep(20);
+
+        assertTrue(wasCalled.get());
+        batcher.add(1);
     }
 
     @After

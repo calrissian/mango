@@ -22,12 +22,19 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 import static java.lang.Thread.interrupted;
 import static java.util.concurrent.Executors.newSingleThreadExecutor;
+import static java.util.logging.Level.SEVERE;
 
 abstract class AbstractBatcher<T> implements Batcher<T> {
+
+    private static final Logger logger = Logger.getLogger(AbstractBatcher.class.getName());
+
 
     private final ExecutorService batchService;
     private final BatchRunnable batchRunnable;
@@ -36,6 +43,8 @@ abstract class AbstractBatcher<T> implements Batcher<T> {
     private final BlockingQueue<T> backingQueue;
     private final BatchListener<T> listener;
     private final ExecutorService handler;
+
+    private volatile boolean isClosed = false;
 
     AbstractBatcher(BlockingQueue<T> backingQueue, BatchListener<T> listener, ExecutorService handler, Collection<T> batch) {
         this.backingQueue = backingQueue;
@@ -65,6 +74,8 @@ abstract class AbstractBatcher<T> implements Batcher<T> {
     @Override
     public final boolean add(T item) {
         checkNotNull(item);
+        checkState(!isClosed, "The batcher has been closed");
+
         return backingQueue.offer(item);
     }
 
@@ -75,6 +86,8 @@ abstract class AbstractBatcher<T> implements Batcher<T> {
     public final boolean add(T item, long timeout, TimeUnit unit) throws InterruptedException {
         checkNotNull(item);
         checkNotNull(unit);
+        checkState(!isClosed, "The batcher has been closed");
+
         return backingQueue.offer(item, timeout, unit);
     }
 
@@ -84,6 +97,8 @@ abstract class AbstractBatcher<T> implements Batcher<T> {
     @Override
     public final boolean addOrWait(T item) throws InterruptedException {
         checkNotNull(item);
+        checkState(!isClosed, "The batcher has been closed");
+
         backingQueue.put(item);
         return true;
     }
@@ -93,6 +108,7 @@ abstract class AbstractBatcher<T> implements Batcher<T> {
      */
     @Override
     public void close() {
+        isClosed = true;
         //Force an interrupt on running thread and shutdown executor cleanly.
         batchFuture.cancel(true);
         batchService.shutdown();
@@ -111,7 +127,7 @@ abstract class AbstractBatcher<T> implements Batcher<T> {
         @Override
         public void run() {
             try {
-                while (!interrupted() && !handler.isShutdown()) {
+                while (!isClosed && !interrupted() && !handler.isShutdown()) {
 
                     try {
                         populateBatch(backingQueue, batch);
@@ -120,23 +136,34 @@ abstract class AbstractBatcher<T> implements Batcher<T> {
                         break;
                     }
 
-                    //Good faith shutdown check
+                    //Good faith handler shutdown check
                     if (!batch.isEmpty() && !handler.isShutdown()) {
                         //copy the batch and clear it.
                         final Collection<T> copy = new ArrayList<T>(batch);
                         batch.clear();
 
-                        handler.execute(new Runnable() {
-                            @Override
-                            public void run() {
-                                listener.onBatch(copy);
-                            }
-                        });
+                        try {
+                            handler.execute(new Runnable() {
+                                @Override
+                                public void run() {
+                                    listener.onBatch(copy);
+                                }
+                            });
+                        } catch (Exception e) {
+                            //Handler threw exception.  Close the batcher and exit cleanly.
+                            logger.log(SEVERE, "Encountered exception sending to batch listener.  Closing the batcher", e);
+                            close();
+                        }
                     }
                 }
-            } catch (Exception e) {
-                //Do nothing, just let method end.
-                //TODO maybe log
+            } catch (Throwable e) {
+                //Unknown exception
+                try {
+                    logger.log(SEVERE, "Batcher should not have throw exception.  Closing the batcher", e);
+                    close();
+                } catch (Throwable e2) {
+                    //Do nothing, just exit cleanly
+                }
             }
         }
     }
