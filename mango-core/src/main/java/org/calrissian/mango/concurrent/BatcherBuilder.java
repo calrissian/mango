@@ -34,19 +34,10 @@ public final class BatcherBuilder {
     private static final int UNSET_INT = -1;
 
     /**
-     * Creates a new builder for creating a {@link Batcher} with a max batch size
+     * Creates a new builder for creating a {@link Batcher}.
      */
-    public static BatcherBuilder create(int maxSize) {
-        return new BatcherBuilder()
-                .maxSize(maxSize);
-    }
-
-    /**
-     * Creates a new builder for creating a {@link Batcher} with a max batch time.
-     */
-    public static BatcherBuilder create(long maxTime, TimeUnit timeUnit) {
-        return new BatcherBuilder()
-                .maxTime(maxTime, timeUnit);
+    public static BatcherBuilder create() {
+        return new BatcherBuilder();
     }
 
     private int maxSize = UNSET_INT;
@@ -102,6 +93,11 @@ public final class BatcherBuilder {
         return this;
     }
 
+    /**
+     * Builds a {@link Batcher} which will provide batches to the provided {@code listener}.
+     *
+     * Note: The builder is required to have either a time or size bound to build a batch.
+     */
     public <T> Batcher<T> build(BatchListener<T> listener) {
         checkNotNull(listener);
         checkState(maxSize != UNSET_INT || interval != UNSET_INT, "All batchers are required to have either a time or size bound.");
