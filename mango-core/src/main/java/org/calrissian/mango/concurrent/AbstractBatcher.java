@@ -16,18 +16,17 @@
 package org.calrissian.mango.concurrent;
 
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static java.lang.Thread.interrupted;
+import static java.util.Collections.unmodifiableCollection;
 import static java.util.concurrent.Executors.newSingleThreadExecutor;
 import static java.util.logging.Level.SEVERE;
 
@@ -46,19 +45,19 @@ abstract class AbstractBatcher<T> implements Batcher<T> {
 
     private volatile boolean isClosed = false;
 
-    AbstractBatcher(BlockingQueue<T> backingQueue, BatchListener<T> listener, ExecutorService handler, Collection<T> batch) {
+    AbstractBatcher(BlockingQueue<T> backingQueue, BatchListener<T> listener, ExecutorService handler) {
         this.backingQueue = backingQueue;
         this.listener = listener;
         this.handler = handler;
 
         batchService = newSingleThreadExecutor();
-        batchRunnable = new BatchRunnable(batch);
+        batchRunnable = new BatchRunnable();
     }
 
     /**
      * Method responsible for populating the provided {@code batch} with data from the provided {@code backingQueue}
      */
-    protected abstract void populateBatch(BlockingQueue<T> backingQueue, Collection<T> batch) throws InterruptedException;
+    protected abstract Collection<T> generateBatch(BlockingQueue<T> backingQueue) throws InterruptedException;
 
     /**
      * To be called after construction of any subclass to instantiate the batching thread.
@@ -118,19 +117,15 @@ abstract class AbstractBatcher<T> implements Batcher<T> {
 
     private class BatchRunnable implements Runnable {
 
-        private final Collection<T> batch;
-
-        private BatchRunnable(Collection<T> batch) {
-            this.batch = batch;
-        }
-
         @Override
         public void run() {
             try {
                 while (!isClosed && !interrupted() && !handler.isShutdown()) {
 
+
+                    final Collection<T> batch;
                     try {
-                        populateBatch(backingQueue, batch);
+                        batch = generateBatch(backingQueue);
                     } catch (InterruptedException e) {
                         //When shut down it is expecting an interrupt, so simply exit cleanly.
                         break;
@@ -138,15 +133,12 @@ abstract class AbstractBatcher<T> implements Batcher<T> {
 
                     //Good faith handler shutdown check
                     if (!batch.isEmpty() && !handler.isShutdown()) {
-                        //copy the batch and clear it.
-                        final Collection<T> copy = new ArrayList<T>(batch);
-                        batch.clear();
 
                         try {
                             handler.execute(new Runnable() {
                                 @Override
                                 public void run() {
-                                    listener.onBatch(copy);
+                                    listener.onBatch(unmodifiableCollection(batch));
                                 }
                             });
                         } catch (Exception e) {
