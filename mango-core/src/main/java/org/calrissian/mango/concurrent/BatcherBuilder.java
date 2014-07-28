@@ -126,12 +126,14 @@ public final class BatcherBuilder {
         private final int maxSize;
 
         SizeBatcher(BlockingQueue<T> backingQueue, BatchListener<T> listener, ExecutorService handler, int maxSize) {
-            super(backingQueue, listener, handler, new ArrayList<T>(maxSize));
+            super(backingQueue, listener, handler);
             this.maxSize = maxSize;
         }
 
         @Override
-        protected void populateBatch(BlockingQueue<T> backingQueue, Collection<T> batch) throws InterruptedException {
+        protected Collection<T> generateBatch(BlockingQueue<T> backingQueue) throws InterruptedException {
+            Collection<T> batch = new ArrayList<T>(maxSize);
+
             int remainingSize = maxSize;
 
             while (remainingSize > 0) {
@@ -143,6 +145,8 @@ public final class BatcherBuilder {
 
                 remainingSize = maxSize - batch.size();
             }
+
+            return batch;
         }
     }
 
@@ -151,12 +155,14 @@ public final class BatcherBuilder {
         private final long interval;
 
         TimeBatcher(BlockingQueue<T> backingQueue, BatchListener<T> listener, ExecutorService handler, long interval) {
-            super(backingQueue, listener, handler, new ArrayList<T>());
+            super(backingQueue, listener, handler);
             this.interval = interval;
         }
 
         @Override
-        protected void populateBatch(BlockingQueue<T> backingQueue, Collection<T> batch) throws InterruptedException {
+        protected Collection<T> generateBatch(BlockingQueue<T> backingQueue) throws InterruptedException {
+            Collection<T> batch = new ArrayList<T>();
+
             long startTime = nanoTime();
             long remainingTime = interval;
 
@@ -174,6 +180,8 @@ public final class BatcherBuilder {
                 //Order of operations matters to minimize overflows
                 remainingTime = interval - (nanoTime() - startTime);
             }
+
+            return batch;
         }
     }
 
@@ -183,13 +191,15 @@ public final class BatcherBuilder {
         private final long interval;
 
         TimeOrSizeBatcher(BlockingQueue<T> backingQueue, BatchListener<T> listener, ExecutorService handler, int maxSize, long interval) {
-            super(backingQueue, listener, handler, new ArrayList<T>(maxSize));
+            super(backingQueue, listener, handler);
             this.maxSize = maxSize;
             this.interval = interval;
         }
 
         @Override
-        protected void populateBatch(BlockingQueue<T> backingQueue, Collection<T> batch) throws InterruptedException {
+        protected Collection<T> generateBatch(BlockingQueue<T> backingQueue) throws InterruptedException {
+            Collection<T> batch = new ArrayList<T>(maxSize);
+
             long startTime = nanoTime();
             long remainingTime = interval;
             int remainingSize = maxSize;
@@ -209,6 +219,8 @@ public final class BatcherBuilder {
                 remainingTime = interval - (nanoTime() - startTime);
                 remainingSize = maxSize - batch.size();
             }
+
+            return batch;
         }
     }
 }
