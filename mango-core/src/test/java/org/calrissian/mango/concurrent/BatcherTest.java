@@ -19,7 +19,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -161,6 +163,80 @@ public class BatcherTest {
         }
     }
 
+
+    //Tests to verify that ordering is maintained within batchers.
+    @Test
+    public void sequentialSizeBatcherTest() throws InterruptedException {
+        final List<Integer> results = new ArrayList<Integer>(1000);
+        final Batcher<Integer> batcher = BatcherBuilder.create(100)
+                .listenerService(sameThreadExecutor()) //Required to guarantee ordering
+                .build(new BatchListener<Integer>() {
+                    @Override
+                    public void onBatch(Collection<Integer> batch) {
+                        results.addAll(batch);
+                    }
+                });
+
+        for (int i = 0;i < 1000;i++)
+            batcher.add(i);
+
+        Thread.sleep(20);
+        batcher.close();
+
+        assertEquals(1000, results.size());
+        for (int i = 0;i< 1000;i++)
+            assertEquals(i, results.get(i).intValue());
+    }
+
+    @Test
+    public void sequentialTimeBatcherTest() throws InterruptedException {
+        final List<Integer> results = new ArrayList<Integer>(1000);
+        final Batcher<Integer> batcher = BatcherBuilder.create(10, MILLISECONDS)
+                .listenerService(sameThreadExecutor()) //Required to guarantee ordering
+                .build(new BatchListener<Integer>() {
+                    @Override
+                    public void onBatch(Collection<Integer> batch) {
+                        results.addAll(batch);
+                    }
+                });
+
+        for (int i = 0;i < 1000;i++)
+            batcher.add(i);
+
+        Thread.sleep(20);
+        batcher.close();
+
+        assertEquals(1000, results.size());
+        for (int i = 0;i< 1000;i++)
+            assertEquals(i, results.get(i).intValue());
+    }
+
+    @Test
+    public void sequentialSizeOrTimeBatcherTest() throws InterruptedException {
+        final List<Integer> results = new ArrayList<Integer>(1000);
+        final Batcher<Integer> batcher = BatcherBuilder.create(100)
+                .maxTime(10, MILLISECONDS)
+                .listenerService(sameThreadExecutor()) //Required to guarantee ordering
+                .build(new BatchListener<Integer>() {
+                    @Override
+                    public void onBatch(Collection<Integer> batch) {
+                        results.addAll(batch);
+                    }
+                });
+
+        for (int i = 0;i < 1000;i++)
+            batcher.add(i);
+
+        Thread.sleep(20);
+        batcher.close();
+
+        assertEquals(1000, results.size());
+        for (int i = 0;i< 1000;i++)
+            assertEquals(i, results.get(i).intValue());
+    }
+
+
+    //Exception tests
     @Test(expected = IllegalArgumentException.class)
     public void invalidSetSize() {
         BatcherBuilder.create(-1);
