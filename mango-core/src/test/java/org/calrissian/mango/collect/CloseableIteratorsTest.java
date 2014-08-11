@@ -170,12 +170,30 @@ public class CloseableIteratorsTest {
         }
         assertTrue(iterator.isClosed());
 
+        iterator = testIterator();
+        closeableIterator = autoClose(iterator);
+        closeableIterator.close();
+        try {
+            closeableIterator.next();
+        } catch (NoSuchElementException re) {
+        }
+        assertTrue(iterator.isClosed());
+
         iterator = testExceptionThrowingIterator();
         closeableIterator = autoClose(iterator);
         try {
             closeableIterator.remove();
             fail();
         } catch (RuntimeException re) {
+        }
+        assertTrue(iterator.isClosed());
+
+        iterator = testIterator();
+        closeableIterator = autoClose(iterator);
+        closeableIterator.close();
+        try {
+            closeableIterator.remove();
+        } catch (IllegalStateException re) {
         }
         assertTrue(iterator.isClosed());
     }

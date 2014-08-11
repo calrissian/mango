@@ -309,7 +309,7 @@ public class CloseableIterators {
 
             @Override
             public T next() {
-                if (hasNext()) {
+                if (!closed) {
                     try {
                         return iterator.next();
                     } catch (RuntimeException re) {
@@ -322,14 +322,15 @@ public class CloseableIterators {
 
             @Override
             public void remove() {
-                try {
-                    if (hasNext()) {
+                if (!closed) {
+                    try {
                         iterator.remove();
+                    } catch (RuntimeException re) {
+                        closeQuietly();
+                        throw re;
                     }
-                } catch (RuntimeException re) {
-                    closeQuietly();
-                    throw re;
                 }
+                throw new IllegalStateException();
             }
         };
     }
