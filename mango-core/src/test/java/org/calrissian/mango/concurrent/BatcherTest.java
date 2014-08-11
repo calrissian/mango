@@ -51,7 +51,7 @@ public class BatcherTest {
 
         TestListenter<Integer> listenter = new TestListenter<Integer>();
         final Batcher<Integer> batcher = BatcherBuilder.create()
-                .maxSize(100)
+                .sizeBound(100)
                 .build(listenter);
 
         CountDownLatch start = new CountDownLatch(1);
@@ -74,7 +74,7 @@ public class BatcherTest {
 
         TestListenter<Integer> listenter = new TestListenter<Integer>();
         final Batcher<Integer> batcher = BatcherBuilder.create()
-                .maxSize(100)
+                .sizeBound(100)
                 .build(listenter);
 
         CountDownLatch start = new CountDownLatch(1);
@@ -97,7 +97,7 @@ public class BatcherTest {
 
         TestListenter<Integer> listenter = new TestListenter<Integer>();
         final Batcher<Integer> batcher = BatcherBuilder.create()
-                .maxTime(10, MILLISECONDS)
+                .timeBound(10, MILLISECONDS)
                 .build(listenter);
 
         CountDownLatch start = new CountDownLatch(1);
@@ -121,8 +121,8 @@ public class BatcherTest {
 
         TestListenter<Integer> listenter = new TestListenter<Integer>();
         final Batcher<Integer> batcher = BatcherBuilder.create()
-                .maxSize(100)
-                .maxTime(10, MILLISECONDS)
+                .sizeBound(100)
+                .timeBound(10, MILLISECONDS)
                 .build(listenter);
 
         CountDownLatch start = new CountDownLatch(1);
@@ -147,7 +147,7 @@ public class BatcherTest {
     public void sequentialSizeBatcherTest() throws InterruptedException {
         final List<Integer> results = new ArrayList<Integer>(1000);
         final Batcher<Integer> batcher = BatcherBuilder.create()
-                .maxSize(100)
+                .sizeBound(100)
                 .listenerService(sameThreadExecutor()) //Required to guarantee ordering
                 .build(new BatchListener<Integer>() {
                     @Override
@@ -171,7 +171,7 @@ public class BatcherTest {
     public void sequentialTimeBatcherTest() throws InterruptedException {
         final List<Integer> results = new ArrayList<Integer>(1000);
         final Batcher<Integer> batcher = BatcherBuilder.create()
-                .maxTime(10, MILLISECONDS)
+                .timeBound(10, MILLISECONDS)
                 .listenerService(sameThreadExecutor()) //Required to guarantee ordering
                 .build(new BatchListener<Integer>() {
                     @Override
@@ -195,8 +195,8 @@ public class BatcherTest {
     public void sequentialSizeOrTimeBatcherTest() throws InterruptedException {
         final List<Integer> results = new ArrayList<Integer>(1000);
         final Batcher<Integer> batcher = BatcherBuilder.create()
-                .maxSize(100)
-                .maxTime(10, MILLISECONDS)
+                .sizeBound(100)
+                .timeBound(10, MILLISECONDS)
                 .listenerService(sameThreadExecutor()) //Required to guarantee ordering
                 .build(new BatchListener<Integer>() {
                     @Override
@@ -226,46 +226,46 @@ public class BatcherTest {
     @Test(expected = IllegalArgumentException.class)
     public void invalidSetSize() {
         BatcherBuilder.create()
-        .maxSize(-1);
+        .sizeBound(-1);
     }
 
     @Test(expected = IllegalStateException.class)
     public void doubleSetSize() {
         BatcherBuilder.create()
-                .maxSize(100)
-                .maxSize(200);
+                .sizeBound(100)
+                .sizeBound(200);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void invalidSetTime() {
         BatcherBuilder.create()
-                .maxTime(-1, MILLISECONDS);
+                .timeBound(-1, MILLISECONDS);
     }
 
     @Test(expected = NullPointerException.class)
     public void nullTimeUnit() {
         BatcherBuilder.create()
-                .maxTime(10, null);
+                .timeBound(10, null);
     }
 
     @Test(expected = IllegalStateException.class)
     public void doubleSetTime() {
         BatcherBuilder.create()
-                .maxTime(10, MILLISECONDS)
-                .maxTime(20, MILLISECONDS);
+                .timeBound(10, MILLISECONDS)
+                .timeBound(20, MILLISECONDS);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void invalidSetMaxQueueSize() {
+    public void invalidSetBufferSize() {
         BatcherBuilder.create()
-                .maxQueueSize(-1);
+                .bufferSize(-1);
     }
 
     @Test(expected = IllegalStateException.class)
-    public void doubleSetMaxQueueSize() {
+    public void doubleSetBufferSize() {
         BatcherBuilder.create()
-                .maxQueueSize(10)
-                .maxQueueSize(20);
+                .bufferSize(10)
+                .bufferSize(20);
     }
 
     @Test(expected = NullPointerException.class)
@@ -290,8 +290,8 @@ public class BatcherTest {
     @Test(expected = IllegalStateException.class)
     public void addAfterClose() {
         Batcher<Integer> batcher = BatcherBuilder.create()
-                .maxSize(100)
-                .maxTime(10, MILLISECONDS)
+                .sizeBound(100)
+                .timeBound(10, MILLISECONDS)
                 .build(new TestListenter<Integer>());
         batcher.close();
         batcher.add(1);
@@ -301,8 +301,8 @@ public class BatcherTest {
     @Test(expected = IllegalStateException.class)
     public void addTimeBasedAfterClose() throws InterruptedException {
         Batcher<Integer> batcher = BatcherBuilder.create()
-                .maxSize(100)
-                .maxTime(10, MILLISECONDS)
+                .sizeBound(100)
+                .timeBound(10, MILLISECONDS)
                 .build(new TestListenter<Integer>());
         batcher.close();
         batcher.add(1, 10, MILLISECONDS);
@@ -311,8 +311,8 @@ public class BatcherTest {
     @Test(expected = IllegalStateException.class)
     public void addOrWaiteAfterClose() throws InterruptedException {
         Batcher<Integer> batcher = BatcherBuilder.create()
-                .maxSize(100)
-                .maxTime(10, MILLISECONDS)
+                .sizeBound(100)
+                .timeBound(10, MILLISECONDS)
                 .build(new TestListenter<Integer>());
         batcher.close();
         batcher.addOrWait(1);
@@ -322,14 +322,14 @@ public class BatcherTest {
     public void handlerExceptionClose() throws InterruptedException {
         final AtomicBoolean wasCalled = new AtomicBoolean(false);
         Batcher<Integer> batcher = BatcherBuilder.create()
-                .maxSize(1)
+                .sizeBound(1)
                 .listenerService(sameThreadExecutor()) //Required to send exception to batch thread
                 .build(new BatchListener<Integer>() {
                     @Override
                     public void onBatch(Collection<Integer> batch) {
                         wasCalled.set(true);
 
-                        //Force exception that will fall into t
+                        //Force exception that will fall into the handler catch block.
                         throw new RuntimeException();
                     }
                 });

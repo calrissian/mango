@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 The Calrissian Authors
+ * Copyright (C) 2014 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,23 +21,23 @@ import java.util.concurrent.TimeUnit;
 public interface Batcher<T> extends Closeable {
 
     /**
-     * Adds a new item to be batched. If this batcher was constructed with a max queue size, this
+     * Adds a new item to be batched. If this batcher was constructed with a max buffer size, this
      * method will attempt to add a new item if there is room, otherwise will return false immediately.
      */
     public boolean add(T item);
 
     /**
      * Adds a new item to be batched. If this batcher was constructed with a max queue size, this
-     * method will wait until there is room in the queue to add the data or it has timed out.
+     * method will wait until there is room in the buffer to add the data or it has timed out.
      */
     public boolean add(T item, long timeout, TimeUnit unit) throws InterruptedException;
 
     /**
      * Adds a new item to be batched. If this batcher was constructed with a max queue size, this
-     * method will wait until there is room in the queue to add the data.
+     * method will wait until there is room in the buffer to add the data.
      *
-     * Note: Ff this batcher is closed and there are producers blocking on this call, they may be stuck until
-     * they are interrupted.  If using a max queue size, it is suggested that one of the other add methods
+     * Note: If this batcher is closed and there are producers blocking on this call, they may be stuck until
+     * they are interrupted.  If using a max buffer size, it is suggested that one of the other add methods
      * be used.
      */
     public boolean addOrWait(T item) throws InterruptedException;

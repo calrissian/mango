@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 The Calrissian Authors
+ * Copyright (C) 2014 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,49 +42,54 @@ public final class BatcherBuilder {
 
     private int maxSize = UNSET_INT;
     private long interval = UNSET_INT;
-    private int maxQueueSize = UNSET_INT;
+    private int maxBufferSize = UNSET_INT;
     private ExecutorService listenerService = null;
 
     private BatcherBuilder() {/**private constructor*/}
 
     /**
      * Add a max size component for a batcher.  If specified a batcher will call the {@link BatchListener}
-     * as soon as the maxSize is reached.
+     * as soon as the size bound is reached.
      */
-    public BatcherBuilder maxSize(int maxSize) {
+    public BatcherBuilder sizeBound(int size) {
         checkState(this.maxSize == UNSET_INT, "Max size already set to %s", this.maxSize);
-        checkArgument(maxSize > 0, "Required to have a max size greater than 0");
-        this.maxSize = maxSize;
+        checkArgument(size > 0, "Required to have a size bound greater than 0");
+        this.maxSize = size;
         return this;
     }
 
     /**
      * Add a max time component for a batcher.  If specified a batcher will call the {@link BatchListener}
-     * at most once for the time specified if there are any elements in the batch.
+     * as sppon as the time bound has been exceeded.
+     *
+     * NOTE: This interval is the time since successfully sending the last batch to the batchlistener.  This means
+     * that if a blocking {@link BatcherBuilder#listenerService(ExecutorService)} is used then the time interval will not
+     * restart until it has been successfully handed of to the {@link BatcherBuilder#listenerService(ExecutorService)}.
      */
-    public BatcherBuilder maxTime(long maxTime, TimeUnit timeUnit) {
+    public BatcherBuilder timeBound(long time, TimeUnit timeUnit) {
         checkState(this.interval == UNSET_INT, "Max time already set");
-        checkArgument(maxTime > 0, "Required to have a max time greater than 0");
+        checkArgument(time > 0, "Required to have a time interval greater than 0");
         checkNotNull(timeUnit);
-        this.interval = timeUnit.toNanos(maxTime);
+        this.interval = timeUnit.toNanos(time);
         return this;
     }
 
     /**
-     * Bound the queue size used by the batchers.  By specifying a max size, all producers to the {@link Batcher}
-     * the batcher will at most keep {@code maxQueueSize} elements.  Producers can determine how to handle
-     * a full queue using one of the {@link Batcher}'s add methods.
+     * Bound the buffer size used by the batchers.  By specifying a max size, the {@link Batcher}
+     * will allow producers to start blocking when adding data to the batcher.  Producers can determine how to handle
+     * a full buffer using one of the {@link Batcher}'s add methods.  By default the buffer size is unbounded.
      */
-    public BatcherBuilder maxQueueSize(int maxQueueSize) {
-        checkState(this.maxQueueSize == UNSET_INT, "Max queue size already set to %d", this.maxQueueSize);
-        checkArgument(maxQueueSize > 0, "Required to have a max queue size greater than 0");
-        this.maxQueueSize = maxQueueSize;
+    public BatcherBuilder bufferSize(int bufferSize) {
+        checkState(this.maxBufferSize == UNSET_INT, "Max buffer size already set to %d", this.maxBufferSize);
+        checkArgument(bufferSize > 0, "Required to have a buffer size greater than 0");
+        this.maxBufferSize = bufferSize;
         return this;
     }
 
     /**
      * Provide a configured {@link ExecutorService} to use for running the {@link BatchListener} on.
-     * This {@link ExecutorService} will be shutdown when the created batcher is closed.
+     * This {@link ExecutorService} will be shutdown when the created batcher is closed.  By default a cached
+     * thread pool is used to handle calls to the {@link BatchListener}.
      */
     public BatcherBuilder listenerService(ExecutorService listenerService) {
         checkState(this.listenerService == null, "A listener service has already been set");
@@ -103,7 +108,7 @@ public final class BatcherBuilder {
         checkState(maxSize != UNSET_INT || interval != UNSET_INT, "All batchers are required to have either a time or size bound.");
 
         ExecutorService handler = (listenerService == null ? newCachedThreadPool() : listenerService);
-        BlockingQueue<T> backingQueue = (maxQueueSize == UNSET_INT ? new LinkedBlockingQueue<T>() : new ArrayBlockingQueue<T>(maxQueueSize));
+        BlockingQueue<T> backingQueue = (maxBufferSize == UNSET_INT ? new LinkedBlockingQueue<T>() : new ArrayBlockingQueue<T>(maxBufferSize));
 
         if (maxSize != UNSET_INT && interval != UNSET_INT) {
             return new TimeOrSizeBatcher<T>(backingQueue, listener, handler, maxSize, interval)
