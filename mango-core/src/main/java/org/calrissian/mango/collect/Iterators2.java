@@ -16,14 +16,21 @@
 package org.calrissian.mango.collect;
 
 
+import com.google.common.base.Function;
 import com.google.common.collect.AbstractIterator;
 import com.google.common.collect.Iterators;
+import com.google.common.collect.PeekingIterator;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Queue;
 
+import static com.google.common.base.Objects.equal;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Iterators.consumingIterator;
+import static com.google.common.collect.Iterators.peekingIterator;
+import static java.util.Collections.unmodifiableList;
 
 
 /**
@@ -62,6 +69,42 @@ public class Iterators2 {
                     }
                 } else
                     return endOfData();
+            }
+        };
+    }
+
+    /**
+     * Divides an iterator into unmodifiable sublists of equivalent elements. The iterator groups elements
+     * in consecutive order, forming a new parition when the value from the provided function changes. For example,
+     * grouping the iterator {@code [1, 3, 2, 4, 5]} with a function grouping even and odd numbers
+     * yields {@code [[1, 3], [2, 4], [5]} all in the original order.
+     *
+     * <p/>
+     * <p>The returned lists implement {@link java.util.RandomAccess}.
+     */
+    public static <T> Iterator<List<T>> groupBy(final Iterator<? extends T> iterator, final Function<? super T, ?> groupingFunction) {
+        checkNotNull(iterator);
+        checkNotNull(groupingFunction);
+        return new AbstractIterator<List<T>>() {
+            private final PeekingIterator<T> peekingIterator = peekingIterator(iterator);
+
+            @Override
+            protected List<T> computeNext() {
+                if (!peekingIterator.hasNext())
+                    return endOfData();
+
+                Object key = groupingFunction.apply(peekingIterator.peek());
+
+                T curr;
+                List<T> group = new ArrayList<T>();
+
+                do {
+                    curr = peekingIterator.next();
+                    group.add(curr);
+
+                } while (peekingIterator.hasNext() && equal(key, groupingFunction.apply(peekingIterator.peek())));
+
+                return unmodifiableList(group);
             }
         };
     }

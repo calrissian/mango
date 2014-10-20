@@ -15,10 +15,12 @@
  */
 package org.calrissian.mango.collect;
 
+import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Queue;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -76,6 +78,26 @@ public class Iterables2 {
             @Override
             public Iterator<T> iterator() {
                 return Iterators2.distinct(iterable.iterator());
+            }
+        };
+    }
+
+    /**
+     * Divides an iterable into unmodifiable sublists of equivalent elements. The iterable groups elements
+     * in consecutive order, forming a new partition when the value from the provided function changes. For example,
+     * grouping the iterable {@code [1, 3, 2, 4, 5]} with a function grouping even and odd numbers
+     * yields {@code [[1, 3], [2, 4], [5]} all in the original order.
+     *
+     * <p/>
+     * <p>The returned lists implement {@link java.util.RandomAccess}.
+     */
+    public static <T> Iterable<List<T>> groupBy(final Iterable<? extends T> iterable, final Function<? super T, ?> groupingFunction) {
+        checkNotNull(iterable);
+        checkNotNull(groupingFunction);
+        return new Iterable<List<T>>() {
+            @Override
+            public Iterator<List<T>> iterator() {
+                return Iterators2.groupBy(iterable.iterator(), groupingFunction);
             }
         };
     }
