@@ -21,6 +21,7 @@ import org.calrissian.mango.types.TypeEncoder;
 import java.nio.charset.Charset;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static org.calrissian.mango.types.encoders.lexi.EncodingUtils.reverse;
 
 public class ReverseEncoder<T> implements TypeEncoder<T, String> {
     private static final long serialVersionUID = 1L;
@@ -55,14 +56,5 @@ public class ReverseEncoder<T> implements TypeEncoder<T, String> {
         checkNotNull(value, "Null values are not allowed");
         String reversed = new String(reverse(value.getBytes(ISO_8859_1)));
         return encoder.decode(reversed);
-    }
-
-    private static byte[] reverse(byte[] bytes) {
-        byte[] result = new byte[bytes.length];
-
-        for (int i = 0; i < bytes.length; i++)
-            result[i] = (byte) (0xff - (0xff & bytes[i]));
-
-        return result;
     }
 }

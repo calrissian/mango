@@ -22,6 +22,8 @@ import org.calrissian.mango.types.encoders.simple.*;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.net.Inet4Address;
+import java.net.Inet6Address;
 import java.net.URI;
 import java.util.Date;
 
@@ -33,7 +35,8 @@ public class SimpleTypeEncoders {
     public static final TypeRegistry<String> SIMPLE_TYPES = new TypeRegistry<String>(
             booleanEncoder(), byteEncoder(), dateEncoder(), doubleEncoder(), floatEncoder(),
             integerEncoder(), ipv4Encoder(), longEncoder(), stringEncoder(), uriEncoder(),
-            bigIntegerEncoder(), bigDecimalEncoder(), entityRelationshipEncoder()
+            bigIntegerEncoder(), bigDecimalEncoder(), inet4AddressEncoder(), inet6AddressEncoder(),
+            entityRelationshipEncoder()
     );
 
     public static TypeEncoder<Boolean, String> booleanEncoder() {
@@ -82,6 +85,14 @@ public class SimpleTypeEncoders {
 
     public static TypeEncoder<BigDecimal, String> bigDecimalEncoder() {
         return new BigDecimalEncoder();
+    }
+
+    public static TypeEncoder<Inet4Address, String> inet4AddressEncoder() {
+        return new Inet4AddressEncoder();
+    }
+
+    public static TypeEncoder<Inet6Address, String> inet6AddressEncoder() {
+        return new Inet6AddressEncoder();
     }
 
     public static TypeEncoder<EntityRelationship, String> entityRelationshipEncoder() {

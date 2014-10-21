@@ -16,12 +16,15 @@
 package org.calrissian.mango.types;
 
 
+import com.google.common.net.InetAddresses;
 import org.calrissian.mango.domain.entity.EntityRelationship;
 import org.calrissian.mango.domain.ip.IPv4;
 import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.net.Inet4Address;
+import java.net.Inet6Address;
 import java.net.URI;
 import java.util.Date;
 
@@ -60,6 +63,8 @@ public class SimpleTypeEncodersTest {
         verifyBasicFunctionality(BIGINTEGER_ALIAS, BigInteger.valueOf(Long.MAX_VALUE).pow(2), bigIntegerEncoder());
         verifyBasicFunctionality(BIGDECIMAL_ALIAS, BigDecimal.valueOf(Double.MAX_VALUE).pow(2), bigDecimalEncoder());
         verifyBasicFunctionality(BIGDECIMAL_ALIAS, new BigDecimal("1.00000"), bigDecimalEncoder());
+        verifyBasicFunctionality(INET4_ALIAS, (Inet4Address) InetAddresses.forString("192.168.1.1"), inet4AddressEncoder());
+        verifyBasicFunctionality(INET6_ALIAS, (Inet6Address) InetAddresses.forString("::192.168.1.1"), inet6AddressEncoder());
         verifyBasicFunctionality(ENTITY_RELATIONSHIP_ALIAS, new EntityRelationship("type", "id"), entityRelationshipEncoder());
     }
 
@@ -93,5 +98,9 @@ public class SimpleTypeEncodersTest {
         assertEquals("85070591730234615847396907784232501249", bigIntegerEncoder().encode(BigInteger.valueOf(Long.MAX_VALUE).pow(2)));
 
         assertEquals("entity://type#id", entityRelationshipEncoder().encode(new EntityRelationship("type", "id")));
+
+        assertEquals("192.168.1.1", inet4AddressEncoder().encode((Inet4Address) InetAddresses.forString("192.168.1.1")));
+
+        assertEquals("::c0a8:101", inet6AddressEncoder().encode((Inet6Address) InetAddresses.forString("::192.168.1.1")));
     }
 }

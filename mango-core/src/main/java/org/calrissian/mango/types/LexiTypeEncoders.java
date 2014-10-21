@@ -22,6 +22,8 @@ import org.calrissian.mango.types.encoders.lexi.*;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.net.Inet4Address;
+import java.net.Inet6Address;
 import java.net.URI;
 import java.util.Date;
 
@@ -38,13 +40,15 @@ public class LexiTypeEncoders {
     public static final TypeRegistry<String> LEXI_TYPES = new TypeRegistry<String>(
             booleanEncoder(), byteEncoder(), dateEncoder(), doubleEncoder(), floatEncoder(),
             integerEncoder(), ipv4Encoder(), longEncoder(), stringEncoder(), uriEncoder(),
-            bigIntegerEncoder(), bigDecimalEncoder(), entityRelationshipEncoder()
+            bigIntegerEncoder(), bigDecimalEncoder(), inet4AddressEncoder(), inet6AddressEncoder(),
+            entityRelationshipEncoder()
     );
 
     public static final TypeRegistry<String> LEXI_REV_TYPES = new TypeRegistry<String>(
             booleanRevEncoder(), byteRevEncoder(), dateRevEncoder(), doubleRevEncoder(), floatRevEncoder(),
             integerRevEncoder(), ipv4RevEncoder(), longRevEncoder(), stringRevEncoder(), uriRevEncoder(),
-            bigIntegerRevEncoder(), bigDecimalRevEncoder(), entityRelationshipRevEncoder()
+            bigIntegerRevEncoder(), bigDecimalRevEncoder(), inet4AddressRevEncoder(), inet6AddressRevEncoder(),
+            entityRelationshipRevEncoder()
     );
 
     private static <T> TypeEncoder<T, String> reverseEncoder(TypeEncoder<T, String> sourceEncoder) {
@@ -145,6 +149,22 @@ public class LexiTypeEncoders {
 
     public static TypeEncoder<BigDecimal, String> bigDecimalRevEncoder() {
         return new BigDecimalReverseEncoder();
+    }
+
+    public static TypeEncoder<Inet4Address, String> inet4AddressEncoder() {
+        return new Inet4AddressEncoder();
+    }
+
+    public static TypeEncoder<Inet4Address, String> inet4AddressRevEncoder() {
+        return new Inet4AddressReverseEncoder();
+    }
+
+    public static TypeEncoder<Inet6Address, String> inet6AddressEncoder() {
+        return new Inet6AddressEncoder();
+    }
+
+    public static TypeEncoder<Inet6Address, String> inet6AddressRevEncoder() {
+        return new Inet6AddressReverseEncoder();
     }
 
     public static TypeEncoder<EntityRelationship, String> entityRelationshipEncoder() {

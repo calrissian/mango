@@ -30,5 +30,7 @@ public class AliasConstants {
     public static String BIGINTEGER_ALIAS = "bigint";
     public static String BIGDECIMAL_ALIAS = "bigdec";
     public static String ENTITY_RELATIONSHIP_ALIAS = "entityRelationship";
+    public static String INET4_ALIAS = "inet4";
+    public static String INET6_ALIAS = "inet6";
 
 }
