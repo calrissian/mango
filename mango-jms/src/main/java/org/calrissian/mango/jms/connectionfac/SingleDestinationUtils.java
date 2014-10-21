@@ -22,6 +22,7 @@ import javax.jms.*;
  * Date: Dec 1, 2011
  * Time: 8:36:37 AM
  */
+@Deprecated
 class SingleDestinationUtils {
 
     private static final String JMS_TOPIC_PROP_STR = "selectTopic";

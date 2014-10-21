@@ -19,6 +19,7 @@ import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
 
+@Deprecated
 public abstract class ConnectionFactoryDecorator implements ConnectionFactory {
 
     private final ConnectionFactory connectionFactory;

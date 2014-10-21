@@ -19,6 +19,7 @@ import org.calrissian.mango.jms.stream.domain.Request;
 
 import java.io.InputStream;
 
+@Deprecated
 public class JmsFileReceiver extends AbstractJmsFileTransferSupport implements
         FileTransfer {
 

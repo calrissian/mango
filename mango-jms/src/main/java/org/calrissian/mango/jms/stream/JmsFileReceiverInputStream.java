@@ -34,6 +34,7 @@ import static org.calrissian.mango.jms.stream.domain.ResponseStatusEnum.*;
 import static org.calrissian.mango.jms.stream.utils.DomainMessageUtils.fromMessage;
 import static org.calrissian.mango.jms.stream.utils.DomainMessageUtils.toResponseMessage;
 
+@Deprecated
 public class JmsFileReceiverInputStream extends AbstractBufferedInputStream {
 
     private boolean done = false;

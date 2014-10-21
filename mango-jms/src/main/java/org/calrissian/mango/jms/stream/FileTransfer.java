@@ -18,6 +18,7 @@ package org.calrissian.mango.jms.stream;
 
 import java.io.InputStream;
 
+@Deprecated
 public interface FileTransfer {
 
 

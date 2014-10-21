@@ -17,6 +17,7 @@ package org.calrissian.mango.jms.connectionfac.decorator;
 
 import javax.jms.*;
 
+@Deprecated
 public abstract class ConnectionDecorator implements Connection {
 
     private final Connection connection;

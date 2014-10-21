@@ -26,6 +26,7 @@ import javax.jms.JMSException;
  * Date: Nov 27, 2011
  * Time: 4:38:17 PM
  */
+@Deprecated
 public class SingleQueueConnectionFactory extends ConnectionFactoryDecorator {
 
     private final String baseQueue;

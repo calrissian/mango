@@ -21,6 +21,7 @@ import javax.jms.Message;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageListener;
 
+@Deprecated
 public abstract class MessageConsumerDecorator implements MessageConsumer {
 
     private final MessageConsumer messageConsumer;

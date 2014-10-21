@@ -17,6 +17,7 @@ package org.calrissian.mango.jms.stream.utils;
 
 import javax.jms.*;
 
+@Deprecated
 public class DestinationRequestor {
 
     protected Session session; // The session the topic belongs to.

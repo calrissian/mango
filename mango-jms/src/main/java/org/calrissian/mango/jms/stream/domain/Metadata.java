@@ -17,6 +17,7 @@ package org.calrissian.mango.jms.stream.domain;
 
 import java.io.Serializable;
 
+@Deprecated
 public class Metadata implements Serializable {
 
     /**

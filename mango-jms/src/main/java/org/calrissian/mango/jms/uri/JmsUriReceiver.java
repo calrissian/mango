@@ -29,6 +29,7 @@ import java.net.URISyntaxException;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static org.calrissian.mango.uri.support.DataResolverFormatUtils.buildRequestURI;
 
+@Deprecated
 public class JmsUriReceiver extends JmsFileReceiver {
 
     private final UriResolverRegistry resolverRegistry;

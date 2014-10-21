@@ -29,6 +29,7 @@ import static org.calrissian.mango.jms.connectionfac.SingleDestinationUtils.post
  * Date: Nov 30, 2011
  * Time: 5:05:42 PM
  */
+@Deprecated
 class SingleDestinationMessageConsumer extends MessageConsumerDecorator {
 
     public SingleDestinationMessageConsumer(MessageConsumer messageConsumer) {

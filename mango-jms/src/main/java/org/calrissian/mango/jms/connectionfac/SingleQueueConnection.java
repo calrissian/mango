@@ -24,6 +24,7 @@ import javax.jms.*;
  * Date: Nov 27, 2011
  * Time: 4:43:19 PM
  */
+@Deprecated
 class SingleQueueConnection extends ConnectionDecorator {
 
     private String baseQueue;
