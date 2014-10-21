@@ -48,7 +48,7 @@ public class IPv4 implements Comparable<IPv4>, Serializable {
                 int octet = parseInt(octStr);
                 checkArgument(octet >= 0 && octet < 256, "Invalid IPv4 representation: %s", addr);
 
-                num = num << 8 | (parseInt(octStr) & 0xFF);
+                num = num << 8 | (octet & 0xFF);
             } catch (NumberFormatException nfe) {
                 throw new IllegalArgumentException("Invalid IPv4 representation: " + addr);
             }
