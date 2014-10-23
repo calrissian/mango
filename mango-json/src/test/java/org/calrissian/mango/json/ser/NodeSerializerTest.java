@@ -55,28 +55,28 @@ public class NodeSerializerTest {
 
     @Test
     public void testAndEqEqDiffTypeSerialization() throws Exception {
-        Node node = new QueryBuilder().and().eq("k1", "v1").eq("k2", new IPv4("1.2.3.4")).end().build();
+        Node node = new QueryBuilder().and().eq("k1", "v1").eq("k2", IPv4.fromString("1.2.3.4")).end().build();
         String json = objectMapper.writeValueAsString(node);
         assertEquals("{\"and\":{\"children\":[{\"eq\":{\"key\":\"k1\",\"type\":\"string\",\"value\":\"v1\"}},{\"eq\":{\"key\":\"k2\",\"type\":\"ipv4\",\"value\":\"1.2.3.4\"}}]}}", json);
     }
 
     @Test
     public void testAndEqNeqDiffTypeSerialization() throws Exception {
-        Node node = new QueryBuilder().and().eq("k1", "v1").notEq("k2", new IPv4("1.2.3.4")).end().build();
+        Node node = new QueryBuilder().and().eq("k1", "v1").notEq("k2", IPv4.fromString("1.2.3.4")).end().build();
         String json = objectMapper.writeValueAsString(node);
         assertEquals("{\"and\":{\"children\":[{\"eq\":{\"key\":\"k1\",\"type\":\"string\",\"value\":\"v1\"}},{\"neq\":{\"key\":\"k2\",\"type\":\"ipv4\",\"value\":\"1.2.3.4\"}}]}}", json);
     }
 
     @Test
     public void testOrEqNeqDiffTypeSerialization() throws Exception {
-        Node node = new QueryBuilder().or().eq("k1", "v1").notEq("k2", new IPv4("1.2.3.4")).end().build();
+        Node node = new QueryBuilder().or().eq("k1", "v1").notEq("k2", IPv4.fromString("1.2.3.4")).end().build();
         String json = objectMapper.writeValueAsString(node);
         assertEquals("{\"or\":{\"children\":[{\"eq\":{\"key\":\"k1\",\"type\":\"string\",\"value\":\"v1\"}},{\"neq\":{\"key\":\"k2\",\"type\":\"ipv4\",\"value\":\"1.2.3.4\"}}]}}", json);
     }
 
     @Test
     public void testAndOrEqNeqDiffTypeSerialization() throws Exception {
-        Node node = new QueryBuilder().or().and().eq("k1", "v1").notEq("k2", new IPv4("1.2.3.4")).end().and().eq("k3", 1234).end().end().build();
+        Node node = new QueryBuilder().or().and().eq("k1", "v1").notEq("k2", IPv4.fromString("1.2.3.4")).end().and().eq("k3", 1234).end().end().build();
         String json = objectMapper.writeValueAsString(node);
         assertEquals("{\"or\":{\"children\":[{\"and\":{\"children\":[{\"eq\":{\"key\":\"k1\",\"type\":\"string\",\"value\":\"v1\"}},{\"neq\":{\"key\":\"k2\",\"type\":\"ipv4\",\"value\":\"1.2.3.4\"}}]}},{\"and\":{\"children\":[{\"eq\":{\"key\":\"k3\",\"type\":\"integer\",\"value\":\"1234\"}}]}}]}}", json);
     }

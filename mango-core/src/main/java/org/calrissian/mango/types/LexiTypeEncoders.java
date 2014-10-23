@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 The Calrissian Authors
+ * Copyright (C) 2014 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package org.calrissian.mango.types;
 
 import org.calrissian.mango.domain.entity.EntityRelationship;
 import org.calrissian.mango.domain.ip.IPv4;
+import org.calrissian.mango.domain.ip.IPv6;
 import org.calrissian.mango.types.encoders.lexi.*;
 
 import java.math.BigDecimal;
@@ -103,14 +104,6 @@ public class LexiTypeEncoders {
         return new IntegerReverseEncoder();
     }
 
-    public static TypeEncoder<IPv4, String> ipv4Encoder() {
-        return new IPv4Encoder();
-    }
-
-    public static TypeEncoder<IPv4, String> ipv4RevEncoder() {
-        return new IPv4ReverseEncoder();
-    }
-
     public static TypeEncoder<Long, String> longEncoder() {
         return new LongEncoder();
     }
@@ -149,6 +142,22 @@ public class LexiTypeEncoders {
 
     public static TypeEncoder<BigDecimal, String> bigDecimalRevEncoder() {
         return new BigDecimalReverseEncoder();
+    }
+
+    public static TypeEncoder<IPv4, String> ipv4Encoder() {
+        return new IPv4Encoder();
+    }
+
+    public static TypeEncoder<IPv4, String> ipv4RevEncoder() {
+        return new IPv4ReverseEncoder();
+    }
+
+    public static TypeEncoder<IPv6, String> ipv6Encoder() {
+        return new IPv6Encoder();
+    }
+
+    public static TypeEncoder<IPv6, String> ipv6RevEncoder() {
+        return new IPv6ReverseEncoder();
     }
 
     public static TypeEncoder<Inet4Address, String> inet4AddressEncoder() {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 The Calrissian Authors
+ * Copyright (C) 2014 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,24 +19,22 @@ package org.calrissian.mango.types.encoders.lexi;
 import org.calrissian.mango.domain.ip.IPv4;
 import org.calrissian.mango.types.encoders.AbstractIPv4Encoder;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static org.calrissian.mango.types.encoders.lexi.EncodingUtils.encodeUInt;
-import static org.calrissian.mango.types.encoders.lexi.EncodingUtils.fromHex;
 
 public class IPv4Encoder extends AbstractIPv4Encoder<String> {
     private static final long serialVersionUID = 1L;
 
+    private static final Inet4AddressEncoder addressEncoder = new Inet4AddressEncoder();
+
     @Override
     public String encode(IPv4 value) {
         checkNotNull(value, "Null values are not allowed");
-        return encodeUInt((int) value.getValue());
+        return addressEncoder.encode(value.getAddress());
     }
 
     @Override
     public IPv4 decode(String value) {
         checkNotNull(value, "Null values are not allowed");
-        checkArgument(value.length() == 8, "The value is not a valid encoding");
-        return new IPv4(fromHex(value));
+        return new IPv4(addressEncoder.decode(value));
     }
 }

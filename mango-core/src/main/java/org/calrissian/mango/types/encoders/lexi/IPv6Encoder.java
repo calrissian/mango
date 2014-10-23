@@ -13,28 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.types.encoders.simple;
+package org.calrissian.mango.types.encoders.lexi;
 
 
-import org.calrissian.mango.domain.ip.IPv4;
-import org.calrissian.mango.types.encoders.AbstractIPv4Encoder;
+import org.calrissian.mango.domain.ip.IPv6;
+import org.calrissian.mango.types.encoders.AbstractIPv6Encoder;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class IPv4Encoder extends AbstractIPv4Encoder<String> {
+public class IPv6Encoder extends AbstractIPv6Encoder<String> {
     private static final long serialVersionUID = 1L;
 
-    private static final Inet4AddressEncoder addressEncoder = new Inet4AddressEncoder();
+    private static final Inet6AddressEncoder addressEncoder = new Inet6AddressEncoder();
 
     @Override
-    public String encode(IPv4 value) {
+    public String encode(IPv6 value) {
         checkNotNull(value, "Null values are not allowed");
         return addressEncoder.encode(value.getAddress());
     }
 
     @Override
-    public IPv4 decode(String value) {
+    public IPv6 decode(String value) {
         checkNotNull(value, "Null values are not allowed");
-        return new IPv4(addressEncoder.decode(value));
+        return new IPv6(addressEncoder.decode(value));
     }
 }

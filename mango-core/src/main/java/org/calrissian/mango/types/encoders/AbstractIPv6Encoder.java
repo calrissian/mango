@@ -15,19 +15,19 @@
  */
 package org.calrissian.mango.types.encoders;
 
-import org.calrissian.mango.domain.ip.IPv4;
+import org.calrissian.mango.domain.ip.IPv6;
 import org.calrissian.mango.types.TypeEncoder;
 
-import static org.calrissian.mango.types.encoders.AliasConstants.IPV4_ALIAS;
+import static org.calrissian.mango.types.encoders.AliasConstants.IPV6_ALIAS;
 
-public abstract class AbstractIPv4Encoder<U> implements TypeEncoder<IPv4, U> {
+public abstract class AbstractIPv6Encoder<U> implements TypeEncoder<IPv6, U> {
     @Override
     public String getAlias() {
-        return IPV4_ALIAS;
+        return IPV6_ALIAS;
     }
 
     @Override
-    public Class<IPv4> resolves() {
-        return IPv4.class;
+    public Class<IPv6> resolves() {
+        return IPv6.class;
     }
 }

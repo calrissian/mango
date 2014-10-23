@@ -18,68 +18,42 @@ package org.calrissian.mango.domain.ip;
 
 import com.google.common.net.InetAddresses;
 
-import java.net.Inet4Address;
+import java.net.Inet6Address;
 import java.net.InetAddress;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.net.InetAddresses.fromInteger;
-import static com.google.common.primitives.Ints.fromByteArray;
 import static com.google.common.primitives.UnsignedBytes.lexicographicalComparator;
 
 /**
- * A Domain object that represents an IPv4 network address.  This is functionally a wrapper for {@link Inet4Address}
+ * A Domain object that represents an IPv6 network address.  This is functionally a wrapper for {@link Inet6Address}
  * that is comparable to allow its use in other data objects such as {@link java.util.TreeMap} or
  * {@link com.google.common.collect.Range}
  */
-public class IPv4 extends IP<Inet4Address> implements Comparable<IPv4> {
+public class IPv6 extends IP<Inet6Address> implements Comparable<IPv6>{
 
     /**
-     * Generates a new IPv4 instance from the provided address.
+     * Generates a new IPv6 instance from the provided address.
      */
-    public static IPv4 fromString(String addr) {
+    public static IPv6 fromString(String addr) {
         checkNotNull(addr);
 
         try {
             InetAddress parsed = InetAddresses.forString(addr);
 
-            if (parsed instanceof Inet4Address)
-                return new IPv4((Inet4Address) parsed);
+            if (parsed instanceof Inet6Address)
+                return new IPv6((Inet6Address) parsed);
 
         } catch (Exception ignored) { }
 
-        throw new IllegalArgumentException("Invalid IPv4 representation: " + addr);
+        throw new IllegalArgumentException("Invalid IPv6 representation: " + addr);
     }
 
-    public IPv4(Inet4Address address) {
+    public IPv6(Inet6Address address) {
         super(address);
     }
 
-    /**
-     * @deprecated use {@code IPv4.fromString()}
-     */
-    @Deprecated
-    public IPv4(String ip) {
-        super(fromString(ip).getAddress());
-    }
-
-    /**
-     * @deprecated
-     */
-    @Deprecated
-    public IPv4(long ip) {
-        super(fromInteger((int) ip));
-    }
-
-    /**
-     * @deprecated
-     */
-    @Deprecated
-    public long getValue() {
-        return fromByteArray(toByteArray()) & 0xFFFFFFFFL;
-    }
-
     @Override
-    public int compareTo(IPv4 o) {
+    public int compareTo(IPv6 o) {
         if (o == null)
             return 1;
 
