@@ -15,12 +15,15 @@
  */
 package org.calrissian.mango.types;
 
+import com.google.common.net.InetAddresses;
 import org.calrissian.mango.domain.entity.EntityRelationship;
 import org.calrissian.mango.domain.ip.IPv4;
 import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.net.Inet4Address;
+import java.net.Inet6Address;
 import java.net.URI;
 import java.util.Date;
 
@@ -51,6 +54,8 @@ public class LexiTypeEncodersTest {
         verifyBasicFunctionality(BIGDECIMAL_ALIAS, BigDecimal.valueOf(Double.MAX_VALUE).pow(2), bigDecimalEncoder());
         verifyBasicFunctionality(BIGDECIMAL_ALIAS, new BigDecimal("1.00000"), bigDecimalEncoder());
         verifyBasicFunctionality(BIGDECIMAL_ALIAS, new BigDecimal("0.00000"), bigDecimalEncoder()); //zero is special case
+        verifyBasicFunctionality(INET4_ALIAS, (Inet4Address) InetAddresses.forString("192.168.1.1"), inet4AddressEncoder());
+        verifyBasicFunctionality(INET6_ALIAS, (Inet6Address) InetAddresses.forString("::192.168.1.1"), inet6AddressEncoder());
         verifyBasicFunctionality(ENTITY_RELATIONSHIP_ALIAS, new EntityRelationship("type", "id"), entityRelationshipEncoder());
 
         verifyBasicFunctionality(BOOLEAN_ALIAS, true, booleanRevEncoder());
@@ -71,6 +76,8 @@ public class LexiTypeEncodersTest {
         verifyBasicFunctionality(BIGDECIMAL_ALIAS, BigDecimal.valueOf(Double.MAX_VALUE).pow(2), bigDecimalRevEncoder());
         verifyBasicFunctionality(BIGDECIMAL_ALIAS, new BigDecimal("1.00000"), bigDecimalRevEncoder());
         verifyBasicFunctionality(BIGDECIMAL_ALIAS, new BigDecimal("0.00000"), bigDecimalRevEncoder()); //zero is special case
+        verifyBasicFunctionality(INET4_ALIAS, (Inet4Address) InetAddresses.forString("192.168.1.1"), inet4AddressRevEncoder());
+        verifyBasicFunctionality(INET6_ALIAS, (Inet6Address) InetAddresses.forString("::192.168.1.1"), inet6AddressRevEncoder());
         verifyBasicFunctionality(ENTITY_RELATIONSHIP_ALIAS, new EntityRelationship("type", "id"), entityRelationshipRevEncoder());
     }
 
@@ -117,6 +124,12 @@ public class LexiTypeEncodersTest {
         assertEquals("1800000001000", bigDecimalEncoder().encode(new BigDecimal("1.000")));
         assertEquals("1800000001", bigDecimalEncoder().encode(new BigDecimal("1")));
 
+        assertEquals("c0a80101", inet4AddressEncoder().encode((Inet4Address) InetAddresses.forString("192.168.1.1")));
+        assertEquals("ffffffff", inet4AddressEncoder().encode((Inet4Address) InetAddresses.forString("255.255.255.255")));
+
+        assertEquals("000000000000000000000000c0a80101", inet6AddressEncoder().encode((Inet6Address) InetAddresses.forString("::192.168.1.1")));
+        assertEquals("ffffffffffffffffffffffffffffffff", inet6AddressEncoder().encode((Inet6Address) InetAddresses.forString("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff")));
+
         assertEquals("entity://type#id", entityRelationshipEncoder().encode(new EntityRelationship("type", "id")));
     }
 
@@ -153,6 +166,12 @@ public class LexiTypeEncodersTest {
         assertEquals("180000268323170060713109998320439596646649", bigDecimalRevEncoder().encode(BigDecimal.valueOf(Double.MAX_VALUE).pow(2).negate()));
         assertEquals("0800000009000", bigDecimalRevEncoder().encode(new BigDecimal("1.000")));
         assertEquals("0800000009", bigDecimalRevEncoder().encode(new BigDecimal("1")));
+
+        assertEquals("3f57fefe", inet4AddressRevEncoder().encode((Inet4Address) InetAddresses.forString("192.168.1.1")));
+        assertEquals("00000000", inet4AddressRevEncoder().encode((Inet4Address) InetAddresses.forString("255.255.255.255")));
+
+        assertEquals("ffffffffffffffffffffffff3f57fefe", inet6AddressRevEncoder().encode((Inet6Address) InetAddresses.forString("::192.168.1.1")));
+        assertEquals("00000000000000000000000000000000", inet6AddressRevEncoder().encode((Inet6Address) InetAddresses.forString("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff")));
 
     }
 }
