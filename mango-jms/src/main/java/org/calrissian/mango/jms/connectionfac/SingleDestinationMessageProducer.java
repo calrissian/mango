@@ -29,6 +29,7 @@ import static org.calrissian.mango.jms.connectionfac.SingleDestinationUtils.preS
  * Date: Nov 27, 2011
  * Time: 5:25:02 PM
  */
+@Deprecated
 class SingleDestinationMessageProducer extends MessageProducerDecorator {
 
     private final Destination destination;

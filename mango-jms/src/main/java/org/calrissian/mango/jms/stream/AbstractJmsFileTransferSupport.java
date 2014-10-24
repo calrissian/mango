@@ -46,6 +46,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
+@Deprecated
 public abstract class AbstractJmsFileTransferSupport {
 
     protected JmsTemplate jmsTemplate;

@@ -24,6 +24,7 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
 
+@Deprecated
 public class SendReceiveRequestor implements MessagePostProcessor {
 
     public static final String RECV_ID = "JMS_SYNC_RECVID";

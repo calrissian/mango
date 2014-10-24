@@ -21,6 +21,7 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageProducer;
 
+@Deprecated
 public abstract class MessageProducerDecorator implements MessageProducer {
 
     private final MessageProducer messageProducer;

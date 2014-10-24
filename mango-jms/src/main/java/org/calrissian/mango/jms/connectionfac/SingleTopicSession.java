@@ -28,6 +28,7 @@ import static org.calrissian.mango.jms.connectionfac.SingleDestinationUtils.*;
  * Date: Nov 27, 2011
  * Time: 4:44:38 PM
  */
+@Deprecated
 class SingleTopicSession extends SessionDecorator {
 
     private final Topic topic;

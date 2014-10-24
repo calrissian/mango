@@ -19,6 +19,7 @@ import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+@Deprecated
 public class Piece implements Serializable {
 
     /**

@@ -18,6 +18,7 @@ package org.calrissian.mango.jms.stream.domain;
 import java.io.Serializable;
 import java.util.UUID;
 
+@Deprecated
 public class Request implements Serializable {
 
     private static final long serialVersionUID = 3835642167224689315L;

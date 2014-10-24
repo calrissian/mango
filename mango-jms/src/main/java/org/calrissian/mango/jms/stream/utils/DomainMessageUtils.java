@@ -25,7 +25,7 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
 
-
+@Deprecated
 public class DomainMessageUtils {
 
     public static final String REQUEST_ID = "filetransfer.request.id";

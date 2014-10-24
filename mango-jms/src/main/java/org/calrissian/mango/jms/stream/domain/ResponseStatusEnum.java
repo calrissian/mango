@@ -15,6 +15,7 @@
  */
 package org.calrissian.mango.jms.stream.domain;
 
+@Deprecated
 public enum ResponseStatusEnum {
 
     ACCEPT, DENY, STARTSEND, STOPSEND, RESEND;

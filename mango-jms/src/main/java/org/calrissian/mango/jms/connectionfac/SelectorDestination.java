@@ -18,7 +18,7 @@ package org.calrissian.mango.jms.connectionfac;
 import javax.jms.*;
 import java.io.Serializable;
 
-
+@Deprecated
 public class SelectorDestination implements Queue, Topic, TemporaryQueue, TemporaryTopic, Serializable {
     private static final long serialVersionUID = 1L;
 

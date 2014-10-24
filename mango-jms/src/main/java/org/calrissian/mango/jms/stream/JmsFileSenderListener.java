@@ -24,7 +24,7 @@ import javax.jms.MessageListener;
 
 import static org.calrissian.mango.jms.stream.utils.DomainMessageUtils.fromRequestMessage;
 
-
+@Deprecated
 public class JmsFileSenderListener extends AbstractJmsFileTransferSupport
         implements MessageListener {
 

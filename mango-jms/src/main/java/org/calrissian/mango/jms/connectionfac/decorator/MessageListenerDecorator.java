@@ -19,6 +19,7 @@ package org.calrissian.mango.jms.connectionfac.decorator;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 
+@Deprecated
 public abstract class MessageListenerDecorator implements MessageListener {
 
     private final MessageListener messageListener;

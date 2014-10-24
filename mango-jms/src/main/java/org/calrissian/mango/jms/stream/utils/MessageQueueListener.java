@@ -33,6 +33,7 @@ import java.util.concurrent.TimeUnit;
  * Date: Dec 10, 2011
  * Time: 2:09:54 PM
  */
+@Deprecated
 public class MessageQueueListener implements MessageListener {
 
     private BlockingQueue<Message> queueMessages = new LinkedBlockingQueue<Message>();

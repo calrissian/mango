@@ -28,7 +28,7 @@ import javax.jms.Message;
 import javax.jms.MessageListener;
 import java.net.URI;
 
-
+@Deprecated
 public class JmsUriSender extends JmsFileSenderListener
         implements MessageListener {
 

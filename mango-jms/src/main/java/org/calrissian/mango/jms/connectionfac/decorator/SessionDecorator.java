@@ -19,6 +19,7 @@ package org.calrissian.mango.jms.connectionfac.decorator;
 import javax.jms.*;
 import java.io.Serializable;
 
+@Deprecated
 public abstract class SessionDecorator implements Session {
 
     private final Session session;
