@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.concurrent;
+package org.calrissian.mango.batch;
 
 import org.junit.After;
 import org.junit.Before;
@@ -226,7 +226,7 @@ public class BatcherTest {
     @Test(expected = IllegalArgumentException.class)
     public void invalidSetSize() {
         BatcherBuilder.create()
-        .sizeBound(-1);
+                .sizeBound(-1);
     }
 
     @Test(expected = IllegalStateException.class)
