@@ -39,8 +39,12 @@ public class RangeCriteriaTest {
         entity.put(new Tuple("key1", 11));
         assertFalse(criteria.apply(entity));
 
+        entity.removeAll("key1");
+
         entity.put(new Tuple("key1", 4));
         assertFalse(criteria.apply(entity));
+
+        entity.removeAll("key1");
 
         entity.put(new Tuple("key1", 5));
         assertTrue(criteria.apply(entity));

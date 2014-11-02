@@ -45,6 +45,7 @@ public class NodeDeserializerTest {
 
     @Test
     public void testRangeDeserialize() throws Exception {
+
         String json = "{\"range\":{\"key\":\"k1\",\"type\":\"string\",\"start\":\"v1\",\"end\":\"v2\"}}";
         Node node = objectMapper.readValue(json, Node.class);
         StringWriter writer = new StringWriter();

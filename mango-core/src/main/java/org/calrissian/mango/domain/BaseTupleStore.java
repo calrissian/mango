@@ -28,15 +28,15 @@ import static com.google.common.collect.Iterables.concat;
  */
 public class BaseTupleStore implements TupleStore {
 
-    private Map<String, Set<Tuple>> tuples = new HashMap<String, Set<Tuple>>();
+    private Map<String, List<Tuple>> tuples = new HashMap<String, List<Tuple>>();
 
     public void put(Tuple tuple) {
         checkNotNull(tuple);
         checkNotNull(tuple.getKey());
 
-        Set<Tuple> keyedTuples = tuples.get(tuple.getKey());
+        List<Tuple> keyedTuples = tuples.get(tuple.getKey());
         if (keyedTuples == null) {
-            keyedTuples = new HashSet<Tuple>();
+            keyedTuples = new ArrayList<Tuple>();
             tuples.put(tuple.getKey(), keyedTuples);
         }
         keyedTuples.add(tuple);
@@ -86,7 +86,7 @@ public class BaseTupleStore implements TupleStore {
         checkNotNull(t);
         checkNotNull(t.getKey());
         if (tuples.containsKey(t.getKey())) {
-            Set<Tuple> tupelSet = tuples.get(t.getKey());
+            List<Tuple> tupelSet = tuples.get(t.getKey());
             if(tupelSet.remove(t))
                 return t;
         }
@@ -97,7 +97,7 @@ public class BaseTupleStore implements TupleStore {
     public <T> Tuple<T> remove(String key) {
         checkNotNull(key);
         if (tuples.containsKey(key)) {
-            Set<Tuple> tupleSet = tuples.get(key);
+            List<Tuple> tupleSet = tuples.get(key);
             Tuple t = tupleSet.size() > 0 ? tupleSet.iterator().next() : null;
             if(t != null && tuples.get(key).remove(t))
                 return t;
