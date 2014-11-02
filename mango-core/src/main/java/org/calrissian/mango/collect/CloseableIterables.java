@@ -50,6 +50,19 @@ public class CloseableIterables {
     }
 
     /**
+     * Divides an iterable into unmodifiable sublists of equivalent elements. The iterable groups elements
+     * in consecutive order, forming a new partition when the value from the provided function changes. For example,
+     * grouping the iterable {@code [1, 3, 2, 4, 5]} with a function grouping even and odd numbers
+     * yields {@code [[1, 3], [2, 4], [5]} all in the original order.
+     *
+     * <p/>
+     * <p>The returned lists implement {@link java.util.RandomAccess}.
+     */
+    public static <T> CloseableIterable<List<T>> groupBy(final CloseableIterable<? extends T> iterable, final Function<? super T, ?> groupingFunction) {
+        return wrap(Iterables2.groupBy(iterable, groupingFunction), iterable);
+    }
+
+    /**
      * These set of functions simply delegate to Guava's {@link Iterables} and wrap the
      * result in a {@link CloseableIterable} to retain the ability to close the underlying
      * resource.

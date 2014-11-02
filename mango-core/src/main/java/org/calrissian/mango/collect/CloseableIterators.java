@@ -48,6 +48,19 @@ public class CloseableIterators {
     }
 
     /**
+     * Divides a closeableiterator into unmodifiable sublists of equivalent elements. The iterator groups elements
+     * in consecutive order, forming a new partition when the value from the provided function changes. For example,
+     * grouping the iterator {@code [1, 3, 2, 4, 5]} with a function grouping even and odd numbers
+     * yields {@code [[1, 3], [2, 4], [5]} all in the original order.
+     *
+     * <p/>
+     * <p>The returned lists implement {@link java.util.RandomAccess}.
+     */
+    public static <T> CloseableIterator<List<T>> groupBy(final CloseableIterator<? extends T> iterator, final Function<? super T, ?> groupingFunction) {
+        return wrap(Iterators2.groupBy(iterator, groupingFunction), iterator);
+    }
+
+    /**
      * These set of functions simply delegate to Guava's {@link com.google.common.collect.Iterators} and wrap the
      * result in a {@link CloseableIterator} to retain the ability to close the underlying
      * resource.
