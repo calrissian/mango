@@ -15,7 +15,7 @@
  */
 package org.calrissian.mango.domain;
 
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.*;
 
 import java.util.*;
 
@@ -28,16 +28,16 @@ import static com.google.common.collect.Iterables.concat;
  */
 public class BaseTupleStore implements TupleStore {
 
-    private Map<String, List<Tuple>> tuples = new HashMap<String, List<Tuple>>();
+    private Multimap<String, Tuple> tuples = ArrayListMultimap.create();
 
     public void put(Tuple tuple) {
         checkNotNull(tuple);
         checkNotNull(tuple.getKey());
 
-        List<Tuple> keyedTuples = tuples.get(tuple.getKey());
+        Collection<Tuple> keyedTuples = tuples.get(tuple.getKey());
         if (keyedTuples == null) {
             keyedTuples = new ArrayList<Tuple>();
-            tuples.put(tuple.getKey(), keyedTuples);
+            tuples.putAll(tuple.getKey(), keyedTuples);
         }
         keyedTuples.add(tuple);
     }
@@ -68,7 +68,7 @@ public class BaseTupleStore implements TupleStore {
      * A get operation for single-valued keys
      */
     public <T> Tuple<T> get(String key) {
-        return tuples.get(key) != null ? tuples.get(key).iterator().next() : null;
+        return tuples.containsKey(key) ? tuples.get(key).iterator().next() : null;
     }
 
     @Override
@@ -86,7 +86,7 @@ public class BaseTupleStore implements TupleStore {
         checkNotNull(t);
         checkNotNull(t.getKey());
         if (tuples.containsKey(t.getKey())) {
-            List<Tuple> tupelSet = tuples.get(t.getKey());
+            Collection<Tuple> tupelSet = tuples.get(t.getKey());
             if(tupelSet.remove(t))
                 return t;
         }
@@ -97,7 +97,7 @@ public class BaseTupleStore implements TupleStore {
     public <T> Tuple<T> remove(String key) {
         checkNotNull(key);
         if (tuples.containsKey(key)) {
-            List<Tuple> tupleSet = tuples.get(key);
+            Collection<Tuple> tupleSet = tuples.get(key);
             Tuple t = tupleSet.size() > 0 ? tupleSet.iterator().next() : null;
             if(t != null && tuples.get(key).remove(t))
                 return t;
@@ -109,7 +109,7 @@ public class BaseTupleStore implements TupleStore {
     @Override
     public Collection<Tuple> removeAll(String key){
         checkNotNull(key);
-        return tuples.remove(key);
+        return tuples.removeAll(key);
     }
 
 

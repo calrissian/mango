@@ -122,6 +122,8 @@ public class JsonTupleStore {
 
         sort(tuples, new FlattenedLevelsComparator());
 
+        System.out.println(tuples);
+
         JsonTreeNode root = new ObjectJsonNode(objectMapper);
         for(Tuple tuple : tuples) {
             if(!JsonMetadata.isFlattenedJson(tuple.getMetadata()))
@@ -185,7 +187,7 @@ public class JsonTupleStore {
             int levels1 = getLevels(tuple);
             int levels2 = getLevels(tuple2);
 
-            ComparisonChain comparisonChain = ComparisonChain.start().compare(levels1, levels2);
+            ComparisonChain comparisonChain = ComparisonChain.start();
 
             for(int i = 0; i < Math.max(levels1, levels2); i++) {
 
@@ -199,7 +201,10 @@ public class JsonTupleStore {
                 comparisonChain = comparisonChain.compare(pair1.getTwo(), pair2.getTwo());
             }
 
-            comparisonChain = comparisonChain.compare(tuple.getKey(), tuple2.getKey());
+            comparisonChain = comparisonChain.compare(levels1, levels2)
+                 .compare(tuple.getKey(), tuple2.getKey());
+
+
 
             return comparisonChain.result();
         }
