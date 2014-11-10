@@ -16,13 +16,10 @@
 package org.calrissian.mango.domain.ip;
 
 
-import com.google.common.net.InetAddresses;
-
 import java.net.Inet6Address;
-import java.net.InetAddress;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.primitives.UnsignedBytes.lexicographicalComparator;
+import static org.calrissian.mango.net.MoreInetAddresses.forIPv6String;
 
 /**
  * A Domain object that represents an IPv6 network address.  This is functionally a wrapper for {@link Inet6Address}
@@ -32,20 +29,14 @@ import static com.google.common.primitives.UnsignedBytes.lexicographicalComparat
 public class IPv6 extends IP<Inet6Address> implements Comparable<IPv6>{
 
     /**
-     * Generates a new IPv6 instance from the provided address.
+     * Generates a new IPv6 instance from the provided address. This will NOT do a dns lookup on the address if it
+     * does not represent a valid ip address like {@code InetAddress.getByName()}.
+     *
+     * If the provided string is an ipv4 "mapped" address ('ffff:x.x.x.x' this method will still generate a valid IPv6
+     * instance.
      */
     public static IPv6 fromString(String addr) {
-        checkNotNull(addr);
-
-        try {
-            InetAddress parsed = InetAddresses.forString(addr);
-
-            if (parsed instanceof Inet6Address)
-                return new IPv6((Inet6Address) parsed);
-
-        } catch (Exception ignored) { }
-
-        throw new IllegalArgumentException("Invalid IPv6 representation: " + addr);
+        return new IPv6(forIPv6String(addr));
     }
 
     public IPv6(Inet6Address address) {

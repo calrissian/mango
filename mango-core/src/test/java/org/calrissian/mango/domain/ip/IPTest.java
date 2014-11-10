@@ -16,12 +16,15 @@
 package org.calrissian.mango.domain.ip;
 
 
+import org.calrissian.mango.net.MoreInetAddresses;
 import org.junit.Test;
 
 import java.net.Inet4Address;
 import java.net.Inet6Address;
+import java.net.InetAddress;
 
-import static com.google.common.net.InetAddresses.forString;
+import static org.calrissian.mango.net.MoreInetAddresses.forIPv4String;
+import static org.calrissian.mango.net.MoreInetAddresses.forIPv6String;
 import static org.junit.Assert.*;
 
 public class IPTest {
@@ -31,16 +34,16 @@ public class IPTest {
      */
     @Test
     public void simpleIpv4Test() {
-        IPv4 ip = new IPv4((Inet4Address) forString("1.2.3.4"));
-        assertEquals(forString("1.2.3.4"), ip.getAddress());
-        assertArrayEquals(forString("1.2.3.4").getAddress(), ip.toByteArray());
+        IPv4 ip = new IPv4(forIPv4String("1.2.3.4"));
+        assertEquals(forIPv4String("1.2.3.4"), ip.getAddress());
+        assertArrayEquals(forIPv4String("1.2.3.4").getAddress(), ip.toByteArray());
     }
 
     @Test
     public void ipv4FromString() {
         IPv4 ip = IPv4.fromString("1.2.3.4");
         assertNotNull(ip);
-        assertEquals(new IPv4((Inet4Address) forString("1.2.3.4")), ip);
+        assertEquals(new IPv4(forIPv4String("1.2.3.4")), ip);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -55,24 +58,24 @@ public class IPTest {
 
     @Test
     public void ipv4ToStringTest() {
-        IPv4 ip = new IPv4((Inet4Address) forString("1.2.3.4"));
+        IPv4 ip = new IPv4(forIPv4String("1.2.3.4"));
         assertEquals("1.2.3.4", ip.toString());
     }
 
     @Test
     public void ipv4LegacyConstructorTest() {
         IPv4 ip = new IPv4("1.2.3.4");
-        assertEquals(forString("1.2.3.4"), ip.getAddress());
-        assertArrayEquals(forString("1.2.3.4").getAddress(), ip.toByteArray());
+        assertEquals(forIPv4String("1.2.3.4"), ip.getAddress());
+        assertArrayEquals(forIPv4String("1.2.3.4").getAddress(), ip.toByteArray());
 
         ip = new IPv4(16909060);
-        assertEquals(forString("1.2.3.4"), ip.getAddress());
-        assertArrayEquals(forString("1.2.3.4").getAddress(), ip.toByteArray());
+        assertEquals(forIPv4String("1.2.3.4"), ip.getAddress());
+        assertArrayEquals(forIPv4String("1.2.3.4").getAddress(), ip.toByteArray());
 
         //Check integer overflow
         ip = new IPv4(0xFFFFFFFF);
-        assertEquals(forString("255.255.255.255"), ip.getAddress());
-        assertArrayEquals(forString("255.255.255.255").getAddress(), ip.toByteArray());
+        assertEquals(forIPv4String("255.255.255.255"), ip.getAddress());
+        assertArrayEquals(forIPv4String("255.255.255.255").getAddress(), ip.toByteArray());
     }
 
     /**
@@ -81,16 +84,16 @@ public class IPTest {
 
     @Test
     public void simpleIpv6Test() {
-        IPv6 ip = new IPv6((Inet6Address) forString("::1.2.3.4"));
-        assertEquals(forString("::1.2.3.4"), ip.getAddress());
-        assertArrayEquals(forString("::1.2.3.4").getAddress(), ip.toByteArray());
+        IPv6 ip = new IPv6(forIPv6String("::1.2.3.4"));
+        assertEquals(forIPv6String("::1.2.3.4"), ip.getAddress());
+        assertArrayEquals(forIPv6String("::1.2.3.4").getAddress(), ip.toByteArray());
     }
 
     @Test
     public void ipv6FromString() {
         IPv6 ip = IPv6.fromString("::1.2.3.4");
         assertNotNull(ip);
-        assertEquals(new IPv6((Inet6Address) forString("::1.2.3.4")), ip);
+        assertEquals(new IPv6(forIPv6String("::1.2.3.4")), ip);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -105,13 +108,13 @@ public class IPTest {
 
     @Test
     public void ipv6ToStringTest() {
-        IPv6 ip = new IPv6((Inet6Address) forString("::1.2.3.4"));
+        IPv6 ip = new IPv6(forIPv6String("::1.2.3.4"));
         assertEquals("::102:304", ip.toString());
 
-        ip = new IPv6((Inet6Address) forString("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff"));
+        ip = new IPv6(forIPv6String("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff"));
         assertEquals("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff", ip.toString());
 
-        ip = new IPv6((Inet6Address) forString("1234:0000:0000:0000:0000:0000:0000:1234"));
+        ip = new IPv6(forIPv6String("1234:0000:0000:0000:0000:0000:0000:1234"));
         assertEquals("1234::1234", ip.toString());
     }
 

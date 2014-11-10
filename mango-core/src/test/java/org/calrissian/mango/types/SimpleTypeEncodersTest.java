@@ -16,7 +16,6 @@
 package org.calrissian.mango.types;
 
 
-import com.google.common.net.InetAddresses;
 import org.calrissian.mango.domain.entity.EntityRelationship;
 import org.calrissian.mango.domain.ip.IPv4;
 import org.calrissian.mango.domain.ip.IPv6;
@@ -24,11 +23,11 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.net.Inet4Address;
-import java.net.Inet6Address;
 import java.net.URI;
 import java.util.Date;
 
+import static org.calrissian.mango.net.MoreInetAddresses.forIPv4String;
+import static org.calrissian.mango.net.MoreInetAddresses.forIPv6String;
 import static org.calrissian.mango.types.SimpleTypeEncoders.*;
 import static org.calrissian.mango.types.encoders.AliasConstants.*;
 import static org.junit.Assert.assertEquals;
@@ -65,8 +64,10 @@ public class SimpleTypeEncodersTest {
         verifyBasicFunctionality(BIGDECIMAL_ALIAS, new BigDecimal("1.00000"), bigDecimalEncoder());
         verifyBasicFunctionality(IPV4_ALIAS, IPv4.fromString("192.168.1.1"), ipv4Encoder());
         verifyBasicFunctionality(IPV6_ALIAS, IPv6.fromString("::192.168.1.1"), ipv6Encoder());
-        verifyBasicFunctionality(INET4_ALIAS, (Inet4Address) InetAddresses.forString("192.168.1.1"), inet4AddressEncoder());
-        verifyBasicFunctionality(INET6_ALIAS, (Inet6Address) InetAddresses.forString("::192.168.1.1"), inet6AddressEncoder());
+        verifyBasicFunctionality(IPV6_ALIAS, IPv6.fromString("::ffff:192.168.1.1"), ipv6Encoder());
+        verifyBasicFunctionality(INET4_ALIAS, forIPv4String("192.168.1.1"), inet4AddressEncoder());
+        verifyBasicFunctionality(INET6_ALIAS, forIPv6String("::192.168.1.1"), inet6AddressEncoder());
+        verifyBasicFunctionality(INET6_ALIAS, forIPv6String("::ffff:192.168.1.1"), inet6AddressEncoder());
         verifyBasicFunctionality(ENTITY_RELATIONSHIP_ALIAS, new EntityRelationship("type", "id"), entityRelationshipEncoder());
     }
 
@@ -102,9 +103,11 @@ public class SimpleTypeEncodersTest {
         assertEquals("192.168.1.1", ipv4Encoder().encode(IPv4.fromString("192.168.1.1")));
 
         assertEquals("::c0a8:101", ipv6Encoder().encode(IPv6.fromString("::192.168.1.1")));
+        assertEquals("::ffff:c0a8:101", ipv6Encoder().encode(IPv6.fromString("::ffff:192.168.1.1")));
 
-        assertEquals("192.168.1.1", inet4AddressEncoder().encode((Inet4Address) InetAddresses.forString("192.168.1.1")));
+        assertEquals("192.168.1.1", inet4AddressEncoder().encode(forIPv4String("192.168.1.1")));
 
-        assertEquals("::c0a8:101", inet6AddressEncoder().encode((Inet6Address) InetAddresses.forString("::192.168.1.1")));
+        assertEquals("::c0a8:101", inet6AddressEncoder().encode(forIPv6String("::192.168.1.1")));
+        assertEquals("::ffff:c0a8:101", inet6AddressEncoder().encode(forIPv6String("::ffff:192.168.1.1")));
     }
 }

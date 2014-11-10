@@ -16,15 +16,12 @@
 package org.calrissian.mango.domain.ip;
 
 
-import com.google.common.net.InetAddresses;
-
 import java.net.Inet4Address;
-import java.net.InetAddress;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.net.InetAddresses.fromInteger;
 import static com.google.common.primitives.Ints.fromByteArray;
 import static com.google.common.primitives.UnsignedBytes.lexicographicalComparator;
+import static org.calrissian.mango.net.MoreInetAddresses.forIPv4String;
 
 /**
  * A Domain object that represents an IPv4 network address.  This is functionally a wrapper for {@link Inet4Address}
@@ -34,20 +31,11 @@ import static com.google.common.primitives.UnsignedBytes.lexicographicalComparat
 public class IPv4 extends IP<Inet4Address> implements Comparable<IPv4> {
 
     /**
-     * Generates a new IPv4 instance from the provided address.
+     * Generates a new IPv4 instance from the provided address. This will NOT do a dns lookup on the address if it
+     * does not represent a valid ip address like {@code InetAddress.getByName()}.
      */
     public static IPv4 fromString(String addr) {
-        checkNotNull(addr);
-
-        try {
-            InetAddress parsed = InetAddresses.forString(addr);
-
-            if (parsed instanceof Inet4Address)
-                return new IPv4((Inet4Address) parsed);
-
-        } catch (Exception ignored) { }
-
-        throw new IllegalArgumentException("Invalid IPv4 representation: " + addr);
+        return new IPv4(forIPv4String(addr));
     }
 
     public IPv4(Inet4Address address) {
@@ -59,7 +47,7 @@ public class IPv4 extends IP<Inet4Address> implements Comparable<IPv4> {
      */
     @Deprecated
     public IPv4(String ip) {
-        super(fromString(ip).getAddress());
+        super(forIPv4String(ip));
     }
 
     /**
