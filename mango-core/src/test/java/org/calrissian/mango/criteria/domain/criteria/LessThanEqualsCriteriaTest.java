@@ -38,6 +38,8 @@ public class LessThanEqualsCriteriaTest {
 
         entity.put(new Tuple("key1", 10));
 
+        entity.removeAll("key1");
+
         assertFalse(criteria.apply(entity));
 
         entity.put(new Tuple("key1", 5));
