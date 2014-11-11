@@ -47,20 +47,20 @@ public class EntityIndex implements Identifiable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof EntityIndex)) return false;
 
         EntityIndex that = (EntityIndex) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (type != null ? !type.equals(that.type) : that.type != null) return false;
+        if (!id.equals(that.id)) return false;
+        if (!type.equals(that.type)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = type != null ? type.hashCode() : 0;
-        result = 31 * result + (id != null ? id.hashCode() : 0);
+        int result = type.hashCode();
+        result = 31 * result + id.hashCode();
         return result;
     }
 

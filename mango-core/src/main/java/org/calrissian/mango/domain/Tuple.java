@@ -47,6 +47,8 @@ public class Tuple<T> implements Serializable {
     public Tuple(String key, T value, Map<String,Object> metadata) {
         checkNotNull(key);
         checkNotNull(value);
+        checkNotNull(metadata);
+
         this.key = key;
         this.value = value;
         this.metadata = new HashMap<String, Object>(metadata);
@@ -84,22 +86,22 @@ public class Tuple<T> implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Tuple)) return false;
 
         Tuple tuple = (Tuple) o;
 
-        if (key != null ? !key.equals(tuple.key) : tuple.key != null) return false;
-        if (metadata != null ? !metadata.equals(tuple.metadata) : tuple.metadata != null) return false;
-        if (value != null ? !value.equals(tuple.value) : tuple.value != null) return false;
+        if (!key.equals(tuple.key)) return false;
+        if (!metadata.equals(tuple.metadata)) return false;
+        if (!value.equals(tuple.value)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = key != null ? key.hashCode() : 0;
-        result = 31 * result + (value != null ? value.hashCode() : 0);
-        result = 31 * result + (metadata != null ? metadata.hashCode() : 0);
+        int result = key.hashCode();
+        result = 31 * result + value.hashCode();
+        result = 31 * result + metadata.hashCode();
         return result;
     }
 

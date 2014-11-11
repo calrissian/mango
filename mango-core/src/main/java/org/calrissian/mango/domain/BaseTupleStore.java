@@ -15,12 +15,15 @@
  */
 package org.calrissian.mango.domain;
 
-import com.google.common.collect.*;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.Iterables.concat;
+import static java.util.Collections.unmodifiableCollection;
 
 /**
  * A base tuple collection providing reusable implementations for interacting with a tuple store backed by
@@ -34,12 +37,7 @@ public class BaseTupleStore implements TupleStore {
         checkNotNull(tuple);
         checkNotNull(tuple.getKey());
 
-        Collection<Tuple> keyedTuples = tuples.get(tuple.getKey());
-        if (keyedTuples == null) {
-            keyedTuples = new ArrayList<Tuple>();
-            tuples.putAll(tuple.getKey(), keyedTuples);
-        }
-        keyedTuples.add(tuple);
+        tuples.put(tuple.getKey(), tuple);
     }
 
     public void putAll(Iterable<Tuple> tuples) {
@@ -53,7 +51,7 @@ public class BaseTupleStore implements TupleStore {
      * Returns all the getTuples set on the current entity
      */
     public Collection<Tuple> getTuples() {
-        return ImmutableList.copyOf(concat(tuples.values()));
+        return unmodifiableCollection(tuples.values());
     }
 
     /**
@@ -85,6 +83,7 @@ public class BaseTupleStore implements TupleStore {
     public <T> Tuple<T> remove(Tuple<T> t) {
         checkNotNull(t);
         checkNotNull(t.getKey());
+
         if (tuples.containsKey(t.getKey())) {
             Collection<Tuple> tupelSet = tuples.get(t.getKey());
             if(tupelSet.remove(t))
@@ -116,9 +115,10 @@ public class BaseTupleStore implements TupleStore {
     @Override
     public Collection<Tuple> removeAll(Collection<Tuple> tuples) {
         checkNotNull(tuples);
-        Collection<Tuple> removedTuples = new LinkedList<Tuple>();
+        Collection<Tuple> removedTuples = new ArrayList<Tuple>();
         for (Tuple tuple : tuples)
             removedTuples.add(remove(tuple));
+
         return removedTuples;
     }
 

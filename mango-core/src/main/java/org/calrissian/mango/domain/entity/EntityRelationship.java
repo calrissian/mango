@@ -28,6 +28,6 @@ public class EntityRelationship extends EntityIndex implements Serializable {
     }
 
     public EntityRelationship(Entity entity) {
-        this(entity.getType(), entity.getId());
+        super(entity);
     }
 }
