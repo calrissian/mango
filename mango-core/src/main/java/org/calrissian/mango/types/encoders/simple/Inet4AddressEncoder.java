@@ -19,12 +19,10 @@ package org.calrissian.mango.types.encoders.simple;
 import org.calrissian.mango.types.encoders.AbstractInet4AddressEncoder;
 
 import java.net.Inet4Address;
-import java.net.InetAddress;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.net.InetAddresses.forString;
 import static com.google.common.net.InetAddresses.toAddrString;
+import static org.calrissian.mango.net.MoreInetAddresses.forIPv4String;
 
 public class Inet4AddressEncoder extends AbstractInet4AddressEncoder<String> {
     @Override
@@ -36,9 +34,7 @@ public class Inet4AddressEncoder extends AbstractInet4AddressEncoder<String> {
     @Override
     public Inet4Address decode(String value) {
         checkNotNull(value, "Null values are not allowed");
-        InetAddress address = forString(value);
-        checkArgument(address instanceof Inet4Address, "value is not a valid Inet4Address");
 
-        return (Inet4Address) address;
+        return forIPv4String(value);
     }
 }

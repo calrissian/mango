@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 The Calrissian Authors
+ * Copyright (C) 2014 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,18 +15,18 @@
  */
 package org.calrissian.mango.types;
 
-import com.google.common.net.InetAddresses;
 import org.calrissian.mango.domain.entity.EntityRelationship;
 import org.calrissian.mango.domain.ip.IPv4;
+import org.calrissian.mango.domain.ip.IPv6;
 import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.net.Inet4Address;
-import java.net.Inet6Address;
 import java.net.URI;
 import java.util.Date;
 
+import static org.calrissian.mango.net.MoreInetAddresses.forIPv4String;
+import static org.calrissian.mango.net.MoreInetAddresses.forIPv6String;
 import static org.calrissian.mango.types.LexiTypeEncoders.*;
 import static org.calrissian.mango.types.SimpleTypeEncodersTest.verifyBasicFunctionality;
 import static org.calrissian.mango.types.encoders.AliasConstants.*;
@@ -46,7 +46,6 @@ public class LexiTypeEncodersTest {
         verifyBasicFunctionality(FLOAT_ALIAS, -0.0F, floatEncoder());
         verifyBasicFunctionality(FLOAT_ALIAS, -1.5F, floatEncoder());
         verifyBasicFunctionality(INTEGER_ALIAS, 3, integerEncoder());
-        verifyBasicFunctionality(IPV4_ALIAS, new IPv4("192.168.1.1"), ipv4Encoder());
         verifyBasicFunctionality(LONG_ALIAS, 3L, longEncoder());
         verifyBasicFunctionality(STRING_ALIAS, "testing", stringEncoder());
         verifyBasicFunctionality(URI_ALIAS, new URI("http://testing.org"), uriEncoder());
@@ -54,8 +53,12 @@ public class LexiTypeEncodersTest {
         verifyBasicFunctionality(BIGDECIMAL_ALIAS, BigDecimal.valueOf(Double.MAX_VALUE).pow(2), bigDecimalEncoder());
         verifyBasicFunctionality(BIGDECIMAL_ALIAS, new BigDecimal("1.00000"), bigDecimalEncoder());
         verifyBasicFunctionality(BIGDECIMAL_ALIAS, new BigDecimal("0.00000"), bigDecimalEncoder()); //zero is special case
-        verifyBasicFunctionality(INET4_ALIAS, (Inet4Address) InetAddresses.forString("192.168.1.1"), inet4AddressEncoder());
-        verifyBasicFunctionality(INET6_ALIAS, (Inet6Address) InetAddresses.forString("::192.168.1.1"), inet6AddressEncoder());
+        verifyBasicFunctionality(IPV4_ALIAS, IPv4.fromString("192.168.1.1"), ipv4Encoder());
+        verifyBasicFunctionality(IPV6_ALIAS, IPv6.fromString("::192.168.1.1"), ipv6Encoder());
+        verifyBasicFunctionality(IPV6_ALIAS, IPv6.fromString("::ffff:192.168.1.1"), ipv6Encoder());
+        verifyBasicFunctionality(INET4_ALIAS, forIPv4String("192.168.1.1"), inet4AddressEncoder());
+        verifyBasicFunctionality(INET6_ALIAS, forIPv6String("::192.168.1.1"), inet6AddressEncoder());
+        verifyBasicFunctionality(INET6_ALIAS, forIPv6String("::ffff:192.168.1.1"), inet6AddressEncoder());
         verifyBasicFunctionality(ENTITY_RELATIONSHIP_ALIAS, new EntityRelationship("type", "id"), entityRelationshipEncoder());
 
         verifyBasicFunctionality(BOOLEAN_ALIAS, true, booleanRevEncoder());
@@ -68,7 +71,6 @@ public class LexiTypeEncodersTest {
         verifyBasicFunctionality(FLOAT_ALIAS, -0.0F, floatRevEncoder());
         verifyBasicFunctionality(FLOAT_ALIAS, -1.5F, floatRevEncoder());
         verifyBasicFunctionality(INTEGER_ALIAS, 3, integerRevEncoder());
-        verifyBasicFunctionality(IPV4_ALIAS, new IPv4("192.168.1.1"), ipv4RevEncoder());
         verifyBasicFunctionality(LONG_ALIAS, 3L, longRevEncoder());
         verifyBasicFunctionality(STRING_ALIAS, "testing", stringRevEncoder());
         verifyBasicFunctionality(URI_ALIAS, new URI("http://testing.org"), uriRevEncoder());
@@ -76,8 +78,12 @@ public class LexiTypeEncodersTest {
         verifyBasicFunctionality(BIGDECIMAL_ALIAS, BigDecimal.valueOf(Double.MAX_VALUE).pow(2), bigDecimalRevEncoder());
         verifyBasicFunctionality(BIGDECIMAL_ALIAS, new BigDecimal("1.00000"), bigDecimalRevEncoder());
         verifyBasicFunctionality(BIGDECIMAL_ALIAS, new BigDecimal("0.00000"), bigDecimalRevEncoder()); //zero is special case
-        verifyBasicFunctionality(INET4_ALIAS, (Inet4Address) InetAddresses.forString("192.168.1.1"), inet4AddressRevEncoder());
-        verifyBasicFunctionality(INET6_ALIAS, (Inet6Address) InetAddresses.forString("::192.168.1.1"), inet6AddressRevEncoder());
+        verifyBasicFunctionality(IPV4_ALIAS, IPv4.fromString("192.168.1.1"), ipv4RevEncoder());
+        verifyBasicFunctionality(IPV6_ALIAS, IPv6.fromString("::192.168.1.1"), ipv6RevEncoder());
+        verifyBasicFunctionality(IPV6_ALIAS, IPv6.fromString("::ffff:192.168.1.1"), ipv6RevEncoder());
+        verifyBasicFunctionality(INET4_ALIAS, forIPv4String("192.168.1.1"), inet4AddressRevEncoder());
+        verifyBasicFunctionality(INET6_ALIAS, forIPv6String("::192.168.1.1"), inet6AddressRevEncoder());
+        verifyBasicFunctionality(INET6_ALIAS, forIPv6String("::ffff:192.168.1.1"), inet6AddressRevEncoder());
         verifyBasicFunctionality(ENTITY_RELATIONSHIP_ALIAS, new EntityRelationship("type", "id"), entityRelationshipRevEncoder());
     }
 
@@ -104,9 +110,6 @@ public class LexiTypeEncodersTest {
         assertEquals("80000003", integerEncoder().encode(3));
         assertEquals("7ffffffd", integerEncoder().encode(-3));
 
-        assertEquals("c0a80101", ipv4Encoder().encode(new IPv4("192.168.1.1")));
-        assertEquals("ffffffff", ipv4Encoder().encode(new IPv4("255.255.255.255")));
-
         assertEquals("8000000000000003", longEncoder().encode(3L));
         assertEquals("7ffffffffffffffd", longEncoder().encode(-3L));
 
@@ -124,11 +127,19 @@ public class LexiTypeEncodersTest {
         assertEquals("1800000001000", bigDecimalEncoder().encode(new BigDecimal("1.000")));
         assertEquals("1800000001", bigDecimalEncoder().encode(new BigDecimal("1")));
 
-        assertEquals("c0a80101", inet4AddressEncoder().encode((Inet4Address) InetAddresses.forString("192.168.1.1")));
-        assertEquals("ffffffff", inet4AddressEncoder().encode((Inet4Address) InetAddresses.forString("255.255.255.255")));
+        assertEquals("c0a80101", ipv4Encoder().encode(IPv4.fromString("192.168.1.1")));
+        assertEquals("ffffffff", ipv4Encoder().encode(IPv4.fromString("255.255.255.255")));
 
-        assertEquals("000000000000000000000000c0a80101", inet6AddressEncoder().encode((Inet6Address) InetAddresses.forString("::192.168.1.1")));
-        assertEquals("ffffffffffffffffffffffffffffffff", inet6AddressEncoder().encode((Inet6Address) InetAddresses.forString("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff")));
+        assertEquals("000000000000000000000000c0a80101", ipv6Encoder().encode(IPv6.fromString("::192.168.1.1")));
+        assertEquals("00000000000000000000ffffc0a80101", ipv6Encoder().encode(IPv6.fromString("::ffff:192.168.1.1")));
+        assertEquals("ffffffffffffffffffffffffffffffff", ipv6Encoder().encode(IPv6.fromString("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff")));
+
+        assertEquals("c0a80101", inet4AddressEncoder().encode(forIPv4String("192.168.1.1")));
+        assertEquals("ffffffff", inet4AddressEncoder().encode(forIPv4String("255.255.255.255")));
+
+        assertEquals("000000000000000000000000c0a80101", inet6AddressEncoder().encode(forIPv6String("::192.168.1.1")));
+        assertEquals("00000000000000000000ffffc0a80101", inet6AddressEncoder().encode(forIPv6String("::ffff:192.168.1.1")));
+        assertEquals("ffffffffffffffffffffffffffffffff", inet6AddressEncoder().encode(forIPv6String("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff")));
 
         assertEquals("entity://type#id", entityRelationshipEncoder().encode(new EntityRelationship("type", "id")));
     }
@@ -152,9 +163,6 @@ public class LexiTypeEncodersTest {
         assertEquals("7ffffffc", integerRevEncoder().encode(3));
         assertEquals("80000002", integerRevEncoder().encode(-3));
 
-        assertEquals("3f57fefe", ipv4RevEncoder().encode(new IPv4("192.168.1.1")));
-        assertEquals("00000000", ipv4RevEncoder().encode(new IPv4("255.255.255.255")));
-
         assertEquals("7ffffffffffffffc", longRevEncoder().encode(3L));
 
         assertEquals("7ffffff0c000000000000000fffffffffffffffe", bigIntegerRevEncoder().encode(BigInteger.valueOf(Long.MAX_VALUE).pow(2)));
@@ -167,11 +175,19 @@ public class LexiTypeEncodersTest {
         assertEquals("0800000009000", bigDecimalRevEncoder().encode(new BigDecimal("1.000")));
         assertEquals("0800000009", bigDecimalRevEncoder().encode(new BigDecimal("1")));
 
-        assertEquals("3f57fefe", inet4AddressRevEncoder().encode((Inet4Address) InetAddresses.forString("192.168.1.1")));
-        assertEquals("00000000", inet4AddressRevEncoder().encode((Inet4Address) InetAddresses.forString("255.255.255.255")));
+        assertEquals("3f57fefe", ipv4RevEncoder().encode(IPv4.fromString("192.168.1.1")));
+        assertEquals("00000000", ipv4RevEncoder().encode(IPv4.fromString("255.255.255.255")));
 
-        assertEquals("ffffffffffffffffffffffff3f57fefe", inet6AddressRevEncoder().encode((Inet6Address) InetAddresses.forString("::192.168.1.1")));
-        assertEquals("00000000000000000000000000000000", inet6AddressRevEncoder().encode((Inet6Address) InetAddresses.forString("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff")));
+        assertEquals("ffffffffffffffffffffffff3f57fefe", ipv6RevEncoder().encode(IPv6.fromString("::192.168.1.1")));
+        assertEquals("ffffffffffffffffffff00003f57fefe", ipv6RevEncoder().encode(IPv6.fromString("::ffff:192.168.1.1")));
+        assertEquals("00000000000000000000000000000000", ipv6RevEncoder().encode(IPv6.fromString("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff")));
+
+        assertEquals("3f57fefe", inet4AddressRevEncoder().encode(forIPv4String("192.168.1.1")));
+        assertEquals("00000000", inet4AddressRevEncoder().encode(forIPv4String("255.255.255.255")));
+
+        assertEquals("ffffffffffffffffffffffff3f57fefe", inet6AddressRevEncoder().encode(forIPv6String("::192.168.1.1")));
+        assertEquals("ffffffffffffffffffff00003f57fefe", inet6AddressRevEncoder().encode(forIPv6String("::ffff:192.168.1.1")));
+        assertEquals("00000000000000000000000000000000", inet6AddressRevEncoder().encode(forIPv6String("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff")));
 
     }
 }

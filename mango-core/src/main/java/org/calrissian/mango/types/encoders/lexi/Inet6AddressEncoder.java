@@ -25,7 +25,7 @@ import java.net.UnknownHostException;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static java.net.InetAddress.getByAddress;
+import static java.net.Inet6Address.getByAddress;
 import static org.apache.commons.codec.binary.Hex.decodeHex;
 import static org.apache.commons.codec.binary.Hex.encodeHexString;
 
@@ -41,7 +41,9 @@ public class Inet6AddressEncoder extends AbstractInet6AddressEncoder<String> {
         checkNotNull(value, "Null values are not allowed");
         checkArgument(value.length() == 32, "The value is not a valid encoding");
         try {
-            return (Inet6Address) getByAddress(decodeHex(value.toCharArray()));
+            //Use this getByAddress function to prevent the InetAddress.getByAddress function from turning the value
+            //into an Inet4Address automatically.
+            return getByAddress(null, decodeHex(value.toCharArray()), -1);
         } catch (UnknownHostException e) {
             throw new TypeDecodingException(e);
         } catch (DecoderException e) {

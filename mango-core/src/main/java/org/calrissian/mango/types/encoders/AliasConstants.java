@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 The Calrissian Authors
+ * Copyright (C) 2014 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ public class AliasConstants {
     public static String FLOAT_ALIAS = "float";
     public static String INTEGER_ALIAS = "integer";
     public static String IPV4_ALIAS = "ipv4";
+    public static String IPV6_ALIAS = "ipv6";
     public static String LONG_ALIAS = "long";
     public static String STRING_ALIAS = "string";
     public static String URI_ALIAS = "uri";

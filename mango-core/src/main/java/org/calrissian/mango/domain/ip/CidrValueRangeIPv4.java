@@ -27,8 +27,8 @@ public class CidrValueRangeIPv4 extends ValueRange<IPv4> {
         SubnetUtils utils = new SubnetUtils(cidrString);
         SubnetUtils.SubnetInfo info = utils.getInfo();
 
-        setStart(new IPv4(info.getNetworkAddress()));
-        setStop(new IPv4(info.getBroadcastAddress()));
+        setStart(IPv4.fromString(info.getNetworkAddress()));
+        setStop(IPv4.fromString(info.getBroadcastAddress()));
     }
 
     public CidrValueRangeIPv4(IPv4 start, IPv4 stop) {
