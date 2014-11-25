@@ -138,4 +138,8 @@ public class BaseTupleStore implements TupleStore {
     public int hashCode() {
         return tuples.hashCode();
     }
+
+    public int size() {
+        return tuples.size();
+    }
 }

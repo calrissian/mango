@@ -73,4 +73,6 @@ public interface TupleStore extends Serializable {
     Collection<Tuple> removeAll(String key);
 
     Collection<Tuple> removeAll(Collection<Tuple> tuples);
+
+    int size();
 }
