@@ -74,5 +74,9 @@ public interface TupleStore extends Serializable {
 
     Collection<Tuple> removeAll(Collection<Tuple> tuples);
 
+    /**
+     * Returns the size of the tuplestore. This should be a constant-time operation
+     * @return
+     */
     int size();
 }

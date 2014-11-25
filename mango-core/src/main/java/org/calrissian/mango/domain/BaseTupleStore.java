@@ -139,6 +139,11 @@ public class BaseTupleStore implements TupleStore {
         return tuples.hashCode();
     }
 
+    /**
+     * Returns the size of the current tuple store. Since it's backed by a MultiMap, size() is a
+     * constant-time operation.
+     * @return
+     */
     public int size() {
         return tuples.size();
     }
