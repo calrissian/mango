@@ -16,12 +16,8 @@
 package org.calrissian.mango.domain.ip;
 
 
-import org.calrissian.mango.net.MoreInetAddresses;
+import com.google.common.collect.Range;
 import org.junit.Test;
-
-import java.net.Inet4Address;
-import java.net.Inet6Address;
-import java.net.InetAddress;
 
 import static org.calrissian.mango.net.MoreInetAddresses.forIPv4String;
 import static org.calrissian.mango.net.MoreInetAddresses.forIPv6String;
@@ -78,6 +74,48 @@ public class IPTest {
         assertArrayEquals(forIPv4String("255.255.255.255").getAddress(), ip.toByteArray());
     }
 
+    @Test
+    public void ipv4CidrRangeTest() {
+        Range<IPv4> cidr = IPv4.cidrRange("255.255.255.255/16");
+        assertEquals(IPv4.fromString("255.255.0.0"), cidr.lowerEndpoint());
+        assertEquals(IPv4.fromString("255.255.255.255"), cidr.upperEndpoint());
+
+        cidr = IPv4.cidrRange("0.0.0.0/16");
+        assertEquals(IPv4.fromString("0.0.0.0"), cidr.lowerEndpoint());
+        assertEquals(IPv4.fromString("0.0.255.255"), cidr.upperEndpoint());
+
+        cidr = IPv4.cidrRange("255.255.255.255/20");
+        assertEquals(IPv4.fromString("255.255.240.0"), cidr.lowerEndpoint());
+        assertEquals(IPv4.fromString("255.255.255.255"), cidr.upperEndpoint());
+
+        cidr = IPv4.cidrRange("0.0.0.0/20");
+        assertEquals(IPv4.fromString("0.0.0.0"), cidr.lowerEndpoint());
+        assertEquals(IPv4.fromString("0.0.15.255"), cidr.upperEndpoint());
+
+        cidr = IPv4.cidrRange("1.2.3.4/32");
+        assertEquals(IPv4.fromString("1.2.3.4"), cidr.lowerEndpoint());
+        assertEquals(IPv4.fromString("1.2.3.4"), cidr.upperEndpoint());
+
+        cidr = IPv4.cidrRange("1.2.3.4/0");
+        assertEquals(IPv4.fromString("0.0.0.0"), cidr.lowerEndpoint());
+        assertEquals(IPv4.fromString("255.255.255.255"), cidr.upperEndpoint());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void ipv4CidrRangeIPv6Test() {
+        IPv4.cidrRange("::ffff:1.2.3.4/64");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void ipv4CidrRangeInvalidSyntaxTest() {
+        IPv4.cidrRange("1.2.3.4/16/16");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void ipv4CidrRangeInvalidSyntax2Test() {
+        IPv4.cidrRange("1.2.3.4/33");
+    }
+
     /**
      * IPv6 Tests
      */
@@ -118,4 +156,49 @@ public class IPTest {
         assertEquals("1234::1234", ip.toString());
     }
 
+    @Test
+    public void ipv6CidrRangeTest() {
+        Range<IPv6> cidr = IPv6.cidrRange("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff/64");
+        assertEquals(IPv6.fromString("ffff:ffff:ffff:ffff::"), cidr.lowerEndpoint());
+        assertEquals(IPv6.fromString("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff"), cidr.upperEndpoint());
+
+        cidr = IPv6.cidrRange("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff/68");
+        assertEquals(IPv6.fromString("ffff:ffff:ffff:ffff:f000::"), cidr.lowerEndpoint());
+        assertEquals(IPv6.fromString("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff"), cidr.upperEndpoint());
+
+        cidr = IPv6.cidrRange("::/64");
+        assertEquals(IPv6.fromString("::"), cidr.lowerEndpoint());
+        assertEquals(IPv6.fromString("::ffff:ffff:ffff:ffff"), cidr.upperEndpoint());
+
+        cidr = IPv6.cidrRange("::/68");
+        assertEquals(IPv6.fromString("::"), cidr.lowerEndpoint());
+        assertEquals(IPv6.fromString("::fff:ffff:ffff:ffff"), cidr.upperEndpoint());
+
+        cidr = IPv6.cidrRange("1:2:3:4:5:6:7:8/128");
+        assertEquals(IPv6.fromString("1:2:3:4:5:6:7:8"), cidr.lowerEndpoint());
+        assertEquals(IPv6.fromString("1:2:3:4:5:6:7:8"), cidr.upperEndpoint());
+
+        cidr = IPv6.cidrRange("1:2:3:4:5:6:7:8/0");
+        assertEquals(IPv6.fromString("::"), cidr.lowerEndpoint());
+        assertEquals(IPv6.fromString("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff"), cidr.upperEndpoint());
+
+        cidr = IPv6.cidrRange("::ffff:1.2.3.4/112");
+        assertEquals(IPv6.fromString("::ffff:102:0"), cidr.lowerEndpoint());
+        assertEquals(IPv6.fromString("::ffff:102:ffff"), cidr.upperEndpoint());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void ipv6CidrRangeIPv6Test() {
+        IPv6.cidrRange("1.2.3.4/16");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void ipv6CidrRangeInvalidSyntaxTest() {
+        IPv6.cidrRange("1:2:3:4:5:6:7:8/16/16");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void ipv6CidrRangeInvalidSyntax2Test() {
+        IPv6.cidrRange("1:2:3:4:5:6:7:8/129");
+    }
 }

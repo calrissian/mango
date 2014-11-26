@@ -23,8 +23,10 @@ import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.net.InetAddresses.toAddrString;
+import static java.lang.Integer.parseInt;
 import static java.lang.String.format;
 import static java.util.Arrays.copyOfRange;
 
@@ -38,6 +40,12 @@ import static java.util.Arrays.copyOfRange;
  */
 public class MoreInetAddresses {
     private MoreInetAddresses() {/*intentionally private*/}
+
+    private static InetAddress getInetAddress(byte[] bytes) {
+        return bytes.length == 4 ?
+                getInet4Address(bytes) :
+                getInet6Address(bytes);
+    }
 
     /**
      * Returns an {@link Inet4Address}, given a byte array representation of the IPv4 address.
@@ -216,6 +224,9 @@ public class MoreInetAddresses {
         return InetAddresses.getEmbeddedIPv4ClientAddress(ip);
     }
 
+    /**
+     * Generates an "IPv4 mapped" {@link Inet6Address} from the provided {@link Inet4Address}.
+     */
     public static Inet6Address getIPv4MappedIPv6Address(Inet4Address ip) {
         byte[] from = ip.getAddress();
         byte[] bytes = new byte[] {
@@ -228,6 +239,9 @@ public class MoreInetAddresses {
         return getInet6Address(bytes);
     }
 
+    /**
+     * Generates an "IPv4 compatible" {@link Inet6Address} from the provided {@link Inet4Address}.
+     */
     public static Inet6Address getIPV4CompatIPv6Address(Inet4Address ip) {
         byte[] from = ip.getAddress();
         byte[] bytes = new byte[] {
@@ -238,5 +252,97 @@ public class MoreInetAddresses {
         };
 
         return getInet6Address(bytes);
+    }
+
+    /**
+     * Examines a CIDR {@code 192.168.0.0/16} or {@code 1234::/16} string representation and calculates the network and
+     * broadcast IP addresses for that subnet.  This accepts both IPv4 and IPv6 representations of a CIDR and will return
+     * the appropriate {@link InetAddress) classes for the provided value.
+     *
+     * <p>Note: This supports IPv6 "IPv4 mapped" addresses and will create a valid Inet6Address to account for them.
+     */
+    public static CidrInfo parseCIDR(String cidr) {
+        checkNotNull(cidr);
+        try {
+            String[] parts = cidr.split("/");
+            checkArgument(parts.length == 2);
+
+            byte[] bytes = forString(parts[0]).getAddress();
+            int maskBits = parseInt(parts[1]);
+            checkArgument(maskBits >= 0 && maskBits <= bytes.length * 8);
+
+            int remainingBits = maskBits;
+            byte[] network = new byte[bytes.length];
+            byte[] broadcast = new byte[bytes.length];
+            for (int i = 0; i< bytes.length; i++) {
+                if (remainingBits >= 8) {
+                    network[i] = bytes[i];
+                    broadcast[i] = bytes[i];
+                } else if (remainingBits > 0) {
+                    int byteMask = -1 << remainingBits;
+                    network [i] = (byte) (bytes[i] & byteMask);
+                    broadcast [i] = (byte) (bytes[i] | ~byteMask);
+                } else {
+                    network[i] = 0;
+                    broadcast[i] = (byte)0xff;
+                }
+                remainingBits -= 8;
+            }
+
+            return new CidrInfo(maskBits, getInetAddress(network), getInetAddress(broadcast));
+
+        }catch(Exception ignored){}
+
+        throw new IllegalArgumentException(format("Invalid CIDR string: %s", cidr));
+    }
+
+    /**
+     * Used to provide subnet information about a CIDR
+     */
+    public static class CidrInfo {
+        private final int maskedBits;
+        private final InetAddress network;
+        private final InetAddress broadcast;
+
+        CidrInfo(int maskedBits, InetAddress network, InetAddress broadcast) {
+            this.maskedBits = maskedBits;
+            this.network = network;
+            this.broadcast = broadcast;
+        }
+
+        public InetAddress getNetwork() {
+            return network;
+        }
+
+        public InetAddress getBroadcast() {
+            return broadcast;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            CidrInfo cidrInfo = (CidrInfo) o;
+
+            if (maskedBits != cidrInfo.maskedBits) return false;
+            if (!broadcast.equals(cidrInfo.broadcast)) return false;
+            if (!network.equals(cidrInfo.network)) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = maskedBits;
+            result = 31 * result + network.hashCode();
+            result = 31 * result + broadcast.hashCode();
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            return toAddrString(network) + "/" + maskedBits;
+        }
     }
 }

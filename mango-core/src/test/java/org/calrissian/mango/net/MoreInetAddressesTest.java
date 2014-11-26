@@ -100,22 +100,22 @@ public class MoreInetAddressesTest {
 
     @Test
     public void isMappedIPv4AddressTest() throws UnknownHostException {
-        byte[] bytes = new byte[] {
-                0x0,0x0,0x0,0x0,
-                0x0,0x0,0x0,0x0,
-                0x0,0x0,(byte)0xff,(byte)0xff,
-                0x1,0x2,0x3,0x4
+        byte[] bytes = new byte[]{
+                0x0, 0x0, 0x0, 0x0,
+                0x0, 0x0, 0x0, 0x0,
+                0x0, 0x0, (byte) 0xff, (byte) 0xff,
+                0x1, 0x2, 0x3, 0x4
         };
         Inet6Address address = Inet6Address.getByAddress(null, bytes, -1);
 
         assertTrue(MoreInetAddresses.isMappedIPv4Address(address));
 
         //Test compat address instead of mapped address.
-        bytes = new byte[] {
-                0x0,0x0,0x0,0x0,
-                0x0,0x0,0x0,0x0,
-                0x0,0x0,0x0,0x0,
-                0x1,0x2,0x3,0x4
+        bytes = new byte[]{
+                0x0, 0x0, 0x0, 0x0,
+                0x0, 0x0, 0x0, 0x0,
+                0x0, 0x0, 0x0, 0x0,
+                0x1, 0x2, 0x3, 0x4
         };
         address = Inet6Address.getByAddress(null, bytes, -1);
 
@@ -129,11 +129,11 @@ public class MoreInetAddressesTest {
 
     @Test
     public void getMappedIPv4AddressTest() throws UnknownHostException {
-        byte[] bytes = new byte[] {
-                0x0,0x0,0x0,0x0,
-                0x0,0x0,0x0,0x0,
-                0x0,0x0,(byte)0xff,(byte)0xff,
-                0x1,0x2,0x3,0x4
+        byte[] bytes = new byte[]{
+                0x0, 0x0, 0x0, 0x0,
+                0x0, 0x0, 0x0, 0x0,
+                0x0, 0x0, (byte) 0xff, (byte) 0xff,
+                0x1, 0x2, 0x3, 0x4
         };
         Inet6Address address = Inet6Address.getByAddress(null, bytes, -1);
 
@@ -150,11 +150,11 @@ public class MoreInetAddressesTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void getMappedIPv4AddressInvalidTypeTest() throws UnknownHostException {
-        byte[] bytes = new byte[] {
-                0x0,0x0,0x0,0x0,
-                0x0,0x0,0x0,0x0,
-                0x0,0x0,0x0,0x0,
-                0x1,0x2,0x3,0x4
+        byte[] bytes = new byte[]{
+                0x0, 0x0, 0x0, 0x0,
+                0x0, 0x0, 0x0, 0x0,
+                0x0, 0x0, 0x0, 0x0,
+                0x1, 0x2, 0x3, 0x4
         };
         Inet6Address address = Inet6Address.getByAddress(null, bytes, -1);
 
@@ -222,5 +222,102 @@ public class MoreInetAddressesTest {
     @Test(expected = NullPointerException.class)
     public void getIPv4CompatIPv6AddressNullTest() {
         MoreInetAddresses.getIPV4CompatIPv6Address(null);
+    }
+
+    @Test
+    public void forCIDRStringTest() {
+        MoreInetAddresses.CidrInfo cidr = MoreInetAddresses.parseCIDR("255.255.255.255/16");
+        assertTrue(cidr.getNetwork() instanceof Inet4Address);
+        assertEquals("255.255.0.0", toAddrString(cidr.getNetwork()));
+        assertEquals("255.255.255.255", toAddrString(cidr.getBroadcast()));
+
+        cidr = MoreInetAddresses.parseCIDR("0.0.0.0/16");
+        assertTrue(cidr.getNetwork() instanceof Inet4Address);
+        assertEquals("0.0.0.0", toAddrString(cidr.getNetwork()));
+        assertEquals("0.0.255.255", toAddrString(cidr.getBroadcast()));
+
+        cidr = MoreInetAddresses.parseCIDR("255.255.255.255/20");
+        assertTrue(cidr.getNetwork() instanceof Inet4Address);
+        assertEquals("255.255.240.0", toAddrString(cidr.getNetwork()));
+        assertEquals("255.255.255.255", toAddrString(cidr.getBroadcast()));
+
+        cidr = MoreInetAddresses.parseCIDR("0.0.0.0/20");
+        assertTrue(cidr.getNetwork() instanceof Inet4Address);
+        assertEquals("0.0.0.0", toAddrString(cidr.getNetwork()));
+        assertEquals("0.0.15.255", toAddrString(cidr.getBroadcast()));
+
+        cidr = MoreInetAddresses.parseCIDR("1.2.3.4/32");
+        assertTrue(cidr.getNetwork() instanceof Inet4Address);
+        assertEquals("1.2.3.4", toAddrString(cidr.getNetwork()));
+        assertEquals("1.2.3.4", toAddrString(cidr.getBroadcast()));
+
+        cidr = MoreInetAddresses.parseCIDR("1.2.3.4/0");
+        assertTrue(cidr.getNetwork() instanceof Inet4Address);
+        assertEquals("0.0.0.0", toAddrString(cidr.getNetwork()));
+        assertEquals("255.255.255.255", toAddrString(cidr.getBroadcast()));
+
+        cidr = MoreInetAddresses.parseCIDR("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff/64");
+        assertTrue(cidr.getNetwork() instanceof Inet6Address);
+        assertEquals("ffff:ffff:ffff:ffff::", toAddrString(cidr.getNetwork()));
+        assertEquals("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff", toAddrString(cidr.getBroadcast()));
+
+        cidr = MoreInetAddresses.parseCIDR("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff/68");
+        assertTrue(cidr.getNetwork() instanceof Inet6Address);
+        assertEquals("ffff:ffff:ffff:ffff:f000::", toAddrString(cidr.getNetwork()));
+        assertEquals("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff", toAddrString(cidr.getBroadcast()));
+
+        cidr = MoreInetAddresses.parseCIDR("::/64");
+        assertTrue(cidr.getNetwork() instanceof Inet6Address);
+        assertEquals("::", toAddrString(cidr.getNetwork()));
+        assertEquals("::ffff:ffff:ffff:ffff", toAddrString(cidr.getBroadcast()));
+
+        cidr = MoreInetAddresses.parseCIDR("::/68");
+        assertTrue(cidr.getNetwork() instanceof Inet6Address);
+        assertEquals("::", toAddrString(cidr.getNetwork()));
+        assertEquals("::fff:ffff:ffff:ffff", toAddrString(cidr.getBroadcast()));
+
+        cidr = MoreInetAddresses.parseCIDR("1:2:3:4:5:6:7:8/128");
+        assertTrue(cidr.getNetwork() instanceof Inet6Address);
+        assertEquals("1:2:3:4:5:6:7:8", toAddrString(cidr.getNetwork()));
+        assertEquals("1:2:3:4:5:6:7:8", toAddrString(cidr.getBroadcast()));
+
+        cidr = MoreInetAddresses.parseCIDR("1:2:3:4:5:6:7:8/0");
+        assertTrue(cidr.getNetwork() instanceof Inet6Address);
+        assertEquals("::", toAddrString(cidr.getNetwork()));
+        assertEquals("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff", toAddrString(cidr.getBroadcast()));
+
+        //Test that Mapped ipv4 addresses stay ipv6
+        cidr = MoreInetAddresses.parseCIDR("::ffff:1.2.3.4/112");
+        assertTrue(cidr.getNetwork() instanceof Inet6Address);
+        assertEquals("::ffff:102:0", toAddrString(cidr.getNetwork()));
+        assertEquals("::ffff:102:ffff", toAddrString(cidr.getBroadcast()));
+    }
+
+    private static void assertInvalidCidr(String cidr) {
+        try {
+            MoreInetAddresses.parseCIDR(cidr);
+            fail();
+        } catch (IllegalArgumentException ignored) {
+        }
+    }
+
+    @Test
+    public void forCIDRStringInvalidBitsTest() {
+        assertInvalidCidr("1.2.3.4/-1");
+        assertInvalidCidr("1.2.3.4/33");
+        assertInvalidCidr("::/129");
+    }
+
+    @Test
+    public void forCIDRStringInvalidIPTest() {
+        assertInvalidCidr("1.2.3.x/0");
+        assertInvalidCidr("::x/0");
+    }
+
+
+    @Test
+    public void forCIDRStringMalformedCidrTest() {
+        assertInvalidCidr("1.2.3.4");
+        assertInvalidCidr("1.2.3.4/0/0");
     }
 }
