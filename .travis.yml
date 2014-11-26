@@ -6,7 +6,7 @@ notifications:
   email:
     recipients:
       - cjnolet@gmail.com
-      - ceraw79@gmail.com
+      - ceraw79@hotmail.com
       - smonaghan000@gmail.com
     on_success: [always|never|change] # default: change
     on_failure: [always|never|change] # default: always
