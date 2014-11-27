@@ -1,3 +1,5 @@
+![build](https://travis-ci.org/calrissian/mango.svg?branch=master)
+
 Calrissian Mango
 ================
 ![mango](http://www.gallafoods.com/images/mango.png "Mango")
