@@ -16,21 +16,44 @@
 package org.calrissian.mango.criteria.domain.criteria;
 
 
+import org.calrissian.mango.domain.Tuple;
 import org.calrissian.mango.domain.TupleStore;
 
+import java.util.Collection;
+
 public class HasNotCriteria extends KeyValueLeafCriteria {
-    public HasNotCriteria(String key, ParentCriteria parentCriteria) {
+
+    private final Class clazz;
+
+    public HasNotCriteria(String key, Class clazz, ParentCriteria parentCriteria) {
         super(key, null, parentCriteria);
+        this.clazz = clazz;
+    }
+
+    public HasNotCriteria(String key, ParentCriteria parentCriteria) {
+        this(key, null, parentCriteria);
     }
 
     @Override
     public boolean apply(TupleStore obj) {
-        return obj.get(key) == null;
+        if(obj.get(key) == null)
+            return true;
+
+        Collection<Tuple> tuples = obj.getAll(key);
+        if(tuples.size() > 0 && clazz == null)
+            return false;
+
+        for(Tuple tuple : tuples) {
+            if(tuple.getValue().getClass().equals(clazz))
+                return false;
+        }
+
+        return true;
     }
 
   @Override
   public Criteria clone(ParentCriteria parentCriteria) {
-    return new HasNotCriteria(key, parentCriteria);
+    return new HasNotCriteria(key, clazz, parentCriteria);
   }
 
 

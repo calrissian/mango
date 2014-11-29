@@ -102,9 +102,9 @@ public class NodeUtils {
         else if (node instanceof NotEqualsLeaf)
             return new NotEqualsCriteria(leaf.getKey(), leaf.getValue(), rangeComparator, parent);
         else if (node instanceof HasLeaf)
-            return new HasCriteria(leaf.getKey(), parent);
+            return new HasCriteria(leaf.getKey(), ((HasLeaf)leaf).getClazz(),  parent);
         else if (node instanceof HasNotLeaf)
-            return new HasNotCriteria(leaf.getKey(), parent);
+            return new HasNotCriteria(leaf.getKey(), ((HasNotLeaf)leaf).getClazz(), parent);
         else if (node instanceof LessThanLeaf)
             return new LessThanCriteria(leaf.getKey(), leaf.getValue(), rangeComparator, parent);
         else if (node instanceof LessThanEqualsLeaf)

@@ -16,12 +16,24 @@
 package org.calrissian.mango.criteria.domain;
 
 public class HasNotLeaf extends AbstractKeyValueLeaf implements NegationLeaf {
-    public HasNotLeaf(String key, ParentNode parent) {
+
+    private final Class clazz;
+
+    public HasNotLeaf(String key, Class clazz, ParentNode parent) {
         super(key, null, parent);
+        this.clazz = clazz;
+    }
+
+    public HasNotLeaf(String key, ParentNode parentNode) {
+        this(key, null, parentNode);
+    }
+
+    public Class getClazz() {
+        return clazz;
     }
 
     @Override
     public Node clone(ParentNode node) {
-        return new HasNotLeaf(key, node);
+        return new HasNotLeaf(key, clazz, node);
     }
 }

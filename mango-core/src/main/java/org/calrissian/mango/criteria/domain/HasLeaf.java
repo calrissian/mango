@@ -16,12 +16,24 @@
 package org.calrissian.mango.criteria.domain;
 
 public class HasLeaf extends AbstractKeyValueLeaf {
-    public HasLeaf(String key, ParentNode parent) {
+
+    private final Class clazz;
+
+    public HasLeaf(String key, Class clazz, ParentNode parent) {
         super(key, null, parent);
+        this.clazz = clazz;
+    }
+
+    public HasLeaf(String key, ParentNode parentNode) {
+        this(key, null, parentNode);
+    }
+
+    public Class getClazz() {
+        return clazz;
     }
 
     @Override
     public Node clone(ParentNode node) {
-        return new HasLeaf(key, node);
+        return new HasLeaf(key, clazz, node);
     }
 }
