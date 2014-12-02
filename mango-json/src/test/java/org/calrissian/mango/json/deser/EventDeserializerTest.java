@@ -17,9 +17,7 @@ package org.calrissian.mango.json.deser;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.calrissian.mango.domain.Tuple;
-import org.calrissian.mango.domain.entity.BaseEntity;
-import org.calrissian.mango.domain.entity.Entity;
+import org.calrissian.mango.domain.Attribute;
 import org.calrissian.mango.domain.event.BaseEvent;
 import org.calrissian.mango.domain.event.Event;
 import org.calrissian.mango.json.MangoModule;
@@ -39,7 +37,7 @@ public class EventDeserializerTest {
     public void testBasicDeserialization() throws Exception {
 
         Event event = new BaseEvent();
-        event.put(new Tuple("key", "value"));
+        event.put(new Attribute("key", "value"));
 
         String json = objectMapper.writeValueAsString(event);
 
@@ -47,7 +45,7 @@ public class EventDeserializerTest {
 
         assertEquals(actualEntity.getId(), event.getId());
         assertEquals(actualEntity.getTimestamp(), event.getTimestamp());
-        assertEquals(new HashSet<Tuple>(actualEntity.getTuples()), new HashSet<Tuple>(event.getTuples()));
+        assertEquals(new HashSet<Attribute>(actualEntity.getTuples()), new HashSet<Attribute>(event.getTuples()));
     }
 
 

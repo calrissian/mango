@@ -17,7 +17,7 @@ package org.calrissian.mango.json.util.json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.calrissian.mango.domain.Tuple;
+import org.calrissian.mango.domain.Attribute;
 import org.junit.Test;
 
 import java.util.Collection;
@@ -26,7 +26,7 @@ import static org.calrissian.mango.json.util.json.JsonTupleStore.fromJson;
 import static org.calrissian.mango.json.util.json.JsonTupleStore.toJsonString;
 import static org.junit.Assert.assertEquals;
 
-public class JsonTupleStoreTest {
+public class JsonAttributeStoreTest {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -67,12 +67,12 @@ public class JsonTupleStoreTest {
             ObjectNode jsonNode = (ObjectNode)objectMapper.readTree(json);
 
             // parse original json
-            Collection<Tuple> tuples = fromJson(jsonNode);
+            Collection<Attribute> keyValues = fromJson(jsonNode);
 
-            System.out.println(tuples);
+            System.out.println(keyValues);
 
             // turn back into json
-            ObjectNode actualNode = (ObjectNode)objectMapper.readTree(toJsonString(tuples, objectMapper));
+            ObjectNode actualNode = (ObjectNode)objectMapper.readTree(toJsonString(keyValues, objectMapper));
 
             System.out.println(actualNode.toString());
 

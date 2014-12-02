@@ -22,8 +22,8 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.calrissian.mango.domain.Tuple;
-import org.calrissian.mango.domain.TupleStore;
+import org.calrissian.mango.domain.Attribute;
+import org.calrissian.mango.domain.AttributeStore;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -31,9 +31,9 @@ import java.util.Map;
 
 import static com.google.common.collect.Iterables.concat;
 
-public abstract class BaseTupleStoreDeserializer<T extends TupleStore> extends JsonDeserializer<T> {
+public abstract class BaseTupleStoreDeserializer<T extends AttributeStore> extends JsonDeserializer<T> {
 
-    private static final TypeReference TR = new TypeReference<Map<String, Collection<Tuple>>>(){};
+    private static final TypeReference TR = new TypeReference<Map<String, Collection<Attribute>>>(){};
     @Override
     public T deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
         JsonNode root = jsonParser.getCodec().readTree(jsonParser);
@@ -41,7 +41,7 @@ public abstract class BaseTupleStoreDeserializer<T extends TupleStore> extends J
 
         ObjectNode tuplesObject = (ObjectNode) root.get("tuples");
 
-        Map<String, Collection<Tuple>> tuples =
+        Map<String, Collection<Attribute>> tuples =
                 jsonParser.getCodec().readValue(jsonParser.getCodec().treeAsTokens(tuplesObject), TR);
 
         tupleStore.putAll(concat(tuples.values()));

@@ -29,35 +29,35 @@ import static java.util.Collections.unmodifiableCollection;
  * A base tuple collection providing reusable implementations for interacting with a tuple store backed by
  * a hash map with sets in the value representing a multimap.
  */
-public class BaseTupleStore implements TupleStore {
+public class BaseAttributeStore implements AttributeStore {
 
-    private Multimap<String, Tuple> tuples = ArrayListMultimap.create();
+    private Multimap<String, Attribute> tuples = ArrayListMultimap.create();
 
-    public void put(Tuple tuple) {
-        checkNotNull(tuple);
-        checkNotNull(tuple.getKey());
+    public void put(Attribute keyValue) {
+        checkNotNull(keyValue);
+        checkNotNull(keyValue.getKey());
 
-        tuples.put(tuple.getKey(), tuple);
+        tuples.put(keyValue.getKey(), keyValue);
     }
 
-    public void putAll(Iterable<Tuple> tuples) {
+    public void putAll(Iterable<? extends Attribute> tuples) {
         checkNotNull(tuples);
-        for (Tuple tuple : tuples)
-            put(tuple);
+        for (Attribute keyValue : tuples)
+            put(keyValue);
     }
 
 
     /**
      * Returns all the getTuples set on the current entity
      */
-    public Collection<Tuple> getTuples() {
+    public Collection<? extends Attribute> getTuples() {
         return unmodifiableCollection(tuples.values());
     }
 
     /**
      * A get operation for multi-valued keys
      */
-    public Collection<Tuple> getAll(String key) {
+    public Collection<? extends Attribute> getAll(String key) {
         checkNotNull(key);
         return tuples.get(key);
     }
@@ -65,7 +65,7 @@ public class BaseTupleStore implements TupleStore {
     /**
      * A get operation for single-valued keys
      */
-    public <T> Tuple<T> get(String key) {
+    public <T> Attribute<T> get(String key) {
         return tuples.containsKey(key) ? tuples.get(key).iterator().next() : null;
     }
 
@@ -80,12 +80,12 @@ public class BaseTupleStore implements TupleStore {
     }
 
     @Override
-    public <T> Tuple<T> remove(Tuple<T> t) {
+    public <T> Attribute<T> remove(Attribute<T> t) {
         checkNotNull(t);
         checkNotNull(t.getKey());
 
         if (tuples.containsKey(t.getKey())) {
-            Collection<Tuple> tupelSet = tuples.get(t.getKey());
+            Collection<Attribute> tupelSet = tuples.get(t.getKey());
             if(tupelSet.remove(t))
                 return t;
         }
@@ -93,11 +93,11 @@ public class BaseTupleStore implements TupleStore {
     }
 
     @Override
-    public <T> Tuple<T> remove(String key) {
+    public <T> Attribute<T> remove(String key) {
         checkNotNull(key);
         if (tuples.containsKey(key)) {
-            Collection<Tuple> tupleSet = tuples.get(key);
-            Tuple t = tupleSet.size() > 0 ? tupleSet.iterator().next() : null;
+            Collection<Attribute> keyValueSet = tuples.get(key);
+            Attribute t = keyValueSet.size() > 0 ? keyValueSet.iterator().next() : null;
             if(t != null && tuples.get(key).remove(t))
                 return t;
         }
@@ -106,28 +106,28 @@ public class BaseTupleStore implements TupleStore {
     }
 
     @Override
-    public Collection<Tuple> removeAll(String key){
+    public Collection<? extends Attribute> removeAll(String key){
         checkNotNull(key);
         return tuples.removeAll(key);
     }
 
 
     @Override
-    public Collection<Tuple> removeAll(Collection<Tuple> tuples) {
-        checkNotNull(tuples);
-        Collection<Tuple> removedTuples = new ArrayList<Tuple>();
-        for (Tuple tuple : tuples)
-            removedTuples.add(remove(tuple));
+    public Collection<? extends Attribute> removeAll(Collection<? extends Attribute> keyValues) {
+        checkNotNull(keyValues);
+        Collection<Attribute> removedKeyValues = new ArrayList<Attribute>();
+        for (Attribute keyValue : keyValues)
+            removedKeyValues.add(remove(keyValue));
 
-        return removedTuples;
+        return removedKeyValues;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof BaseTupleStore)) return false;
+        if (!(o instanceof BaseAttributeStore)) return false;
 
-        BaseTupleStore that = (BaseTupleStore) o;
+        BaseAttributeStore that = (BaseAttributeStore) o;
 
         if (!tuples.equals(that.tuples)) return false;
 

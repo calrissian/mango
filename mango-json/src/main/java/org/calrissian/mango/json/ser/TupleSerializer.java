@@ -18,14 +18,14 @@ package org.calrissian.mango.json.ser;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import org.calrissian.mango.domain.Tuple;
+import org.calrissian.mango.domain.Attribute;
 import org.calrissian.mango.types.TypeRegistry;
 
 import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
 
-public class TupleSerializer extends JsonSerializer<Tuple> {
+public class TupleSerializer extends JsonSerializer<Attribute> {
 
     private final TypeRegistry<String> typeContext;
 
@@ -34,12 +34,12 @@ public class TupleSerializer extends JsonSerializer<Tuple> {
     }
 
     @Override
-    public void serialize(Tuple tuple, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
+    public void serialize(Attribute keyValue, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
             throws IOException {
         jsonGenerator.writeStartObject();
 
-        jsonGenerator.writeStringField("key", tuple.getKey());
-        Object value = tuple.getValue();
+        jsonGenerator.writeStringField("key", keyValue.getKey());
+        Object value = keyValue.getValue();
         if (value != null) {
             String type = typeContext.getAlias(value);
             String val_str = typeContext.encode(value);
@@ -48,7 +48,7 @@ public class TupleSerializer extends JsonSerializer<Tuple> {
 
             jsonGenerator.writeArrayFieldStart("metadata");
 
-            Set<Map.Entry<String,Object>> entries = tuple.getMetadata().entrySet();
+            Set<Map.Entry<String,Object>> entries = keyValue.getMetadata().entrySet();
             for(Map.Entry<String,Object> objectEntry : entries) {
                 jsonGenerator.writeStartObject();
                 jsonGenerator.writeObjectField("value", typeContext.encode(objectEntry.getValue()));

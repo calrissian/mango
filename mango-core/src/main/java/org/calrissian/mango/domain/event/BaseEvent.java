@@ -16,7 +16,7 @@
 package org.calrissian.mango.domain.event;
 
 
-import org.calrissian.mango.domain.BaseTupleStore;
+import org.calrissian.mango.domain.BaseAttributeStore;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.lang.System.currentTimeMillis;
@@ -25,7 +25,7 @@ import static java.util.UUID.randomUUID;
 /**
  * Default implementation of {@link Event}
  */
-public class BaseEvent extends BaseTupleStore implements Event {
+public class BaseEvent extends BaseAttributeStore implements Event {
 
     private final String id;
     private final long timestamp; // in Millis
