@@ -159,7 +159,7 @@ public class JsonTupleStore {
      * tree so that array objects can be added naturally, rather than performing excess copying of the array
      * each time an item needs to be inserted before another item in the array.
      */
-    private static class FlattenedLevelsComparator implements Comparator<Tuple> {
+    public static class FlattenedLevelsComparator implements Comparator<Tuple> {
 
         private Map<Tuple, Integer> levelsCache = new HashMap<Tuple, Integer>();
 
