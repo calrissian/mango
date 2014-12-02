@@ -17,7 +17,7 @@ package org.calrissian.mango.json;
 
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.calrissian.mango.criteria.domain.Node;
-import org.calrissian.mango.domain.Tuple;
+import org.calrissian.mango.domain.Attribute;
 import org.calrissian.mango.domain.entity.BaseEntity;
 import org.calrissian.mango.domain.entity.Entity;
 import org.calrissian.mango.domain.event.BaseEvent;
@@ -52,8 +52,8 @@ public class MangoModule extends SimpleModule {
     @Override
     public void setupModule(SetupContext context) {
 
-        addSerializer(Tuple.class, new TupleSerializer(typeContext));
-        addDeserializer(Tuple.class, new TupleDeserializer(typeContext));
+        addSerializer(Attribute.class, new TupleSerializer(typeContext));
+        addDeserializer(Attribute.class, new TupleDeserializer(typeContext));
 
         //Register the class and a default serializer/deserializer for the interface.
         addSerializer(Entity.class, new EntitySerializer());

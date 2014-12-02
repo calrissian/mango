@@ -15,7 +15,7 @@
  */
 package org.calrissian.mango.criteria.domain.criteria;
 
-import org.calrissian.mango.domain.TupleStore;
+import org.calrissian.mango.domain.AttributeStore;
 
 public class OrCriteria extends ParentCriteria {
 
@@ -32,7 +32,7 @@ public class OrCriteria extends ParentCriteria {
     }
 
     @Override
-    public boolean apply(TupleStore obj) {
+    public boolean apply(AttributeStore obj) {
         for (Criteria node : children()) {
             if (node.apply(obj))
                 return true;

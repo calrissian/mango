@@ -15,8 +15,6 @@
  */
 package org.calrissian.mango.json.util.json;
 
-import org.calrissian.mango.domain.TupleStore;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -26,7 +24,7 @@ import static org.apache.commons.lang.StringUtils.splitPreserveAllTokens;
 
 /**
  * A simple utility class for dealing with setting/getting of the metadata entries for flattening
- * and re-expanding nested json trees to and from {@link TupleStore} objects.
+ * and re-expanding nested json trees to and from {@link org.calrissian.mango.domain.AttributeStore} objects.
  */
 class JsonMetadata {
 

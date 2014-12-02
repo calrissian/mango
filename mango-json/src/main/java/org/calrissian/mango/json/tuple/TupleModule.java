@@ -17,7 +17,7 @@ package org.calrissian.mango.json.tuple;
 
 
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import org.calrissian.mango.domain.Tuple;
+import org.calrissian.mango.domain.Attribute;
 import org.calrissian.mango.json.deser.TupleDeserializer;
 import org.calrissian.mango.json.ser.TupleSerializer;
 import org.calrissian.mango.types.TypeRegistry;
@@ -40,8 +40,8 @@ public class TupleModule extends SimpleModule {
 
     @Override
     public void setupModule(SetupContext context) {
-        addSerializer(Tuple.class, new TupleSerializer(typeContext));
-        addDeserializer(Tuple.class, new TupleDeserializer(typeContext));
+        addSerializer(Attribute.class, new TupleSerializer(typeContext));
+        addDeserializer(Attribute.class, new TupleDeserializer(typeContext));
         super.setupModule(context);
     }
 }
