@@ -16,9 +16,9 @@
 package org.calrissian.mango.criteria.domain.criteria;
 
 import org.calrissian.mango.criteria.support.ComparableComparator;
+import org.calrissian.mango.domain.Attribute;
 import org.calrissian.mango.domain.entity.BaseEntity;
 import org.calrissian.mango.domain.entity.Entity;
-import org.calrissian.mango.domain.Tuple;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
@@ -33,23 +33,23 @@ public class RangeCriteriaTest {
 
         Entity entity = new BaseEntity("type", "id");
 
-        // first test without tuple existing
+        // first test without attribute existing
         assertFalse(criteria.apply(entity));
 
-        entity.put(new Tuple("key1", 11));
-        assertFalse(criteria.apply(entity));
-
-        entity.removeAll("key1");
-
-        entity.put(new Tuple("key1", 4));
+        entity.put(new Attribute("key1", 11));
         assertFalse(criteria.apply(entity));
 
         entity.removeAll("key1");
 
-        entity.put(new Tuple("key1", 5));
+        entity.put(new Attribute("key1", 4));
+        assertFalse(criteria.apply(entity));
+
+        entity.removeAll("key1");
+
+        entity.put(new Attribute("key1", 5));
         assertTrue(criteria.apply(entity));
 
-        entity.put(new Tuple("key1", 6));
+        entity.put(new Attribute("key1", 6));
         assertTrue(criteria.apply(entity));
 
     }

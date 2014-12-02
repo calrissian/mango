@@ -17,19 +17,19 @@ package org.calrissian.mango.json;
 
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.calrissian.mango.criteria.domain.Node;
-import org.calrissian.mango.domain.Tuple;
+import org.calrissian.mango.domain.Attribute;
 import org.calrissian.mango.domain.entity.BaseEntity;
 import org.calrissian.mango.domain.entity.Entity;
 import org.calrissian.mango.domain.event.BaseEvent;
 import org.calrissian.mango.domain.event.Event;
+import org.calrissian.mango.json.deser.AttributeDeserializer;
 import org.calrissian.mango.json.deser.EntityDeserializer;
 import org.calrissian.mango.json.deser.EventDeserializer;
 import org.calrissian.mango.json.deser.NodeDeserializer;
-import org.calrissian.mango.json.deser.TupleDeserializer;
+import org.calrissian.mango.json.ser.AttributeSerializer;
 import org.calrissian.mango.json.ser.EntitySerializer;
 import org.calrissian.mango.json.ser.EventSerializer;
 import org.calrissian.mango.json.ser.NodeSerializer;
-import org.calrissian.mango.json.ser.TupleSerializer;
 import org.calrissian.mango.types.TypeRegistry;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -52,8 +52,8 @@ public class MangoModule extends SimpleModule {
     @Override
     public void setupModule(SetupContext context) {
 
-        addSerializer(Tuple.class, new TupleSerializer(typeContext));
-        addDeserializer(Tuple.class, new TupleDeserializer(typeContext));
+        addSerializer(Attribute.class, new AttributeSerializer(typeContext));
+        addDeserializer(Attribute.class, new AttributeDeserializer(typeContext));
 
         //Register the class and a default serializer/deserializer for the interface.
         addSerializer(Entity.class, new EntitySerializer());

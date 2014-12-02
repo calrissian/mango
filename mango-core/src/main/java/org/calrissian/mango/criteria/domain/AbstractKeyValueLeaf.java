@@ -15,8 +15,6 @@
  */
 package org.calrissian.mango.criteria.domain;
 
-import com.google.common.collect.AbstractIterator;
-
 public abstract class AbstractKeyValueLeaf extends Leaf {
     private static final long serialVersionUID = 1L;
 

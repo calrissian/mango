@@ -19,7 +19,7 @@ package org.calrissian.mango.json.deser;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.calrissian.mango.domain.entity.BaseEntity;
 
-public class EntityDeserializer extends BaseTupleStoreDeserializer<BaseEntity> {
+public class EntityDeserializer extends BaseAttributeStoreDeserializer<BaseEntity> {
 
     @Override
     public BaseEntity deserialize(JsonNode root) {

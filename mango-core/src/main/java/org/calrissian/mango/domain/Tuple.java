@@ -15,102 +15,18 @@
  */
 package org.calrissian.mango.domain;
 
-
-import java.io.Serializable;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
-
-import static com.google.common.base.Preconditions.checkNotNull;
-import static java.util.Collections.unmodifiableMap;
-import static java.util.Collections.unmodifiableSet;
 
 /**
- * A value class representing a key/value pair with metadata. This class is immutable.
- */
-public class Tuple<T> implements Serializable {
-
-    protected final String key;
-    protected final T value;
-
-    /**
-     * Metadata allows the tuple to be extensible so that different services can read different properties without
-     * the need for inheritance.
-     */
-    protected final Map<String,Object> metadata;
-
+ * @deprecated since 1.3.0
+ **/
+@Deprecated
+public class Tuple<T> extends Attribute<T> {
     public Tuple(String key, T value) {
-        this(key, value, Collections.<String,Object>emptyMap());
+        super(key, value);
     }
 
-    public Tuple(String key, T value, Map<String,Object> metadata) {
-        checkNotNull(key);
-        checkNotNull(value);
-        checkNotNull(metadata);
-
-        this.key = key;
-        this.value = value;
-        this.metadata = new HashMap<String, Object>(metadata);
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public T getValue() {
-        return value;
-    }
-
-    /**
-     * Gets all keys from the metadata
-     */
-    public Set<String> metadataKeys() {
-        return unmodifiableSet(metadata.keySet());
-    }
-
-    /**
-     * Gets a value for the metadata key for the current tuple.
-     */
-    public <T>T getMetadataValue(String key) {
-        return (T)metadata.get(key);
-    }
-
-    /**
-     * Gets an immutable view of the current metadata
-     */
-    public Map<String,Object> getMetadata() {
-        return unmodifiableMap(metadata);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Tuple)) return false;
-
-        Tuple tuple = (Tuple) o;
-
-        if (!key.equals(tuple.key)) return false;
-        if (!metadata.equals(tuple.metadata)) return false;
-        if (!value.equals(tuple.value)) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = key.hashCode();
-        result = 31 * result + value.hashCode();
-        result = 31 * result + metadata.hashCode();
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "Tuple{" +
-                "key='" + key + '\'' +
-                ", value=" + value +
-                ", metadata=" + metadata +
-                '}';
+    public Tuple(String key, T value, Map<String, Object> metadata) {
+        super(key, value, metadata);
     }
 }

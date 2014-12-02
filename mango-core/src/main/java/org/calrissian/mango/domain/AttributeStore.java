@@ -19,33 +19,33 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Set;
 
-public interface TupleStore extends Serializable {
+public interface AttributeStore extends Serializable {
 
     /**
-     * Puts a single tuple in the current data store
+     * Puts a single keyValue in the current data store
      */
-    void put(Tuple tuple);
+    void put(Attribute keyValue);
 
     /**
      * Adds all the given getTuples to the current data store
      */
-    void putAll(Iterable<Tuple> tuples);
+    void putAll(Iterable<? extends Attribute> attributes);
 
     /**
      * Retrieves all the getTuples.
      */
-    Collection<Tuple> getTuples();
+    Collection<? extends Attribute> getTuples();
 
     /**
-     * Retrieves all the tuples for the specified key.
+     * Retrieves all the attributes for the specified key.
      */
-    Collection<Tuple> getAll(String key);
+    Collection<? extends Attribute> getAll(String key);
 
     /**
-     * Retrieves the first tuple returned for the specified key. This method assumes a single-valued key.
+     * Retrieves the first attribute returned for the specified key. This method assumes a single-valued key.
      * Note that multi-vaued keys may give undeterministic results.
      */
-    <T> Tuple<T> get(String key);
+    <T> Attribute<T> get(String key);
 
     /**
      * Returns the keys in the current object
@@ -53,29 +53,29 @@ public interface TupleStore extends Serializable {
     Set<String> keys();
 
     /**
-     * Returns true of there exist tuples with the specified key
+     * Returns true of there exist attributes with the specified key
      */
     boolean containsKey(String key);
 
     /**
-     * Removes the specified tuple
+     * Removes the specified attribute
      */
-    <T> Tuple<T> remove(Tuple<T> t);
+    <T> Attribute<T> remove(Attribute<T> t);
 
     /**
-     * Removes the first tuple belonging to the specified key. This method assumed single-valued key
+     * Removes the first attribute belonging to the specified key. This method assumed single-valued key
      */
-    <T> Tuple<T> remove(String key);
+    <T> Attribute<T> remove(String key);
 
     /**
-     * Revoves all the tuples with the given key.
+     * Revoves all the attributes with the given key.
      */
-    Collection<Tuple> removeAll(String key);
+    Collection<? extends Attribute> removeAll(String key);
 
-    Collection<Tuple> removeAll(Collection<Tuple> tuples);
+    Collection<? extends Attribute> removeAll(Collection<? extends Attribute> keyValues);
 
     /**
-     * Returns the size of the tuplestore. This should be a constant-time operation
+     * Returns the size of the attributestore. This should be a constant-time operation
      * @return
      */
     int size();

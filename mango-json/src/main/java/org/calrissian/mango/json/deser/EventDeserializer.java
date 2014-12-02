@@ -19,7 +19,7 @@ package org.calrissian.mango.json.deser;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.calrissian.mango.domain.event.BaseEvent;
 
-public class EventDeserializer extends BaseTupleStoreDeserializer<BaseEvent> {
+public class EventDeserializer extends BaseAttributeStoreDeserializer<BaseEvent> {
 
     @Override
     public BaseEvent deserialize(JsonNode root) {

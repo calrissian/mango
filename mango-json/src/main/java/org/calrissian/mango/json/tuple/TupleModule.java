@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.json.tuple;
+package org.calrissian.mango.json.attribute;
 
 
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import org.calrissian.mango.domain.Tuple;
-import org.calrissian.mango.json.deser.TupleDeserializer;
-import org.calrissian.mango.json.ser.TupleSerializer;
+import org.calrissian.mango.domain.Attribute;
+import org.calrissian.mango.json.deser.AttributeDeserializer;
+import org.calrissian.mango.json.ser.AttributeSerializer;
 import org.calrissian.mango.types.TypeRegistry;
 
 import static org.calrissian.mango.types.SimpleTypeEncoders.SIMPLE_TYPES;
@@ -40,8 +40,8 @@ public class TupleModule extends SimpleModule {
 
     @Override
     public void setupModule(SetupContext context) {
-        addSerializer(Tuple.class, new TupleSerializer(typeContext));
-        addDeserializer(Tuple.class, new TupleDeserializer(typeContext));
+        addSerializer(Attribute.class, new AttributeSerializer(typeContext));
+        addDeserializer(Attribute.class, new AttributeDeserializer(typeContext));
         super.setupModule(context);
     }
 }

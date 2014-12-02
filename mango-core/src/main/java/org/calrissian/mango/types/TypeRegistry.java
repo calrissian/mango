@@ -73,6 +73,18 @@ public class TypeRegistry<U> implements Serializable {
         return null;
     }
 
+    public String getAlias(Class clazz) {
+        if (clazz == null)
+            return null;
+
+        TypeEncoder<?, U> encoder = classMapping.get(clazz);
+        if (encoder != null)
+            return encoder.getAlias();
+
+        return null;
+    }
+
+
     @SuppressWarnings({"unchecked", "rawtypes"})
     public U encode(Object value) {
         checkNotNull(value, "Value for encoding can not be null");

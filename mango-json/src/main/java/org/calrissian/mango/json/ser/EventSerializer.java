@@ -20,7 +20,7 @@ import org.calrissian.mango.domain.event.Event;
 
 import java.io.IOException;
 
-public class EventSerializer extends BaseTupleStoreSerializer<Event> {
+public class EventSerializer extends BaseAttributeStoreSerializer<Event> {
 
     @Override
     protected void writeUniqueFields(Event event, JsonGenerator jsonGenerator) throws IOException {

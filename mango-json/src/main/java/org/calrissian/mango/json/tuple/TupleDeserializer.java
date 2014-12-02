@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.json.tuple;
+package org.calrissian.mango.json.attribute;
 
+import org.calrissian.mango.json.deser.AttributeDeserializer;
 import org.calrissian.mango.types.TypeRegistry;
 
 @Deprecated
-public class TupleDeserializer extends org.calrissian.mango.json.deser.TupleDeserializer {
+public class TupleDeserializer extends AttributeDeserializer {
 
     public TupleDeserializer(TypeRegistry<String> typeRegistry) {
         super(typeRegistry);

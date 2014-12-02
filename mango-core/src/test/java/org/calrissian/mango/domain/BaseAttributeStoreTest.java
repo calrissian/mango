@@ -25,24 +25,24 @@ import java.util.Collection;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 
-public class BaseTupleStoreTest {
+public class BaseAttributeStoreTest {
 
-    Tuple keyValue1 = new Tuple("key1", "val1");
-    Tuple keyValue2 = new Tuple("key1", "val2");
-    Tuple keyValue3 = new Tuple("key2", "val2");
-    Tuple keyValue4 = new Tuple("key3", "val3");
+    Attribute keyValue1 = new Attribute("key1", "val1");
+    Attribute keyValue2 = new Attribute("key1", "val2");
+    Attribute keyValue3 = new Attribute("key2", "val2");
+    Attribute keyValue4 = new Attribute("key3", "val3");
 
     BaseAttributeStore attributeCollection = new BaseAttributeStore();
 
     @Before
     public void setup() {
-        attributeCollection.putAll(asList(new Tuple[]{keyValue1, keyValue2, keyValue3, keyValue4}));
+        attributeCollection.putAll(asList(new Attribute[]{keyValue1, keyValue2, keyValue3, keyValue4}));
     }
 
     @Test
     public void testRemoveAll_forManyTuples() {
 
-        Collection<? extends Attribute> removed = attributeCollection.removeAll(asList(new Tuple[]{keyValue2, keyValue3}));
+        Collection<? extends Attribute> removed = attributeCollection.removeAll(asList(new Attribute[]{keyValue2, keyValue3}));
         assertEquals(2, removed.size());
         assertEquals(keyValue2, Iterables.get(removed, 0));
         assertEquals(keyValue3, Iterables.get(removed, 1));
