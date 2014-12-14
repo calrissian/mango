@@ -41,7 +41,7 @@ import static java.util.Arrays.copyOfRange;
 public class MoreInetAddresses {
     private MoreInetAddresses() {/*intentionally private*/}
 
-    private static InetAddress getInetAddress(byte[] bytes) {
+    private static InetAddress bytesToInetAddress(byte[] bytes) {
         return bytes.length == 4 ?
                 getInet4Address(bytes) :
                 getInet6Address(bytes);
@@ -254,6 +254,74 @@ public class MoreInetAddresses {
         return getInet6Address(bytes);
     }
 
+    private static byte[] incrementBytes(InetAddress address) {
+        byte[] addr = address.getAddress();
+        int i = addr.length - 1;
+        while (i >= 0 && addr[i] == (byte) 0xff) {
+            addr[i] = 0;
+            i--;
+        }
+        Preconditions.checkArgument(i >= 0, "Incrementing %s would wrap.", address);
+        addr[i]++;
+        return addr;
+    }
+
+    /**
+     * Returns a new Inet4Address that is one more than the passed in address.
+     *
+     * @param ip the Inet4Address to increment
+     * @return a new Inet4Address that is one more than the passed in address
+     * @throws IllegalArgumentException if Inet4Address is at the end of its range
+     */
+    public static Inet4Address increment(Inet4Address ip) {
+        return getInet4Address(incrementBytes(ip));
+    }
+
+    /**
+     * Returns a new Inet6Address that is one more than the passed in address.
+     *
+     * @param ip the Inet6Address to increment
+     * @return a new Inet6Address that is one more than the passed in address
+     * @throws IllegalArgumentException if Inet6Address is at the end of its range
+     */
+    public static Inet6Address increment(Inet6Address ip) {
+        return getInet6Address(incrementBytes(ip));
+    }
+
+    private static byte[] decrementBytes(InetAddress address) {
+        byte[] addr = address.getAddress();
+        int i = addr.length - 1;
+        while (i >= 0 && addr[i] == (byte) 0x00) {
+            addr[i] = (byte) 0xff;
+            i--;
+        }
+        Preconditions.checkArgument(i >= 0, "Decrementing %s would wrap.", address);
+        addr[i]--;
+        return addr;
+    }
+
+    /**
+     * Returns a new Inet4Address that is one less than the passed in address.
+     *
+     * @param ip the Inet4Address to decrement
+     * @return a new Inet4Address that is one less than the passed in address
+     * @throws IllegalArgumentException if Inet4Address is at the beginning of its range
+     */
+    public static Inet4Address decrement(Inet4Address ip) {
+        return getInet4Address(decrementBytes(ip));
+    }
+
+    /**
+     * Returns a new Inet6Address that is one less than the passed in address.
+     *
+     * @param ip the Inet6Address to decrement
+     * @return a new Inet6Address that is one less than the passed in address
+     * @throws IllegalArgumentException if Inet6Address is at the beginning of its range
+     */
+    public static Inet6Address decrement(Inet6Address ip) {
+        return getInet6Address(decrementBytes(ip));
+    }
+
     /**
      * Examines a CIDR {@code 192.168.0.0/16} or {@code 1234::/16} string representation and calculates the network and
      * broadcast IP addresses for that subnet.  This accepts both IPv4 and IPv6 representations of a CIDR and will return
@@ -289,7 +357,7 @@ public class MoreInetAddresses {
                 remainingBits -= 8;
             }
 
-            return new CidrInfo(maskBits, getInetAddress(network), getInetAddress(broadcast));
+            return new CidrInfo(maskBits, bytesToInetAddress(network), bytesToInetAddress(broadcast));
 
         }catch(Exception ignored){}
 

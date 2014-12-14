@@ -224,6 +224,54 @@ public class MoreInetAddressesTest {
         MoreInetAddresses.getIPV4CompatIPv6Address(null);
     }
 
+
+    @Test
+    public void incrementInet4AddressTest() {
+        assertEquals(forIPv4String("0.0.0.1"), MoreInetAddresses.increment(forIPv4String("0.0.0.0")));
+        assertEquals(forIPv4String("2.0.0.0"), MoreInetAddresses.increment(forIPv4String("1.255.255.255")));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void incrementInet4AddressEndOfRangeTest() {
+        MoreInetAddresses.increment(forIPv4String("255.255.255.255"));
+    }
+
+    @Test
+    public void incrementInet6AddressTest() {
+        assertEquals(forIPv6String("::1"), MoreInetAddresses.increment(forIPv6String("::")));
+        assertEquals(forIPv6String("200::"), MoreInetAddresses.increment(forIPv6String("1ff:ffff:ffff:ffff:ffff:ffff:ffff:ffff")));
+        assertEquals(forIPv6String("::ffff:1.1.1.2"), MoreInetAddresses.increment(forIPv6String("::ffff:1.1.1.1")));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void incrementInet6AddressEndOfRangeTest() {
+        MoreInetAddresses.increment(forIPv6String("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff"));
+    }
+
+    @Test
+    public void decrementInet4AddressTest() {
+        assertEquals(forIPv4String("255.255.255.254"), MoreInetAddresses.decrement(forIPv4String("255.255.255.255")));
+        assertEquals(forIPv4String("1.255.255.255"), MoreInetAddresses.decrement(forIPv4String("2.0.0.0")));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void decrementInet4AddressEndOfRangeTest() {
+        MoreInetAddresses.decrement(forIPv4String("0.0.0.0"));
+    }
+
+    @Test
+    public void decrementInet6AddressTest() {
+        assertEquals(forIPv6String("ffff:ffff:ffff:ffff:ffff:ffff:ffff:fffe"), MoreInetAddresses.decrement(forIPv6String("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff")));
+        assertEquals(forIPv6String("1ff:ffff:ffff:ffff:ffff:ffff:ffff:ffff"), MoreInetAddresses.decrement(forIPv6String("200::")));
+        assertEquals(forIPv6String("::ffff:1.1.1.0"), MoreInetAddresses.decrement(forIPv6String("::ffff:1.1.1.1")));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void decrementInet6AddressEndOfRangeTest() {
+        MoreInetAddresses.decrement(forIPv6String("::"));
+    }
+
+
     @Test
     public void forCIDRStringTest() {
         MoreInetAddresses.CidrInfo cidr = MoreInetAddresses.parseCIDR("255.255.255.255/16");
