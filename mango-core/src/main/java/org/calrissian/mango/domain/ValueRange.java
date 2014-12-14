@@ -18,7 +18,9 @@ package org.calrissian.mango.domain;
 /**
  * Specifies a bounded range of values for a given type
  * @param <T>
+ * @deprecated use com.google.collect.Range instead
  */
+@Deprecated
 public class ValueRange<T> {
 
     private T start;
