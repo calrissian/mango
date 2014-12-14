@@ -69,12 +69,8 @@ public class JsonTupleStoreTest {
             // parse original json
             Collection<Tuple> tuples = fromJson(jsonNode);
 
-            System.out.println(tuples);
-
             // turn back into json
             ObjectNode actualNode = (ObjectNode)objectMapper.readTree(toJsonString(tuples, objectMapper));
-
-            System.out.println(actualNode.toString());
 
             // verify nodes are the same
             assertEquals(actualNode, jsonNode);

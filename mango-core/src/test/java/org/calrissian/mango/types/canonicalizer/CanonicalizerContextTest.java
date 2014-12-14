@@ -15,8 +15,10 @@
  */
 package org.calrissian.mango.types.canonicalizer;
 
+import org.calrissian.mango.domain.ip.IPv4;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
@@ -26,8 +28,8 @@ public class CanonicalizerContextTest {
     public void testFromStringRegularType() throws Exception {
 
         CanonicalizerContext context = new CanonicalizerContext();
-        System.out.println(context.canonicalizeValueFromString("destinationIp", "1.2.3.4"));
-        System.out.println(context.canonicalizeValueFromString("sourcePort", "8080"));
+        assertEquals(IPv4.fromString("1.2.3.4"), context.canonicalizeValueFromString("destinationIp", "1.2.3.4"));
+        assertEquals(8080, context.canonicalizeValueFromString("sourcePort", "8080"));
     }
 
     @Test
@@ -37,12 +39,12 @@ public class CanonicalizerContextTest {
         try {
             context.canonicalizeValueFromString("sourcePort", "hello");
             fail();
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
         try {
             context.canonicalizeValueFromString("sourcePort", "111111");
             fail();
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
     }
 
@@ -53,12 +55,12 @@ public class CanonicalizerContextTest {
         try {
             context.canonicalizeValueFromString("sourceIp", "hello");
             fail();
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
         try {
             context.canonicalizeValueFromString("sourceIp", "111111");
             fail();
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
     }
 }

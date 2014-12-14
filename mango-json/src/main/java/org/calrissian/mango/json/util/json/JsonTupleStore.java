@@ -70,7 +70,6 @@ public class JsonTupleStore {
         Collection<Tuple> tuples = new HashSet<Tuple>();
         convertJsonObject(tuples, object, "", 0, new HashMap<String, Object>());
 
-        System.out.println(tuples);
         return tuples;
     }
 
@@ -121,8 +120,6 @@ public class JsonTupleStore {
         List<Tuple> tuples = new ArrayList<Tuple>(tupleCollection);
 
         sort(tuples, new FlattenedLevelsComparator());
-
-        System.out.println(tuples);
 
         JsonTreeNode root = new ObjectJsonNode(objectMapper);
         for(Tuple tuple : tuples) {

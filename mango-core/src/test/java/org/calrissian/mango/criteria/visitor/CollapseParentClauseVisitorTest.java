@@ -21,6 +21,7 @@ import org.calrissian.mango.criteria.domain.Node;
 import org.junit.Test;
 
 import java.io.OutputStreamWriter;
+import java.io.StringWriter;
 
 /**
  * Date: 11/13/12
@@ -30,22 +31,26 @@ public class CollapseParentClauseVisitorTest {
 
     @Test
     public void testCollapseAndAndChildren() throws Exception {
+        StringWriter writer = new StringWriter();
         Node node = new QueryBuilder().and().and().eq("k1", "v1").eq("k2", "v2").end().end().build();
-        node.accept(new PrintNodeVisitor(new OutputStreamWriter(System.out)));
-        System.out.println();
+        node.accept(new PrintNodeVisitor(writer));
+        writer.append('\n');
         node.accept(new CollapseParentClauseVisitor());
-        node.accept(new PrintNodeVisitor(new OutputStreamWriter(System.out)));
-        System.out.println();
+        node.accept(new PrintNodeVisitor(writer));
+        writer.append('\n');
+        //System.out.println(writer.toString());
     }
 
     @Test
     public void testCollapseAndAndOrChildren() throws Exception {
+        StringWriter writer = new StringWriter();
         Node node = new QueryBuilder().and().and().eq("k1", "v1").eq("k2", "v2").end().or().eq("k3", "v3").eq("k4", "v4").end().end().build();
-        node.accept(new PrintNodeVisitor(new OutputStreamWriter(System.out)));
-        System.out.println();
+        node.accept(new PrintNodeVisitor(writer));
+        writer.append('\n');
         node.accept(new CollapseParentClauseVisitor());
-        node.accept(new PrintNodeVisitor(new OutputStreamWriter(System.out)));
-        System.out.println();
+        node.accept(new PrintNodeVisitor(writer));
+        writer.append('\n');
+        //System.out.println(writer.toString());
     }
 }
 

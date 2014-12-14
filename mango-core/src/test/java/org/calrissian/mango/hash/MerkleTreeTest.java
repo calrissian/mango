@@ -45,8 +45,6 @@ public class MerkleTreeTest {
 
         MerkleTree<MockLeaf> tree = new MerkleTree<MockLeaf>(leaves, 2);
 
-        System.out.println(tree);
-
         assertEquals("17a19db32d969668fb08f9a5491eb4fe", tree.getTopHash().getHash());
         assertEquals(2, tree.getTopHash().getChildren().size());
     }

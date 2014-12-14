@@ -102,7 +102,6 @@ public class SendReceiveRequestor implements MessagePostProcessor {
     public Message postProcessMessage(Message message) throws JMSException {
         Message msg = populateProperties(message);
         msg.setJMSReplyTo(topic);
-        System.out.println("Send: " + msg);
         return msg;
     }
 }
