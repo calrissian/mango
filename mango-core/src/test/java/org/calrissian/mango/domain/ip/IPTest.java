@@ -16,6 +16,7 @@
 package org.calrissian.mango.domain.ip;
 
 
+import com.google.common.collect.DiscreteDomain;
 import com.google.common.collect.Range;
 import org.junit.Test;
 
@@ -200,5 +201,33 @@ public class IPTest {
     @Test(expected = IllegalArgumentException.class)
     public void ipv6CidrRangeInvalidSyntax2Test() {
         IPv6.cidrRange("1:2:3:4:5:6:7:8/129");
+    }
+
+    @Test
+    public void ipv4DiscreteDomainTest() {
+        DiscreteDomain<IPv4> discreteDomain = IPv4.discreteDomain();
+
+        assertEquals(IPv4.fromString("1.1.1.2"), discreteDomain.next(IPv4.fromString("1.1.1.1")));
+        assertEquals(IPv4.fromString("1.1.1.0"), discreteDomain.previous(IPv4.fromString("1.1.1.1")));
+        assertEquals(IPv4.fromString("0.0.0.0"), discreteDomain.minValue());
+        assertEquals(IPv4.fromString("255.255.255.255"), discreteDomain.maxValue());
+
+        assertEquals(0xFFFFFFFFL, discreteDomain.distance(discreteDomain.minValue(), discreteDomain.maxValue()));
+        assertEquals(1, discreteDomain.distance(IPv4.fromString("1.1.1.1"), IPv4.fromString("1.1.1.2")));
+        assertEquals(-1, discreteDomain.distance(IPv4.fromString("1.1.1.2"), IPv4.fromString("1.1.1.1")));
+    }
+
+    @Test
+    public void ipv6DiscreteDomainTest() {
+        DiscreteDomain<IPv6> discreteDomain = IPv6.discreteDomain();
+
+        assertEquals(IPv6.fromString("::1.1.1.2"), discreteDomain.next(IPv6.fromString("::1.1.1.1")));
+        assertEquals(IPv6.fromString("::1.1.1.0"), discreteDomain.previous(IPv6.fromString("::1.1.1.1")));
+        assertEquals(IPv6.fromString("::"), discreteDomain.minValue());
+        assertEquals(IPv6.fromString("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff"), discreteDomain.maxValue());
+
+        assertEquals(Long.MAX_VALUE, discreteDomain.distance(discreteDomain.minValue(), discreteDomain.maxValue()));
+        assertEquals(1, discreteDomain.distance(IPv6.fromString("::1.1.1.1"), IPv6.fromString("::1.1.1.2")));
+        assertEquals(-1, discreteDomain.distance(IPv6.fromString("::1.1.1.2"), IPv6.fromString("::1.1.1.1")));
     }
 }

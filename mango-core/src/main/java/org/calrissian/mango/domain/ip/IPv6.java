@@ -16,15 +16,17 @@
 package org.calrissian.mango.domain.ip;
 
 
+import com.google.common.collect.DiscreteDomain;
 import com.google.common.collect.Range;
 import org.calrissian.mango.net.MoreInetAddresses;
 
+import java.math.BigInteger;
 import java.net.Inet6Address;
 
 import static com.google.common.collect.Range.closed;
 import static com.google.common.primitives.UnsignedBytes.lexicographicalComparator;
-import static org.calrissian.mango.net.MoreInetAddresses.forIPv6String;
-import static org.calrissian.mango.net.MoreInetAddresses.parseCIDR;
+import static java.lang.String.format;
+import static org.calrissian.mango.net.MoreInetAddresses.*;
 
 /**
  * A Domain object that represents an IPv6 network address.  This is functionally a wrapper for {@link Inet6Address}
@@ -72,6 +74,45 @@ public class IPv6 extends IP<Inet6Address> implements Comparable<IPv6>{
 
         } catch (Exception ignored) {}
 
-        throw new IllegalArgumentException(String.format("Invalid IPv6 cidr representation %s", cidr));
+        throw new IllegalArgumentException(format("Invalid IPv6 cidr representation %s", cidr));
+    }
+
+    private static final DiscreteDomain<IPv6> DISCRETE_DOMAIN = new DiscreteDomain<IPv6>() {
+        private final IPv6 MIN_VALUE = fromString("::");
+        private final IPv6 MAX_VALUE = fromString("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff");
+
+        @Override
+        public IPv6 next(IPv6 iPv6) {
+            return new IPv6(increment(iPv6.getAddress()));
+        }
+
+        @Override
+        public IPv6 previous(IPv6 iPv6) {
+            return new IPv6(decrement(iPv6.getAddress()));
+        }
+
+        @Override
+        public long distance(IPv6 start, IPv6 end) {
+            //Use the bigInteger distance for simplicity, but be careful to set the signum as positive (1) so that
+            //BigInteger does not decode the bytes as a signed number.
+            return bigIntegers().distance(
+                    new BigInteger(1, start.toByteArray()),
+                    new BigInteger(1, end.toByteArray())
+            );
+        }
+
+        @Override
+        public IPv6 minValue() {
+            return MIN_VALUE;
+        }
+
+        @Override
+        public IPv6 maxValue() {
+            return MAX_VALUE;
+        }
+    };
+
+    public static DiscreteDomain<IPv6> discreteDomain() {
+        return DISCRETE_DOMAIN;
     }
 }
