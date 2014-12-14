@@ -15,20 +15,18 @@
  */
 package org.calrissian.mango.domain.ip;
 
-import org.apache.commons.net.util.SubnetUtils;
+import com.google.common.collect.Range;
 import org.calrissian.mango.domain.ValueRange;
-import org.calrissian.mango.domain.ip.IPv4;
 
-
+@Deprecated
 public class CidrValueRangeIPv4 extends ValueRange<IPv4> {
 
     public CidrValueRangeIPv4(String cidrString) {
 
-        SubnetUtils utils = new SubnetUtils(cidrString);
-        SubnetUtils.SubnetInfo info = utils.getInfo();
+        Range<IPv4> range = IPv4.cidrRange(cidrString);
 
-        setStart(IPv4.fromString(info.getNetworkAddress()));
-        setStop(IPv4.fromString(info.getBroadcastAddress()));
+        setStart(range.lowerEndpoint());
+        setStop(range.upperEndpoint());
     }
 
     public CidrValueRangeIPv4(IPv4 start, IPv4 stop) {
