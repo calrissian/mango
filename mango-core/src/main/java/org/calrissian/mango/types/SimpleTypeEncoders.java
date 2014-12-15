@@ -16,6 +16,8 @@
 package org.calrissian.mango.types;
 
 
+import com.google.common.primitives.UnsignedInteger;
+import com.google.common.primitives.UnsignedLong;
 import org.calrissian.mango.domain.entity.EntityRelationship;
 import org.calrissian.mango.domain.ip.IPv4;
 import org.calrissian.mango.domain.ip.IPv6;
@@ -39,9 +41,10 @@ public class SimpleTypeEncoders {
     @SuppressWarnings("unchecked")
     public static final TypeRegistry<String> SIMPLE_TYPES = new TypeRegistry<String>(
             booleanEncoder(), byteEncoder(), dateEncoder(), doubleEncoder(), floatEncoder(),
-            integerEncoder(), ipv4Encoder(), longEncoder(), stringEncoder(), uriEncoder(),
-            bigIntegerEncoder(), bigDecimalEncoder(), inet4AddressEncoder(), inet6AddressEncoder(),
-            entityRelationshipEncoder()
+            integerEncoder(), longEncoder(), stringEncoder(), uriEncoder(), bigIntegerEncoder(),
+            bigDecimalEncoder(), inet4AddressEncoder(), inet6AddressEncoder(),
+            ipv4Encoder(), ipv6Encoder(), entityRelationshipEncoder(),
+            unsignedIntegerEncoder(), unsignedLongEncoder()
     );
 
     public static TypeEncoder<Boolean, String> booleanEncoder() {
@@ -88,14 +91,6 @@ public class SimpleTypeEncoders {
         return new BigDecimalEncoder();
     }
 
-    public static TypeEncoder<IPv4, String> ipv4Encoder() {
-        return new IPv4Encoder();
-    }
-
-    public static TypeEncoder<IPv6, String> ipv6Encoder() {
-        return new IPv6Encoder();
-    }
-
     public static TypeEncoder<Inet4Address, String> inet4AddressEncoder() {
         return new Inet4AddressEncoder();
     }
@@ -104,7 +99,23 @@ public class SimpleTypeEncoders {
         return new Inet6AddressEncoder();
     }
 
+    public static TypeEncoder<IPv4, String> ipv4Encoder() {
+        return new IPv4Encoder();
+    }
+
+    public static TypeEncoder<IPv6, String> ipv6Encoder() {
+        return new IPv6Encoder();
+    }
+
     public static TypeEncoder<EntityRelationship, String> entityRelationshipEncoder() {
         return new EntityRelationshipEncoder();
+    }
+
+    public static TypeEncoder<UnsignedInteger, String> unsignedIntegerEncoder() {
+        return new UnsignedIntegerEncoder();
+    }
+
+    public static TypeEncoder<UnsignedLong, String> unsignedLongEncoder() {
+        return new UnsignedLongEncoder();
     }
 }

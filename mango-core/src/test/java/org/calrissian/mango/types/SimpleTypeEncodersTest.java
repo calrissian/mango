@@ -16,6 +16,8 @@
 package org.calrissian.mango.types;
 
 
+import com.google.common.primitives.UnsignedInteger;
+import com.google.common.primitives.UnsignedLong;
 import org.calrissian.mango.domain.entity.EntityRelationship;
 import org.calrissian.mango.domain.ip.IPv4;
 import org.calrissian.mango.domain.ip.IPv6;
@@ -62,13 +64,17 @@ public class SimpleTypeEncodersTest {
         verifyBasicFunctionality(BIGINTEGER_ALIAS, BigInteger.valueOf(Long.MAX_VALUE).pow(2), bigIntegerEncoder());
         verifyBasicFunctionality(BIGDECIMAL_ALIAS, BigDecimal.valueOf(Double.MAX_VALUE).pow(2), bigDecimalEncoder());
         verifyBasicFunctionality(BIGDECIMAL_ALIAS, new BigDecimal("1.00000"), bigDecimalEncoder());
-        verifyBasicFunctionality(IPV4_ALIAS, IPv4.fromString("192.168.1.1"), ipv4Encoder());
-        verifyBasicFunctionality(IPV6_ALIAS, IPv6.fromString("::192.168.1.1"), ipv6Encoder());
-        verifyBasicFunctionality(IPV6_ALIAS, IPv6.fromString("::ffff:192.168.1.1"), ipv6Encoder());
         verifyBasicFunctionality(INET4_ALIAS, forIPv4String("192.168.1.1"), inet4AddressEncoder());
         verifyBasicFunctionality(INET6_ALIAS, forIPv6String("::192.168.1.1"), inet6AddressEncoder());
         verifyBasicFunctionality(INET6_ALIAS, forIPv6String("::ffff:192.168.1.1"), inet6AddressEncoder());
+        verifyBasicFunctionality(IPV4_ALIAS, IPv4.fromString("192.168.1.1"), ipv4Encoder());
+        verifyBasicFunctionality(IPV6_ALIAS, IPv6.fromString("::192.168.1.1"), ipv6Encoder());
+        verifyBasicFunctionality(IPV6_ALIAS, IPv6.fromString("::ffff:192.168.1.1"), ipv6Encoder());
         verifyBasicFunctionality(ENTITY_RELATIONSHIP_ALIAS, new EntityRelationship("type", "id"), entityRelationshipEncoder());
+        verifyBasicFunctionality(UNSIGNEDINTEGER_ALIAS, UnsignedInteger.fromIntBits(3), unsignedIntegerEncoder());
+        verifyBasicFunctionality(UNSIGNEDINTEGER_ALIAS, UnsignedInteger.MAX_VALUE, unsignedIntegerEncoder());
+        verifyBasicFunctionality(UNSIGNEDLONG_ALIAS, UnsignedLong.fromLongBits(3), unsignedLongEncoder());
+        verifyBasicFunctionality(UNSIGNEDLONG_ALIAS, UnsignedLong.MAX_VALUE, unsignedLongEncoder());
     }
 
     @Test
@@ -109,5 +115,11 @@ public class SimpleTypeEncodersTest {
 
         assertEquals("::c0a8:101", inet6AddressEncoder().encode(forIPv6String("::192.168.1.1")));
         assertEquals("::ffff:c0a8:101", inet6AddressEncoder().encode(forIPv6String("::ffff:192.168.1.1")));
+
+        assertEquals("3", unsignedIntegerEncoder().encode(UnsignedInteger.fromIntBits(3)));
+        assertEquals("4294967295", unsignedIntegerEncoder().encode(UnsignedInteger.MAX_VALUE));
+
+        assertEquals("3", unsignedLongEncoder().encode(UnsignedLong.fromLongBits(3)));
+        assertEquals("18446744073709551615", unsignedLongEncoder().encode(UnsignedLong.MAX_VALUE));
     }
 }
