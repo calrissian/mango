@@ -15,6 +15,7 @@
  */
 package org.calrissian.mango.json.util.json;
 
+import com.google.common.base.Splitter;
 import org.calrissian.mango.domain.TupleStore;
 
 import java.util.HashMap;
@@ -22,7 +23,6 @@ import java.util.Map;
 import java.util.Set;
 
 import static java.lang.Integer.parseInt;
-import static org.apache.commons.lang.StringUtils.splitPreserveAllTokens;
 
 /**
  * A simple utility class for dealing with setting/getting of the metadata entries for flattening
@@ -101,7 +101,7 @@ class JsonMetadata {
         Map<Integer, Integer> levelToIdx = new HashMap<Integer, Integer>();
         for(Map.Entry<String,Object> entry : entries)
             if(entry.getKey().endsWith(ARRAY_IDX_SUFFIX))
-                levelToIdx.put(parseInt(splitPreserveAllTokens(entry.getKey(), "\\.")[0]), (Integer)entry.getValue());
+                levelToIdx.put(parseInt(Splitter.on('.').splitToList(entry.getKey()).get(0)), (Integer)entry.getValue());
 
         return levelToIdx;
     }

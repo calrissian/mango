@@ -15,7 +15,7 @@
  */
 package org.calrissian.mango.uri.support;
 
-import org.apache.commons.lang.StringUtils;
+import com.google.common.base.Joiner;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -24,7 +24,7 @@ public class DataResolverFormatUtils {
 
     public static URI buildRequestURI(URI uri, String[] auths) throws URISyntaxException {
 
-        return new URI(uri.toString() + DataResolverConstants.DELIM + StringUtils.join(auths, ","));
+        return new URI(uri.toString() + DataResolverConstants.DELIM + Joiner.on(',').join(auths));
     }
 
     public static String extractTargetSystemFromUri(URI uri)

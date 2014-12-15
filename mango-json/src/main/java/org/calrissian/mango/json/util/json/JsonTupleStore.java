@@ -19,9 +19,8 @@ package org.calrissian.mango.json.util.json;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.common.base.Splitter;
 import com.google.common.collect.ComparisonChain;
-import com.google.common.hash.HashFunction;
-import com.google.common.hash.Hashing;
 import org.calrissian.mango.domain.Pair;
 import org.calrissian.mango.domain.Tuple;
 import org.calrissian.mango.domain.TupleStore;
@@ -31,7 +30,6 @@ import java.util.*;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.util.Collections.sort;
-import static org.apache.commons.lang.StringUtils.splitPreserveAllTokens;
 import static org.calrissian.mango.json.util.json.JsonMetadata.*;
 import static org.calrissian.mango.json.util.json.JsonUtil.nodeToObject;
 
@@ -52,9 +50,7 @@ public class JsonTupleStore {
 
     private static final String JSON_DELIM = "$";
     private static final Pair<Integer,Integer> DEFAULT_PAIR = new Pair<Integer, Integer>(-1, -1);
-
-    private static final HashFunction hf = Hashing.murmur3_32();
-
+    private static final Splitter SPLITTER = Splitter.on(JSON_DELIM);
 
     private JsonTupleStore() {}
 
@@ -126,10 +122,10 @@ public class JsonTupleStore {
             if(!JsonMetadata.isFlattenedJson(tuple.getMetadata()))
                 throw new IllegalStateException("Trying to re-expand json from tuples which were not previously flattened.");
             else {
-                String[] keys = splitPreserveAllTokens(tuple.getKey(), JSON_DELIM);
+                List<String> keys = SPLITTER.splitToList(tuple.getKey());
 
                 Map<Integer, Integer> levelsIndices = levelsToIndices(tuple.getMetadata());
-                String[] adjustedKeys = new String[keys.length + levelsIndices.size()];
+                String[] adjustedKeys = new String[keys.size() + levelsIndices.size()];
 
                 int count = 0;
                 for(int i = 0; i < adjustedKeys.length; i++) {
@@ -137,7 +133,7 @@ public class JsonTupleStore {
                     if(levelsIndices.containsKey(i))
                         adjustedKeys[i] = "[]";
                     else {
-                        adjustedKeys[i] = keys[count];
+                        adjustedKeys[i] = keys.get(count);
                         count++;
                     }
                 }
@@ -171,7 +167,7 @@ public class JsonTupleStore {
             Integer levels = levelsCache.get(tuple);
 
             if(levels == null) {
-                levels = splitPreserveAllTokens(tuple.getKey(), JSON_DELIM).length;
+                levels = SPLITTER.splitToList(tuple.getKey()).size();
                 levels += JsonMetadata.levelsToIndices(tuple.getMetadata()).size();
                 levelsCache.put(tuple, levels);
             }
@@ -199,7 +195,7 @@ public class JsonTupleStore {
             }
 
             comparisonChain = comparisonChain.compare(levels1, levels2)
-                 .compare(tuple.getKey(), tuple2.getKey());
+                    .compare(tuple.getKey(), tuple2.getKey());
 
 
 
