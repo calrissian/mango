@@ -21,7 +21,6 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import org.calrissian.mango.collect.mock.MockIterator;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
@@ -32,26 +31,6 @@ import static org.calrissian.mango.collect.CloseableIterators.*;
 import static org.junit.Assert.*;
 
 public class CloseableIteratorsTest {
-
-    @SuppressWarnings("unchecked")
-    @Test
-    public void testWrap() throws Exception {
-        CloseableIterator<Object> mockIterator = mockIterator();
-        CloseableIterator<Object> iterator = CloseableIterators.wrap(mockIterator);
-
-        //test passthroughs
-        try {
-            iterator.hasNext();
-            iterator.next();
-            iterator.remove();
-            iterator.close();
-        } finally {
-            Mockito.verify(mockIterator, Mockito.times(1)).hasNext();
-            Mockito.verify(mockIterator, Mockito.times(1)).next();
-            Mockito.verify(mockIterator, Mockito.times(1)).remove();
-            Mockito.verify(mockIterator, Mockito.times(1)).close();
-        }
-    }
 
     @Test
     public void testTransform() throws IOException {
@@ -196,11 +175,6 @@ public class CloseableIteratorsTest {
         } catch (IllegalStateException re) {
         }
         assertTrue(iterator.isClosed());
-    }
-
-    @SuppressWarnings("rawtypes")
-    private CloseableIterator mockIterator() {
-        return Mockito.mock(CloseableIterator.class);
     }
 
     private MockIterator<Integer> testIterator() {
