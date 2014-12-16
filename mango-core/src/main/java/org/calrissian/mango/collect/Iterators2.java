@@ -94,13 +94,10 @@ public class Iterators2 {
                     return endOfData();
 
                 Object key = groupingFunction.apply(peekingIterator.peek());
-
-                T curr;
                 List<T> group = new ArrayList<T>();
 
                 do {
-                    curr = peekingIterator.next();
-                    group.add(curr);
+                    group.add(peekingIterator.next());
 
                 } while (peekingIterator.hasNext() && equal(key, groupingFunction.apply(peekingIterator.peek())));
 
