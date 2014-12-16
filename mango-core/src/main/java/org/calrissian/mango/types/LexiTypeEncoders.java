@@ -29,10 +29,9 @@ import java.net.URI;
 import java.util.Date;
 
 /**
- * Default type encoders for serializing data to strings that are lexicographically sortable.
- * <p/>
- * These methods implement the default implementations for the generic TypesNormalizer's normalize and denormalize
- * functions.
+ * Provides a default {@link TypeRegistry} and utility methods for constructing {@link TypeEncoder}s which produce
+ * lexicographically sortable strings. Additionally, utilities are provided for reverse encodings which will produce
+ * strings which will produce a reverse lexicographical sort ordering.
  */
 public class LexiTypeEncoders {
 

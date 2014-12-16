@@ -28,6 +28,10 @@ import java.net.Inet6Address;
 import java.net.URI;
 import java.util.Date;
 
+/**
+ * Provides a default {@link TypeRegistry} and utility methods for constructing {@link TypeEncoder}s which produce
+ * readable strings.
+ */
 public class SimpleTypeEncoders {
 
     private SimpleTypeEncoders() {/* private constructor */}

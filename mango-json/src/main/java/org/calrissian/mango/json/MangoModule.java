@@ -38,22 +38,22 @@ import static org.calrissian.mango.types.SimpleTypeEncoders.SIMPLE_TYPES;
 
 public class MangoModule extends SimpleModule {
 
-    private final TypeRegistry<String> typeContext;
+    private final TypeRegistry<String> typeRegistry;
 
     public MangoModule() {
         this(SIMPLE_TYPES);
     }
 
-    public MangoModule(TypeRegistry<String> typeContext) {
+    public MangoModule(TypeRegistry<String> typeRegistry) {
         super("MangoModule");
-        this.typeContext = checkNotNull(typeContext);
+        this.typeRegistry = checkNotNull(typeRegistry);
     }
 
     @Override
     public void setupModule(SetupContext context) {
 
-        addSerializer(Tuple.class, new TupleSerializer(typeContext));
-        addDeserializer(Tuple.class, new TupleDeserializer(typeContext));
+        addSerializer(Tuple.class, new TupleSerializer(typeRegistry));
+        addDeserializer(Tuple.class, new TupleDeserializer(typeRegistry));
 
         //Register the class and a default serializer/deserializer for the interface.
         addSerializer(Entity.class, new EntitySerializer());
@@ -65,8 +65,8 @@ public class MangoModule extends SimpleModule {
         addDeserializer(Event.class, new EventDeserializer());
         addDeserializer(BaseEvent.class, new EventDeserializer());
 
-        addSerializer(Node.class, new NodeSerializer(typeContext));
-        addDeserializer(Node.class, new NodeDeserializer(typeContext));
+        addSerializer(Node.class, new NodeSerializer(typeRegistry));
+        addDeserializer(Node.class, new NodeDeserializer(typeRegistry));
 
         super.setupModule(context);
     }

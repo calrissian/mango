@@ -21,34 +21,22 @@ import java.io.Serializable;
 public interface TypeEncoder<T, U> extends Serializable {
 
     /**
-     * Returns the "alias" of the types so that the encoded form can be decoded.
-     *
-     * @return
+     * Returns the "alias" of the type so that the encoded form can be decoded.
      */
     public String getAlias();
 
     /**
      * The java class that the implementations encodes.
-     *
-     * @return
      */
     public Class<T> resolves();
 
     /**
      * Encodes a value.
-     *
-     * @param value
-     * @return
-     * @throws org.calrissian.mango.types.exception.TypeEncodingException
      */
     U encode(T value);
 
     /**
-     * Decodes an encoded value.
-     *
-     * @param value
-     * @return
-     * @throws org.calrissian.mango.types.exception.TypeDecodingException
+     * Decodes the provided value.
      */
     T decode(U value);
 
