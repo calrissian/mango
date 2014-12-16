@@ -15,7 +15,6 @@
  */
 package org.calrissian.mango.collect;
 
-
 import com.google.common.base.Function;
 import com.google.common.collect.AbstractIterator;
 import com.google.common.collect.Iterators;
@@ -32,7 +31,6 @@ import static com.google.common.collect.Iterators.consumingIterator;
 import static com.google.common.collect.Iterators.peekingIterator;
 import static java.util.Collections.unmodifiableList;
 
-
 /**
  * Additional functions for working on Iterators
  */
@@ -47,28 +45,19 @@ public class Iterators2 {
     public static <T> Iterator<T> distinct(final Iterator<T> iterator) {
         checkNotNull(iterator);
         return new AbstractIterator<T>() {
-            T current = null;
+            private final PeekingIterator<T> peekingIterator = peekingIterator(iterator);
+            private T curr = null;
 
             @Override
             protected T computeNext() {
-                if (iterator.hasNext()) {
-                    if (current == null) {
-                        current = iterator.next();
-                        return current;
-                    } else {
-                        T next = iterator.next();
-                        while (current.equals(next)) {
-                            if (iterator.hasNext()) {
-                                next = iterator.next();
-                            } else {
-                                return endOfData();
-                            }
-                        }
-                        current = next;
-                        return current;
-                    }
-                } else
+                while (peekingIterator.hasNext() && equal(curr, peekingIterator.peek())) {
+                    peekingIterator.next();
+                }
+                if (!peekingIterator.hasNext())
                     return endOfData();
+
+                curr = peekingIterator.next();
+                return curr;
             }
         };
     }
@@ -98,7 +87,6 @@ public class Iterators2 {
 
                 do {
                     group.add(peekingIterator.next());
-
                 } while (peekingIterator.hasNext() && equal(key, groupingFunction.apply(peekingIterator.peek())));
 
                 return unmodifiableList(group);

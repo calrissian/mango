@@ -22,12 +22,27 @@ import org.junit.Test;
 import java.util.Iterator;
 import java.util.List;
 
+import static com.google.common.collect.Iterators.elementsEqual;
 import static com.google.common.collect.Iterators.emptyIterator;
 import static java.util.Arrays.asList;
+import static org.calrissian.mango.collect.Iterators2.distinct;
 import static org.calrissian.mango.collect.Iterators2.groupBy;
 import static org.junit.Assert.*;
 
 public class Iterators2Test {
+
+    @Test
+    public void distinctTest() throws Exception {
+        Iterator<Integer> distinct = distinct(asList(1, 1, 2, 2, 3, 3, 3, 4, 5, 6, 7, 7, 7).iterator());
+
+        assertTrue(elementsEqual(asList(1, 2, 3, 4, 5, 6, 7).iterator(), distinct));
+        assertFalse(distinct.hasNext());
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void distinctNullIteratorTest() {
+        distinct(null);
+    }
 
     @Test
     public void groupByTest() {

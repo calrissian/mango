@@ -24,12 +24,26 @@ import java.util.List;
 
 import static com.google.common.collect.Iterables.get;
 import static com.google.common.collect.Iterables.size;
+import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
+import static org.calrissian.mango.collect.Iterables2.distinct;
 import static org.calrissian.mango.collect.Iterables2.groupBy;
 import static org.junit.Assert.assertEquals;
 
 public class Iterables2Test {
+
+    @Test
+    public void distinctTest() throws Exception {
+        Iterable<Integer> distinct = distinct(asList(1, 1, 2, 2, 3, 3, 3, 4, 5, 6, 7, 7, 7));
+
+        assertEquals(asList(1, 2, 3, 4, 5, 6, 7), newArrayList(distinct));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void distinctNullIteratorTest() {
+        distinct(null);
+    }
 
     @Test
     public void groupByTest() {
