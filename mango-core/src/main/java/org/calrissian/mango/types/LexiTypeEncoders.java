@@ -39,7 +39,7 @@ public class LexiTypeEncoders {
 
     private LexiTypeEncoders() {/*private constructor*/}
 
-    public static final TypeRegistry<String> LEXI_TYPES = new TypeRegistry<String>(
+    public static final TypeRegistry<String> LEXI_TYPES = new TypeRegistry<>(
             booleanEncoder(), byteEncoder(), dateEncoder(), doubleEncoder(), floatEncoder(),
             integerEncoder(), longEncoder(), stringEncoder(), uriEncoder(), bigIntegerEncoder(),
             bigDecimalEncoder(), inet4AddressEncoder(), inet6AddressEncoder(),
@@ -47,7 +47,7 @@ public class LexiTypeEncoders {
             unsignedIntegerEncoder(), unsignedLongEncoder()
     );
 
-    public static final TypeRegistry<String> LEXI_REV_TYPES = new TypeRegistry<String>(
+    public static final TypeRegistry<String> LEXI_REV_TYPES = new TypeRegistry<>(
             booleanRevEncoder(), byteRevEncoder(), dateRevEncoder(), doubleRevEncoder(), floatRevEncoder(),
             integerRevEncoder(), longRevEncoder(), stringRevEncoder(), uriRevEncoder(), bigIntegerRevEncoder(),
             bigDecimalRevEncoder(), inet4AddressRevEncoder(), inet6AddressRevEncoder(),
@@ -56,7 +56,7 @@ public class LexiTypeEncoders {
     );
 
     private static <T> TypeEncoder<T, String> reverseEncoder(TypeEncoder<T, String> sourceEncoder) {
-        return new ReverseEncoder<T>(sourceEncoder);
+        return new ReverseEncoder<>(sourceEncoder);
     }
 
     public static TypeEncoder<Boolean, String> booleanEncoder() {

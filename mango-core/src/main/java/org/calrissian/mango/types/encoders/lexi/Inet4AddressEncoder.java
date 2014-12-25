@@ -42,9 +42,7 @@ public class Inet4AddressEncoder extends AbstractInet4AddressEncoder<String> {
         checkArgument(value.length() == 8, "The value is not a valid encoding");
         try {
             return (Inet4Address) getByAddress(decodeHex(value.toCharArray()));
-        } catch (UnknownHostException e) {
-            throw new TypeDecodingException(e);
-        } catch (DecoderException e) {
+        } catch (UnknownHostException | DecoderException e) {
             throw new TypeDecodingException(e);
         }
     }

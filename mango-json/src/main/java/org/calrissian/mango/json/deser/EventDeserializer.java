@@ -26,8 +26,7 @@ public class EventDeserializer extends BaseTupleStoreDeserializer<BaseEvent> {
         String id = root.get("id").asText();
         long timestamp = root.get("timestamp").asLong();
 
-        BaseEvent toReturn =  new BaseEvent(id, timestamp);
-        return toReturn;
+        return new BaseEvent(id, timestamp);
     }
 
 }

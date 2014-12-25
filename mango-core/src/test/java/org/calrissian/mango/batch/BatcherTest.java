@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 The Calrissian Authors
+ * Copyright (C) 2014 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,7 +49,7 @@ public class BatcherTest {
     @Test
     public void sizeBatcherTest() throws InterruptedException {
 
-        TestListenter<Integer> listenter = new TestListenter<Integer>();
+        TestListenter<Integer> listenter = new TestListenter<>();
         final Batcher<Integer> batcher = BatcherBuilder.create()
                 .sizeBound(100)
                 .build(listenter);
@@ -72,7 +72,7 @@ public class BatcherTest {
     @Test
     public void sizeBatcherNonFullBatchTest() throws InterruptedException {
 
-        TestListenter<Integer> listenter = new TestListenter<Integer>();
+        TestListenter<Integer> listenter = new TestListenter<>();
         final Batcher<Integer> batcher = BatcherBuilder.create()
                 .sizeBound(100)
                 .build(listenter);
@@ -95,7 +95,7 @@ public class BatcherTest {
     @Test
     public void timeBatcherTest() throws InterruptedException {
 
-        TestListenter<Integer> listenter = new TestListenter<Integer>();
+        TestListenter<Integer> listenter = new TestListenter<>();
         final Batcher<Integer> batcher = BatcherBuilder.create()
                 .timeBound(10, MILLISECONDS)
                 .build(listenter);
@@ -119,7 +119,7 @@ public class BatcherTest {
     @Test
     public void sizeAndTimeBatcherTest() throws InterruptedException {
 
-        TestListenter<Integer> listenter = new TestListenter<Integer>();
+        TestListenter<Integer> listenter = new TestListenter<>();
         final Batcher<Integer> batcher = BatcherBuilder.create()
                 .sizeBound(100)
                 .timeBound(10, MILLISECONDS)
@@ -145,7 +145,7 @@ public class BatcherTest {
     //Tests to verify that ordering is maintained within batchers.
     @Test
     public void sequentialSizeBatcherTest() throws InterruptedException {
-        final List<Integer> results = new ArrayList<Integer>(1000);
+        final List<Integer> results = new ArrayList<>(1000);
         final Batcher<Integer> batcher = BatcherBuilder.create()
                 .sizeBound(100)
                 .listenerService(sameThreadExecutor()) //Required to guarantee ordering
@@ -169,7 +169,7 @@ public class BatcherTest {
 
     @Test
     public void sequentialTimeBatcherTest() throws InterruptedException {
-        final List<Integer> results = new ArrayList<Integer>(1000);
+        final List<Integer> results = new ArrayList<>(1000);
         final Batcher<Integer> batcher = BatcherBuilder.create()
                 .timeBound(10, MILLISECONDS)
                 .listenerService(sameThreadExecutor()) //Required to guarantee ordering
@@ -193,7 +193,7 @@ public class BatcherTest {
 
     @Test
     public void sequentialSizeOrTimeBatcherTest() throws InterruptedException {
-        final List<Integer> results = new ArrayList<Integer>(1000);
+        final List<Integer> results = new ArrayList<>(1000);
         final Batcher<Integer> batcher = BatcherBuilder.create()
                 .sizeBound(100)
                 .timeBound(10, MILLISECONDS)
@@ -220,7 +220,7 @@ public class BatcherTest {
     @Test(expected = IllegalStateException.class)
     public void noSizeOrTimeBound() {
         BatcherBuilder.create()
-                .build(new TestListenter<Object>());
+                .build(new TestListenter<>());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -361,7 +361,7 @@ public class BatcherTest {
 
                         latch.countDown();
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        throw new RuntimeException(e);
                     }
                 }
             });
@@ -373,7 +373,7 @@ public class BatcherTest {
 
         private AtomicInteger numBatches = new AtomicInteger(0);
         private AtomicInteger count = new AtomicInteger(0);
-        private ConcurrentLinkedQueue<Collection<T>> batches = new ConcurrentLinkedQueue<Collection<T>>();
+        private ConcurrentLinkedQueue<Collection<T>> batches = new ConcurrentLinkedQueue<>();
 
         @Override
         public void onBatch(Collection<T> batch) {

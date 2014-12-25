@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 The Calrissian Authors
+ * Copyright (C) 2014 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -115,7 +115,7 @@ public class BaseTupleStore implements TupleStore {
     @Override
     public Collection<Tuple> removeAll(Collection<Tuple> tuples) {
         checkNotNull(tuples);
-        Collection<Tuple> removedTuples = new ArrayList<Tuple>();
+        Collection<Tuple> removedTuples = new ArrayList<>();
         for (Tuple tuple : tuples)
             removedTuples.add(remove(tuple));
 

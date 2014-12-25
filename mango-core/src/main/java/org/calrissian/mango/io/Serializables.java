@@ -60,11 +60,11 @@ public class Serializables {
         return retVal;
     }
 
-    public static final byte[] toBase64(Serializable serializable) throws IOException {
+    public static byte[] toBase64(Serializable serializable) throws IOException {
         return encodeBase64(serialize(serializable));
     }
 
-    public static final <T extends Serializable>T fromBase64(byte[] bytes) throws IOException, ClassNotFoundException {
+    public static <T extends Serializable>T fromBase64(byte[] bytes) throws IOException, ClassNotFoundException {
         return deserialize(decodeBase64(bytes));
     }
 }

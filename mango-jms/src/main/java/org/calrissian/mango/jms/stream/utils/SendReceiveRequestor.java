@@ -56,7 +56,7 @@ public class SendReceiveRequestor implements MessagePostProcessor {
 
     protected String createReceiveSelector() {
         String s = (send) ? replyToId : recvId;
-        return new StringBuilder().append(RECV_ID).append(" = '").append(s).append("'").toString();
+        return RECV_ID + " = '" + s + "'";
     }
 
     protected Message populateProperties(Message msg) throws JMSException {

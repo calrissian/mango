@@ -113,9 +113,7 @@ public class JmsFileReceiverInputStream extends AbstractBufferedInputStream {
 
             return data; //null is fine, as abstract will simply retry until done is set.
 
-        } catch (JMSException e) {
-            throw new JmsFileTransferException(e);
-        } catch (NoSuchAlgorithmException e) {
+        } catch (JMSException | NoSuchAlgorithmException e) {
             throw new JmsFileTransferException(e);
         }
     }

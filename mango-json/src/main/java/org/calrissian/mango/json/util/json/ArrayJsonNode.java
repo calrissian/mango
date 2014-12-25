@@ -34,7 +34,7 @@ import static org.calrissian.mango.json.util.json.JsonUtil.objectToNode;
 class ArrayJsonNode implements JsonTreeNode {
 
     private final ObjectMapper objectMapper;
-    private final List<JsonTreeNode> children = new ArrayList<JsonTreeNode>();
+    private final List<JsonTreeNode> children = new ArrayList<>();
 
     public ArrayJsonNode(ObjectMapper objectMapper) {
         checkNotNull(objectMapper);
@@ -52,7 +52,7 @@ class ArrayJsonNode implements JsonTreeNode {
 
             try {
                 child = children.get(levelToIdx.get(level));
-            }catch(Exception e) {}
+            }catch(Exception ignored) {}
 
             // look toJson see if next item exists, otherwise, create it, add it toJson children, and visit it.
             String nextKey = keys[level + 1];

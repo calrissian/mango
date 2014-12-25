@@ -40,13 +40,13 @@ public class JmsFileSenderListener extends AbstractJmsFileTransferSupport
 
     @Override
     public void onMessage(Message request) {
-        Request req = null;
+        Request req;
         try {
             req = fromRequestMessage(request);
             taskExecutor.execute(new JmsFileSenderRunnable(req, request
                     .getJMSReplyTo()));
         } catch (Exception e1) {
-            e1.printStackTrace();
+            throw new RuntimeException(e1);
         }
 
     }
@@ -66,7 +66,7 @@ public class JmsFileSenderListener extends AbstractJmsFileTransferSupport
             try {
                 sendStream(req, jmsReplyTo);
             } catch (Exception e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         }
 

@@ -26,7 +26,6 @@ public class EntityDeserializer extends BaseTupleStoreDeserializer<BaseEntity> {
         String type = root.get("type").asText();
         String id = root.get("id").asText();
 
-        BaseEntity toReturn =  new BaseEntity(type, id);
-        return toReturn;
+        return new BaseEntity(type, id);
     }
 }

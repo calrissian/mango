@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 The Calrissian Authors
+ * Copyright (C) 2014 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -82,7 +82,7 @@ public class MerkleTree<T extends HashLeaf> implements Serializable {
      */
     private Node buildTop(List<T> leaves) {
 
-        List<Node> hashNodes = new ArrayList<Node>();
+        List<Node> hashNodes = new ArrayList<>();
         List<T> curLeaves;
         for (int i = 0; i < leaves.size(); i += dimensions) {
             int idx = i + dimensions > leaves.size() ? leaves.size() : i + dimensions;
@@ -107,13 +107,13 @@ public class MerkleTree<T extends HashLeaf> implements Serializable {
      */
     private List<Node> build(List<Node> nodes) {
 
-        List<Node> hashNodes = new ArrayList<Node>();
+        List<Node> hashNodes = new ArrayList<>();
         List<Node> curNodes;
         for (int i = 0; i < nodes.size(); i += dimensions) {
 
             int idx = i + dimensions > nodes.size() ? nodes.size() : i + dimensions;
             curNodes = nodes.subList(i, idx);
-            hashNodes.add(curNodes.size() == 1 ? curNodes.get(0) : new HashNode(new ArrayList<Node>(curNodes)));
+            hashNodes.add(curNodes.size() == 1 ? curNodes.get(0) : new HashNode(new ArrayList<>(curNodes)));
         }
 
         if (hashNodes.size() > 1) {
@@ -139,7 +139,7 @@ public class MerkleTree<T extends HashLeaf> implements Serializable {
         }
 
 
-        List<T> differences = new ArrayList<T>();
+        List<T> differences = new ArrayList<>();
 
         if (!other.getTopHash().getHash().equals(getTopHash().getHash())) {
 
@@ -175,7 +175,7 @@ public class MerkleTree<T extends HashLeaf> implements Serializable {
     @SuppressWarnings("unchecked")
     private List<T> diff(Node one, Node two) {
 
-        List<T> differences = new ArrayList<T>();
+        List<T> differences = new ArrayList<>();
 
         if (!one.getHash().equals(two.getHash())) {
 
@@ -210,7 +210,7 @@ public class MerkleTree<T extends HashLeaf> implements Serializable {
     @SuppressWarnings("unchecked")
     private List<T> getLeaves(List<Node> nodes) {
 
-        List<T> leaves = new ArrayList<T>();
+        List<T> leaves = new ArrayList<>();
         for (Node child : nodes) {
             if (child.getChildren() == null) {
                 leaves.add((T) child);

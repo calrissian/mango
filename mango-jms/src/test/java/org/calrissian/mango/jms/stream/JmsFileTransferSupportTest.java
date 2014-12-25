@@ -75,7 +75,7 @@ public class JmsFileTransferSupportTest extends TestCase {
                     return null;
                 }
             });
-        } catch (Error e) {
+        } catch (Error ignored) {
         }
 
         final ActiveMQTopic ft = new ActiveMQTopic("testFileTransfer");
@@ -111,8 +111,8 @@ public class JmsFileTransferSupportTest extends TestCase {
         receiver.setPieceSize(9);
 
         JmsFileReceiverInputStream stream = (JmsFileReceiverInputStream) receiver.receiveStream("testprot:test");
-        StringBuffer buffer = new StringBuffer();
-        int read = 0;
+        StringBuilder buffer = new StringBuilder();
+        int read;
         while ((read = stream.read()) >= 0) {
             buffer.append((char) read);
         }

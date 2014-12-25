@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 The Calrissian Authors
+ * Copyright (C) 2014 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,9 +27,9 @@ import java.util.Map;
 public class ContextTransformService {
 
     @SuppressWarnings("rawtypes")
-    private final Map<String, ContextTransformer> contextTransformMap = new HashMap<String, ContextTransformer>();
+    private final Map<String, ContextTransformer> contextTransformMap = new HashMap<>();
     @SuppressWarnings("rawtypes")
-    private final Map<Class, ContextTransformInterceptor> transformInterceptorMap = new HashMap<Class, ContextTransformInterceptor>();
+    private final Map<Class, ContextTransformInterceptor> transformInterceptorMap = new HashMap<>();
 
     @SuppressWarnings("rawtypes")
     public ContextTransformService(Collection<ContextTransformer> contextTransforms,

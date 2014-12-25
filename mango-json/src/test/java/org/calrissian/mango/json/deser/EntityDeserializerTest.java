@@ -45,7 +45,7 @@ public class EntityDeserializerTest {
 
         assertEquals(actualEntity.getType(), entity.getType());
         assertEquals(actualEntity.getId(), entity.getId());
-        assertEquals(new HashSet<Tuple>(actualEntity.getTuples()), new HashSet<Tuple>(entity.getTuples()));
+        assertEquals(new HashSet<>(actualEntity.getTuples()), new HashSet<>(entity.getTuples()));
     }
 
 

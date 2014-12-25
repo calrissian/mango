@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 The Calrissian Authors
+ * Copyright (C) 2014 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -195,6 +195,7 @@ public class CloseableIterables {
      * of each iterable in {@code inputs}. The input iterators are not polled until
      * necessary.
      */
+    @SafeVarargs
     public static <T> CloseableIterable<T> chain(CloseableIterable<? extends T>... iterables) {
         return chain(asList(iterables));
     }
@@ -260,6 +261,7 @@ public class CloseableIterables {
      * <p>The equivalent of this method is {@link
      * java.util.Collections#emptySet()}.
      */
+    @SuppressWarnings("unchecked")
     public static <T> CloseableIterable<T> emptyIterable() {
         return EMPTY_ITERABLE;
     }

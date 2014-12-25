@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 The Calrissian Authors
+ * Copyright (C) 2014 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ public abstract class ParentNode implements Node {
     protected ParentNode parent;
 
     public ParentNode() {
-        nodes = new ArrayList<Node>();
+        nodes = new ArrayList<>();
     }
 
     public ParentNode(ParentNode parent, List<Node> nodes) {
@@ -90,7 +90,6 @@ public abstract class ParentNode implements Node {
 
     @Override
     public int hashCode() {
-        int result = nodes != null ? nodes.hashCode() : 0;
-        return result;
+        return nodes != null ? nodes.hashCode() : 0;
     }
 }

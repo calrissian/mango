@@ -17,7 +17,7 @@ package org.calrissian.mango.json.util.json;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.*;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +32,7 @@ import static org.calrissian.mango.json.util.json.JsonUtil.objectToNode;
 class ObjectJsonNode implements JsonTreeNode {
 
     private final ObjectMapper objectMapper;
-    private final Map<String, JsonTreeNode> children = new HashMap<String, JsonTreeNode>();
+    private final Map<String, JsonTreeNode> children = new HashMap<>();
 
     public ObjectJsonNode(ObjectMapper objectMapper) {
         checkNotNull(objectMapper);

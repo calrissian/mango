@@ -144,7 +144,7 @@ public abstract class AbstractJmsFileTransferSupport {
     public void sendStream(Request req, final Destination replyTo)
             throws IOException {
 
-        DigestInputStream is = null;
+        DigestInputStream is;
         Assert.notNull(req, "Request cannot be null");
         final URI downloadUrl;
         try {
@@ -312,11 +312,10 @@ public abstract class AbstractJmsFileTransferSupport {
         } catch (Exception e) {
             throw new JmsFileTransferException(e);
         } finally {
-            if (is != null)
-                try {
-                    is.close();
-                } catch (IOException e) {
-                }
+            try {
+                is.close();
+            } catch (IOException ignored) {
+            }
             if (queueListener != null)
                 queueListener.close();
         }
