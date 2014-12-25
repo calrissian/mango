@@ -16,6 +16,8 @@
 package org.calrissian.mango.types;
 
 
+import com.google.common.primitives.UnsignedInteger;
+import com.google.common.primitives.UnsignedLong;
 import org.calrissian.mango.domain.entity.EntityRelationship;
 import org.calrissian.mango.domain.ip.IPv4;
 import org.calrissian.mango.domain.ip.IPv6;
@@ -39,16 +41,18 @@ public class LexiTypeEncoders {
 
     public static final TypeRegistry<String> LEXI_TYPES = new TypeRegistry<String>(
             booleanEncoder(), byteEncoder(), dateEncoder(), doubleEncoder(), floatEncoder(),
-            integerEncoder(), ipv4Encoder(), longEncoder(), stringEncoder(), uriEncoder(),
-            bigIntegerEncoder(), bigDecimalEncoder(), inet4AddressEncoder(), inet6AddressEncoder(),
-            entityRelationshipEncoder()
+            integerEncoder(), longEncoder(), stringEncoder(), uriEncoder(), bigIntegerEncoder(),
+            bigDecimalEncoder(), inet4AddressEncoder(), inet6AddressEncoder(),
+            ipv4Encoder(), ipv6Encoder(), entityRelationshipEncoder(),
+            unsignedIntegerEncoder(), unsignedLongEncoder()
     );
 
     public static final TypeRegistry<String> LEXI_REV_TYPES = new TypeRegistry<String>(
             booleanRevEncoder(), byteRevEncoder(), dateRevEncoder(), doubleRevEncoder(), floatRevEncoder(),
-            integerRevEncoder(), ipv4RevEncoder(), longRevEncoder(), stringRevEncoder(), uriRevEncoder(),
-            bigIntegerRevEncoder(), bigDecimalRevEncoder(), inet4AddressRevEncoder(), inet6AddressRevEncoder(),
-            entityRelationshipRevEncoder()
+            integerRevEncoder(), longRevEncoder(), stringRevEncoder(), uriRevEncoder(), bigIntegerRevEncoder(),
+            bigDecimalRevEncoder(), inet4AddressRevEncoder(), inet6AddressRevEncoder(),
+            ipv4RevEncoder(), ipv6RevEncoder(), entityRelationshipRevEncoder(),
+            unsignedIntegerRevEncoder(), unsignedLongRevEncoder()
     );
 
     private static <T> TypeEncoder<T, String> reverseEncoder(TypeEncoder<T, String> sourceEncoder) {
@@ -143,22 +147,6 @@ public class LexiTypeEncoders {
         return new BigDecimalReverseEncoder();
     }
 
-    public static TypeEncoder<IPv4, String> ipv4Encoder() {
-        return new IPv4Encoder();
-    }
-
-    public static TypeEncoder<IPv4, String> ipv4RevEncoder() {
-        return new IPv4ReverseEncoder();
-    }
-
-    public static TypeEncoder<IPv6, String> ipv6Encoder() {
-        return new IPv6Encoder();
-    }
-
-    public static TypeEncoder<IPv6, String> ipv6RevEncoder() {
-        return new IPv6ReverseEncoder();
-    }
-
     public static TypeEncoder<Inet4Address, String> inet4AddressEncoder() {
         return new Inet4AddressEncoder();
     }
@@ -175,11 +163,43 @@ public class LexiTypeEncoders {
         return new Inet6AddressReverseEncoder();
     }
 
+    public static TypeEncoder<IPv4, String> ipv4Encoder() {
+        return new IPv4Encoder();
+    }
+
+    public static TypeEncoder<IPv4, String> ipv4RevEncoder() {
+        return new IPv4ReverseEncoder();
+    }
+
+    public static TypeEncoder<IPv6, String> ipv6Encoder() {
+        return new IPv6Encoder();
+    }
+
+    public static TypeEncoder<IPv6, String> ipv6RevEncoder() {
+        return new IPv6ReverseEncoder();
+    }
+
     public static TypeEncoder<EntityRelationship, String> entityRelationshipEncoder() {
         return SimpleTypeEncoders.entityRelationshipEncoder();
     }
 
     public static TypeEncoder<EntityRelationship, String> entityRelationshipRevEncoder() {
         return reverseEncoder(SimpleTypeEncoders.entityRelationshipEncoder());
+    }
+
+    public static TypeEncoder<UnsignedInteger, String> unsignedIntegerEncoder() {
+        return new UnsignedIntegerEncoder();
+    }
+
+    public static TypeEncoder<UnsignedInteger, String> unsignedIntegerRevEncoder() {
+        return new UnsignedIntegerReverseEncoder();
+    }
+
+    public static TypeEncoder<UnsignedLong, String> unsignedLongEncoder() {
+        return new UnsignedLongEncoder();
+    }
+
+    public static TypeEncoder<UnsignedLong, String> unsignedLongRevEncoder() {
+        return new UnsignedLongReverseEncoder();
     }
 }
