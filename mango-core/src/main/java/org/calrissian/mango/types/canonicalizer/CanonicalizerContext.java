@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 The Calrissian Authors
+ * Copyright (C) 2014 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,10 +49,10 @@ public class CanonicalizerContext {
     @SuppressWarnings("unchecked")
     private void loadCanonicalDefs() throws IOException {
 
-        validatorClasses = new HashMap<String, Class<? extends Validator>>();
-        types = new HashMap<String, String>();
-        matchers = new HashMap<String, String>();
-        validators = new HashMap<String, Validator>();
+        validatorClasses = new HashMap<>();
+        types = new HashMap<>();
+        matchers = new HashMap<>();
+        validators = new HashMap<>();
 
         InputStream is = getClass().getClassLoader().getResourceAsStream("validators.properties");
         Properties props = new Properties();
@@ -124,7 +124,7 @@ public class CanonicalizerContext {
 
     public List<CanonicalDef> getCanonicalDefs() {
 
-        List<CanonicalDef> canonicalDefs = new ArrayList<CanonicalDef>();
+        List<CanonicalDef> canonicalDefs = new ArrayList<>();
         for (Map.Entry<String, String> entry : types.entrySet()) {
 
             String type = entry.getKey();

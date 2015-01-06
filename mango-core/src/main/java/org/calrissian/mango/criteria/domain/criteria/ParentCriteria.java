@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 The Calrissian Authors
+ * Copyright (C) 2014 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ public abstract class ParentCriteria implements Criteria {
     protected ParentCriteria parent;
 
     public ParentCriteria() {
-        nodes = new ArrayList<Criteria>();
+        nodes = new ArrayList<>();
     }
 
     public ParentCriteria(ParentCriteria parent, List<Criteria> nodes) {
@@ -39,7 +39,7 @@ public abstract class ParentCriteria implements Criteria {
 
     public ParentCriteria(ParentCriteria parent) {
         this.parent = parent;
-        this.nodes = new ArrayList<Criteria>();
+        this.nodes = new ArrayList<>();
     }
 
 

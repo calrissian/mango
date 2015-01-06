@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 The Calrissian Authors
+ * Copyright (C) 2014 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,8 +41,8 @@ public class ContextTransformServiceTest {
     @Before
     public void setUp() {
 
-        Collection<ContextTransformer> transformers = new ArrayList<ContextTransformer>();
-        Collection<ContextTransformInterceptor> interceptors = new ArrayList<ContextTransformInterceptor>();
+        Collection<ContextTransformer> transformers = new ArrayList<>();
+        Collection<ContextTransformInterceptor> interceptors = new ArrayList<>();
 
         transformers.add(new MockContextTransformer());
         interceptors.add(new MockContextTransformInterceptor());
@@ -81,10 +81,8 @@ public class ContextTransformServiceTest {
                 while ((n = reader.read(buffer)) != -1) {
                     writer.write(buffer, 0, n);
                 }
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             } catch (IOException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                throw new RuntimeException(e);
             } finally {
                 is.close();
             }

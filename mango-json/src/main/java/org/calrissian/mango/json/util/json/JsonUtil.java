@@ -22,7 +22,7 @@ public class JsonUtil {
 
     private JsonUtil() {}
 
-    public static final JsonNode objectToNode(Object obj) {
+    static JsonNode objectToNode(Object obj) {
 
         if(obj instanceof Boolean)
             return BooleanNode.valueOf((Boolean) obj);
@@ -30,14 +30,16 @@ public class JsonUtil {
             return new IntNode((Integer)obj);
         else if(obj instanceof Long)
             return new LongNode((Long)obj);
-        else if(obj instanceof Double || obj instanceof Float)
+        else if(obj instanceof Double)
             return new DoubleNode((Double)obj);
+        else if (obj instanceof Float)
+            return new DoubleNode(((Float) obj).doubleValue());
         else if(obj instanceof String)
             return new TextNode((String)obj);
         else return null;
     }
 
-    public static Object nodeToObject(JsonNode jsonNode) {
+    static Object nodeToObject(JsonNode jsonNode) {
         if(jsonNode.isBoolean())
             return jsonNode.asBoolean();
         else if(jsonNode.isDouble())

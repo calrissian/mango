@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 The Calrissian Authors
+ * Copyright (C) 2014 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -98,7 +98,7 @@ public class CloseableIteratorsTest {
         try {
             iterator.next();
             fail();
-        } catch (NoSuchElementException ne) {
+        } catch (NoSuchElementException ignored) {
         }
         iterator.close();
 
@@ -145,7 +145,7 @@ public class CloseableIteratorsTest {
         try {
             closeableIterator.next();
             fail();
-        } catch (RuntimeException re) {
+        } catch (RuntimeException ignored) {
         }
         assertTrue(iterator.isClosed());
 
@@ -154,7 +154,7 @@ public class CloseableIteratorsTest {
         closeableIterator.close();
         try {
             closeableIterator.next();
-        } catch (NoSuchElementException re) {
+        } catch (NoSuchElementException ignored) {
         }
         assertTrue(iterator.isClosed());
 
@@ -163,7 +163,7 @@ public class CloseableIteratorsTest {
         try {
             closeableIterator.remove();
             fail();
-        } catch (RuntimeException re) {
+        } catch (RuntimeException ignored) {
         }
         assertTrue(iterator.isClosed());
 
@@ -172,13 +172,13 @@ public class CloseableIteratorsTest {
         closeableIterator.close();
         try {
             closeableIterator.remove();
-        } catch (IllegalStateException re) {
+        } catch (IllegalStateException ignored) {
         }
         assertTrue(iterator.isClosed());
     }
 
     private MockIterator<Integer> testIterator() {
-        return new MockIterator<Integer>(asList(1, 2, 3, 4, 5).iterator());
+        return new MockIterator<>(asList(1, 2, 3, 4, 5).iterator());
     }
 
     private MockIterator<Integer> testExceptionThrowingIterator() {

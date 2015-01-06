@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 The Calrissian Authors
+ * Copyright (C) 2014 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -72,7 +72,7 @@ public class NodeUtils {
 
     private static Criteria criteriaFromNode(Node node, Comparator rangeComparator, ParentCriteria parent) {
 
-        Criteria curNode = null;
+        Criteria curNode;
 
         if (node instanceof AndNode)
             curNode = new AndCriteria(parent);
@@ -113,7 +113,7 @@ public class NodeUtils {
             return new GreaterThanCriteria(leaf.getKey(), leaf.getValue(), rangeComparator, parent);
         else if (node instanceof GreaterThanEqualsLeaf)
             return new GreaterThanEqualsCriteria(leaf.getKey(), leaf.getValue(), rangeComparator, parent);
-        else if (node instanceof RangeCriteria) {
+        else if (node instanceof RangeLeaf) {
             RangeLeaf rangeLeaf = (RangeLeaf) leaf;
             return new RangeCriteria(leaf.getKey(), leaf.getValue(), rangeLeaf.getEnd(), rangeComparator, parent);
         } else

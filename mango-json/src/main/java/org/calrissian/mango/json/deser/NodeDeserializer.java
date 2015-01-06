@@ -50,64 +50,69 @@ public class NodeDeserializer extends JsonDeserializer<Node> {
     }
 
     protected Node parseField(String fieldKey, JsonNode fieldJson) throws IOException {
-        if ("and".equals(fieldKey)) {
-            AndNode andNode = new AndNode();
-            JsonNode children = fieldJson.get("children");
-            if (children instanceof ArrayNode) {
-                ArrayNode childrenArray = (ArrayNode) children;
-                Iterator<JsonNode> elements = childrenArray.elements();
-                while (elements.hasNext()) {
-                    JsonNode entry = elements.next();
-                    Iterator<String> fieldNames = entry.fieldNames();
-                    while (fieldNames.hasNext()) {
-                        String key = fieldNames.next();
-                        andNode.addChild(parseField(key, entry.get(key)));
+        switch (fieldKey) {
+            case "and": {
+                AndNode andNode = new AndNode();
+                JsonNode children = fieldJson.get("children");
+                if (children instanceof ArrayNode) {
+                    ArrayNode childrenArray = (ArrayNode) children;
+                    Iterator<JsonNode> elements = childrenArray.elements();
+                    while (elements.hasNext()) {
+                        JsonNode entry = elements.next();
+                        Iterator<String> fieldNames = entry.fieldNames();
+                        while (fieldNames.hasNext()) {
+                            String key = fieldNames.next();
+                            andNode.addChild(parseField(key, entry.get(key)));
+                        }
                     }
                 }
+                return andNode;
             }
-            return andNode;
-        } else if ("or".equals(fieldKey)) {
-            OrNode orNode = new OrNode();
-            JsonNode children = fieldJson.get("children");
-            if (children instanceof ArrayNode) {
-                ArrayNode childrenArray = (ArrayNode) children;
-                Iterator<JsonNode> elements = childrenArray.elements();
-                while (elements.hasNext()) {
-                    JsonNode entry = elements.next();
-                    Iterator<String> fieldNames = entry.fieldNames();
-                    while (fieldNames.hasNext()) {
-                        String key = fieldNames.next();
-                        orNode.addChild(parseField(key, entry.get(key)));
+            case "or": {
+                OrNode orNode = new OrNode();
+                JsonNode children = fieldJson.get("children");
+                if (children instanceof ArrayNode) {
+                    ArrayNode childrenArray = (ArrayNode) children;
+                    Iterator<JsonNode> elements = childrenArray.elements();
+                    while (elements.hasNext()) {
+                        JsonNode entry = elements.next();
+                        Iterator<String> fieldNames = entry.fieldNames();
+                        while (fieldNames.hasNext()) {
+                            String key = fieldNames.next();
+                            orNode.addChild(parseField(key, entry.get(key)));
+                        }
                     }
                 }
+                return orNode;
             }
-            return orNode;
-        } else if ("eq".equals(fieldKey)) {
-            String key = fieldJson.get("key").asText();
-            String type = fieldJson.get("type").asText();
-            String val_str = fieldJson.get("value").asText();
+            case "eq": {
+                String key = fieldJson.get("key").asText();
+                String type = fieldJson.get("type").asText();
+                String val_str = fieldJson.get("value").asText();
 
-            Object obj = this.typeRegistry.decode(type, val_str);
-            return new EqualsLeaf(key, obj, null);
-        } else if ("neq".equals(fieldKey)) {
-            String key = fieldJson.get("key").asText();
-            String type = fieldJson.get("type").asText();
-            String val_str = fieldJson.get("value").asText();
+                Object obj = this.typeRegistry.decode(type, val_str);
+                return new EqualsLeaf(key, obj, null);
+            }
+            case "neq": {
+                String key = fieldJson.get("key").asText();
+                String type = fieldJson.get("type").asText();
+                String val_str = fieldJson.get("value").asText();
 
-            Object obj = this.typeRegistry.decode(type, val_str);
-            return new NotEqualsLeaf(key, obj, null);
-        } else if ("range".equals(fieldKey)) {
-            String key = fieldJson.get("key").asText();
-            String type = fieldJson.get("type").asText();
-            String start_str = fieldJson.get("start").asText();
-            String end_str = fieldJson.get("end").asText();
+                Object obj = this.typeRegistry.decode(type, val_str);
+                return new NotEqualsLeaf(key, obj, null);
+            }
+            case "range": {
+                String key = fieldJson.get("key").asText();
+                String type = fieldJson.get("type").asText();
+                String start_str = fieldJson.get("start").asText();
+                String end_str = fieldJson.get("end").asText();
 
-            Object start = this.typeRegistry.decode(type, start_str);
-            Object end = this.typeRegistry.decode(type, end_str);
-            return new RangeLeaf(key, start, end, null);
-        } else {
-            throw new IllegalArgumentException("Unsupported field: " + fieldKey);
+                Object start = this.typeRegistry.decode(type, start_str);
+                Object end = this.typeRegistry.decode(type, end_str);
+                return new RangeLeaf(key, start, end, null);
+            }
+            default:
+                throw new IllegalArgumentException("Unsupported field: " + fieldKey);
         }
-
     }
 }

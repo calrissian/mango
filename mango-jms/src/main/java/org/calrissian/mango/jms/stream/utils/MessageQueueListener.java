@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 The Calrissian Authors
+ * Copyright (C) 2014 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ import java.util.concurrent.TimeUnit;
 @Deprecated
 public class MessageQueueListener implements MessageListener {
 
-    private BlockingQueue<Message> queueMessages = new LinkedBlockingQueue<Message>();
+    private BlockingQueue<Message> queueMessages = new LinkedBlockingQueue<>();
     private SimpleMessageListenerContainer messageListenerContainer;
     private AbstractJmsFileTransferSupport support;
 

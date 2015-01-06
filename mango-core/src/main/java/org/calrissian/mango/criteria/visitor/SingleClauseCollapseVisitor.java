@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 The Calrissian Authors
+ * Copyright (C) 2014 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,8 +22,6 @@ import org.calrissian.mango.criteria.domain.ParentNode;
  * If the parent has only one child, the child can be rolled up into the parent's parent. (if it exists)
  */
 public class SingleClauseCollapseVisitor implements NodeVisitor {
-
-    private boolean wasOptimized = false;
 
     @Override
     public void begin(ParentNode node) {

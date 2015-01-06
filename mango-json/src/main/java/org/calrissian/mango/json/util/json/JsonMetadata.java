@@ -44,7 +44,7 @@ class JsonMetadata {
      * @param level
      * @param index
      */
-    static final void setArrayIndex(Map<String,Object> meta, int level, int index) {
+    static void setArrayIndex(Map<String,Object> meta, int level, int index) {
         meta.put(level + ARRAY_IDX_SUFFIX, index);
     }
 
@@ -53,7 +53,7 @@ class JsonMetadata {
      * arbitrarily nested set of json.
      * @param meta
      */
-    static final void setFlattenedJsonProp(Map<String,Object> meta) {
+    static void setFlattenedJsonProp(Map<String,Object> meta) {
         meta.put(JSON_PROP, true);
     }
 
@@ -62,7 +62,7 @@ class JsonMetadata {
      * arbitrarily nested set of json.
      * @param meta
      */
-    static final boolean isFlattenedJson(Map<String,Object> meta) {
+    static boolean isFlattenedJson(Map<String,Object> meta) {
         return meta.containsKey(JSON_PROP) && meta.get(JSON_PROP).equals(true);
     }
 
@@ -73,7 +73,7 @@ class JsonMetadata {
      * @param level
      * @return
      */
-    static final Integer getArrayIndex(Map<String,Object> meta, int level) {
+    static Integer getArrayIndex(Map<String,Object> meta, int level) {
         return (Integer)meta.get(level + ARRAY_IDX_SUFFIX);
     }
 
@@ -84,7 +84,7 @@ class JsonMetadata {
      * @param level
      * @return
      */
-    static final boolean hasArrayIndex(Map<String,Object> meta, int level) {
+    static boolean hasArrayIndex(Map<String,Object> meta, int level) {
         return meta.containsKey(level + ARRAY_IDX_SUFFIX);
     }
 
@@ -96,9 +96,9 @@ class JsonMetadata {
      * @param meta
      * @return
      */
-    static final Map<Integer, Integer> levelsToIndices(Map<String,Object> meta) {
+    static Map<Integer, Integer> levelsToIndices(Map<String,Object> meta) {
         Set<Map.Entry<String, Object>> entries = meta.entrySet();
-        Map<Integer, Integer> levelToIdx = new HashMap<Integer, Integer>();
+        Map<Integer, Integer> levelToIdx = new HashMap<>();
         for(Map.Entry<String,Object> entry : entries)
             if(entry.getKey().endsWith(ARRAY_IDX_SUFFIX))
                 levelToIdx.put(parseInt(Splitter.on('.').splitToList(entry.getKey()).get(0)), (Integer)entry.getValue());

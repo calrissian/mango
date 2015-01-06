@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 The Calrissian Authors
+ * Copyright (C) 2014 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@ package org.calrissian.mango.types.encoders.lexi;
 
 
 import com.google.common.primitives.UnsignedInteger;
-import org.calrissian.mango.types.encoders.AbstractIntegerEncoder;
 import org.calrissian.mango.types.encoders.AbstractUnsignedIntegerEncoder;
 
 import static com.google.common.base.Preconditions.checkArgument;

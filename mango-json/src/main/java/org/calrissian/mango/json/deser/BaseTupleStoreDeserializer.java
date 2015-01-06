@@ -16,7 +16,6 @@
 package org.calrissian.mango.json.deser;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
@@ -35,7 +34,7 @@ public abstract class BaseTupleStoreDeserializer<T extends TupleStore> extends J
 
     private static final TypeReference TR = new TypeReference<Map<String, Collection<Tuple>>>(){};
     @Override
-    public T deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
+    public T deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         JsonNode root = jsonParser.getCodec().readTree(jsonParser);
         T tupleStore = deserialize(root);
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 The Calrissian Authors
+ * Copyright (C) 2014 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -83,7 +83,7 @@ public class Iterators2 {
                     return endOfData();
 
                 Object key = groupingFunction.apply(peekingIterator.peek());
-                List<T> group = new ArrayList<T>();
+                List<T> group = new ArrayList<>();
 
                 do {
                     group.add(peekingIterator.next());

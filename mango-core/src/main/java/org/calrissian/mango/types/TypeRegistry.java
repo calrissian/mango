@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 The Calrissian Authors
+ * Copyright (C) 2014 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,8 +41,8 @@ import static java.util.Collections.unmodifiableCollection;
  */
 public class TypeRegistry<U> implements Serializable {
 
-    private final Map<String, TypeEncoder<?, U>> aliasMapping = new LinkedHashMap<String, TypeEncoder<?, U>>();
-    private final Map<Class<?>, TypeEncoder<?, U>> classMapping = new LinkedHashMap<Class<?>, TypeEncoder<?, U>>();
+    private final Map<String, TypeEncoder<?, U>> aliasMapping = new LinkedHashMap<>();
+    private final Map<Class<?>, TypeEncoder<?, U>> classMapping = new LinkedHashMap<>();
 
     public TypeRegistry(TypeEncoder<?, U>... normalizers) {
         this(asList(normalizers));

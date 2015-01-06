@@ -44,9 +44,7 @@ public class Inet6AddressEncoder extends AbstractInet6AddressEncoder<String> {
             //Use this getByAddress function to prevent the InetAddress.getByAddress function from turning the value
             //into an Inet4Address automatically.
             return getByAddress(null, decodeHex(value.toCharArray()), -1);
-        } catch (UnknownHostException e) {
-            throw new TypeDecodingException(e);
-        } catch (DecoderException e) {
+        } catch (UnknownHostException | DecoderException e) {
             throw new TypeDecodingException(e);
         }
     }

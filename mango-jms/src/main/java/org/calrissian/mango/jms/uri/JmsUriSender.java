@@ -45,7 +45,7 @@ public class JmsUriSender extends JmsFileSenderListener
     @Override
     public void onMessage(Message request) {
 
-        Request req = null;
+        Request req;
         try {
             req = DomainMessageUtils.fromRequestMessage(request);
             URI uri = new URI(req.getDownloadUri());
@@ -69,7 +69,7 @@ public class JmsUriSender extends JmsFileSenderListener
             }
 
         } catch (Exception e1) {
-            e1.printStackTrace();
+            throw new RuntimeException(e1);
         }
 
     }
@@ -89,7 +89,7 @@ public class JmsUriSender extends JmsFileSenderListener
             try {
                 sendStream(req, jmsReplyTo);
             } catch (Exception e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         }
 

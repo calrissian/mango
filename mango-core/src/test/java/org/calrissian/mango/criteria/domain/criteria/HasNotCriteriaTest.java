@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 The Calrissian Authors
+ * Copyright (C) 2014 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +15,9 @@
  */
 package org.calrissian.mango.criteria.domain.criteria;
 
+import org.calrissian.mango.domain.Tuple;
 import org.calrissian.mango.domain.entity.BaseEntity;
 import org.calrissian.mango.domain.entity.Entity;
-import org.calrissian.mango.domain.Tuple;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;

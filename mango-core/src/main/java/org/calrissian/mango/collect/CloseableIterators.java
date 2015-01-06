@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 The Calrissian Authors
+ * Copyright (C) 2014 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -206,6 +206,7 @@ public class CloseableIterators {
      * iterator.  A call to close on the returned closeable iterator will quietly close all of
      * the closeable iterators in {@code inputs} which have not been exhausted.
      */
+    @SafeVarargs
     public static <T> CloseableIterator<T> chain(CloseableIterator<? extends T>... iterators) {
         return chain(Iterators.forArray(iterators));
     }

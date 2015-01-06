@@ -49,7 +49,7 @@ import static org.calrissian.mango.json.util.json.JsonUtil.nodeToObject;
 public class JsonTupleStore {
 
     private static final String JSON_DELIM = "$";
-    private static final Pair<Integer,Integer> DEFAULT_PAIR = new Pair<Integer, Integer>(-1, -1);
+    private static final Pair<Integer,Integer> DEFAULT_PAIR = new Pair<>(-1, -1);
     private static final Splitter SPLITTER = Splitter.on(JSON_DELIM);
 
     private JsonTupleStore() {}
@@ -62,8 +62,8 @@ public class JsonTupleStore {
      * @return
      * @throws IOException
      */
-    public static final Collection<Tuple> fromJson(ObjectNode object) throws IOException {
-        Collection<Tuple> tuples = new HashSet<Tuple>();
+    public static Collection<Tuple> fromJson(ObjectNode object) throws IOException {
+        Collection<Tuple> tuples = new HashSet<>();
         convertJsonObject(tuples, object, "", 0, new HashMap<String, Object>());
 
         return tuples;
@@ -79,7 +79,7 @@ public class JsonTupleStore {
      * @return
      * @throws IOException
      */
-    public static final Collection<Tuple> fromJson(String json, ObjectMapper objectMapper) throws IOException {
+    public static Collection<Tuple> fromJson(String json, ObjectMapper objectMapper) throws IOException {
         checkNotNull(json);
         JsonNode object = objectMapper.readTree(json);
         if(object.isObject())
@@ -96,7 +96,7 @@ public class JsonTupleStore {
      * @param objectMapper
      * @return
      */
-    public static final String toJsonString(Collection<Tuple> tupleCollection, ObjectMapper objectMapper) {
+    public static String toJsonString(Collection<Tuple> tupleCollection, ObjectMapper objectMapper) {
         return toJson(tupleCollection, objectMapper).toString();
     }
 
@@ -108,12 +108,12 @@ public class JsonTupleStore {
      * @param tupleCollection
      * @return
      */
-    public static final ObjectNode toJson(Collection<Tuple> tupleCollection, ObjectMapper objectMapper) {
+    public static ObjectNode toJson(Collection<Tuple> tupleCollection, ObjectMapper objectMapper) {
 
         checkNotNull(tupleCollection);
         checkNotNull(objectMapper);
 
-        List<Tuple> tuples = new ArrayList<Tuple>(tupleCollection);
+        List<Tuple> tuples = new ArrayList<>(tupleCollection);
 
         sort(tuples, new FlattenedLevelsComparator());
 
@@ -154,7 +154,7 @@ public class JsonTupleStore {
      */
     public static class FlattenedLevelsComparator implements Comparator<Tuple> {
 
-        private Map<Tuple, Integer> levelsCache = new HashMap<Tuple, Integer>();
+        private Map<Tuple, Integer> levelsCache = new HashMap<>();
 
         /**
          * Calculating the occurrence of a string within another can be costly so .'s and ['s will be
@@ -185,10 +185,10 @@ public class JsonTupleStore {
             for(int i = 0; i < Math.max(levels1, levels2); i++) {
 
                 Pair<Integer, Integer> pair1 = hasArrayIndex(tuple.getMetadata(), i)?
-                        new Pair<Integer, Integer>(i, getArrayIndex(tuple.getMetadata(), i)) : DEFAULT_PAIR;
+                        new Pair<>(i, getArrayIndex(tuple.getMetadata(), i)) : DEFAULT_PAIR;
 
                 Pair<Integer, Integer> pair2 = hasArrayIndex(tuple2.getMetadata(), i) ?
-                        new Pair<Integer, Integer>(i, getArrayIndex(tuple2.getMetadata(), i)) : DEFAULT_PAIR;
+                        new Pair<>(i, getArrayIndex(tuple2.getMetadata(), i)) : DEFAULT_PAIR;
 
                 comparisonChain = comparisonChain.compare(pair1.getOne(), pair2.getOne());
                 comparisonChain = comparisonChain.compare(pair1.getTwo(), pair2.getTwo());
@@ -201,9 +201,9 @@ public class JsonTupleStore {
 
             return comparisonChain.result();
         }
-    };
+    }
 
-    private static final void convertJsonObject(Collection<Tuple> tuples, JsonNode object,  String intialKey, int nestedLevel, Map<String, Object> metadata) {
+    private static void convertJsonObject(Collection<Tuple> tuples, JsonNode object,  String intialKey, int nestedLevel, Map<String, Object> metadata) {
 
         Iterator<Map.Entry<String,JsonNode>> fields = object.fields();
         while(fields.hasNext()) {
@@ -226,11 +226,9 @@ public class JsonTupleStore {
         }
     }
 
+    private static void convertJsonArray(Collection<Tuple> tuples, JsonNode jsonArray, String intialKey, int nestedLevel, Map<String, Object> metadata) {
 
-
-    private static final void convertJsonArray(Collection<Tuple> tuples, JsonNode jsonArray, String intialKey, int nestedLevel, Map<String, Object> metadata) {
-
-        Map<String,Object> map = new HashMap<String, Object>(metadata);
+        Map<String,Object> map = new HashMap<>(metadata);
         for(int i = 0; i < jsonArray.size(); i++) {
 
             JsonNode obj = jsonArray.get(i);

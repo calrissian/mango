@@ -37,7 +37,7 @@ public class JsonContextTransformTest {
     @Before
     public void setUp() {
 
-        Collection<ContextTransformer> transformers = new ArrayList<ContextTransformer>();
+        Collection<ContextTransformer> transformers = new ArrayList<>();
         transformers.add(new JsonContextTransform(new ObjectMapper()));
 
         contextTransformService = new ContextTransformService(transformers, null);
@@ -47,7 +47,7 @@ public class JsonContextTransformTest {
     @Test
     public void testJsonContextTransform() throws Exception {
 
-        ArrayList<String> items = new ArrayList<String>();
+        ArrayList<String> items = new ArrayList<>();
         items.add("item1");
         items.add("item2");
 

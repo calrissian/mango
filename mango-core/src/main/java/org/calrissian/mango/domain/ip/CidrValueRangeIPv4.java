@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 The Calrissian Authors
+ * Copyright (C) 2014 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,12 +18,14 @@ package org.calrissian.mango.domain.ip;
 import com.google.common.collect.Range;
 import org.calrissian.mango.domain.ValueRange;
 
+import static org.calrissian.mango.domain.ip.IPv4.cidrRange;
+
 @Deprecated
 public class CidrValueRangeIPv4 extends ValueRange<IPv4> {
 
     public CidrValueRangeIPv4(String cidrString) {
 
-        Range<IPv4> range = IPv4.cidrRange(cidrString);
+        Range<IPv4> range = cidrRange(cidrString);
 
         setStart(range.lowerEndpoint());
         setStop(range.upperEndpoint());

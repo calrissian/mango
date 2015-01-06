@@ -43,9 +43,7 @@ public class Inet4AddressReverseEncoder extends AbstractInet4AddressEncoder<Stri
         checkArgument(value.length() == 8, "The value is not a valid encoding");
         try {
             return (Inet4Address) getByAddress(reverse(decodeHex(value.toCharArray())));
-        } catch (UnknownHostException e) {
-            throw new TypeDecodingException(e);
-        } catch (DecoderException e) {
+        } catch (UnknownHostException | DecoderException e) {
             throw new TypeDecodingException(e);
         }
     }

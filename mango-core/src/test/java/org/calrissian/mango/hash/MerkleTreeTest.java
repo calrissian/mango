@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 The Calrissian Authors
+ * Copyright (C) 2014 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,9 +21,9 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 import java.util.List;
 
+import static java.util.Arrays.asList;
 import static org.junit.Assert.*;
 
 public class MerkleTreeTest {
@@ -41,9 +41,9 @@ public class MerkleTreeTest {
     public void testTreeBuilds() throws NoSuchAlgorithmException, IOException, ClassNotFoundException {
 
 
-        List<MockLeaf> leaves = Arrays.asList(new MockLeaf[]{leaf1, leaf2, leaf8, leaf7, leaf4});
+        List<MockLeaf> leaves = asList(leaf1, leaf2, leaf8, leaf7, leaf4);
 
-        MerkleTree<MockLeaf> tree = new MerkleTree<MockLeaf>(leaves, 2);
+        MerkleTree<MockLeaf> tree = new MerkleTree<>(leaves, 2);
 
         assertEquals("17a19db32d969668fb08f9a5491eb4fe", tree.getTopHash().getHash());
         assertEquals(2, tree.getTopHash().getChildren().size());
@@ -52,43 +52,43 @@ public class MerkleTreeTest {
     @Test
     public void testDiff_differentDimensionsFails() {
 
-        List<MockLeaf> leaves = Arrays.asList(new MockLeaf[]{leaf1, leaf2});
+        List<MockLeaf> leaves = asList(leaf1, leaf2);
 
-        MerkleTree<MockLeaf> tree = new MerkleTree<MockLeaf>(leaves, 2);
-        MerkleTree<MockLeaf> tree2 = new MerkleTree<MockLeaf>(leaves, 4);
+        MerkleTree<MockLeaf> tree = new MerkleTree<>(leaves, 2);
+        MerkleTree<MockLeaf> tree2 = new MerkleTree<>(leaves, 4);
 
         try {
             tree.diff(tree2);
             fail("Should have thrown exception");
-        } catch (IllegalStateException e) {
+        } catch (IllegalStateException ignored) {
         }
     }
 
     @Test
     public void testDiff_differentSizesFails() {
 
-        List<MockLeaf> leaves = Arrays.asList(new MockLeaf[]{leaf1, leaf2});
-        List<MockLeaf> leaves2 = Arrays.asList(new MockLeaf[]{leaf1, leaf2, leaf3});
+        List<MockLeaf> leaves = asList(leaf1, leaf2);
+        List<MockLeaf> leaves2 = asList(leaf1, leaf2, leaf3);
 
-        MerkleTree<MockLeaf> tree = new MerkleTree<MockLeaf>(leaves, 2);
-        MerkleTree<MockLeaf> tree2 = new MerkleTree<MockLeaf>(leaves2, 2);
+        MerkleTree<MockLeaf> tree = new MerkleTree<>(leaves, 2);
+        MerkleTree<MockLeaf> tree2 = new MerkleTree<>(leaves2, 2);
 
         try {
             tree.diff(tree2);
             fail("Should have thrown exception");
-        } catch (IllegalStateException e) {
+        } catch (IllegalStateException ignored) {
         }
     }
 
     @Test
     public void testEquals_false() {
 
-        List<MockLeaf> leaves = Arrays.asList(new MockLeaf[]{leaf1, leaf2});
-        List<MockLeaf> leaves2 = Arrays.asList(new MockLeaf[]{leaf1, leaf3});
+        List<MockLeaf> leaves = asList(leaf1, leaf2);
+        List<MockLeaf> leaves2 = asList(leaf1, leaf3);
 
 
-        MerkleTree<MockLeaf> tree = new MerkleTree<MockLeaf>(leaves, 2);
-        MerkleTree<MockLeaf> tree2 = new MerkleTree<MockLeaf>(leaves2, 2);
+        MerkleTree<MockLeaf> tree = new MerkleTree<>(leaves, 2);
+        MerkleTree<MockLeaf> tree2 = new MerkleTree<>(leaves2, 2);
 
         assertFalse(tree.equals(tree2));
         assertFalse(tree2.equals(tree));
@@ -97,11 +97,11 @@ public class MerkleTreeTest {
     @Test
     public void testEquals_true() {
 
-        List<MockLeaf> leaves = Arrays.asList(new MockLeaf[]{leaf1, leaf2});
-        List<MockLeaf> leaves2 = Arrays.asList(new MockLeaf[]{leaf1, leaf2});
+        List<MockLeaf> leaves = asList(leaf1, leaf2);
+        List<MockLeaf> leaves2 = asList(leaf1, leaf2);
 
-        MerkleTree<MockLeaf> tree = new MerkleTree<MockLeaf>(leaves, 2);
-        MerkleTree<MockLeaf> tree2 = new MerkleTree<MockLeaf>(leaves2, 2);
+        MerkleTree<MockLeaf> tree = new MerkleTree<>(leaves, 2);
+        MerkleTree<MockLeaf> tree2 = new MerkleTree<>(leaves2, 2);
 
         assertTrue(tree.equals(tree2));
         assertTrue(tree2.equals(tree));
@@ -110,11 +110,11 @@ public class MerkleTreeTest {
     @Test
     public void testDiff() {
 
-        List<MockLeaf> leaves = Arrays.asList(new MockLeaf[]{leaf1, leaf2});
-        List<MockLeaf> leaves2 = Arrays.asList(new MockLeaf[]{leaf1, leaf3});
+        List<MockLeaf> leaves = asList(leaf1, leaf2);
+        List<MockLeaf> leaves2 = asList(leaf1, leaf3);
 
-        MerkleTree<MockLeaf> tree = new MerkleTree<MockLeaf>(leaves, 2);
-        MerkleTree<MockLeaf> tree2 = new MerkleTree<MockLeaf>(leaves2, 2);
+        MerkleTree<MockLeaf> tree = new MerkleTree<>(leaves, 2);
+        MerkleTree<MockLeaf> tree2 = new MerkleTree<>(leaves2, 2);
 
         List<MockLeaf> diffs = tree.diff(tree2);
 

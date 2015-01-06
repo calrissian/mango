@@ -39,7 +39,7 @@ public class SimpleTypeEncoders {
     private SimpleTypeEncoders() {/* private constructor */}
 
     @SuppressWarnings("unchecked")
-    public static final TypeRegistry<String> SIMPLE_TYPES = new TypeRegistry<String>(
+    public static final TypeRegistry<String> SIMPLE_TYPES = new TypeRegistry<>(
             booleanEncoder(), byteEncoder(), dateEncoder(), doubleEncoder(), floatEncoder(),
             integerEncoder(), longEncoder(), stringEncoder(), uriEncoder(), bigIntegerEncoder(),
             bigDecimalEncoder(), inet4AddressEncoder(), inet6AddressEncoder(),

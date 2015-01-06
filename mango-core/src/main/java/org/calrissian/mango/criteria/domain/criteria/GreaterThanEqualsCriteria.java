@@ -36,8 +36,9 @@ public class GreaterThanEqualsCriteria extends ComparableKeyValueLeafCriteria {
     public boolean apply(TupleStore obj) {
         Collection<Tuple> tuples = obj.getAll(key);
         if (tuples != null) {
-            for (Tuple tuple : tuples)
+            for (Tuple tuple : tuples) {
                 return comparator.compare(tuple.getValue(), value) >= 0;
+            }
         }
 
         return false;

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 The Calrissian Authors
+ * Copyright (C) 2014 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,7 +47,7 @@ public class CloseableIterablesTest {
         try {
             wrapped.iterator();
             fail();
-        } catch (IllegalStateException ise) {
+        } catch (IllegalStateException ignored) {
         }
     }
 
@@ -75,7 +75,7 @@ public class CloseableIterablesTest {
         try {
             multTen.iterator();
             fail();
-        } catch (IllegalStateException ise) {
+        } catch (IllegalStateException ignored) {
         }
 
     }
@@ -94,7 +94,7 @@ public class CloseableIterablesTest {
         try {
             firstThree.iterator();
             fail();
-        } catch (IllegalStateException ise) {
+        } catch (IllegalStateException ignored) {
         }
     }
 
@@ -116,7 +116,7 @@ public class CloseableIterablesTest {
         try {
             odd.iterator();
             fail();
-        } catch (IllegalStateException ise) {
+        } catch (IllegalStateException ignored) {
         }
 
     }
@@ -135,7 +135,7 @@ public class CloseableIterablesTest {
         try {
             distinct.iterator();
             fail();
-        } catch (IllegalStateException ise) {
+        } catch (IllegalStateException ignored) {
         }
     }
 
@@ -161,13 +161,13 @@ public class CloseableIterablesTest {
         try {
             iterator.next();
             fail();
-        } catch (RuntimeException re) {
+        } catch (RuntimeException ignored) {
         }
         assertTrue(iterable.isClosed());
     }
 
     private MockIterable<Integer> testIterable() {
-        return new MockIterable<Integer>(asList(1, 2, 3, 4, 5));
+        return new MockIterable<>(asList(1, 2, 3, 4, 5));
     }
 
     private MockIterable<Integer> testExceptionThrowingIterable() {

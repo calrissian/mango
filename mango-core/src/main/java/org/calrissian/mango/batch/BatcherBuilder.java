@@ -111,13 +111,13 @@ public final class BatcherBuilder {
         BlockingQueue<T> backingQueue = (maxBufferSize == UNSET_INT ? new LinkedBlockingQueue<T>() : new ArrayBlockingQueue<T>(maxBufferSize));
 
         if (maxSize != UNSET_INT && interval != UNSET_INT) {
-            return new TimeOrSizeBatcher<T>(backingQueue, listener, handler, maxSize, interval)
+            return new TimeOrSizeBatcher<>(backingQueue, listener, handler, maxSize, interval)
                     .start();
         } else if (maxSize != UNSET_INT) {
-            return new SizeBatcher<T>(backingQueue, listener, handler, maxSize)
+            return new SizeBatcher<>(backingQueue, listener, handler, maxSize)
                     .start();
         } else {
-            return new TimeBatcher<T>(backingQueue, listener, handler, interval)
+            return new TimeBatcher<>(backingQueue, listener, handler, interval)
                     .start();
         }
     }
@@ -133,7 +133,7 @@ public final class BatcherBuilder {
 
         @Override
         protected Collection<T> generateBatch(BlockingQueue<T> backingQueue) throws InterruptedException {
-            Collection<T> batch = new ArrayList<T>(maxSize);
+            Collection<T> batch = new ArrayList<>(maxSize);
 
             int remainingSize = maxSize;
 
@@ -162,7 +162,7 @@ public final class BatcherBuilder {
 
         @Override
         protected Collection<T> generateBatch(BlockingQueue<T> backingQueue) throws InterruptedException {
-            Collection<T> batch = new ArrayList<T>();
+            Collection<T> batch = new ArrayList<>();
 
             long startTime = nanoTime();
             long remainingTime = interval;
@@ -199,7 +199,7 @@ public final class BatcherBuilder {
 
         @Override
         protected Collection<T> generateBatch(BlockingQueue<T> backingQueue) throws InterruptedException {
-            Collection<T> batch = new ArrayList<T>(maxSize);
+            Collection<T> batch = new ArrayList<>(maxSize);
 
             long startTime = nanoTime();
             long remainingTime = interval;
