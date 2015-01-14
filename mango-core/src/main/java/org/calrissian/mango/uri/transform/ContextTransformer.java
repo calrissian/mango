@@ -15,6 +15,10 @@
  */
 package org.calrissian.mango.uri.transform;
 
+/*
+* @deprecated
+*/
+@Deprecated
 public interface ContextTransformer<T> extends Transformable<T> {
 
     String getContextName();

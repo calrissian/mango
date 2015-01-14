@@ -19,7 +19,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 
-//TODO: Implement KRYO for stream compression
+/*
+* @deprecated
+*/
+@Deprecated
 public interface UriResolver<T> {
 
     String getServiceName();

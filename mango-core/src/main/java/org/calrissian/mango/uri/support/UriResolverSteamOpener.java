@@ -28,6 +28,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static org.calrissian.mango.uri.support.DataResolverFormatUtils.extractAuthsFromUri;
 import static org.calrissian.mango.uri.support.DataResolverFormatUtils.extractURIFromRequestURI;
 
+/*
+* @deprecated
+*/
+@Deprecated
 public class UriResolverSteamOpener implements UriStreamOpener {
 
     private final UriResolverRegistry resolverRegistry;

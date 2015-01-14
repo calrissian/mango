@@ -22,6 +22,10 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLDecoder;
 
+/*
+* @deprecated
+*/
+@Deprecated
 public class UriUtils {
 
   private UriUtils() {}

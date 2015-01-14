@@ -20,6 +20,10 @@ import org.calrissian.mango.uri.UriResolver;
 
 import java.io.*;
 
+/*
+* @deprecated
+*/
+@Deprecated
 public abstract class BasicObjectUriResolver<T> implements UriResolver<T> {
 
 

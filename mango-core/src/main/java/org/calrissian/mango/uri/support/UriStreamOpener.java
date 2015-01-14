@@ -20,6 +20,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 
+/*
+* @deprecated
+*/
+@Deprecated
 public interface UriStreamOpener {
 
     InputStream openStream(URI uri) throws IOException;

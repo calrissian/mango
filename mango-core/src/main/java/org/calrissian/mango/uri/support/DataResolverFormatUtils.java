@@ -20,6 +20,10 @@ import com.google.common.base.Joiner;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+/*
+* @deprecated
+*/
+@Deprecated
 public class DataResolverFormatUtils {
 
     public static URI buildRequestURI(URI uri, String[] auths) throws URISyntaxException {
