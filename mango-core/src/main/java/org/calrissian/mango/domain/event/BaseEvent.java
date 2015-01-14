@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 The Calrissian Authors
+ * Copyright (C) 2015 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,9 +61,10 @@ public class BaseEvent extends BaseTupleStore implements Event {
      * @param timestamp
      */
     public BaseEvent(String type, String id, long timestamp) {
+        checkNotNull(type);
         checkNotNull(id);
-        this.id = id;
         this.type = type;
+        this.id = id;
         this.timestamp = timestamp;
     }
 
@@ -76,7 +77,7 @@ public class BaseEvent extends BaseTupleStore implements Event {
      * Copy constructor
      */
     public BaseEvent(Event event) {
-        this(event.getType(), checkNotNull(event).getId(), event.getTimestamp());
+        this(event.getType(), event.getId(), event.getTimestamp());
         putAll(event.getTuples());
     }
 
@@ -101,15 +102,6 @@ public class BaseEvent extends BaseTupleStore implements Event {
     }
 
     @Override
-    public String toString() {
-        return "BaseEvent{" +
-                "id='" + id + '\'' +
-                ", timestamp=" + timestamp +
-                ", tuples=" + getTuples() +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof BaseEvent)) return false;
@@ -119,6 +111,7 @@ public class BaseEvent extends BaseTupleStore implements Event {
 
         if (timestamp != baseEvent.timestamp) return false;
         if (!id.equals(baseEvent.id)) return false;
+        if (!type.equals(baseEvent.type)) return false;
 
         return true;
     }
@@ -126,9 +119,19 @@ public class BaseEvent extends BaseTupleStore implements Event {
     @Override
     public int hashCode() {
         int result = super.hashCode();
+        result = 31 * result + type.hashCode();
         result = 31 * result + id.hashCode();
         result = 31 * result + (int) (timestamp ^ (timestamp >>> 32));
         return result;
     }
 
+    @Override
+    public String toString() {
+        return "BaseEvent{" +
+                "type='" + type + '\'' +
+                ", id='" + id + '\'' +
+                ", timestamp=" + timestamp +
+                ", tuples=" + getTuples() +
+                '}';
+    }
 }

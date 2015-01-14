@@ -36,7 +36,7 @@ public class EventSerializerTest {
     @Test
     public void testSerializes() throws JsonProcessingException {
 
-        Event entity = new BaseEvent("id", new Date(0).getTime());
+        Event entity = new BaseEvent("", "id", new Date(0).getTime());
         entity.put(new Tuple("key", "value"));
         entity.put(new Tuple("key1", "valu1"));
 
