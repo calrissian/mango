@@ -15,6 +15,10 @@
  */
 package org.calrissian.mango.types.canonicalizer.domain;
 
+/**
+ * @deprecated
+ */
+@Deprecated
 public class CanonicalDef implements Comparable<CanonicalDef> {
 
     private final String type;

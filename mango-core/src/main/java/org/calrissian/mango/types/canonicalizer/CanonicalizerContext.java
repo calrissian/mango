@@ -28,6 +28,10 @@ import static java.util.Collections.sort;
 import static java.util.Collections.unmodifiableList;
 import static org.calrissian.mango.types.SimpleTypeEncoders.SIMPLE_TYPES;
 
+/**
+ * @deprecated
+ */
+@Deprecated
 public class CanonicalizerContext {
 
     private final TypeRegistry<String> typeContext;
