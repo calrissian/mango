@@ -34,6 +34,7 @@ public class BaseEvent extends BaseTupleStore implements Event {
     /**
      * New event with random UUID and timestamp defaulted to current time
      */
+    @Deprecated
     public BaseEvent() {
         this("", randomUUID().toString());
     }   // for backward compatibility
@@ -48,6 +49,7 @@ public class BaseEvent extends BaseTupleStore implements Event {
     }
 
 
+    @Deprecated
     public BaseEvent(String id) {
         this("", id, currentTimeMillis());
     }
@@ -65,6 +67,7 @@ public class BaseEvent extends BaseTupleStore implements Event {
         this.timestamp = timestamp;
     }
 
+    @Deprecated
     public BaseEvent(String id, long timestamp) {
         this("", id, timestamp);
     }
