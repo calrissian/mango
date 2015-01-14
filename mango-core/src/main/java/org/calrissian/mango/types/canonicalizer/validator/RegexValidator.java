@@ -19,9 +19,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Date: 9/7/12
- * Time: 3:32 PM
+ * @deprecated
  */
+@Deprecated
 public class RegexValidator implements Validator {
 
     private String regex;
