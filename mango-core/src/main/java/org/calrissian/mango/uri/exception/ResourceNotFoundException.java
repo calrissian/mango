@@ -17,6 +17,10 @@ package org.calrissian.mango.uri.exception;
 
 import java.io.IOException;
 
+/*
+* @deprecated
+*/
+@Deprecated
 public class ResourceNotFoundException extends IOException {
     private static final long serialVersionUID = 1L;
 

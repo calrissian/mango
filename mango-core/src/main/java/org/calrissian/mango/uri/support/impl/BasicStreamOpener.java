@@ -21,6 +21,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 
+/*
+* @deprecated
+*/
+@Deprecated
 public class BasicStreamOpener implements UriStreamOpener {
     @Override
     public InputStream openStream(URI uri) throws IOException {

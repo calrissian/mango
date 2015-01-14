@@ -19,6 +19,10 @@ import com.google.common.net.MediaType;
 import org.calrissian.mango.uri.domain.ResolvedItem;
 import org.calrissian.mango.uri.exception.ContextTransformException;
 
+/*
+* @deprecated
+*/
+@Deprecated
 public interface Transformable<T> {
 
     ResolvedItem transform(T obj) throws ContextTransformException;

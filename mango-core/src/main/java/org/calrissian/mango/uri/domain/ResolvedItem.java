@@ -21,6 +21,10 @@ import com.google.common.net.MediaType;
 import java.io.InputStream;
 import java.util.Map;
 
+/*
+* @deprecated
+*/
+@Deprecated
 public class ResolvedItem {
 
     private final MediaType contentType;

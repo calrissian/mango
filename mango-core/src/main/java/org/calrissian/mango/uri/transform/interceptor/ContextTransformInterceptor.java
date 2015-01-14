@@ -17,6 +17,10 @@ package org.calrissian.mango.uri.transform.interceptor;
 
 import org.calrissian.mango.uri.transform.Transformable;
 
+/*
+* @deprecated
+*/
+@Deprecated
 public interface ContextTransformInterceptor<T> extends Transformable<T> {
 
     @SuppressWarnings("rawtypes")

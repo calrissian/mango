@@ -15,6 +15,10 @@
  */
 package org.calrissian.mango.uri.support;
 
+/*
+* @deprecated
+*/
+@Deprecated
 public class DataResolverConstants {
 
 

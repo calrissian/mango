@@ -17,7 +17,10 @@ package org.calrissian.mango.uri.exception;
 
 import java.io.IOException;
 
-
+/*
+* @deprecated
+*/
+@Deprecated
 public class BadUriException extends IOException {
     private static final long serialVersionUID = 1L;
 

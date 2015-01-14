@@ -24,6 +24,10 @@ import org.calrissian.mango.uri.transform.ContextTransformer;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
+/*
+* @deprecated
+*/
+@Deprecated
 public class JsonContextTransform implements ContextTransformer<Object> {
 
     public static final MediaType CONTENT_TYPE = MediaType.JSON_UTF_8;

@@ -24,6 +24,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+/*
+* @deprecated
+*/
+@Deprecated
 public class ContextTransformService {
 
     @SuppressWarnings("rawtypes")
