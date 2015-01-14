@@ -27,6 +27,7 @@ import static java.util.UUID.randomUUID;
  */
 public class BaseEvent extends BaseTupleStore implements Event {
 
+    private final String type;
     private final String id;
     private final long timestamp; // in Millis
 
@@ -34,16 +35,21 @@ public class BaseEvent extends BaseTupleStore implements Event {
      * New event with random UUID and timestamp defaulted to current time
      */
     public BaseEvent() {
-        this(randomUUID().toString());
-    }
+        this("", randomUUID().toString());
+    }   // for backward compatibility
 
     /**
      * New event with ID. Timestamp defaults to current time.
      *
      * @param id
      */
+    public BaseEvent(String type, String id) {
+        this(type, id, currentTimeMillis());
+    }
+
+
     public BaseEvent(String id) {
-        this(id, currentTimeMillis());
+        this("", id, currentTimeMillis());
     }
 
     /**
@@ -52,20 +58,30 @@ public class BaseEvent extends BaseTupleStore implements Event {
      * @param id
      * @param timestamp
      */
-    public BaseEvent(String id, long timestamp) {
+    public BaseEvent(String type, String id, long timestamp) {
         checkNotNull(id);
         this.id = id;
+        this.type = type;
         this.timestamp = timestamp;
+    }
+
+    public BaseEvent(String id, long timestamp) {
+        this("", id, timestamp);
     }
 
     /**
      * Copy constructor
      */
     public BaseEvent(Event event) {
-        this(checkNotNull(event).getId(), event.getTimestamp());
+        this(event.getType(), checkNotNull(event).getId(), event.getTimestamp());
         putAll(event.getTuples());
     }
 
+
+    @Override
+    public String getType() {
+        return type;
+    }
 
     /**
      * {@inheritDoc}
@@ -111,4 +127,5 @@ public class BaseEvent extends BaseTupleStore implements Event {
         result = 31 * result + (int) (timestamp ^ (timestamp >>> 32));
         return result;
     }
+
 }
