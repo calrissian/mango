@@ -16,19 +16,16 @@
 package org.calrissian.mango.domain.event;
 
 
-import org.calrissian.mango.domain.BaseTupleStore;
+import org.calrissian.mango.domain.entity.BaseEntity;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static java.lang.System.currentTimeMillis;
 import static java.util.UUID.randomUUID;
 
 /**
  * Default implementation of {@link Event}
  */
-public class BaseEvent extends BaseTupleStore implements Event {
+public class BaseEvent extends BaseEntity implements Event {
 
-    private final String type;
-    private final String id;
     private final long timestamp; // in Millis
 
     /**
@@ -41,8 +38,6 @@ public class BaseEvent extends BaseTupleStore implements Event {
 
     /**
      * New event with ID. Timestamp defaults to current time.
-     *
-     * @param id
      */
     public BaseEvent(String type, String id) {
         this(type, id, currentTimeMillis());
@@ -56,15 +51,9 @@ public class BaseEvent extends BaseTupleStore implements Event {
 
     /**
      * New store entry with ID and a timestamp
-     *
-     * @param id
-     * @param timestamp
      */
     public BaseEvent(String type, String id, long timestamp) {
-        checkNotNull(type);
-        checkNotNull(id);
-        this.type = type;
-        this.id = id;
+        super(type, id);
         this.timestamp = timestamp;
     }
 
@@ -79,19 +68,6 @@ public class BaseEvent extends BaseTupleStore implements Event {
     public BaseEvent(Event event) {
         this(event.getType(), event.getId(), event.getTimestamp());
         putAll(event.getTuples());
-    }
-
-
-    @Override
-    public String getType() {
-        return type;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public String getId() {
-        return id;
     }
 
     /**
@@ -110,8 +86,6 @@ public class BaseEvent extends BaseTupleStore implements Event {
         BaseEvent baseEvent = (BaseEvent) o;
 
         if (timestamp != baseEvent.timestamp) return false;
-        if (!id.equals(baseEvent.id)) return false;
-        if (!type.equals(baseEvent.type)) return false;
 
         return true;
     }
@@ -119,8 +93,6 @@ public class BaseEvent extends BaseTupleStore implements Event {
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + type.hashCode();
-        result = 31 * result + id.hashCode();
         result = 31 * result + (int) (timestamp ^ (timestamp >>> 32));
         return result;
     }
@@ -128,8 +100,8 @@ public class BaseEvent extends BaseTupleStore implements Event {
     @Override
     public String toString() {
         return "BaseEvent{" +
-                "type='" + type + '\'' +
-                ", id='" + id + '\'' +
+                "type='" + getType() + '\'' +
+                ", id='" + getId() + '\'' +
                 ", timestamp=" + timestamp +
                 ", tuples=" + getTuples() +
                 '}';

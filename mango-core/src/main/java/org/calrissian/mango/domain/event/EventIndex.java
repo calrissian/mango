@@ -15,21 +15,14 @@
  */
 package org.calrissian.mango.domain.event;
 
-import org.calrissian.mango.domain.Identifiable;
+import org.calrissian.mango.domain.entity.EntityIndex;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+public class EventIndex extends EntityIndex {
 
-public class EventIndex implements Identifiable {
-
-    private final String type;
-    private final String id;
     private final Long timestamp;
 
     public EventIndex(String type, String id, Long timestamp) {
-        checkNotNull(type);
-        checkNotNull(id);
-        this.type = type;
-        this.id = id;
+        super(type, id);
         this.timestamp = timestamp;
     }
 
@@ -51,14 +44,6 @@ public class EventIndex implements Identifiable {
         this("", id, null);
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public String getId() {
-        return id;
-    }
-
     public Long getTimestamp() {
         return timestamp;
     }
@@ -67,20 +52,18 @@ public class EventIndex implements Identifiable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof EventIndex)) return false;
+        if (!super.equals(o)) return false;
 
         EventIndex that = (EventIndex) o;
 
-        if (!id.equals(that.id)) return false;
         if (timestamp != null ? !timestamp.equals(that.timestamp) : that.timestamp != null) return false;
-        if (!type.equals(that.type)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = type.hashCode();
-        result = 31 * result + id.hashCode();
+        int result = super.hashCode();
         result = 31 * result + (timestamp != null ? timestamp.hashCode() : 0);
         return result;
     }
@@ -88,8 +71,8 @@ public class EventIndex implements Identifiable {
     @Override
     public String toString() {
         return "EventIndex{" +
-                "type='" + type + '\'' +
-                ", id='" + id + '\'' +
+                "type='" + getType() + '\'' +
+                ", id='" + getId() + '\'' +
                 ", timestamp=" + timestamp +
                 '}';
     }

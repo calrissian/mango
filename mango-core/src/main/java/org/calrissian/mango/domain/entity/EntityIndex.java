@@ -22,8 +22,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class EntityIndex implements Identifiable {
 
-    protected String type;
-    protected String id;
+    private final String type;
+    private final String id;
 
     public EntityIndex(String type, String id) {
         checkNotNull(type);
