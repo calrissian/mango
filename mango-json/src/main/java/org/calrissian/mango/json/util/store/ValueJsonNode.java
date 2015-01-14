@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.json.util.json;
+package org.calrissian.mango.json.util.store;
 
 import com.fasterxml.jackson.databind.JsonNode;
 

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.json.util.json;
+package org.calrissian.mango.json.util.store;
 
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -30,8 +30,8 @@ import java.util.*;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.util.Collections.sort;
-import static org.calrissian.mango.json.util.json.JsonMetadata.*;
-import static org.calrissian.mango.json.util.json.JsonUtil.nodeToObject;
+import static org.calrissian.mango.json.util.store.JsonMetadata.*;
+import static org.calrissian.mango.json.util.store.JsonUtil.nodeToObject;
 
 /**
  * Utility methods for
