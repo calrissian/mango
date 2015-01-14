@@ -25,6 +25,7 @@ import org.junit.Test;
 
 import java.util.HashSet;
 
+import static java.lang.System.currentTimeMillis;
 import static org.calrissian.mango.types.SimpleTypeEncoders.SIMPLE_TYPES;
 import static org.junit.Assert.assertEquals;
 
@@ -38,6 +39,23 @@ public class EventDeserializerTest {
 
         Event event = new BaseEvent();
         event.put(new Tuple("key", "value"));
+        event.put(new Tuple("key1", "valu1"));
+
+        String json = objectMapper.writeValueAsString(event);
+
+        Event actualEntity = objectMapper.readValue(json, Event.class);
+
+        assertEquals(actualEntity.getId(), event.getId());
+        assertEquals(actualEntity.getTimestamp(), event.getTimestamp());
+        assertEquals(new HashSet<>(actualEntity.getTuples()), new HashSet<>(event.getTuples()));
+    }
+
+    @Test
+    public void testBasicDeserialization2() throws Exception {
+
+        Event event = new BaseEvent("type", "id", currentTimeMillis());
+        event.put(new Tuple("key", "value"));
+        event.put(new Tuple("key1", "valu1"));
 
         String json = objectMapper.writeValueAsString(event);
 

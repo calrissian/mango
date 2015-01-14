@@ -36,13 +36,13 @@ public class EventSerializerTest {
     @Test
     public void testSerializes() throws JsonProcessingException {
 
-        Event entity = new BaseEvent("", "id", new Date(0).getTime());
-        entity.put(new Tuple("key", "value"));
-        entity.put(new Tuple("key1", "valu1"));
+        Event event = new BaseEvent("", "id", new Date(0).getTime());
+        event.put(new Tuple("key", "value"));
+        event.put(new Tuple("key1", "valu1"));
 
-        String serialized = objectMapper.writeValueAsString(entity);
+        String serialized = objectMapper.writeValueAsString(event);
 
-        assertEquals(serialized, "{\"timestamp\":0,\"id\":\"id\",\"tuples\":{\"key1\":[{\"key\":\"key1\",\"type\":\"string\",\"value\":\"valu1\",\"metadata\":[]}],\"key\":[{\"key\":\"key\",\"type\":\"string\",\"value\":\"value\",\"metadata\":[]}]}}");
+        assertEquals(serialized, "{\"timestamp\":0,\"type\":\"\",\"id\":\"id\",\"tuples\":{\"key1\":[{\"key\":\"key1\",\"type\":\"string\",\"value\":\"valu1\",\"metadata\":[]}],\"key\":[{\"key\":\"key\",\"type\":\"string\",\"value\":\"value\",\"metadata\":[]}]}}");
     }
 
 

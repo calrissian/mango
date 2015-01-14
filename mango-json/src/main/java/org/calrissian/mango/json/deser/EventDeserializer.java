@@ -23,10 +23,17 @@ public class EventDeserializer extends BaseTupleStoreDeserializer<BaseEvent> {
 
     @Override
     public BaseEvent deserialize(JsonNode root) {
+        String type = "";
+
+        //TODO Next major release (2.x) remove this check as this should now be required.
+        if (root.has("type"))
+            type = root.get("type").asText();
+
         String id = root.get("id").asText();
         long timestamp = root.get("timestamp").asLong();
 
-        return new BaseEvent(id, timestamp);
+
+        return new BaseEvent(type, id, timestamp);
     }
 
 }
