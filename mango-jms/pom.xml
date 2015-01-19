@@ -19,7 +19,7 @@ limitations under the License.
   <parent>
     <groupId>org.calrissian.mango</groupId>
     <artifactId>mango-parent</artifactId>
-    <version>1.3.0-SNAPSHOT</version>
+    <version>1.3.0</version>
   </parent>
   <artifactId>mango-jms</artifactId>
   <name>Mango JMS</name>
