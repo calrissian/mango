@@ -101,15 +101,4 @@ public class Iterables2 {
             }
         };
     }
-
-    /**
-     * Generates an iterable that will drain a queue by consistently polling the latest item.
-     *
-     * @deprecated use {@link Iterables}.consumingIterable instead
-     */
-    @Deprecated
-    public static <T> Iterable<T> drainingIterable(Queue<T> queue) {
-        checkNotNull(queue);
-        return consumingIterable(queue);
-    }
 }

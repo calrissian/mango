@@ -93,15 +93,4 @@ public class Iterators2 {
             }
         };
     }
-
-    /**
-     * Generates an iterator that will drain a queue by consistently polling the latest item.
-     *
-     * @deprecated use {@link Iterators}.consumingIterator instead
-     */
-    @Deprecated
-    public static <T> Iterator<T> drainingIterator(final Queue<T> queue) {
-        checkNotNull(queue);
-        return consumingIterator(queue.iterator());
-    }
 }
