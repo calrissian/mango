@@ -16,6 +16,7 @@
 package org.calrissian.mango.json.util.store;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -23,7 +24,6 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.ComparisonChain;
 import org.calrissian.mango.domain.Pair;
 import org.calrissian.mango.domain.Tuple;
-import org.calrissian.mango.domain.TupleStore;
 
 import java.io.IOException;
 import java.util.*;
@@ -48,9 +48,9 @@ import static org.calrissian.mango.json.util.store.JsonUtil.nodeToObject;
  */
 public class JsonTupleStore {
 
-    private static final String JSON_DELIM = "$";
+    private static final String NESTING_DELIM = "_$";
     private static final Pair<Integer,Integer> DEFAULT_PAIR = new Pair<>(-1, -1);
-    private static final Splitter SPLITTER = Splitter.on(JSON_DELIM);
+    private static final Splitter SPLITTER = Splitter.on(NESTING_DELIM);
 
     private JsonTupleStore() {}
 
@@ -88,63 +88,74 @@ public class JsonTupleStore {
             throw new IllegalArgumentException("Error parsing json or input was not json object");
     }
 
+
     /**
-     * Re-expands a flattened json representatin from a {@link org.calrissian.mango.domain.TupleStore} back into a raw nested json
-     * representation. This method has the same effect as {@link #toJson(java.util.Collection, com.fasterxml.jackson.databind.ObjectMapper)},
-     * except it returns a string instead of a {@link com.fasterxml.jackson.databind.JsonNode}.
+     * Flattens a Map<String,Object> into a collection of tuples that can be used to construct a
+     * {@link org.calrissian.mango.domain.TupleStore} implementation. This allows objects which have
+     * already been parsed from json strings and processed to be turned into tuple stores as well.
+     * @param map
+     * @return
+     */
+    public static Collection<Tuple> fromMap(Map<String,Object> map) {
+        checkNotNull(map);
+        Collection<Tuple> tuples = new HashSet<>();
+        convertObject(tuples, map, "", 0, new HashMap<String, Object>());
+        return tuples;
+    }
+
+
+    /**
+     * Re-expands a flattened json representation from a {@link org.calrissian.mango.domain.TupleStore} back into a raw
+     * nested json string.
      * @param tupleCollection
      * @param objectMapper
      * @return
      */
-    public static String toJsonString(Collection<Tuple> tupleCollection, ObjectMapper objectMapper) {
-        return toJson(tupleCollection, objectMapper).toString();
+    public static String toJsonString(Collection<Tuple> tupleCollection, ObjectMapper objectMapper) throws JsonProcessingException {
+        return objectMapper.writeValueAsString(toObject(tupleCollection));
     }
 
     /**
-     * Re-expands a flattened json representation from a {@link org.calrissian.mango.domain.TupleStore} back into a raw nested json
-     * representation. It's important that the metadata placed in the tuples by the
-     * {@link org.calrissian.mango.json.util.store.JsonTupleStore#fromJson(com.fasterxml.jackson.databind.node.ObjectNode)} method have not been removed or tampered with
-     * as it could yield unexpected results.
+     * Re-expands a nested tuple representation from a {@link org.calrissian.mango.domain.TupleStore} back into a nested
+     * java object representation (objects become Map<String,Object>, arrays become Lists, and non-containers stay
+     * the same).
+     *
+     * NOTE: It is possible that this method could fail in the case where tuples were added to a tuple collection
+     * which changed a primitive type to a container type, or vice versa.
      * @param tupleCollection
      * @return
      */
-    public static ObjectNode toJson(Collection<Tuple> tupleCollection, ObjectMapper objectMapper) {
+    public static Map<String,Object> toObject(Collection<Tuple> tupleCollection) {
 
         checkNotNull(tupleCollection);
-        checkNotNull(objectMapper);
 
         List<Tuple> tuples = new ArrayList<>(tupleCollection);
 
         sort(tuples, new FlattenedLevelsComparator());
 
-        JsonTreeNode root = new ObjectJsonNode(objectMapper);
+        ObjectJsonNode root = new ObjectJsonNode();
         for(Tuple tuple : tuples) {
-            if(!JsonMetadata.isFlattenedJson(tuple.getMetadata()))
-                throw new IllegalStateException("Trying to re-expand json from tuples which were not previously flattened.");
-            else {
-                List<String> keys = SPLITTER.splitToList(tuple.getKey());
+            List<String> keys = SPLITTER.splitToList(tuple.getKey());
 
-                Map<Integer, Integer> levelsIndices = levelsToIndices(tuple.getMetadata());
-                String[] adjustedKeys = new String[keys.size() + levelsIndices.size()];
+            Map<Integer, Integer> levelsIndices = levelsToIndices(tuple.getMetadata());
+            String[] adjustedKeys = new String[keys.size() + levelsIndices.size()];
 
-                int count = 0;
-                for(int i = 0; i < adjustedKeys.length; i++) {
+            int count = 0;
+            for(int i = 0; i < adjustedKeys.length; i++) {
 
-                    if(levelsIndices.containsKey(i))
-                        adjustedKeys[i] = "[]";
-                    else {
-                        adjustedKeys[i] = keys.get(count);
-                        count++;
-                    }
+                if(levelsIndices.containsKey(i))
+                    adjustedKeys[i] = "[]";
+                else {
+                    adjustedKeys[i] = keys.get(count);
+                    count++;
                 }
-
-                root.visit(adjustedKeys, 0, levelsIndices, new ValueJsonNode(tuple.getValue()));
             }
+
+            root.visit(adjustedKeys, 0, levelsIndices, new ValueJsonNode(tuple.getValue()));
         }
 
-        return (ObjectNode)root.toJsonNode();
+        return root.toObject();
     }
-
 
     /**
      * This comparator is used to sort a list of tuples that represent flattened json so that raw json can
@@ -209,14 +220,11 @@ public class JsonTupleStore {
         while(fields.hasNext()) {
             Map.Entry<String,JsonNode> entry = fields.next();
 
-            if(!isFlattenedJson(metadata))
-                setFlattenedJsonProp(metadata);
-
-            String key = intialKey.equals("") ? entry.getKey() : intialKey + JSON_DELIM + entry.getKey();
+            String key = intialKey.equals("") ? entry.getKey() : intialKey + NESTING_DELIM + entry.getKey();
 
             if(!entry.getValue().isNull()) {
                 if(entry.getValue().isObject())
-                    convertJsonObject(tuples, entry.getValue(), key, nestedLevel+1, metadata);
+                    convertJsonObject(tuples, entry.getValue(), key, nestedLevel + 1, metadata);
                 else if(entry.getValue().isArray())
                     convertJsonArray(tuples, entry.getValue(), key, nestedLevel+1, metadata);
                 else
@@ -238,7 +246,7 @@ public class JsonTupleStore {
 
             if(!obj.isNull()) {
                 if(obj.isObject())
-                    convertJsonObject(tuples, obj, key, nestedLevel+1, map);
+                    convertJsonObject(tuples, obj, key, nestedLevel + 1, map);
                 else if(obj.isArray())
                     convertJsonArray(tuples, obj, key, nestedLevel+1, map);
                 else
@@ -246,4 +254,47 @@ public class JsonTupleStore {
             }
         }
     }
+
+
+    private static void convertObject(Collection<Tuple> tuples, Map<String, Object> object, String intialKey, int nestedLevel, Map<String, Object> metadata) {
+
+        Iterable<Map.Entry<String,Object>> fields = object.entrySet();
+        for(Map.Entry<String, Object> entry : fields) {
+
+            String key = intialKey.equals("") ? entry.getKey() : intialKey + NESTING_DELIM + entry.getKey();
+
+            if(entry.getValue() != null) {
+                if(entry.getValue() instanceof Map)
+                    convertObject(tuples, (Map<String, Object>) entry.getValue(), key, nestedLevel + 1, metadata);
+                else if(entry.getValue() instanceof Iterable)
+                    convertIterable(tuples, (Iterable<Object>) entry.getValue(), key, nestedLevel + 1, metadata);
+                else
+                    tuples.add(new Tuple(key, entry.getValue(), metadata));
+            }
+
+        }
+    }
+
+    private static void convertIterable(Collection<Tuple> tuples, Iterable<Object> jsonArray, String intialKey, int nestedLevel, Map<String, Object> metadata) {
+
+        Map<String,Object> map = new HashMap<>(metadata);
+        int count = 0;
+        for(Object obj : jsonArray) {
+
+            setArrayIndex(map, nestedLevel, count);
+            String key = intialKey.equals("") ? "" : intialKey;
+
+            if(obj != null) {
+                if(obj instanceof Map)
+                    convertObject(tuples, (Map<String, Object>) obj, key, nestedLevel + 1, map);
+                else if(obj instanceof Iterable)
+                    convertIterable(tuples, (Iterable<Object>) obj, key, nestedLevel + 1, map);
+                else
+                    tuples.add(new Tuple(key, obj, map));
+            }
+
+            count++;
+        }
+    }
+
 }

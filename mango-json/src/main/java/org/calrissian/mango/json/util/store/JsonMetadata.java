@@ -16,7 +16,6 @@
 package org.calrissian.mango.json.util.store;
 
 import com.google.common.base.Splitter;
-import org.calrissian.mango.domain.TupleStore;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +30,6 @@ import static java.lang.Integer.parseInt;
 class JsonMetadata {
 
     private static final String ARRAY_IDX_SUFFIX = ".idx";
-    private static final String JSON_PROP = "json";
 
     private JsonMetadata() {}
 
@@ -46,24 +44,6 @@ class JsonMetadata {
      */
     static void setArrayIndex(Map<String,Object> meta, int level, int index) {
         meta.put(level + ARRAY_IDX_SUFFIX, index);
-    }
-
-    /**
-     * Sets whether or not the current metadata has been created by flattening an
-     * arbitrarily nested set of json.
-     * @param meta
-     */
-    static void setFlattenedJsonProp(Map<String,Object> meta) {
-        meta.put(JSON_PROP, true);
-    }
-
-    /**
-     * Sets whether or not the current metadata has been created by flattening an
-     * arbitrarily nested set of json.
-     * @param meta
-     */
-    static boolean isFlattenedJson(Map<String,Object> meta) {
-        return meta.containsKey(JSON_PROP) && meta.get(JSON_PROP).equals(true);
     }
 
 
@@ -105,5 +85,4 @@ class JsonMetadata {
 
         return levelToIdx;
     }
-
 }

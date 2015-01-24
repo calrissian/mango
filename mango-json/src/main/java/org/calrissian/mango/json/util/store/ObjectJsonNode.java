@@ -15,15 +15,12 @@
  */
 package org.calrissian.mango.json.util.store;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.common.collect.Maps;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-import static org.calrissian.mango.json.util.store.JsonUtil.objectToNode;
+import static com.google.common.collect.Maps.transformEntries;
 
 /**
  * A container json tree node which represents a json object which holds entries
@@ -31,13 +28,8 @@ import static org.calrissian.mango.json.util.store.JsonUtil.objectToNode;
  */
 class ObjectJsonNode implements JsonTreeNode {
 
-    private final ObjectMapper objectMapper;
     private final Map<String, JsonTreeNode> children = new HashMap<>();
 
-    public ObjectJsonNode(ObjectMapper objectMapper) {
-        checkNotNull(objectMapper);
-        this.objectMapper = objectMapper;
-    }
 
     /**
      * Sets state on current instance based on the flattened tree representation from the input.
@@ -63,9 +55,9 @@ class ObjectJsonNode implements JsonTreeNode {
             if(child == null) {
 
                 if (nextKey.equals("[]"))
-                    child = new ArrayJsonNode(objectMapper);
+                    child = new ArrayJsonNode();
                 else
-                    child = new ObjectJsonNode(objectMapper);
+                    child = new ObjectJsonNode();
                 children.put(keys[level], child);
             }
 
@@ -73,25 +65,22 @@ class ObjectJsonNode implements JsonTreeNode {
         }
     }
 
+
     @Override
-    public JsonNode toJsonNode() {
-
-        ObjectNode jsonNode = objectMapper.createObjectNode();
-
-        for(Map.Entry<String, JsonTreeNode> entry : children.entrySet()) {
-            Object value = entry.getValue();
-            if(entry.getValue() instanceof ValueJsonNode)
-                value = objectToNode(((ValueJsonNode) entry.getValue()).getValue());
-
-            jsonNode.putPOJO(entry.getKey(), value);
-        }
-
-        return jsonNode;
+    public Map<String, Object> toObject() {
+        return transformEntries(children, function);
     }
 
 
     @Override
     public String toString() {
-        return toJsonNode().toString();
+        return toObject().toString();
     }
+
+    private static Maps.EntryTransformer function = new Maps.EntryTransformer<String, JsonTreeNode, Object>() {
+        @Override
+        public Object transformEntry(String s, JsonTreeNode jsonTreeNode) {
+            return jsonTreeNode.toObject();
+        }
+    };
 }

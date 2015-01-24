@@ -16,8 +16,6 @@
 package org.calrissian.mango.json.util.store;
 
 
-import com.fasterxml.jackson.databind.JsonNode;
-
 import java.util.Map;
 
 /**
@@ -31,5 +29,5 @@ interface JsonTreeNode {
 
     void visit(String[] keys, int level, Map<Integer, Integer> levelToIdx, ValueJsonNode valueJsonNode);
 
-    JsonNode toJsonNode();
+    Object toObject();
 }

@@ -15,8 +15,6 @@
  */
 package org.calrissian.mango.json.util.store;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
 import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -43,7 +41,7 @@ class ValueJsonNode implements JsonTreeNode {
     }
 
     @Override
-    public JsonNode toJsonNode() {
-        throw new UnsupportedOperationException();
+    public Object toObject() {
+        return value;
     }
 }

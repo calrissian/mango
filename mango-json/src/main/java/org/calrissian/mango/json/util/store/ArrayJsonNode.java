@@ -15,16 +15,13 @@
  */
 package org.calrissian.mango.json.util.store;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-
-import static com.google.common.base.Preconditions.checkNotNull;
-import static org.calrissian.mango.json.util.store.JsonUtil.objectToNode;
 
 /**
  * A container json tree node which represents a json array which holds entries
@@ -33,14 +30,7 @@ import static org.calrissian.mango.json.util.store.JsonUtil.objectToNode;
  */
 class ArrayJsonNode implements JsonTreeNode {
 
-    private final ObjectMapper objectMapper;
     private final List<JsonTreeNode> children = new ArrayList<>();
-
-    public ArrayJsonNode(ObjectMapper objectMapper) {
-        checkNotNull(objectMapper);
-        this.objectMapper = objectMapper;
-    }
-
 
     @Override
     public void visit(String[] keys, int level, Map<Integer, Integer> levelToIdx, ValueJsonNode valueJsonNode) {
@@ -60,9 +50,9 @@ class ArrayJsonNode implements JsonTreeNode {
             if (child == null) {
 
                 if (nextKey.equals("[]"))
-                    child = new ArrayJsonNode(objectMapper);
+                    child = new ArrayJsonNode();
                 else
-                    child = new ObjectJsonNode(objectMapper);
+                    child = new ObjectJsonNode();
                 children.add(child);
             }
 
@@ -70,23 +60,22 @@ class ArrayJsonNode implements JsonTreeNode {
         }
     }
 
+
     @Override
-    public JsonNode toJsonNode() {
-        ArrayNode jsonNode = objectMapper.createArrayNode();
-        for(JsonTreeNode entry : children) {
-
-            Object value = entry;
-            if(value instanceof ValueJsonNode)
-                value = objectToNode(((ValueJsonNode) entry).getValue());
-
-            jsonNode.addPOJO(value);
-        }
-
-        return jsonNode;
+    public Collection<Object> toObject() {
+       return Collections2.transform(children, function);
     }
 
     @Override
     public String toString() {
-        return toJsonNode().toString();
+        return toObject().toString();
     }
+
+    private static Function<JsonTreeNode, Object> function = new Function<JsonTreeNode, Object>() {
+
+        @Override
+        public Object apply(JsonTreeNode jsonTreeNode) {
+            return jsonTreeNode.toObject();
+        }
+    };
 }
