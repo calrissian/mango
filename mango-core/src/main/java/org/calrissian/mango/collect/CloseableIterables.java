@@ -29,6 +29,7 @@ import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyIterator;
 import static java.util.Collections.emptySet;
 
 /**
@@ -36,8 +37,18 @@ import static java.util.Collections.emptySet;
  */
 public class CloseableIterables {
 
-    @SuppressWarnings("rawtypes")
-    private static final CloseableIterable EMPTY_ITERABLE = wrap(emptySet());
+    private static final CloseableIterable EMPTY_ITERABLE = new CloseableIterable() {
+        @Override
+        public void closeQuietly() { }
+
+        @Override
+        public void close() throws IOException { }
+
+        @Override
+        public Iterator iterator() {
+            return emptyIterator();
+        }
+    };
 
     private CloseableIterables() {/* private constructor */}
 

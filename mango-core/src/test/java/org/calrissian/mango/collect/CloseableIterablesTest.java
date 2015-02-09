@@ -36,6 +36,17 @@ import static org.junit.Assert.*;
 public class CloseableIterablesTest {
 
     @Test
+    public void testCloseEmptyMultipleTimes() {
+        CloseableIterable<Integer> iterable = CloseableIterables.emptyIterable();
+        iterable.iterator();
+        iterable.closeQuietly();
+
+        iterable = CloseableIterables.emptyIterable();
+        iterable.iterator();
+        iterable.closeQuietly();
+    }
+
+    @Test
     public void testWrap() throws Exception {
         CloseableIterable<Integer> wrapped = CloseableIterables.wrap(asList(1, 2, 3, 4, 5));
 
