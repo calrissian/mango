@@ -30,7 +30,6 @@ import java.util.List;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyIterator;
-import static java.util.Collections.emptySet;
 
 /**
  * Utility class to develop commonly used closeable iterables functions.
