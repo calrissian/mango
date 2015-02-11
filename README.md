@@ -1,4 +1,4 @@
-![build](https://travis-ci.org/calrissian/mango.svg?branch=master)
+[![Build Status](https://travis-ci.org/calrissian/mango.svg?branch=master)](https://travis-ci.org/calrissian/mango)
 
 Calrissian Mango
 ================
