@@ -22,6 +22,7 @@ limitations under the License.
     <version>1.4.0-SNAPSHOT</version>
   </parent>
   <artifactId>mango-jms</artifactId>
+  <packaging>bundle</packaging>
   <name>Mango JMS</name>
   <description>Reusable JMS utilities.</description>
   <properties>
@@ -74,4 +75,20 @@ limitations under the License.
       <scope>test</scope>
     </dependency>
   </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <configuration>
+          <instructions>
+            <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
+            <Bundle-Name>${project.artifactId}</Bundle-Name>
+            <Bundle-Version>${project.version}</Bundle-Version>
+            <Export-Package>org.calrissian.mango.jms.*</Export-Package>
+          </instructions>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
