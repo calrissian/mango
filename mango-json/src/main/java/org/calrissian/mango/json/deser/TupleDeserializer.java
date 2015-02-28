@@ -48,15 +48,14 @@ public class TupleDeserializer extends JsonDeserializer<Tuple> {
             value = typeRegistry.decode(type, val_str);
         }
 
-        Map<String, Object> metadata = new HashMap<>();
+        Map<String, String> metadata = new HashMap<>();
         JsonNode metadataArray = root.get("metadata");
         if(metadataArray != null) {
             for (JsonNode metadataItem : metadataArray) {
                 String metaKey = metadataItem.get("key").asText();
-                String alias = metadataItem.get("type").asText();
                 String normalized = metadataItem.get("value").asText();
 
-                metadata.put(metaKey, typeRegistry.decode(alias, normalized));
+                metadata.put(metaKey, normalized);
             }
         }
 

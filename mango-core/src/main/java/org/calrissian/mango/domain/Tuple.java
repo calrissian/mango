@@ -38,13 +38,13 @@ public class Tuple<T> implements Serializable {
      * Metadata allows the tuple to be extensible so that different services can read different properties without
      * the need for inheritance.
      */
-    protected final Map<String,Object> metadata;
+    protected final Map<String,String> metadata;
 
     public Tuple(String key, T value) {
-        this(key, value, Collections.<String,Object>emptyMap());
+        this(key, value, Collections.<String,String>emptyMap());
     }
 
-    public Tuple(String key, T value, Map<String,Object> metadata) {
+    public Tuple(String key, T value, Map<String,String> metadata) {
         checkNotNull(key);
         checkNotNull(value);
         checkNotNull(metadata);
@@ -72,14 +72,14 @@ public class Tuple<T> implements Serializable {
     /**
      * Gets a value for the metadata key for the current tuple.
      */
-    public <T>T getMetadataValue(String key) {
-        return (T)metadata.get(key);
+    public String getMetadataValue(String key) {
+        return metadata.get(key);
     }
 
     /**
      * Gets an immutable view of the current metadata
      */
-    public Map<String,Object> getMetadata() {
+    public Map<String,String> getMetadata() {
         return unmodifiableMap(metadata);
     }
 
