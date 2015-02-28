@@ -16,16 +16,11 @@
 package org.calrissian.mango.collect;
 
 import com.google.common.base.Function;
-import com.google.common.collect.Iterables;
 
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Queue;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.Iterables.consumingIterable;
-import static java.util.Collections.emptyList;
 
 /**
  * Additional functions for working on Iterables

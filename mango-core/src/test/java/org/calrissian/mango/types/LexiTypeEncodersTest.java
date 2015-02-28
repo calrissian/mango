@@ -27,6 +27,8 @@ import java.math.BigInteger;
 import java.net.URI;
 import java.util.Date;
 
+import static org.calrissian.mango.io.Serializables.deserialize;
+import static org.calrissian.mango.io.Serializables.serialize;
 import static org.calrissian.mango.net.MoreInetAddresses.forIPv4String;
 import static org.calrissian.mango.net.MoreInetAddresses.forIPv6String;
 import static org.calrissian.mango.types.LexiTypeEncoders.*;
@@ -211,5 +213,11 @@ public class LexiTypeEncodersTest {
         assertEquals("fffffffffffffffc", unsignedLongRevEncoder().encode(UnsignedLong.fromLongBits(3)));
         assertEquals("0000000000000000", unsignedLongRevEncoder().encode(UnsignedLong.MAX_VALUE));
 
+    }
+
+    @Test
+    public void testSerialization() throws Exception {
+        deserialize(serialize(LEXI_TYPES));
+        deserialize(serialize(LEXI_REV_TYPES));
     }
 }

@@ -38,11 +38,19 @@ public class SimpleTypeEncoders {
 
     private SimpleTypeEncoders() {/* private constructor */}
 
-    @SuppressWarnings("unchecked")
-    public static final TypeRegistry<String> SIMPLE_TYPES = new TypeRegistry<>(
+    /**
+     * Simple Java types only
+     */
+    public static final TypeRegistry<String> SIMPLE_JAVA_TYPES = new TypeRegistry<>(
             booleanEncoder(), byteEncoder(), dateEncoder(), doubleEncoder(), floatEncoder(),
             integerEncoder(), longEncoder(), stringEncoder(), uriEncoder(), bigIntegerEncoder(),
-            bigDecimalEncoder(), inet4AddressEncoder(), inet6AddressEncoder(),
+            bigDecimalEncoder(), inet4AddressEncoder(), inet6AddressEncoder()
+    );
+
+    /**
+     * Contains the full set of supported type encoders
+     */
+    public static final TypeRegistry<String> SIMPLE_TYPES = new TypeRegistry<>(SIMPLE_JAVA_TYPES,
             ipv4Encoder(), ipv6Encoder(), entityRelationshipEncoder(),
             unsignedIntegerEncoder(), unsignedLongEncoder()
     );

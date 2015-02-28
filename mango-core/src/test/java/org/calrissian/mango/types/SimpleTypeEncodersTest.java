@@ -28,6 +28,8 @@ import java.math.BigInteger;
 import java.net.URI;
 import java.util.Date;
 
+import static org.calrissian.mango.io.Serializables.deserialize;
+import static org.calrissian.mango.io.Serializables.serialize;
 import static org.calrissian.mango.net.MoreInetAddresses.forIPv4String;
 import static org.calrissian.mango.net.MoreInetAddresses.forIPv6String;
 import static org.calrissian.mango.types.SimpleTypeEncoders.*;
@@ -121,5 +123,10 @@ public class SimpleTypeEncodersTest {
 
         assertEquals("3", unsignedLongEncoder().encode(UnsignedLong.fromLongBits(3)));
         assertEquals("18446744073709551615", unsignedLongEncoder().encode(UnsignedLong.MAX_VALUE));
+    }
+
+    @Test
+    public void testSerialization() throws Exception {
+        deserialize(serialize(SIMPLE_TYPES));
     }
 }

@@ -22,6 +22,7 @@ limitations under the License.
     <version>2.0.0-SNAPSHOT</version>
   </parent>
   <artifactId>mango-json</artifactId>
+  <packaging>bundle</packaging>
   <name>Mango JSON</name>
   <description>Reusable JSON serializers and utilities</description>
   <properties>
@@ -47,4 +48,20 @@ limitations under the License.
       <scope>test</scope>
     </dependency>
   </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <configuration>
+          <instructions>
+            <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
+            <Bundle-Name>${project.artifactId}</Bundle-Name>
+            <Bundle-Version>${project.version}</Bundle-Version>
+            <Export-Package>org.calrissian.mango.json*</Export-Package>
+          </instructions>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

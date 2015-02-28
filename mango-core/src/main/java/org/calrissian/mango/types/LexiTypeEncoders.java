@@ -39,18 +39,30 @@ public class LexiTypeEncoders {
 
     private LexiTypeEncoders() {/*private constructor*/}
 
-    public static final TypeRegistry<String> LEXI_TYPES = new TypeRegistry<>(
+    /**
+     * Simple Java types only
+     */
+    public static final TypeRegistry<String> LEXI_JAVA_TYPES = new TypeRegistry<>(
             booleanEncoder(), byteEncoder(), dateEncoder(), doubleEncoder(), floatEncoder(),
             integerEncoder(), longEncoder(), stringEncoder(), uriEncoder(), bigIntegerEncoder(),
-            bigDecimalEncoder(), inet4AddressEncoder(), inet6AddressEncoder(),
+            bigDecimalEncoder(), inet4AddressEncoder(), inet6AddressEncoder()
+    );
+
+    public static final TypeRegistry<String> LEXI_REV_JAVA_TYPES = new TypeRegistry<>(
+            booleanRevEncoder(), byteRevEncoder(), dateRevEncoder(), doubleRevEncoder(), floatRevEncoder(),
+            integerRevEncoder(), longRevEncoder(), stringRevEncoder(), uriRevEncoder(), bigIntegerRevEncoder(),
+            bigDecimalRevEncoder(), inet4AddressRevEncoder(), inet6AddressRevEncoder()
+    );
+
+    /**
+     * Contains the full set of supported type encoders
+     */
+    public static final TypeRegistry<String> LEXI_TYPES = new TypeRegistry<>(LEXI_JAVA_TYPES,
             ipv4Encoder(), ipv6Encoder(), entityRelationshipEncoder(),
             unsignedIntegerEncoder(), unsignedLongEncoder()
     );
 
-    public static final TypeRegistry<String> LEXI_REV_TYPES = new TypeRegistry<>(
-            booleanRevEncoder(), byteRevEncoder(), dateRevEncoder(), doubleRevEncoder(), floatRevEncoder(),
-            integerRevEncoder(), longRevEncoder(), stringRevEncoder(), uriRevEncoder(), bigIntegerRevEncoder(),
-            bigDecimalRevEncoder(), inet4AddressRevEncoder(), inet6AddressRevEncoder(),
+    public static final TypeRegistry<String> LEXI_REV_TYPES = new TypeRegistry<>(LEXI_REV_JAVA_TYPES,
             ipv4RevEncoder(), ipv6RevEncoder(), entityRelationshipRevEncoder(),
             unsignedIntegerRevEncoder(), unsignedLongRevEncoder()
     );
