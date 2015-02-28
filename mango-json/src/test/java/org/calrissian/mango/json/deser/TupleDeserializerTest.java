@@ -44,7 +44,7 @@ public class TupleDeserializerTest {
 
     @Test
     public void testSerialization_withMetadata() throws IOException {
-        Tuple tuple = objectMapper.readValue("{\"key\":\"key\",\"type\":\"string\",\"value\":\"value\",\"metadata\":[{\"value\":\"metaVal\",\"type\":\"string\",\"key\":\"metaKey\"}]}", Tuple.class);
+        Tuple tuple = objectMapper.readValue("{\"key\":\"key\",\"type\":\"string\",\"value\":\"value\",\"metadata\":[{\"value\":\"metaVal\",\"key\":\"metaKey\"}]}", Tuple.class);
         assertEquals("key", tuple.getKey());
         assertEquals("value", tuple.getValue());
         assertEquals(1, tuple.getMetadata().size());
@@ -53,8 +53,5 @@ public class TupleDeserializerTest {
         assertEquals("metaKey", entrySet.iterator().next().getKey());
         assertEquals("metaVal", entrySet.iterator().next().getValue());
     }
-
-
-
 }
 

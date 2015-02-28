@@ -41,7 +41,7 @@ public class TupleSerializerTest {
     public void testSerialization_withMetadata() throws Exception {
         Tuple tuple = new Tuple("key", "value", ImmutableMap.of("metaKey", "metaVal"));
         String json = objectMapper.writeValueAsString(tuple);
-        assertEquals(json, "{\"key\":\"key\",\"type\":\"string\",\"value\":\"value\",\"metadata\":[{\"value\":\"metaVal\",\"type\":\"string\",\"key\":\"metaKey\"}]}");
+        assertEquals(json, "{\"key\":\"key\",\"type\":\"string\",\"value\":\"value\",\"metadata\":[{\"value\":\"metaVal\",\"key\":\"metaKey\"}]}");
     }
 
 }

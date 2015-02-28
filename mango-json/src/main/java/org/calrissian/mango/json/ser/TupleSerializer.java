@@ -48,11 +48,10 @@ public class TupleSerializer extends JsonSerializer<Tuple> {
 
             jsonGenerator.writeArrayFieldStart("metadata");
 
-            Set<Map.Entry<String,Object>> entries = tuple.getMetadata().entrySet();
-            for(Map.Entry<String,Object> objectEntry : entries) {
+            Set<Map.Entry<String,String>> entries = tuple.getMetadata().entrySet();
+            for(Map.Entry<String,String> objectEntry : entries) {
                 jsonGenerator.writeStartObject();
-                jsonGenerator.writeObjectField("value", typeContext.encode(objectEntry.getValue()));
-                jsonGenerator.writeObjectField("type", typeContext.getAlias(objectEntry.getValue()));
+                jsonGenerator.writeObjectField("value", objectEntry.getValue());
                 jsonGenerator.writeObjectField("key", objectEntry.getKey());
                 jsonGenerator.writeEndObject();
             }

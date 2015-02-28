@@ -42,8 +42,7 @@ import static org.calrissian.mango.json.util.store.JsonUtil.nodeToObject;
  * <b>NOTE:</b> It's important that the flatting/re-expansion only be done through these methods.
  * Metadata is added to various tuples in the flattened representation which acts as a guide for
  * re-expansion. If this metadata is missing or tampered with externally, this class will yield
- * unexpected results. Trying to re-expand a {@link org.calrissian.mango.domain.TupleStore} which has not been previously
- * flattened using these methods will throw an {@link IllegalStateException}.
+ * unexpected results.
  *
  */
 public class JsonTupleStore {
@@ -64,15 +63,15 @@ public class JsonTupleStore {
      */
     public static Collection<Tuple> fromJson(ObjectNode object) throws IOException {
         Collection<Tuple> tuples = new HashSet<>();
-        convertJsonObject(tuples, object, "", 0, new HashMap<String, Object>());
+        convertJsonObject(tuples, object, "", 0, new HashMap<String, String>());
 
         return tuples;
     }
 
     /**
-     * Flattens a raw nested json string representation into a collection of tuples that
-     * can be used to construct a {@link org.calrissian.mango.domain.TupleStore} implementation. This method has the
-     * same effect as {@link #fromJson(com.fasterxml.jackson.databind.node.ObjectNode)}, except it takes a json as a string
+     * Flattens a raw nested json string representation into a collection of tuples that can be used to construct a
+     * {@link org.calrissian.mango.domain.TupleStore} implementation. This method has the same effect as
+     * {@link #fromJson(com.fasterxml.jackson.databind.node.ObjectNode)}, except it takes a json as a string
      * and a configured object mapper instance.
      * @param json
      * @param objectMapper
@@ -99,7 +98,7 @@ public class JsonTupleStore {
     public static Collection<Tuple> fromMap(Map<String,Object> map) {
         checkNotNull(map);
         Collection<Tuple> tuples = new HashSet<>();
-        convertObject(tuples, map, "", 0, new HashMap<String, Object>());
+        convertObject(tuples, map, "", 0, new HashMap<String, String>());
         return tuples;
     }
 
@@ -121,7 +120,7 @@ public class JsonTupleStore {
      * the same).
      *
      * NOTE: It is possible that this method could fail in the case where tuples were added to a tuple collection
-     * which changed a primitive type to a container type, or vice versa.
+     * which changed from a primitive type to a container type, from one container type to another, or vice versa.
      * @param tupleCollection
      * @return
      */
@@ -214,7 +213,7 @@ public class JsonTupleStore {
         }
     }
 
-    private static void convertJsonObject(Collection<Tuple> tuples, JsonNode object,  String intialKey, int nestedLevel, Map<String, Object> metadata) {
+    private static void convertJsonObject(Collection<Tuple> tuples, JsonNode object,  String intialKey, int nestedLevel, Map<String, String> metadata) {
 
         Iterator<Map.Entry<String,JsonNode>> fields = object.fields();
         while(fields.hasNext()) {
@@ -234,9 +233,9 @@ public class JsonTupleStore {
         }
     }
 
-    private static void convertJsonArray(Collection<Tuple> tuples, JsonNode jsonArray, String intialKey, int nestedLevel, Map<String, Object> metadata) {
+    private static void convertJsonArray(Collection<Tuple> tuples, JsonNode jsonArray, String intialKey, int nestedLevel, Map<String, String> metadata) {
 
-        Map<String,Object> map = new HashMap<>(metadata);
+        Map<String,String> map = new HashMap<>(metadata);
         for(int i = 0; i < jsonArray.size(); i++) {
 
             JsonNode obj = jsonArray.get(i);
@@ -256,7 +255,7 @@ public class JsonTupleStore {
     }
 
 
-    private static void convertObject(Collection<Tuple> tuples, Map<String, Object> object, String intialKey, int nestedLevel, Map<String, Object> metadata) {
+    private static void convertObject(Collection<Tuple> tuples, Map<String, Object> object, String intialKey, int nestedLevel, Map<String, String> metadata) {
 
         Iterable<Map.Entry<String,Object>> fields = object.entrySet();
         for(Map.Entry<String, Object> entry : fields) {
@@ -275,9 +274,9 @@ public class JsonTupleStore {
         }
     }
 
-    private static void convertIterable(Collection<Tuple> tuples, Iterable<Object> jsonArray, String intialKey, int nestedLevel, Map<String, Object> metadata) {
+    private static void convertIterable(Collection<Tuple> tuples, Iterable<Object> jsonArray, String intialKey, int nestedLevel, Map<String, String> metadata) {
 
-        Map<String,Object> map = new HashMap<>(metadata);
+        Map<String,String> map = new HashMap<>(metadata);
         int count = 0;
         for(Object obj : jsonArray) {
 
