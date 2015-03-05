@@ -25,7 +25,7 @@ import static java.lang.Integer.parseInt;
 
 /**
  * A simple utility class for dealing with setting/getting of the metadata entries for flattening
- * and re-expanding nested json trees to and from {@link org.calrissian.mango.domain.TupleStore} objects.
+ * and re-expanding nested json trees to and from {@link org.calrissian.mango.domain.AttributeStore} objects.
  */
 class JsonMetadata {
 

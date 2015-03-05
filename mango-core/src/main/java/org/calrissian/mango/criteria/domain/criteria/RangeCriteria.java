@@ -15,8 +15,8 @@
  */
 package org.calrissian.mango.criteria.domain.criteria;
 
-import org.calrissian.mango.domain.Tuple;
-import org.calrissian.mango.domain.TupleStore;
+import org.calrissian.mango.domain.Attribute;
+import org.calrissian.mango.domain.AttributeStore;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -60,10 +60,10 @@ public class RangeCriteria extends ComparableKeyValueLeafCriteria {
     }
 
     @Override
-    public boolean apply(TupleStore obj) {
-        Collection<Tuple> tuples = obj.getAll(key);
+    public boolean apply(AttributeStore obj) {
+        Collection<Attribute> tuples = obj.getAll(key);
         if (tuples != null) {
-            for (Tuple tuple : tuples) {
+            for (Attribute tuple : tuples) {
                 int startCompare = comparator.compare(tuple.getValue(), value);
                 int endCompare = comparator.compare(tuple.getValue(), end);
                 return startCompare >= 0 && endCompare <= 0;

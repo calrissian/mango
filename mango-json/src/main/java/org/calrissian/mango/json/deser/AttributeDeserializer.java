@@ -20,23 +20,23 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
-import org.calrissian.mango.domain.Tuple;
+import org.calrissian.mango.domain.Attribute;
 import org.calrissian.mango.types.TypeRegistry;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TupleDeserializer extends JsonDeserializer<Tuple> {
+public class AttributeDeserializer extends JsonDeserializer<Attribute> {
 
     private final TypeRegistry<String> typeRegistry;
 
-    public TupleDeserializer(TypeRegistry<String> typeRegistry) {
+    public AttributeDeserializer(TypeRegistry<String> typeRegistry) {
         this.typeRegistry = typeRegistry;
     }
 
     @Override
-    public Tuple deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+    public Attribute deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         JsonNode root = jsonParser.getCodec().readTree(jsonParser);
         String key = root.get("key").asText();
         Object value = null;
@@ -59,7 +59,7 @@ public class TupleDeserializer extends JsonDeserializer<Tuple> {
             }
         }
 
-        return new Tuple(key, value, metadata);
+        return new Attribute(key, value, metadata);
 
     }
 }

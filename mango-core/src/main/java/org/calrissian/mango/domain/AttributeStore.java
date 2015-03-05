@@ -19,33 +19,33 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Set;
 
-public interface TupleStore extends Serializable {
+public interface AttributeStore extends Serializable {
 
     /**
      * Puts a single tuple in the current data store
      */
-    void put(Tuple tuple);
+    void put(Attribute attribute);
 
     /**
-     * Adds all the given getTuples to the current data store
+     * Adds all the given getAttributes to the current data store
      */
-    void putAll(Iterable<Tuple> tuples);
+    void putAll(Iterable<Attribute> attributes);
 
     /**
-     * Retrieves all the getTuples.
+     * Retrieves all the getAttributes.
      */
-    Collection<Tuple> getTuples();
+    Collection<Attribute> getAttributes();
 
     /**
      * Retrieves all the tuples for the specified key.
      */
-    Collection<Tuple> getAll(String key);
+    Collection<Attribute> getAll(String key);
 
     /**
      * Retrieves the first tuple returned for the specified key. This method assumes a single-valued key.
      * Note that multi-vaued keys may give undeterministic results.
      */
-    <T> Tuple<T> get(String key);
+    <T> Attribute<T> get(String key);
 
     /**
      * Returns the keys in the current object
@@ -60,19 +60,19 @@ public interface TupleStore extends Serializable {
     /**
      * Removes the specified tuple
      */
-    <T> Tuple<T> remove(Tuple<T> t);
+    <T> Attribute<T> remove(Attribute<T> t);
 
     /**
      * Removes the first tuple belonging to the specified key. This method assumed single-valued key
      */
-    <T> Tuple<T> remove(String key);
+    <T> Attribute<T> remove(String key);
 
     /**
      * Revoves all the tuples with the given key.
      */
-    Collection<Tuple> removeAll(String key);
+    Collection<Attribute> removeAll(String key);
 
-    Collection<Tuple> removeAll(Collection<Tuple> tuples);
+    Collection<Attribute> removeAll(Collection<Attribute> tuples);
 
     /**
      * Returns the size of the tuplestore. This should be a constant-time operation

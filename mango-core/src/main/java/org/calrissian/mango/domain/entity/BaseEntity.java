@@ -15,7 +15,7 @@
  */
 package org.calrissian.mango.domain.entity;
 
-import org.calrissian.mango.domain.BaseTupleStore;
+import org.calrissian.mango.domain.BaseAttributeStore;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.util.UUID.randomUUID;
@@ -23,7 +23,7 @@ import static java.util.UUID.randomUUID;
 /**
  * Default implementation of {@link Entity}.
  */
-public class BaseEntity extends BaseTupleStore implements Entity {
+public class BaseEntity extends BaseAttributeStore implements Entity {
 
     private final String id;
     private final String type;
@@ -50,7 +50,7 @@ public class BaseEntity extends BaseTupleStore implements Entity {
      */
     public BaseEntity(Entity entity) {
         this(checkNotNull(entity).getType(), entity.getId());
-        putAll(entity.getTuples());
+        putAll(entity.getAttributes());
     }
 
     /**
@@ -72,7 +72,7 @@ public class BaseEntity extends BaseTupleStore implements Entity {
         return "BaseEntity{" +
                 "id='" + id + '\'' +
                 ", type='" + type + '\'' +
-                ", tuples='" + getTuples() + '\'' +
+                ", tuples='" + getAttributes() + '\'' +
                 '}';
     }
 

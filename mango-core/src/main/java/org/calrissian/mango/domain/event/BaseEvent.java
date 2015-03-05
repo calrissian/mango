@@ -67,7 +67,7 @@ public class BaseEvent extends BaseEntity implements Event {
      */
     public BaseEvent(Event event) {
         this(event.getType(), event.getId(), event.getTimestamp());
-        putAll(event.getTuples());
+        putAll(event.getAttributes());
     }
 
     /**
@@ -103,7 +103,7 @@ public class BaseEvent extends BaseEntity implements Event {
                 "type='" + getType() + '\'' +
                 ", id='" + getId() + '\'' +
                 ", timestamp=" + timestamp +
-                ", tuples=" + getTuples() +
+                ", tuples=" + getAttributes() +
                 '}';
     }
 }

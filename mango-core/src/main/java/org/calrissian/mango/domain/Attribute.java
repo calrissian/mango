@@ -29,7 +29,7 @@ import static java.util.Collections.unmodifiableSet;
 /**
  * A value class representing a key/value pair with metadata. This class is immutable.
  */
-public class Tuple<T> implements Serializable {
+public class Attribute<T> implements Serializable {
 
     protected final String key;
     protected final T value;
@@ -40,11 +40,11 @@ public class Tuple<T> implements Serializable {
      */
     protected final Map<String,String> metadata;
 
-    public Tuple(String key, T value) {
+    public Attribute(String key, T value) {
         this(key, value, Collections.<String,String>emptyMap());
     }
 
-    public Tuple(String key, T value, Map<String,String> metadata) {
+    public Attribute(String key, T value, Map<String, String> metadata) {
         checkNotNull(key);
         checkNotNull(value);
         checkNotNull(metadata);
@@ -86,9 +86,9 @@ public class Tuple<T> implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Tuple)) return false;
+        if (!(o instanceof Attribute)) return false;
 
-        Tuple tuple = (Tuple) o;
+        Attribute tuple = (Attribute) o;
 
         if (!key.equals(tuple.key)) return false;
         if (!metadata.equals(tuple.metadata)) return false;

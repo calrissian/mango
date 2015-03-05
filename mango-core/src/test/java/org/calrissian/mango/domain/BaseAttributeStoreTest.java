@@ -25,24 +25,24 @@ import java.util.Collection;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 
-public class BaseTupleStoreTest {
+public class BaseAttributeStoreTest {
 
-    Tuple tuple1 = new Tuple("key1", "val1");
-    Tuple tuple2 = new Tuple("key1", "val2");
-    Tuple tuple3 = new Tuple("key2", "val2");
-    Tuple tuple4 = new Tuple("key3", "val3");
+    Attribute tuple1 = new Attribute("key1", "val1");
+    Attribute tuple2 = new Attribute("key1", "val2");
+    Attribute tuple3 = new Attribute("key2", "val2");
+    Attribute tuple4 = new Attribute("key3", "val3");
 
-    BaseTupleStore tupleCollection = new BaseTupleStore();
+    BaseAttributeStore tupleCollection = new BaseAttributeStore();
 
     @Before
     public void setup() {
-        tupleCollection.putAll(asList(new Tuple[]{tuple1, tuple2, tuple3, tuple4}));
+        tupleCollection.putAll(asList(new Attribute[]{tuple1, tuple2, tuple3, tuple4}));
     }
 
     @Test
     public void testRemoveAll_forManyTuples() {
 
-        Collection<Tuple> removed = tupleCollection.removeAll(asList(new Tuple[]{tuple2, tuple3}));
+        Collection<Attribute> removed = tupleCollection.removeAll(asList(new Attribute[]{tuple2, tuple3}));
         assertEquals(2, removed.size());
         assertEquals(tuple2, Iterables.get(removed, 0));
         assertEquals(tuple3, Iterables.get(removed, 1));
@@ -53,14 +53,14 @@ public class BaseTupleStoreTest {
 
     @Test
     public void testRemoveAll_singleTuple() {
-        Tuple removed = tupleCollection.remove(tuple1);
+        Attribute removed = tupleCollection.remove(tuple1);
         assertEquals(tuple1, removed);
         assertEquals(1, tupleCollection.getAll(tuple1.getKey()).size());
     }
 
     @Test
     public void testRemove_singleByKey() {
-        Tuple removed = tupleCollection.remove(tuple1.getKey());
+        Attribute removed = tupleCollection.remove(tuple1.getKey());
         assertEquals(removed, tuple1);
         assertEquals(1, tupleCollection.getAll(tuple2.getKey()).size());
     }

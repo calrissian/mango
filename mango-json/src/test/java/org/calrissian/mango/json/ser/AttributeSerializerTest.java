@@ -18,29 +18,29 @@ package org.calrissian.mango.json.ser;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
-import org.calrissian.mango.domain.Tuple;
+import org.calrissian.mango.domain.Attribute;
 import org.calrissian.mango.json.MangoModule;
 import org.junit.Test;
 
 import static org.calrissian.mango.types.SimpleTypeEncoders.SIMPLE_TYPES;
 import static org.junit.Assert.assertEquals;
 
-public class TupleSerializerTest {
+public class AttributeSerializerTest {
 
     private ObjectMapper objectMapper = new ObjectMapper()
             .registerModule(new MangoModule(SIMPLE_TYPES));
 
     @Test
     public void testBasicSerialization() throws Exception {
-        Tuple tuple = new Tuple("key", "value");
-        String json = objectMapper.writeValueAsString(tuple);
+        Attribute attribute = new Attribute("key", "value");
+        String json = objectMapper.writeValueAsString(attribute);
         assertEquals(json, "{\"key\":\"key\",\"type\":\"string\",\"value\":\"value\",\"metadata\":[]}");
     }
 
     @Test
     public void testSerialization_withMetadata() throws Exception {
-        Tuple tuple = new Tuple("key", "value", ImmutableMap.of("metaKey", "metaVal"));
-        String json = objectMapper.writeValueAsString(tuple);
+        Attribute attribute = new Attribute("key", "value", ImmutableMap.of("metaKey", "metaVal"));
+        String json = objectMapper.writeValueAsString(attribute);
         assertEquals(json, "{\"key\":\"key\",\"type\":\"string\",\"value\":\"value\",\"metadata\":[{\"value\":\"metaVal\",\"key\":\"metaKey\"}]}");
     }
 

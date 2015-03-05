@@ -29,63 +29,62 @@ import static java.util.Collections.unmodifiableCollection;
  * A base tuple collection providing reusable implementations for interacting with a tuple store backed by
  * a hash map with sets in the value representing a multimap.
  */
-public class BaseTupleStore implements TupleStore {
+public class BaseAttributeStore implements AttributeStore {
 
-    private Multimap<String, Tuple> tuples = ArrayListMultimap.create();
+    private Multimap<String, Attribute> attributes = ArrayListMultimap.create();
 
-    public void put(Tuple tuple) {
-        checkNotNull(tuple);
-        checkNotNull(tuple.getKey());
+    public void put(Attribute attribute) {
+        checkNotNull(attribute);
+        checkNotNull(attribute.getKey());
 
-        tuples.put(tuple.getKey(), tuple);
+        attributes.put(attribute.getKey(), attribute);
     }
 
-    public void putAll(Iterable<Tuple> tuples) {
-        checkNotNull(tuples);
-        for (Tuple tuple : tuples)
+    public void putAll(Iterable<Attribute> attributes) {
+        checkNotNull(attributes);
+        for (Attribute tuple : attributes)
             put(tuple);
     }
 
-
     /**
-     * Returns all the getTuples set on the current entity
+     * Returns all the getAttributes set on the current entity
      */
-    public Collection<Tuple> getTuples() {
-        return unmodifiableCollection(tuples.values());
+    public Collection<Attribute> getAttributes() {
+        return unmodifiableCollection(attributes.values());
     }
 
     /**
      * A get operation for multi-valued keys
      */
-    public Collection<Tuple> getAll(String key) {
+    public Collection<Attribute> getAll(String key) {
         checkNotNull(key);
-        return tuples.get(key);
+        return attributes.get(key);
     }
 
     /**
      * A get operation for single-valued keys
      */
-    public <T> Tuple<T> get(String key) {
-        return tuples.containsKey(key) ? tuples.get(key).iterator().next() : null;
+    public <T> Attribute<T> get(String key) {
+        return attributes.containsKey(key) ? attributes.get(key).iterator().next() : null;
     }
 
     @Override
     public Set<String> keys() {
-        return tuples.keySet();
+        return attributes.keySet();
     }
 
     @Override
     public boolean containsKey(String key) {
-        return tuples.containsKey(key);
+        return attributes.containsKey(key);
     }
 
     @Override
-    public <T> Tuple<T> remove(Tuple<T> t) {
+    public <T> Attribute<T> remove(Attribute<T> t) {
         checkNotNull(t);
         checkNotNull(t.getKey());
 
-        if (tuples.containsKey(t.getKey())) {
-            Collection<Tuple> tupelSet = tuples.get(t.getKey());
+        if (attributes.containsKey(t.getKey())) {
+            Collection<Attribute> tupelSet = attributes.get(t.getKey());
             if(tupelSet.remove(t))
                 return t;
         }
@@ -93,12 +92,12 @@ public class BaseTupleStore implements TupleStore {
     }
 
     @Override
-    public <T> Tuple<T> remove(String key) {
+    public <T> Attribute<T> remove(String key) {
         checkNotNull(key);
-        if (tuples.containsKey(key)) {
-            Collection<Tuple> tupleSet = tuples.get(key);
-            Tuple t = tupleSet.size() > 0 ? tupleSet.iterator().next() : null;
-            if(t != null && tuples.get(key).remove(t))
+        if (attributes.containsKey(key)) {
+            Collection<Attribute> attrSet = attributes.get(key);
+            Attribute t = attrSet.size() > 0 ? attrSet.iterator().next() : null;
+            if(t != null && attributes.get(key).remove(t))
                 return t;
         }
 
@@ -106,17 +105,17 @@ public class BaseTupleStore implements TupleStore {
     }
 
     @Override
-    public Collection<Tuple> removeAll(String key){
+    public Collection<Attribute> removeAll(String key){
         checkNotNull(key);
-        return tuples.removeAll(key);
+        return attributes.removeAll(key);
     }
 
 
     @Override
-    public Collection<Tuple> removeAll(Collection<Tuple> tuples) {
-        checkNotNull(tuples);
-        Collection<Tuple> removedTuples = new ArrayList<>();
-        for (Tuple tuple : tuples)
+    public Collection<Attribute> removeAll(Collection<Attribute> attributes) {
+        checkNotNull(attributes);
+        Collection<Attribute> removedTuples = new ArrayList<>();
+        for (Attribute tuple : attributes)
             removedTuples.add(remove(tuple));
 
         return removedTuples;
@@ -125,18 +124,18 @@ public class BaseTupleStore implements TupleStore {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof BaseTupleStore)) return false;
+        if (!(o instanceof BaseAttributeStore)) return false;
 
-        BaseTupleStore that = (BaseTupleStore) o;
+        BaseAttributeStore that = (BaseAttributeStore) o;
 
-        if (!tuples.equals(that.tuples)) return false;
+        if (!attributes.equals(that.attributes)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return tuples.hashCode();
+        return attributes.hashCode();
     }
 
     /**
@@ -145,6 +144,6 @@ public class BaseTupleStore implements TupleStore {
      * @return
      */
     public int size() {
-        return tuples.size();
+        return attributes.size();
     }
 }
