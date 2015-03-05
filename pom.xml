@@ -24,7 +24,6 @@ limitations under the License.
   <description>Mango provides common reusable utilities.</description>
   <modules>
     <module>mango-core</module>
-    <module>mango-jms</module>
     <module>mango-json</module>
   </modules>
   <properties>
