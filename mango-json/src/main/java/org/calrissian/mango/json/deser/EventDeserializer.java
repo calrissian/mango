@@ -17,7 +17,6 @@ package org.calrissian.mango.json.deser;
 
 
 import com.fasterxml.jackson.databind.JsonNode;
-import org.calrissian.mango.domain.entity.EntityBuilder;
 import org.calrissian.mango.domain.event.BaseEvent;
 import org.calrissian.mango.domain.event.EventBuilder;
 
@@ -39,7 +38,7 @@ public class EventDeserializer extends BaseAttributeStoreDeserializer<BaseEvent,
     }
 
     @Override
-    public BaseEvent build(EntityBuilder entityBuilder) {
+    public BaseEvent build(EventBuilder entityBuilder) {
         return (BaseEvent) entityBuilder.build();
     }
 

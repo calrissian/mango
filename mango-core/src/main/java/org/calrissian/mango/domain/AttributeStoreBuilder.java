@@ -13,29 +13,15 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-package org.calrissian.mango.domain.entity;
+package org.calrissian.mango.domain;
 
-import com.google.common.base.Preconditions;
-import org.calrissian.mango.domain.BaseAttributeStoreBuilder;
+import java.util.Map;
 
-public class EntityBuilder extends BaseAttributeStoreBuilder<Entity, EntityBuilder> {
+public interface AttributeStoreBuilder<T> {
 
-    protected String type;
-    protected String id;
+    public AttributeStoreBuilder attr(String key, Object val);
+    public AttributeStoreBuilder attr(String key, Object val, Map<String,String> meta);
+    public AttributeStoreBuilder attr(Attribute attribute);
 
-
-    public EntityBuilder(String type, String id) {
-
-        super();
-        Preconditions.checkNotNull(type);
-        Preconditions.checkNotNull(id);
-        this.type = type;
-        this.id = id;
-    }
-
-
-
-    public Entity build() {
-        return new BaseEntity(type, id, attributes);
-    }
+    public T build();
 }

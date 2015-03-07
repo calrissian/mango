@@ -15,14 +15,23 @@
 */
 package org.calrissian.mango.domain.event;
 
-import org.calrissian.mango.domain.entity.EntityBuilder;
+import com.google.common.base.Preconditions;
+import org.calrissian.mango.domain.BaseAttributeStoreBuilder;
 
-public class EventBuilder extends EntityBuilder {
+public class EventBuilder extends BaseAttributeStoreBuilder<Event, EventBuilder> {
 
-    private long timestamp;
+    protected String type;
+    protected String id;
+
+
+    protected long timestamp;
 
     public EventBuilder(String type, String id, long timestamp) {
-        super(type, id);
+        super();
+        Preconditions.checkNotNull(type);
+        Preconditions.checkNotNull(id);
+        this.type = type;
+        this.id = id;
         this.timestamp = timestamp;
     }
 
