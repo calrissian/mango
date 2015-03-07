@@ -19,7 +19,10 @@ import java.io.Serializable;
 
 /**
  * Models a relationship to another entity.
+ *
+ * @Deprecated since 2.0.0, use EntityIndex instead
  */
+@Deprecated
 public class EntityRelationship extends EntityIndex implements Serializable {
 
 

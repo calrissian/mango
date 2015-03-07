@@ -16,8 +16,8 @@
 package org.calrissian.mango.types.encoders.simple;
 
 import com.google.common.base.Splitter;
-import org.calrissian.mango.domain.entity.EntityRelationship;
-import org.calrissian.mango.types.encoders.AbstractEntityRelationshipEncoder;
+import org.calrissian.mango.domain.entity.EntityIndex;
+import org.calrissian.mango.types.encoders.AbstractEntityIndexEncoder;
 import org.calrissian.mango.types.exception.TypeDecodingException;
 import org.calrissian.mango.types.exception.TypeEncodingException;
 
@@ -27,30 +27,26 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.lang.String.format;
 
-/**
- * Deprecated since 2.0.0, use EntityIndexEncoder instead
- */
-@Deprecated
-public class EntityRelationshipEncoder extends AbstractEntityRelationshipEncoder<String> {
+public class EntityIndexEncoder extends AbstractEntityIndexEncoder<String> {
     private static final long serialVersionUID = 1L;
 
     private static final String SCHEME = "entity://";
     private static final Splitter SPLITTER = Splitter.on('#');
 
     @Override
-    public String encode(EntityRelationship value) throws TypeEncodingException {
+    public String encode(EntityIndex value) throws TypeEncodingException {
         checkNotNull(value, "Null values are not allowed");
         return format("%s%s#%s", SCHEME, value.getType(), value.getId());
     }
 
     @Override
-    public EntityRelationship decode(String value) throws TypeDecodingException {
+    public EntityIndex decode(String value) throws TypeDecodingException {
         checkNotNull(value, "Null values are not allowed");
         checkArgument(value.startsWith(SCHEME) && value.contains("#"), "The value is not a valid encoding");
 
         String rel = value.substring(SCHEME.length(), value.length());
         List<String> parts = SPLITTER.splitToList(rel);
 
-        return new EntityRelationship(parts.get(0), parts.get(1));
+        return new EntityIndex(parts.get(0), parts.get(1));
     }
 }
