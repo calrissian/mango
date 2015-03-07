@@ -33,10 +33,10 @@ public class LessThanCriteria extends ComparableKeyValueLeafCriteria {
 
     @Override
     public boolean apply(AttributeStore obj) {
-        Collection<Attribute> tuples = obj.getAll(key);
-        if (tuples != null) {
-            for (Attribute tuple : tuples) {
-                if (comparator.compare(tuple.getValue(), value) < 0)
+        Collection<Attribute> attributes = obj.getAll(key);
+        if (attributes != null) {
+            for (Attribute attribute : attributes) {
+                if (comparator.compare(attribute.getValue(), value) < 0)
                     return true;
             }
         }

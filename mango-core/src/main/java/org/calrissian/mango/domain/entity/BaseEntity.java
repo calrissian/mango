@@ -85,7 +85,7 @@ public class BaseEntity extends BaseAttributeStore implements Entity {
         return "BaseEntity{" +
                 "id='" + id + '\'' +
                 ", type='" + type + '\'' +
-                ", tuples='" + getAttributes() + '\'' +
+                ", attributes='" + getAttributes() + '\'' +
                 '}';
     }
 

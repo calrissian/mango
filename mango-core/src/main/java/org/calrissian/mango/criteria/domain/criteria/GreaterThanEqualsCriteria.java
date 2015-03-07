@@ -34,10 +34,10 @@ public class GreaterThanEqualsCriteria extends ComparableKeyValueLeafCriteria {
 
     @Override
     public boolean apply(AttributeStore obj) {
-        Collection<Attribute> tuples = obj.getAll(key);
-        if (tuples != null) {
-            for (Attribute tuple : tuples) {
-                return comparator.compare(tuple.getValue(), value) >= 0;
+        Collection<Attribute> attributes = obj.getAll(key);
+        if (attributes != null) {
+            for (Attribute attribute : attributes) {
+                return comparator.compare(attribute.getValue(), value) >= 0;
             }
         }
 

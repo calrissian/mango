@@ -29,49 +29,49 @@ import static org.junit.Assert.assertEquals;
 
 public class BaseAttributeStoreTest {
 
-    Attribute tuple1 = new Attribute("key1", "val1");
-    Attribute tuple2 = new Attribute("key1", "val2");
-    Attribute tuple3 = new Attribute("key2", "val2");
-    Attribute tuple4 = new Attribute("key3", "val3");
+    Attribute attribute1 = new Attribute("key1", "val1");
+    Attribute attribute2 = new Attribute("key1", "val2");
+    Attribute attribute3 = new Attribute("key2", "val2");
+    Attribute attribute4 = new Attribute("key3", "val3");
 
     Multimap<String, Attribute> attributeMultimap = ArrayListMultimap.create();
 
-    BaseAttributeStore tupleCollection;
+    BaseAttributeStore attributeCollection;
 
     @Before
     public void setup() {
 
-        attributeMultimap.put(tuple1.getKey(), tuple1);
-        attributeMultimap.put(tuple2.getKey(), tuple2);
-        attributeMultimap.put(tuple3.getKey(), tuple3);
-        attributeMultimap.put(tuple4.getKey(), tuple4);
+        attributeMultimap.put(attribute1.getKey(), attribute1);
+        attributeMultimap.put(attribute2.getKey(), attribute2);
+        attributeMultimap.put(attribute3.getKey(), attribute3);
+        attributeMultimap.put(attribute4.getKey(), attribute4);
 
-        tupleCollection = new BaseAttributeStore(attributeMultimap);
+        attributeCollection = new BaseAttributeStore(attributeMultimap);
     }
 
     @Test
     public void testRemoveAll_forManyTuples() {
 
-        Collection<Attribute> removed = tupleCollection.removeAll(asList(new Attribute[]{tuple2, tuple3}));
+        Collection<Attribute> removed = attributeCollection.removeAll(asList(new Attribute[]{attribute2, attribute3}));
         assertEquals(2, removed.size());
-        assertEquals(tuple2, Iterables.get(removed, 0));
-        assertEquals(tuple3, Iterables.get(removed, 1));
-        assertEquals(1, tupleCollection.getAll(tuple2.getKey()).size());
-        assertEquals(0, tupleCollection.getAll(tuple3.getKey()).size());
+        assertEquals(attribute2, Iterables.get(removed, 0));
+        assertEquals(attribute3, Iterables.get(removed, 1));
+        assertEquals(1, attributeCollection.getAll(attribute2.getKey()).size());
+        assertEquals(0, attributeCollection.getAll(attribute3.getKey()).size());
     }
 
 
     @Test
     public void testRemoveAll_singleTuple() {
-        Attribute removed = tupleCollection.remove(tuple1);
-        assertEquals(tuple1, removed);
-        assertEquals(1, tupleCollection.getAll(tuple1.getKey()).size());
+        Attribute removed = attributeCollection.remove(attribute1);
+        assertEquals(attribute1, removed);
+        assertEquals(1, attributeCollection.getAll(attribute1.getKey()).size());
     }
 
     @Test
     public void testRemove_singleByKey() {
-        Attribute removed = tupleCollection.remove(tuple1.getKey());
-        assertEquals(removed, tuple1);
-        assertEquals(1, tupleCollection.getAll(tuple2.getKey()).size());
+        Attribute removed = attributeCollection.remove(attribute1.getKey());
+        assertEquals(removed, attribute1);
+        assertEquals(1, attributeCollection.getAll(attribute2.getKey()).size());
     }
 }

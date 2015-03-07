@@ -35,7 +35,7 @@ public class Attribute<T> implements Serializable {
     protected final T value;
 
     /**
-     * Metadata allows the tuple to be extensible so that different services can read different properties without
+     * Metadata allows the attribute to be extensible so that different services can read different properties without
      * the need for inheritance.
      */
     protected final Map<String,String> metadata;
@@ -70,7 +70,7 @@ public class Attribute<T> implements Serializable {
     }
 
     /**
-     * Gets a value for the metadata key for the current tuple.
+     * Gets a value for the metadata key for the current attribute.
      */
     public String getMetadataValue(String key) {
         return metadata.get(key);
@@ -88,11 +88,11 @@ public class Attribute<T> implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Attribute)) return false;
 
-        Attribute tuple = (Attribute) o;
+        Attribute attribute = (Attribute) o;
 
-        if (!key.equals(tuple.key)) return false;
-        if (!metadata.equals(tuple.metadata)) return false;
-        if (!value.equals(tuple.value)) return false;
+        if (!key.equals(attribute.key)) return false;
+        if (!metadata.equals(attribute.metadata)) return false;
+        if (!value.equals(attribute.value)) return false;
 
         return true;
     }

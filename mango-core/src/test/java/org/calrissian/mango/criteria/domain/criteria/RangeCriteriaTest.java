@@ -33,7 +33,7 @@ public class RangeCriteriaTest {
 
         Entity entity = new BaseEntity("type", "id");
 
-        // first test without tuple existing
+        // first test without attribute existing
         assertFalse(criteria.apply(entity));
 
         entity.put(new Attribute("key1", 11));

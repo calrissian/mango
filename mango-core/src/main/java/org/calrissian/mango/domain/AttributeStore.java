@@ -22,7 +22,7 @@ import java.util.Set;
 public interface AttributeStore extends Serializable {
 
     /**
-     * Puts a single tuple in the current data store
+     * Puts a single attribute in the current data store
      */
     void put(Attribute attribute);
 
@@ -37,12 +37,12 @@ public interface AttributeStore extends Serializable {
     Collection<Attribute> getAttributes();
 
     /**
-     * Retrieves all the tuples for the specified key.
+     * Retrieves all the attributes for the specified key.
      */
     Collection<Attribute> getAll(String key);
 
     /**
-     * Retrieves the first tuple returned for the specified key. This method assumes a single-valued key.
+     * Retrieves the first attribute returned for the specified key. This method assumes a single-valued key.
      * Note that multi-vaued keys may give undeterministic results.
      */
     <T> Attribute<T> get(String key);
@@ -53,29 +53,29 @@ public interface AttributeStore extends Serializable {
     Set<String> keys();
 
     /**
-     * Returns true of there exist tuples with the specified key
+     * Returns true of there exist attributes with the specified key
      */
     boolean containsKey(String key);
 
     /**
-     * Removes the specified tuple
+     * Removes the specified attribute
      */
     <T> Attribute<T> remove(Attribute<T> t);
 
     /**
-     * Removes the first tuple belonging to the specified key. This method assumed single-valued key
+     * Removes the first attribute belonging to the specified key. This method assumed single-valued key
      */
     <T> Attribute<T> remove(String key);
 
     /**
-     * Revoves all the tuples with the given key.
+     * Revoves all the attributes with the given key.
      */
     Collection<Attribute> removeAll(String key);
 
-    Collection<Attribute> removeAll(Collection<Attribute> tuples);
+    Collection<Attribute> removeAll(Collection<Attribute> attributes);
 
     /**
-     * Returns the size of the tuplestore. This should be a constant-time operation
+     * Returns the size of the attributestore. This should be a constant-time operation
      * @return
      */
     int size();

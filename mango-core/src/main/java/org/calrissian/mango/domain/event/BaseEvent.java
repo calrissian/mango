@@ -112,7 +112,7 @@ public class BaseEvent extends BaseEntity implements Event {
                 "type='" + getType() + '\'' +
                 ", id='" + getId() + '\'' +
                 ", timestamp=" + timestamp +
-                ", tuples=" + getAttributes() +
+                ", attributes=" + getAttributes() +
                 '}';
     }
 }

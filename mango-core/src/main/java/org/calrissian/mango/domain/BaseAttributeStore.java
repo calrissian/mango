@@ -26,7 +26,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static java.util.Collections.unmodifiableCollection;
 
 /**
- * A base tuple collection providing reusable implementations for interacting with a tuple store backed by
+ * A base attribute collection providing reusable implementations for interacting with a attribute store backed by
  * a hash map with sets in the value representing a multimap.
  */
 public class BaseAttributeStore implements AttributeStore {
@@ -48,8 +48,8 @@ public class BaseAttributeStore implements AttributeStore {
     @Deprecated
     public void putAll(Iterable<Attribute> attributes) {
         checkNotNull(attributes);
-        for (Attribute tuple : attributes)
-            put(tuple);
+        for (Attribute attribute : attributes)
+            put(attribute);
     }
 
     /**
@@ -125,8 +125,8 @@ public class BaseAttributeStore implements AttributeStore {
     public Collection<Attribute> removeAll(Collection<Attribute> attributes) {
         checkNotNull(attributes);
         Collection<Attribute> removedTuples = new ArrayList<>();
-        for (Attribute tuple : attributes)
-            removedTuples.add(remove(tuple));
+        for (Attribute attribute : attributes)
+            removedTuples.add(remove(attribute));
 
         return removedTuples;
     }
@@ -149,7 +149,7 @@ public class BaseAttributeStore implements AttributeStore {
     }
 
     /**
-     * Returns the size of the current tuple store. Since it's backed by a MultiMap, size() is a
+     * Returns the size of the current attribute store. Since it's backed by a MultiMap, size() is a
      * constant-time operation.
      * @return
      */

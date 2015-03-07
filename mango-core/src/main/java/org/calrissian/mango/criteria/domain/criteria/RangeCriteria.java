@@ -61,11 +61,11 @@ public class RangeCriteria extends ComparableKeyValueLeafCriteria {
 
     @Override
     public boolean apply(AttributeStore obj) {
-        Collection<Attribute> tuples = obj.getAll(key);
-        if (tuples != null) {
-            for (Attribute tuple : tuples) {
-                int startCompare = comparator.compare(tuple.getValue(), value);
-                int endCompare = comparator.compare(tuple.getValue(), end);
+        Collection<Attribute> attributes = obj.getAll(key);
+        if (attributes != null) {
+            for (Attribute attribute : attributes) {
+                int startCompare = comparator.compare(attribute.getValue(), value);
+                int endCompare = comparator.compare(attribute.getValue(), end);
                 return startCompare >= 0 && endCompare <= 0;
             }
         }

@@ -30,10 +30,10 @@ public class EqualsCriteria extends ComparableKeyValueLeafCriteria {
     @Override
     public boolean apply(AttributeStore obj) {
 
-        Collection<Attribute> tuples = obj.getAll(key);
-        if (tuples != null) {
-            for (Attribute tuple : tuples) {
-                if (comparator.compare(value, tuple.getValue()) == 0)
+        Collection<Attribute> attributes = obj.getAll(key);
+        if (attributes != null) {
+            for (Attribute attribute : attributes) {
+                if (comparator.compare(value, attribute.getValue()) == 0)
                     return true;
             }
         }
