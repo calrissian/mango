@@ -18,6 +18,8 @@ package org.calrissian.mango.domain.event;
 import com.google.common.base.Preconditions;
 import org.calrissian.mango.domain.BaseAttributeStoreBuilder;
 
+import java.util.UUID;
+
 public class EventBuilder extends BaseAttributeStoreBuilder<Event, EventBuilder> {
 
     protected String type;
@@ -33,6 +35,14 @@ public class EventBuilder extends BaseAttributeStoreBuilder<Event, EventBuilder>
         this.type = type;
         this.id = id;
         this.timestamp = timestamp;
+    }
+
+    public EventBuilder(String type, String id) {
+        this(type, id, System.currentTimeMillis());
+    }
+
+    public EventBuilder(String type) {
+        this(type, UUID.randomUUID().toString(), System.currentTimeMillis());
     }
 
     @Override
