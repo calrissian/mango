@@ -16,6 +16,8 @@
 package org.calrissian.mango.domain.event;
 
 
+import com.google.common.collect.Multimap;
+import org.calrissian.mango.domain.Attribute;
 import org.calrissian.mango.domain.entity.BaseEntity;
 
 import static java.lang.System.currentTimeMillis;
@@ -39,6 +41,7 @@ public class BaseEvent extends BaseEntity implements Event {
     /**
      * New event with ID. Timestamp defaults to current time.
      */
+    @Deprecated
     public BaseEvent(String type, String id) {
         this(type, id, currentTimeMillis());
     }
@@ -52,6 +55,7 @@ public class BaseEvent extends BaseEntity implements Event {
     /**
      * New store entry with ID and a timestamp
      */
+    @Deprecated
     public BaseEvent(String type, String id, long timestamp) {
         super(type, id);
         this.timestamp = timestamp;
@@ -60,6 +64,11 @@ public class BaseEvent extends BaseEntity implements Event {
     @Deprecated
     public BaseEvent(String id, long timestamp) {
         this("", id, timestamp);
+    }
+
+    BaseEvent(String type, String id, long timestamp, Multimap<String, Attribute> attributes) {
+        super(type, id, attributes);
+        this.timestamp = timestamp;
     }
 
     /**

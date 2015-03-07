@@ -33,6 +33,11 @@ public class BaseAttributeStore implements AttributeStore {
 
     private Multimap<String, Attribute> attributes = ArrayListMultimap.create();
 
+    protected BaseAttributeStore(Multimap<String, Attribute> attributes) {
+        this.attributes = attributes;
+    }
+
+    @Deprecated
     public void put(Attribute attribute) {
         checkNotNull(attribute);
         checkNotNull(attribute.getKey());
@@ -40,6 +45,7 @@ public class BaseAttributeStore implements AttributeStore {
         attributes.put(attribute.getKey(), attribute);
     }
 
+    @Deprecated
     public void putAll(Iterable<Attribute> attributes) {
         checkNotNull(attributes);
         for (Attribute tuple : attributes)
@@ -78,6 +84,7 @@ public class BaseAttributeStore implements AttributeStore {
         return attributes.containsKey(key);
     }
 
+    @Deprecated
     @Override
     public <T> Attribute<T> remove(Attribute<T> t) {
         checkNotNull(t);
@@ -91,6 +98,7 @@ public class BaseAttributeStore implements AttributeStore {
         return null;
     }
 
+    @Deprecated
     @Override
     public <T> Attribute<T> remove(String key) {
         checkNotNull(key);
@@ -104,6 +112,7 @@ public class BaseAttributeStore implements AttributeStore {
         return null;
     }
 
+    @Deprecated
     @Override
     public Collection<Attribute> removeAll(String key){
         checkNotNull(key);
@@ -111,6 +120,7 @@ public class BaseAttributeStore implements AttributeStore {
     }
 
 
+    @Deprecated
     @Override
     public Collection<Attribute> removeAll(Collection<Attribute> attributes) {
         checkNotNull(attributes);

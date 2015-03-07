@@ -107,7 +107,7 @@ public class Attribute<T> implements Serializable {
 
     @Override
     public String toString() {
-        return "Tuple{" +
+        return "Attribute{" +
                 "key='" + key + '\'' +
                 ", value=" + value +
                 ", metadata=" + metadata +

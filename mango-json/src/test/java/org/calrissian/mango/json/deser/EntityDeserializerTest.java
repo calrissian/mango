@@ -18,8 +18,8 @@ package org.calrissian.mango.json.deser;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.calrissian.mango.domain.Attribute;
-import org.calrissian.mango.domain.entity.BaseEntity;
 import org.calrissian.mango.domain.entity.Entity;
+import org.calrissian.mango.domain.entity.EntityBuilder;
 import org.calrissian.mango.json.MangoModule;
 import org.junit.Test;
 
@@ -36,8 +36,7 @@ public class EntityDeserializerTest {
     @Test
     public void testBasicDeserialization() throws Exception {
 
-        Entity entity = new BaseEntity("type", "id");
-        entity.put(new Attribute("key", "value"));
+        Entity entity = new EntityBuilder("type", "id").attr(new Attribute("key", "value")).build();
 
         String json = objectMapper.writeValueAsString(entity);
 

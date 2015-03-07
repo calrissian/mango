@@ -16,7 +16,9 @@
 package org.calrissian.mango.domain;
 
 
+import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Multimap;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,11 +34,19 @@ public class BaseAttributeStoreTest {
     Attribute tuple3 = new Attribute("key2", "val2");
     Attribute tuple4 = new Attribute("key3", "val3");
 
-    BaseAttributeStore tupleCollection = new BaseAttributeStore();
+    Multimap<String, Attribute> attributeMultimap = ArrayListMultimap.create();
+
+    BaseAttributeStore tupleCollection;
 
     @Before
     public void setup() {
-        tupleCollection.putAll(asList(new Attribute[]{tuple1, tuple2, tuple3, tuple4}));
+
+        attributeMultimap.put(tuple1.getKey(), tuple1);
+        attributeMultimap.put(tuple2.getKey(), tuple2);
+        attributeMultimap.put(tuple3.getKey(), tuple3);
+        attributeMultimap.put(tuple4.getKey(), tuple4);
+
+        tupleCollection = new BaseAttributeStore(attributeMultimap);
     }
 
     @Test

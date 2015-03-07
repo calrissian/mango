@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.calrissian.mango.domain.Attribute;
 import org.calrissian.mango.domain.AttributeStore;
+import org.calrissian.mango.domain.entity.EntityBuilder;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -30,25 +31,27 @@ import java.util.Map;
 
 import static com.google.common.collect.Iterables.concat;
 
-public abstract class BaseAttributeStoreDeserializer<T extends AttributeStore> extends JsonDeserializer<T> {
+public abstract class BaseAttributeStoreDeserializer<T extends AttributeStore, B extends EntityBuilder> extends JsonDeserializer<T> {
 
     private static final TypeReference TR = new TypeReference<Map<String, Collection<Attribute>>>(){};
     @Override
     public T deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         JsonNode root = jsonParser.getCodec().readTree(jsonParser);
-        T attributeStore = deserialize(root);
 
+        B attributeStoreBuilder = deserialize(root);
         ObjectNode attributesObject = (ObjectNode) root.get("attributes");
 
         Map<String, Collection<Attribute>> attributes =
                 jsonParser.getCodec().readValue(jsonParser.getCodec().treeAsTokens(attributesObject), TR);
 
-        attributeStore.putAll(concat(attributes.values()));
 
-        return attributeStore;
+        for(Attribute attr: concat(attributes.values()))
+            attributeStoreBuilder.attr(attr);
 
-
+        return build(attributeStoreBuilder);
     }
 
-    public abstract T deserialize(JsonNode root);
+    public abstract B deserialize(JsonNode root);
+
+    public abstract T build(EntityBuilder entityBuilder);
 }

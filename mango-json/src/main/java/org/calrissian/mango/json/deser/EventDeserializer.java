@@ -17,12 +17,14 @@ package org.calrissian.mango.json.deser;
 
 
 import com.fasterxml.jackson.databind.JsonNode;
+import org.calrissian.mango.domain.entity.EntityBuilder;
 import org.calrissian.mango.domain.event.BaseEvent;
+import org.calrissian.mango.domain.event.EventBuilder;
 
-public class EventDeserializer extends BaseAttributeStoreDeserializer<BaseEvent> {
+public class EventDeserializer extends BaseAttributeStoreDeserializer<BaseEvent, EventBuilder> {
 
     @Override
-    public BaseEvent deserialize(JsonNode root) {
+    public EventBuilder deserialize(JsonNode root) {
         String type = "";
 
         //TODO Next major release (2.x) remove this check as this should now be required.
@@ -33,7 +35,12 @@ public class EventDeserializer extends BaseAttributeStoreDeserializer<BaseEvent>
         long timestamp = root.get("timestamp").asLong();
 
 
-        return new BaseEvent(type, id, timestamp);
+        return new EventBuilder(type, id, timestamp);
+    }
+
+    @Override
+    public BaseEvent build(EntityBuilder entityBuilder) {
+        return (BaseEvent) entityBuilder.build();
     }
 
 }

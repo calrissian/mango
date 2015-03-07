@@ -15,6 +15,9 @@
  */
 package org.calrissian.mango.domain.entity;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
+import org.calrissian.mango.domain.Attribute;
 import org.calrissian.mango.domain.BaseAttributeStore;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -31,6 +34,7 @@ public class BaseEntity extends BaseAttributeStore implements Entity {
     /**
      * Defines an {@link Entity} object for the given type and a random uuid.
      */
+    @Deprecated
     public BaseEntity(String type) {
         this(type, randomUUID().toString());
     }
@@ -38,12 +42,21 @@ public class BaseEntity extends BaseAttributeStore implements Entity {
     /**
      * Defines an {@link Entity} for the given type and id
      */
+    @Deprecated
     public BaseEntity(String type, String id) {
+        super(ArrayListMultimap.<String, Attribute>create());
         checkNotNull(type);
         checkNotNull(id);
         this.id = id;
         this.type = type;
     }
+
+    protected BaseEntity(String type, String id, Multimap<String, Attribute> attributes) {
+        super(attributes);
+        this.type = type;
+        this.id = id;
+    }
+
 
     /**
      * Copy constructor.
