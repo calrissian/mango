@@ -22,11 +22,11 @@ import org.junit.Test;
 
 import java.util.Collection;
 
-import static org.calrissian.mango.json.util.store.JsonTupleStore.fromJson;
-import static org.calrissian.mango.json.util.store.JsonTupleStore.toJsonString;
+import static org.calrissian.mango.json.util.store.JsonAttributeStore.fromJson;
+import static org.calrissian.mango.json.util.store.JsonAttributeStore.toJsonString;
 import static org.junit.Assert.assertEquals;
 
-public class JsonTupleStoreTest {
+public class JsonAttributeStoreTest {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 

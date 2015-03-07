@@ -45,13 +45,13 @@ import static org.calrissian.mango.json.util.store.JsonUtil.nodeToObject;
  * unexpected results.
  *
  */
-public class JsonTupleStore {
+public class JsonAttributeStore {
 
     private static final String NESTING_DELIM = "_$";
     private static final Pair<Integer,Integer> DEFAULT_PAIR = new Pair<>(-1, -1);
     private static final Splitter SPLITTER = Splitter.on(NESTING_DELIM);
 
-    private JsonTupleStore() {}
+    private JsonAttributeStore() {}
 
 
     /**
