@@ -45,6 +45,7 @@ public class EventBuilder extends BaseAttributeStoreBuilder<Event, EventBuilder>
         this(type, UUID.randomUUID().toString(), System.currentTimeMillis());
     }
 
+
     @Override
     public Event build() {
         return new BaseEvent(type, id, timestamp, attributes);

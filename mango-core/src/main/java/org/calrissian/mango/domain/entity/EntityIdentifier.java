@@ -20,19 +20,19 @@ import org.calrissian.mango.domain.Identifiable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class EntityIndex implements Identifiable {
+public class EntityIdentifier implements Identifiable {
 
     private final String type;
     private final String id;
 
-    public EntityIndex(String type, String id) {
+    public EntityIdentifier(String type, String id) {
         checkNotNull(type);
         checkNotNull(id);
         this.type = type;
         this.id = id;
     }
 
-    public EntityIndex(Entity entity) {
+    public EntityIdentifier(Entity entity) {
         this(entity.getType(), entity.getId());
     }
 
@@ -47,9 +47,9 @@ public class EntityIndex implements Identifiable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof EntityIndex)) return false;
+        if (!(o instanceof EntityIdentifier)) return false;
 
-        EntityIndex that = (EntityIndex) o;
+        EntityIdentifier that = (EntityIdentifier) o;
 
         if (!id.equals(that.id)) return false;
         if (!type.equals(that.type)) return false;

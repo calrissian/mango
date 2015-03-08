@@ -35,7 +35,7 @@ public class AliasConstants {
     //Mango types
     @Deprecated
     public static String ENTITY_RELATIONSHIP_ALIAS = "entityRelationship";
-    public static String ENTITY_INDEX_ALIAS = "entityIndex";
+    public static String ENTITY_IDENTIFIER_ALIAS = "entityIndex";
     public static String IPV4_ALIAS = "ipv4";
     public static String IPV6_ALIAS = "ipv6";
 

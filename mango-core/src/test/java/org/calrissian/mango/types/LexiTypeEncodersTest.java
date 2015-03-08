@@ -17,7 +17,7 @@ package org.calrissian.mango.types;
 
 import com.google.common.primitives.UnsignedInteger;
 import com.google.common.primitives.UnsignedLong;
-import org.calrissian.mango.domain.entity.EntityRelationship;
+import org.calrissian.mango.domain.entity.EntityIdentifier;
 import org.calrissian.mango.domain.ip.IPv4;
 import org.calrissian.mango.domain.ip.IPv6;
 import org.junit.Test;
@@ -63,7 +63,7 @@ public class LexiTypeEncodersTest {
         verifyBasicFunctionality(INET4_ALIAS, forIPv4String("192.168.1.1"), inet4AddressEncoder());
         verifyBasicFunctionality(INET6_ALIAS, forIPv6String("::192.168.1.1"), inet6AddressEncoder());
         verifyBasicFunctionality(INET6_ALIAS, forIPv6String("::ffff:192.168.1.1"), inet6AddressEncoder());
-        verifyBasicFunctionality(ENTITY_RELATIONSHIP_ALIAS, new EntityRelationship("type", "id"), entityRelationshipEncoder());
+        verifyBasicFunctionality(ENTITY_IDENTIFIER_ALIAS, new EntityIdentifier("type", "id"), entityIdentifierEncoder());
         verifyBasicFunctionality(UNSIGNEDINTEGER_ALIAS, UnsignedInteger.fromIntBits(3), unsignedIntegerEncoder());
         verifyBasicFunctionality(UNSIGNEDINTEGER_ALIAS, UnsignedInteger.MAX_VALUE, unsignedIntegerEncoder());
         verifyBasicFunctionality(UNSIGNEDLONG_ALIAS, UnsignedLong.fromLongBits(3), unsignedLongEncoder());
@@ -92,7 +92,7 @@ public class LexiTypeEncodersTest {
         verifyBasicFunctionality(INET4_ALIAS, forIPv4String("192.168.1.1"), inet4AddressRevEncoder());
         verifyBasicFunctionality(INET6_ALIAS, forIPv6String("::192.168.1.1"), inet6AddressRevEncoder());
         verifyBasicFunctionality(INET6_ALIAS, forIPv6String("::ffff:192.168.1.1"), inet6AddressRevEncoder());
-        verifyBasicFunctionality(ENTITY_RELATIONSHIP_ALIAS, new EntityRelationship("type", "id"), entityRelationshipRevEncoder());
+        verifyBasicFunctionality(ENTITY_IDENTIFIER_ALIAS, new EntityIdentifier("type", "id"), entityIdentifierRevEncoder());
         verifyBasicFunctionality(UNSIGNEDINTEGER_ALIAS, UnsignedInteger.fromIntBits(3), unsignedIntegerRevEncoder());
         verifyBasicFunctionality(UNSIGNEDINTEGER_ALIAS, UnsignedInteger.MAX_VALUE, unsignedIntegerRevEncoder());
         verifyBasicFunctionality(UNSIGNEDLONG_ALIAS, UnsignedLong.fromLongBits(3), unsignedLongRevEncoder());
@@ -153,7 +153,7 @@ public class LexiTypeEncodersTest {
         assertEquals("00000000000000000000ffffc0a80101", inet6AddressEncoder().encode(forIPv6String("::ffff:192.168.1.1")));
         assertEquals("ffffffffffffffffffffffffffffffff", inet6AddressEncoder().encode(forIPv6String("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff")));
 
-        assertEquals("entity://type#id", entityRelationshipEncoder().encode(new EntityRelationship("type", "id")));
+        assertEquals("entity://type#id", entityIdentifierEncoder().encode(new EntityIdentifier("type", "id")));
 
         assertEquals("00000003", unsignedIntegerEncoder().encode(UnsignedInteger.fromIntBits(3)));
         assertEquals("ffffffff", unsignedIntegerEncoder().encode(UnsignedInteger.MAX_VALUE));

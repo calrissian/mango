@@ -15,21 +15,20 @@
  */
 package org.calrissian.mango.types.encoders;
 
-import org.calrissian.mango.domain.entity.EntityRelationship;
+import org.calrissian.mango.domain.entity.EntityIdentifier;
 import org.calrissian.mango.types.TypeEncoder;
 
-import static org.calrissian.mango.types.encoders.AliasConstants.ENTITY_RELATIONSHIP_ALIAS;
+import static org.calrissian.mango.types.encoders.AliasConstants.ENTITY_IDENTIFIER_ALIAS;
 
-@Deprecated
-public abstract class AbstractEntityRelationshipEncoder<U> implements TypeEncoder<EntityRelationship, U> {
+public abstract class AbstractEntityIdentifierEncoder<U> implements TypeEncoder<EntityIdentifier, U> {
 
     @Override
     public String getAlias() {
-        return ENTITY_RELATIONSHIP_ALIAS;
+        return ENTITY_IDENTIFIER_ALIAS;
     }
 
     @Override
-    public Class<EntityRelationship> resolves() {
-        return EntityRelationship.class;
+    public Class<EntityIdentifier> resolves() {
+        return EntityIdentifier.class;
     }
 }

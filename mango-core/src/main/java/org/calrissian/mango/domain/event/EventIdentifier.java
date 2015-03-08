@@ -15,32 +15,32 @@
  */
 package org.calrissian.mango.domain.event;
 
-import org.calrissian.mango.domain.entity.EntityIndex;
+import org.calrissian.mango.domain.entity.EntityIdentifier;
 
-public class EventIndex extends EntityIndex {
+public class EventIdentifier extends EntityIdentifier {
 
     private final Long timestamp;
 
-    public EventIndex(String type, String id, Long timestamp) {
+    public EventIdentifier(String type, String id, Long timestamp) {
         super(type, id);
         this.timestamp = timestamp;
     }
 
     @Deprecated
-    public EventIndex(String id, Long timestamp) {
+    public EventIdentifier(String id, Long timestamp) {
         this("", id, timestamp);
     }
 
-    public EventIndex(Event event) {
+    public EventIdentifier(Event event) {
         this(event.getType(), event.getId(), event.getTimestamp());
     }
 
-    public EventIndex(String type, String id) {
+    public EventIdentifier(String type, String id) {
         this(type, id, null);
     }
 
     @Deprecated
-    public EventIndex(String id) {
+    public EventIdentifier(String id) {
         this("", id, null);
     }
 
@@ -51,10 +51,10 @@ public class EventIndex extends EntityIndex {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof EventIndex)) return false;
+        if (!(o instanceof EventIdentifier)) return false;
         if (!super.equals(o)) return false;
 
-        EventIndex that = (EventIndex) o;
+        EventIdentifier that = (EventIdentifier) o;
 
         if (timestamp != null ? !timestamp.equals(that.timestamp) : that.timestamp != null) return false;
 

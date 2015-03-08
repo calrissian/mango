@@ -18,6 +18,7 @@ package org.calrissian.mango.domain;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
+import java.util.Collection;
 import java.util.Map;
 
 public abstract class BaseAttributeStoreBuilder<T, B extends BaseAttributeStoreBuilder> implements AttributeStoreBuilder<T> {
@@ -36,6 +37,12 @@ public abstract class BaseAttributeStoreBuilder<T, B extends BaseAttributeStoreB
 
     public B attr(Attribute attribute) {
         attributes.put(attribute.getKey(), attribute);
+        return (B)this;
+    }
+
+    public B attrs(Collection<Attribute> attributes) {
+        for(Attribute attr : attributes)
+            attr(attr);
         return (B)this;
     }
 
