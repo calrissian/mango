@@ -25,10 +25,15 @@ public class EventBuilder extends BaseAttributeStoreBuilder<Event, EventBuilder>
     protected String type;
     protected String id;
 
-
     protected long timestamp;
 
-    public EventBuilder(String type, String id, long timestamp) {
+    public static final EventBuilder create(String type, String id, long timestamp) {
+        return new EventBuilder(type, id, timestamp);
+    }
+
+
+
+    protected EventBuilder(String type, String id, long timestamp) {
         super();
         Preconditions.checkNotNull(type);
         Preconditions.checkNotNull(id);

@@ -23,8 +23,11 @@ public class EntityBuilder extends BaseAttributeStoreBuilder<Entity, EntityBuild
     protected String type;
     protected String id;
 
+    public static final EntityBuilder create(String type, String id) {
+        return new EntityBuilder(type, id);
+    }
 
-    public EntityBuilder(String type, String id) {
+    protected EntityBuilder(String type, String id) {
 
         super();
         Preconditions.checkNotNull(type);
@@ -32,8 +35,6 @@ public class EntityBuilder extends BaseAttributeStoreBuilder<Entity, EntityBuild
         this.type = type;
         this.id = id;
     }
-
-
 
     public Entity build() {
         return new BaseEntity(type, id, attributes);

@@ -20,6 +20,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.calrissian.mango.domain.event.BaseEvent;
 import org.calrissian.mango.domain.event.EventBuilder;
 
+import static org.calrissian.mango.domain.event.EventBuilder.create;
+
 public class EventDeserializer extends BaseAttributeStoreDeserializer<BaseEvent, EventBuilder> {
 
     @Override
@@ -34,7 +36,7 @@ public class EventDeserializer extends BaseAttributeStoreDeserializer<BaseEvent,
         long timestamp = root.get("timestamp").asLong();
 
 
-        return new EventBuilder(type, id, timestamp);
+        return create(type, id, timestamp);
     }
 
     @Override
