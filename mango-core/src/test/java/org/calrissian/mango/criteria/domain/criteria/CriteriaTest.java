@@ -28,8 +28,8 @@ public class CriteriaTest {
     @Test
     public void testEquals_andNodesWithEq() {
 
-        Node node = new QueryBuilder().and().and().eq("key1", "val1").end().eq("key2", "val2").end().build();
-        Node node2 = new QueryBuilder().and().and().eq("key1", "val1").end().eq("key2", "val2").end().build();
+        Node node = QueryBuilder.create().and().and().eq("key1", "val1").end().eq("key2", "val2").end().build();
+        Node node2 = QueryBuilder.create().and().and().eq("key1", "val1").end().eq("key2", "val2").end().build();
 
         Criteria criteria = criteriaFromNode(node);
         Criteria criteria2 = criteriaFromNode(node2);
@@ -40,8 +40,8 @@ public class CriteriaTest {
     @Test
     public void testEquals_orNodesWithEq() {
 
-        Node node = new QueryBuilder().or().or().eq("key1", "val1").end().eq("key2", "val2").end().build();
-        Node node2 = new QueryBuilder().or().or().eq("key1", "val1").end().eq("key2", "val2").end().build();
+        Node node = QueryBuilder.create().or().or().eq("key1", "val1").end().eq("key2", "val2").end().build();
+        Node node2 = QueryBuilder.create().or().or().eq("key1", "val1").end().eq("key2", "val2").end().build();
         Criteria criteria = criteriaFromNode(node);
         Criteria criteria2 = criteriaFromNode(node2);
 
@@ -51,7 +51,7 @@ public class CriteriaTest {
     @Test
     public void testClone_andNodesWithEq() {
 
-        Node node = new QueryBuilder().or().or().eq("key1", "val1").end().eq("key2", "val2").end().build();
+        Node node = QueryBuilder.create().or().or().eq("key1", "val1").end().eq("key2", "val2").end().build();
         Criteria criteria = criteriaFromNode(node);
         Criteria criteria2 = criteria.clone(null);
 
@@ -61,7 +61,7 @@ public class CriteriaTest {
     @Test
     public void testClone_orNodesWithEq() {
 
-        Node node = new QueryBuilder().or().or().eq("key1", "val1").end().eq("key2", "val2").end().build();
+        Node node = QueryBuilder.create().or().or().eq("key1", "val1").end().eq("key2", "val2").end().build();
         Criteria criteria = criteriaFromNode(node);
         Criteria criteria2 = criteria.clone(null);
 

@@ -27,10 +27,14 @@ public class QueryBuilder {
     protected QueryBuilder parentBuilder;
     protected boolean finished = false;
 
-    public QueryBuilder() {
+    public static final QueryBuilder create() {
+        return new QueryBuilder();
     }
 
-    public QueryBuilder(ParentNode current, QueryBuilder parentBuilder) {
+    protected QueryBuilder() {}
+
+
+    protected QueryBuilder(ParentNode current, QueryBuilder parentBuilder) {
         this.current = current;
         this.parentBuilder = parentBuilder;
     }
