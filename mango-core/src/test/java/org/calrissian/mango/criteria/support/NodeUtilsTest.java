@@ -30,7 +30,7 @@ public class NodeUtilsTest {
     @Test
     public void testCriteriaFromNode_fullTree() {
 
-        Node node = new QueryBuilder().or().and().eq("key1", "val1").eq("key2", "val2").end().eq("key3", "val3").end().build();
+        Node node = QueryBuilder.create().or().and().eq("key1", "val1").eq("key2", "val2").end().eq("key3", "val3").end().build();
 
         Criteria criteria = NodeUtils.criteriaFromNode(node);
 
@@ -44,6 +44,6 @@ public class NodeUtilsTest {
     @Test
     public void test_isEmpty_notEmpty() {
 
-        Node node = new QueryBuilder().or().and().or().and().end().end().end().end().build();
+        Node node = QueryBuilder.create().or().and().or().and().end().end().end().end().build();
     }
 }

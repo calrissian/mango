@@ -15,7 +15,10 @@
  */
 package org.calrissian.mango.domain.entity;
 
-import org.calrissian.mango.domain.BaseTupleStore;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
+import org.calrissian.mango.domain.Attribute;
+import org.calrissian.mango.domain.BaseAttributeStore;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.util.UUID.randomUUID;
@@ -23,7 +26,7 @@ import static java.util.UUID.randomUUID;
 /**
  * Default implementation of {@link Entity}.
  */
-public class BaseEntity extends BaseTupleStore implements Entity {
+public class BaseEntity extends BaseAttributeStore implements Entity {
 
     private final String id;
     private final String type;
@@ -31,6 +34,7 @@ public class BaseEntity extends BaseTupleStore implements Entity {
     /**
      * Defines an {@link Entity} object for the given type and a random uuid.
      */
+    @Deprecated
     public BaseEntity(String type) {
         this(type, randomUUID().toString());
     }
@@ -38,19 +42,28 @@ public class BaseEntity extends BaseTupleStore implements Entity {
     /**
      * Defines an {@link Entity} for the given type and id
      */
+    @Deprecated
     public BaseEntity(String type, String id) {
+        super(ArrayListMultimap.<String, Attribute>create());
         checkNotNull(type);
         checkNotNull(id);
         this.id = id;
         this.type = type;
     }
 
+    protected BaseEntity(String type, String id, Multimap<String, Attribute> attributes) {
+        super(attributes);
+        this.type = type;
+        this.id = id;
+    }
+
+
     /**
      * Copy constructor.
      */
     public BaseEntity(Entity entity) {
         this(checkNotNull(entity).getType(), entity.getId());
-        putAll(entity.getTuples());
+        putAll(entity.getAttributes());
     }
 
     /**
@@ -72,7 +85,7 @@ public class BaseEntity extends BaseTupleStore implements Entity {
         return "BaseEntity{" +
                 "id='" + id + '\'' +
                 ", type='" + type + '\'' +
-                ", tuples='" + getTuples() + '\'' +
+                ", attributes='" + getAttributes() + '\'' +
                 '}';
     }
 

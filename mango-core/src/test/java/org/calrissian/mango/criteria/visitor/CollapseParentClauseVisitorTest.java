@@ -31,7 +31,7 @@ public class CollapseParentClauseVisitorTest {
     @Test
     public void testCollapseAndAndChildren() throws Exception {
         StringWriter writer = new StringWriter();
-        Node node = new QueryBuilder().and().and().eq("k1", "v1").eq("k2", "v2").end().end().build();
+        Node node = QueryBuilder.create().and().and().eq("k1", "v1").eq("k2", "v2").end().end().build();
         node.accept(new PrintNodeVisitor(writer));
         writer.append('\n');
         node.accept(new CollapseParentClauseVisitor());
@@ -43,7 +43,7 @@ public class CollapseParentClauseVisitorTest {
     @Test
     public void testCollapseAndAndOrChildren() throws Exception {
         StringWriter writer = new StringWriter();
-        Node node = new QueryBuilder().and().and().eq("k1", "v1").eq("k2", "v2").end().or().eq("k3", "v3").eq("k4", "v4").end().end().build();
+        Node node = QueryBuilder.create().and().and().eq("k1", "v1").eq("k2", "v2").end().or().eq("k3", "v3").eq("k4", "v4").end().end().build();
         node.accept(new PrintNodeVisitor(writer));
         writer.append('\n');
         node.accept(new CollapseParentClauseVisitor());

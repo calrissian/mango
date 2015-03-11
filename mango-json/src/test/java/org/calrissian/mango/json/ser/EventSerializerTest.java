@@ -17,9 +17,9 @@ package org.calrissian.mango.json.ser;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.calrissian.mango.domain.Tuple;
-import org.calrissian.mango.domain.event.BaseEvent;
+import org.calrissian.mango.domain.Attribute;
 import org.calrissian.mango.domain.event.Event;
+import org.calrissian.mango.domain.event.EventBuilder;
 import org.calrissian.mango.json.MangoModule;
 import org.junit.Test;
 
@@ -36,13 +36,13 @@ public class EventSerializerTest {
     @Test
     public void testSerializes() throws JsonProcessingException {
 
-        Event event = new BaseEvent("", "id", new Date(0).getTime());
-        event.put(new Tuple("key", "value"));
-        event.put(new Tuple("key1", "valu1"));
+        Event event = EventBuilder.create("", "id", new Date(0).getTime())
+            .attr(new Attribute("key", "value"))
+            .attr(new Attribute("key1", "valu1")).build();
 
         String serialized = objectMapper.writeValueAsString(event);
 
-        assertEquals(serialized, "{\"timestamp\":0,\"type\":\"\",\"id\":\"id\",\"tuples\":{\"key1\":[{\"key\":\"key1\",\"type\":\"string\",\"value\":\"valu1\",\"metadata\":[]}],\"key\":[{\"key\":\"key\",\"type\":\"string\",\"value\":\"value\",\"metadata\":[]}]}}");
+        assertEquals(serialized, "{\"timestamp\":0,\"type\":\"\",\"id\":\"id\",\"attributes\":{\"key1\":[{\"key\":\"key1\",\"type\":\"string\",\"value\":\"valu1\",\"metadata\":[]}],\"key\":[{\"key\":\"key\",\"type\":\"string\",\"value\":\"value\",\"metadata\":[]}]}}");
     }
 
 

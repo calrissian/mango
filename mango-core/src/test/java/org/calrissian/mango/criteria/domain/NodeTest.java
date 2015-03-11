@@ -27,7 +27,7 @@ public class NodeTest {
     @Test
     public void testClone() {
 
-        Node node = new QueryBuilder().or().and().eq("key1", "val1").range("key2", 0, 10).end().eq("key4", "val4").end().build();
+        Node node = QueryBuilder.create().or().and().eq("key1", "val1").range("key2", 0, 10).end().eq("key4", "val4").end().build();
 
         Node node2 = node.clone(null);
 
@@ -45,16 +45,16 @@ public class NodeTest {
     @Test
     public void testEquals_andNodesWithEq() {
 
-        Node node = new QueryBuilder().and().and().eq("key1", "val1").end().eq("key2", "val2").end().build();
-        Node node2 = new QueryBuilder().and().and().eq("key1", "val1").end().eq("key2", "val2").end().build();
+        Node node = QueryBuilder.create().and().and().eq("key1", "val1").end().eq("key2", "val2").end().build();
+        Node node2 = QueryBuilder.create().and().and().eq("key1", "val1").end().eq("key2", "val2").end().build();
         assertTrue(node.equals(node2));
     }
 
     @Test
     public void testEquals_orNodesWithEq() {
 
-        Node node = new QueryBuilder().or().or().eq("key1", "val1").end().eq("key2", "val2").end().build();
-        Node node2 = new QueryBuilder().or().or().eq("key1", "val1").end().eq("key2", "val2").end().build();
+        Node node = QueryBuilder.create().or().or().eq("key1", "val1").end().eq("key2", "val2").end().build();
+        Node node2 = QueryBuilder.create().or().or().eq("key1", "val1").end().eq("key2", "val2").end().build();
         assertTrue(node.equals(node2));
     }
 }

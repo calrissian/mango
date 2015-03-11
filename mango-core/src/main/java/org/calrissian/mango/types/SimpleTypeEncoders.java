@@ -18,7 +18,7 @@ package org.calrissian.mango.types;
 
 import com.google.common.primitives.UnsignedInteger;
 import com.google.common.primitives.UnsignedLong;
-import org.calrissian.mango.domain.entity.EntityRelationship;
+import org.calrissian.mango.domain.entity.EntityIdentifier;
 import org.calrissian.mango.domain.ip.IPv4;
 import org.calrissian.mango.domain.ip.IPv6;
 import org.calrissian.mango.types.encoders.simple.*;
@@ -51,7 +51,7 @@ public class SimpleTypeEncoders {
      * Contains the full set of supported type encoders
      */
     public static final TypeRegistry<String> SIMPLE_TYPES = new TypeRegistry<>(SIMPLE_JAVA_TYPES,
-            ipv4Encoder(), ipv6Encoder(), entityRelationshipEncoder(),
+            ipv4Encoder(), ipv6Encoder(), entityIdentifierEncoder(),
             unsignedIntegerEncoder(), unsignedLongEncoder()
     );
 
@@ -115,8 +115,9 @@ public class SimpleTypeEncoders {
         return new IPv6Encoder();
     }
 
-    public static TypeEncoder<EntityRelationship, String> entityRelationshipEncoder() {
-        return new EntityRelationshipEncoder();
+
+    public static TypeEncoder<EntityIdentifier, String> entityIdentifierEncoder() {
+        return new EntityIdentifierEncoder();
     }
 
     public static TypeEncoder<UnsignedInteger, String> unsignedIntegerEncoder() {

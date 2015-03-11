@@ -15,9 +15,7 @@
  */
 package org.calrissian.mango.criteria.domain.criteria;
 
-import org.calrissian.mango.domain.Tuple;
-import org.calrissian.mango.domain.entity.BaseEntity;
-import org.calrissian.mango.domain.entity.Entity;
+import org.calrissian.mango.domain.entity.EntityBuilder;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
@@ -30,12 +28,9 @@ public class HasNotCriteriaTest {
 
         HasNotCriteria criteria = new HasNotCriteria("key1", null);
 
-        Entity entity = new BaseEntity("type", "id");
-        entity.put(new Tuple("key2", "val2"));
+        EntityBuilder entity = EntityBuilder.create("type", "id");
 
-        assertTrue(criteria.apply(entity));
-
-        entity.put(new Tuple("key1", "val1"));
-        assertFalse(criteria.apply(entity));
+        assertTrue(criteria.apply(entity.attr("key2", "val2").build()));
+        assertFalse(criteria.apply(entity.attr("key1", "val1").build()));
     }
 }

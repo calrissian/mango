@@ -13,38 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.json.deser;
+package org.calrissian.mango.json.ser;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.calrissian.mango.domain.entity.Entity;
+import com.google.common.collect.ImmutableMap;
+import org.calrissian.mango.domain.Attribute;
 import org.calrissian.mango.json.MangoModule;
 import org.junit.Test;
 
-import java.util.HashSet;
-
-import static org.calrissian.mango.domain.entity.EntityBuilder.create;
 import static org.calrissian.mango.types.SimpleTypeEncoders.SIMPLE_TYPES;
 import static org.junit.Assert.assertEquals;
 
-public class EntityDeserializerTest {
+public class AttributeSerializerTest {
 
     private ObjectMapper objectMapper = new ObjectMapper()
             .registerModule(new MangoModule(SIMPLE_TYPES));
 
     @Test
-    public void testBasicDeserialization() throws Exception {
-
-        Entity entity = create("type", "id").attr("key", "value").build();
-
-        String json = objectMapper.writeValueAsString(entity);
-
-        Entity actualEntity = objectMapper.readValue(json, Entity.class);
-
-        assertEquals(actualEntity.getType(), entity.getType());
-        assertEquals(actualEntity.getId(), entity.getId());
-        assertEquals(new HashSet<>(actualEntity.getAttributes()), new HashSet<>(entity.getAttributes()));
+    public void testBasicSerialization() throws Exception {
+        Attribute attribute = new Attribute("key", "value");
+        String json = objectMapper.writeValueAsString(attribute);
+        assertEquals(json, "{\"key\":\"key\",\"type\":\"string\",\"value\":\"value\",\"metadata\":[]}");
     }
 
+    @Test
+    public void testSerialization_withMetadata() throws Exception {
+        Attribute attribute = new Attribute("key", "value", ImmutableMap.of("metaKey", "metaVal"));
+        String json = objectMapper.writeValueAsString(attribute);
+        assertEquals(json, "{\"key\":\"key\",\"type\":\"string\",\"value\":\"value\",\"metadata\":[{\"value\":\"metaVal\",\"key\":\"metaKey\"}]}");
+    }
 
 }

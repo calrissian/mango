@@ -18,7 +18,7 @@ package org.calrissian.mango.types;
 
 import com.google.common.primitives.UnsignedInteger;
 import com.google.common.primitives.UnsignedLong;
-import org.calrissian.mango.domain.entity.EntityRelationship;
+import org.calrissian.mango.domain.entity.EntityIdentifier;
 import org.calrissian.mango.domain.ip.IPv4;
 import org.calrissian.mango.domain.ip.IPv6;
 import org.calrissian.mango.types.encoders.lexi.*;
@@ -58,13 +58,13 @@ public class LexiTypeEncoders {
      * Contains the full set of supported type encoders
      */
     public static final TypeRegistry<String> LEXI_TYPES = new TypeRegistry<>(LEXI_JAVA_TYPES,
-            ipv4Encoder(), ipv6Encoder(), entityRelationshipEncoder(),
+            ipv4Encoder(), ipv6Encoder(), entityIdentifierEncoder(),
             unsignedIntegerEncoder(), unsignedLongEncoder()
     );
 
     public static final TypeRegistry<String> LEXI_REV_TYPES = new TypeRegistry<>(LEXI_REV_JAVA_TYPES,
-            ipv4RevEncoder(), ipv6RevEncoder(), entityRelationshipRevEncoder(),
-            unsignedIntegerRevEncoder(), unsignedLongRevEncoder()
+            ipv4RevEncoder(), ipv6RevEncoder(),
+            unsignedIntegerRevEncoder(), unsignedLongRevEncoder(), entityIdentifierRevEncoder()
     );
 
     private static <T> TypeEncoder<T, String> reverseEncoder(TypeEncoder<T, String> sourceEncoder) {
@@ -191,13 +191,15 @@ public class LexiTypeEncoders {
         return new IPv6ReverseEncoder();
     }
 
-    public static TypeEncoder<EntityRelationship, String> entityRelationshipEncoder() {
-        return SimpleTypeEncoders.entityRelationshipEncoder();
+    public static TypeEncoder<EntityIdentifier, String> entityIdentifierEncoder() {
+        return SimpleTypeEncoders.entityIdentifierEncoder();
     }
 
-    public static TypeEncoder<EntityRelationship, String> entityRelationshipRevEncoder() {
-        return reverseEncoder(SimpleTypeEncoders.entityRelationshipEncoder());
+
+    public static TypeEncoder<EntityIdentifier, String> entityIdentifierRevEncoder() {
+        return reverseEncoder(SimpleTypeEncoders.entityIdentifierEncoder());
     }
+
 
     public static TypeEncoder<UnsignedInteger, String> unsignedIntegerEncoder() {
         return new UnsignedIntegerEncoder();
