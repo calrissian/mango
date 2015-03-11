@@ -18,8 +18,8 @@ package org.calrissian.mango.json.deser;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.calrissian.mango.domain.Attribute;
-import org.calrissian.mango.domain.event.BaseEvent;
 import org.calrissian.mango.domain.event.Event;
+import org.calrissian.mango.domain.event.EventBuilder;
 import org.calrissian.mango.json.MangoModule;
 import org.junit.Test;
 
@@ -37,9 +37,9 @@ public class EventDeserializerTest {
     @Test
     public void testBasicDeserialization() throws Exception {
 
-        Event event = new BaseEvent();
-        event.put(new Attribute("key", "value"));
-        event.put(new Attribute("key1", "valu1"));
+        Event event = EventBuilder.create("type", "id", System.currentTimeMillis())
+            .attr(new Attribute("key", "value"))
+            .attr(new Attribute("key1", "valu1")).build();
 
         String json = objectMapper.writeValueAsString(event);
 
@@ -53,9 +53,9 @@ public class EventDeserializerTest {
     @Test
     public void testBasicDeserialization2() throws Exception {
 
-        Event event = new BaseEvent("type", "id", currentTimeMillis());
-        event.put(new Attribute("key", "value"));
-        event.put(new Attribute("key1", "valu1"));
+        Event event = EventBuilder.create("type", "id", currentTimeMillis())
+            .attr(new Attribute("key", "value"))
+            .attr(new Attribute("key1", "valu1")).build();
 
         String json = objectMapper.writeValueAsString(event);
 

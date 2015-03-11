@@ -16,66 +16,34 @@
 package org.calrissian.mango.domain.event;
 
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import org.calrissian.mango.domain.Attribute;
 import org.calrissian.mango.domain.entity.BaseEntity;
 
-import static java.lang.System.currentTimeMillis;
-import static java.util.UUID.randomUUID;
+import java.util.Collection;
+import java.util.Set;
+
+import static com.google.common.collect.Collections2.filter;
 
 /**
  * Default implementation of {@link Event}
  */
 public class BaseEvent extends BaseEntity implements Event {
 
-    private final long timestamp; // in Millis
-
-    /**
-     * New event with random UUID and timestamp defaulted to current time
-     */
-    @Deprecated
-    public BaseEvent() {
-        this("", randomUUID().toString());
-    }   // for backward compatibility
-
-    /**
-     * New event with ID. Timestamp defaults to current time.
-     */
-    @Deprecated
-    public BaseEvent(String type, String id) {
-        this(type, id, currentTimeMillis());
-    }
-
-
-    @Deprecated
-    public BaseEvent(String id) {
-        this("", id, currentTimeMillis());
-    }
-
-    /**
-     * New store entry with ID and a timestamp
-     */
-    @Deprecated
-    public BaseEvent(String type, String id, long timestamp) {
-        super(type, id);
-        this.timestamp = timestamp;
-    }
-
-    @Deprecated
-    public BaseEvent(String id, long timestamp) {
-        this("", id, timestamp);
-    }
+    private static final String TIMESTAMP_FIELD = "_TIMESTAMP";
 
     BaseEvent(String type, String id, long timestamp, Multimap<String, Attribute> attributes) {
         super(type, id, attributes);
-        this.timestamp = timestamp;
+        addTimestamp(timestamp);
     }
 
     /**
      * Copy constructor
      */
     public BaseEvent(Event event) {
-        this(event.getType(), event.getId(), event.getTimestamp());
+        this(event.getType(), event.getId(), event.getTimestamp(), ArrayListMultimap.<String,Attribute>create());
         putAll(event.getAttributes());
     }
 
@@ -83,7 +51,7 @@ public class BaseEvent extends BaseEntity implements Event {
      * {@inheritDoc}
      */
     public long getTimestamp() {
-        return timestamp;
+        return super.get(TIMESTAMP_FIELD, Long.class).getValue();
     }
 
     @Override
@@ -94,15 +62,27 @@ public class BaseEvent extends BaseEntity implements Event {
 
         BaseEvent baseEvent = (BaseEvent) o;
 
-        if (timestamp != baseEvent.timestamp) return false;
+        if (getTimestamp() != baseEvent.getTimestamp()) return false;
 
         return true;
     }
 
     @Override
+    public Collection<Attribute> getAttributes() {
+        return filter(super.getAttributes(), filterTimestamp) ;
+    }
+
+    @Override
+    public Set<String> keys() {
+        Set<String> keys = super.keys();
+        keys.remove(TIMESTAMP_FIELD);
+        return keys;
+    }
+
+    @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (int) (timestamp ^ (timestamp >>> 32));
+        result = 31 * result + (int) (getTimestamp() ^ (getTimestamp() >>> 32));
         return result;
     }
 
@@ -111,8 +91,21 @@ public class BaseEvent extends BaseEntity implements Event {
         return "BaseEvent{" +
                 "type='" + getType() + '\'' +
                 ", id='" + getId() + '\'' +
-                ", timestamp=" + timestamp +
+                ", timestamp=" + getTimestamp() +
                 ", attributes=" + getAttributes() +
                 '}';
     }
+
+    private Predicate<Attribute> filterTimestamp = new Predicate<Attribute>() {
+
+        @Override
+        public boolean apply(Attribute attribute) {
+        return !attribute.getKey().equals(TIMESTAMP_FIELD);
+        }
+    };
+
+    private void addTimestamp(long timestamp) {
+        attributes.put(TIMESTAMP_FIELD, new Attribute(TIMESTAMP_FIELD, timestamp));
+    }
+
 }

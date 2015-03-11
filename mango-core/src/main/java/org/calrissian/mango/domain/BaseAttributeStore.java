@@ -15,11 +15,11 @@
  */
 package org.calrissian.mango.domain;
 
-import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -31,22 +31,21 @@ import static java.util.Collections.unmodifiableCollection;
  */
 public class BaseAttributeStore implements AttributeStore {
 
-    private Multimap<String, Attribute> attributes = ArrayListMultimap.create();
+    protected Multimap<String, Attribute> attributes;
 
     protected BaseAttributeStore(Multimap<String, Attribute> attributes) {
+        checkNotNull(attributes);
         this.attributes = attributes;
     }
 
-    @Deprecated
-    public void put(Attribute attribute) {
+    protected void put(Attribute attribute) {
         checkNotNull(attribute);
         checkNotNull(attribute.getKey());
 
         attributes.put(attribute.getKey(), attribute);
     }
 
-    @Deprecated
-    public void putAll(Iterable<Attribute> attributes) {
+    protected void putAll(Iterable<Attribute> attributes) {
         checkNotNull(attributes);
         for (Attribute attribute : attributes)
             put(attribute);
@@ -75,8 +74,19 @@ public class BaseAttributeStore implements AttributeStore {
     }
 
     @Override
+    public <T> Attribute<T> get(String key, Class<T> clazz) {
+        Collection<Attribute> attrs = getAll(key);
+        for(Attribute attr: attrs) {
+            if(attr.getValue().getClass().isAssignableFrom(clazz))
+                return attr;
+        }
+
+        return null;
+    }
+
+    @Override
     public Set<String> keys() {
-        return attributes.keySet();
+        return new HashSet(attributes.keySet());
     }
 
     @Override
