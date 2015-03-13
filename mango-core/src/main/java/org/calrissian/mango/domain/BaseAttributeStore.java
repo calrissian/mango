@@ -164,6 +164,6 @@ public class BaseAttributeStore implements AttributeStore {
      * @return
      */
     public int size() {
-        return attributes.size();
+        return getAttributes().size();
     }
 }
