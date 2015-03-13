@@ -42,12 +42,12 @@ public class EventBuilder extends BaseAttributeStoreBuilder<Event, EventBuilder>
         this.timestamp = timestamp;
     }
 
-    public EventBuilder(String type, String id) {
-        this(type, id, System.currentTimeMillis());
+    public static final EventBuilder create(String type, String id) {
+        return new EventBuilder(type, id, System.currentTimeMillis());
     }
 
-    public EventBuilder(String type) {
-        this(type, UUID.randomUUID().toString(), System.currentTimeMillis());
+    public static final EventBuilder create(String type) {
+        return new EventBuilder(type, UUID.randomUUID().toString(), System.currentTimeMillis());
     }
 
 

@@ -25,6 +25,10 @@ public class EntityIdentifier implements Identifiable {
     private final String type;
     private final String id;
 
+    public static final EntityIdentifier id(String type, String id) {
+        return new EntityIdentifier(type, id);
+    }
+
     public EntityIdentifier(String type, String id) {
         checkNotNull(type);
         checkNotNull(id);

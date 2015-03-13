@@ -22,16 +22,6 @@ import java.util.Set;
 public interface AttributeStore extends Serializable {
 
     /**
-     * Puts a single attribute in the current data store
-     */
-    void put(Attribute attribute);
-
-    /**
-     * Adds all the given getAttributes to the current data store
-     */
-    void putAll(Iterable<Attribute> attributes);
-
-    /**
      * Retrieves all the getAttributes.
      */
     Collection<Attribute> getAttributes();
@@ -46,6 +36,9 @@ public interface AttributeStore extends Serializable {
      * Note that multi-vaued keys may give undeterministic results.
      */
     <T> Attribute<T> get(String key);
+
+    <T> Attribute<T> get(String key, Class<T> clazz);
+
 
     /**
      * Returns the keys in the current object
