@@ -66,7 +66,9 @@ public class RangeCriteria extends ComparableKeyValueLeafCriteria {
             for (Tuple tuple : tuples) {
                 int startCompare = comparator.compare(tuple.getValue(), value);
                 int endCompare = comparator.compare(tuple.getValue(), end);
-                return startCompare >= 0 && endCompare <= 0;
+                if (startCompare >= 0 && endCompare <= 0) {
+                    return true;
+                }
             }
         }
 
