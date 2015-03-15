@@ -15,13 +15,10 @@
  */
 package org.calrissian.mango.types.encoders.simple;
 
-import com.google.common.base.Splitter;
 import org.calrissian.mango.domain.entity.EntityRelationship;
 import org.calrissian.mango.types.encoders.AbstractEntityRelationshipEncoder;
 import org.calrissian.mango.types.exception.TypeDecodingException;
 import org.calrissian.mango.types.exception.TypeEncodingException;
-
-import java.util.List;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -31,7 +28,6 @@ public class EntityRelationshipEncoder extends AbstractEntityRelationshipEncoder
     private static final long serialVersionUID = 1L;
 
     private static final String SCHEME = "entity://";
-    private static final Splitter SPLITTER = Splitter.on('#');
 
     @Override
     public String encode(EntityRelationship value) throws TypeEncodingException {
@@ -45,8 +41,8 @@ public class EntityRelationshipEncoder extends AbstractEntityRelationshipEncoder
         checkArgument(value.startsWith(SCHEME) && value.contains("#"), "The value is not a valid encoding");
 
         String rel = value.substring(SCHEME.length(), value.length());
-        List<String> parts = SPLITTER.splitToList(rel);
+        int idx = rel.indexOf('#');
 
-        return new EntityRelationship(parts.get(0), parts.get(1));
+        return new EntityRelationship(rel.substring(0, idx), rel.substring(idx + 1));
     }
 }

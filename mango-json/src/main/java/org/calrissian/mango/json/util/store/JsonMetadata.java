@@ -15,8 +15,6 @@
  */
 package org.calrissian.mango.json.util.store;
 
-import com.google.common.base.Splitter;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -81,7 +79,7 @@ class JsonMetadata {
         Map<Integer, Integer> levelToIdx = new HashMap<>();
         for(Map.Entry<String,Object> entry : entries)
             if(entry.getKey().endsWith(ARRAY_IDX_SUFFIX))
-                levelToIdx.put(parseInt(Splitter.on('.').splitToList(entry.getKey()).get(0)), (Integer)entry.getValue());
+                levelToIdx.put(parseInt(entry.getKey().substring(0, entry.getKey().indexOf('.'))), (Integer)entry.getValue());
 
         return levelToIdx;
     }
