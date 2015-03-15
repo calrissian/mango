@@ -60,7 +60,6 @@ public class JsonTupleStoreTest {
         assertJson(json);
     }
 
-
     private void assertJson(String json)  {
 
         try {
@@ -69,12 +68,8 @@ public class JsonTupleStoreTest {
             // parse original json
             Collection<Tuple> tuples = fromJson(jsonNode);
 
-
             // turn back into json
             ObjectNode actualNode = (ObjectNode)objectMapper.readTree(toJsonString(tuples, objectMapper));
-
-            System.out.println(toJsonString(tuples, objectMapper));
-
 
             // verify nodes are the same
             assertEquals(actualNode, jsonNode);
