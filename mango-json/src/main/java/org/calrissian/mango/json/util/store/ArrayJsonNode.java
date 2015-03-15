@@ -16,12 +16,13 @@
 package org.calrissian.mango.json.util.store;
 
 import com.google.common.base.Function;
-import com.google.common.collect.Collections2;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+
+import static com.google.common.collect.Collections2.transform;
 
 /**
  * A container json tree node which represents a json array which holds entries
@@ -63,7 +64,7 @@ class ArrayJsonNode implements JsonTreeNode {
 
     @Override
     public Collection<Object> toObject() {
-       return Collections2.transform(children, function);
+        return transform(children, function);
     }
 
     @Override
@@ -71,7 +72,7 @@ class ArrayJsonNode implements JsonTreeNode {
         return toObject().toString();
     }
 
-    private static Function<JsonTreeNode, Object> function = new Function<JsonTreeNode, Object>() {
+    private static final Function<JsonTreeNode, Object> function = new Function<JsonTreeNode, Object>() {
 
         @Override
         public Object apply(JsonTreeNode jsonTreeNode) {
