@@ -66,7 +66,9 @@ public class RangeCriteria extends ComparableKeyValueLeafCriteria {
             for (Attribute attribute : attributes) {
                 int startCompare = comparator.compare(attribute.getValue(), value);
                 int endCompare = comparator.compare(attribute.getValue(), end);
-                return startCompare >= 0 && endCompare <= 0;
+                if (startCompare >= 0 && endCompare <= 0) {
+                    return true;
+                }
             }
         }
 

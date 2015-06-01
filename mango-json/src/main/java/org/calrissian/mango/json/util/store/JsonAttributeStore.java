@@ -59,7 +59,7 @@ public class JsonAttributeStore {
      * can be used to construct a {@link org.calrissian.mango.domain.AttributeStore} implementation.
      * @param object
      * @return
-     * @throws java.io.IOException
+     * @throws IOException
      */
     public static Collection<Attribute> fromJson(ObjectNode object) throws IOException {
         Collection<Attribute> attributes = new HashSet<>();

@@ -30,7 +30,6 @@ class ObjectJsonNode implements JsonTreeNode {
 
     private final Map<String, JsonTreeNode> children = new HashMap<>();
 
-
     /**
      * Sets state on current instance based on the flattened tree representation from the input.
      * This will also determine the next child, if necessary, and propagate the next level of
@@ -77,7 +76,7 @@ class ObjectJsonNode implements JsonTreeNode {
         return toObject().toString();
     }
 
-    private static Maps.EntryTransformer function = new Maps.EntryTransformer<String, JsonTreeNode, Object>() {
+    private static final Maps.EntryTransformer<String, JsonTreeNode, Object> function = new Maps.EntryTransformer<String, JsonTreeNode, Object>() {
         @Override
         public Object transformEntry(String s, JsonTreeNode jsonTreeNode) {
             return jsonTreeNode.toObject();

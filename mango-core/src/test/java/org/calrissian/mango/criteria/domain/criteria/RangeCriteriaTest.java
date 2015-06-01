@@ -53,4 +53,14 @@ public class RangeCriteriaTest {
         assertTrue(criteria.apply(entity));
 
     }
+
+    @Test
+    public void acceptAnyTupleWithinRange() {
+        RangeCriteria criteria = new RangeCriteria("key1", 5, 10, new ComparableComparator(), null);
+
+        Entity entity = new BaseEntity("type", "id");
+        entity.put(new Attribute("key1", 4));
+        entity.put(new Attribute("key1", 6));
+        assertTrue(criteria.apply(entity));
+    }
 }
