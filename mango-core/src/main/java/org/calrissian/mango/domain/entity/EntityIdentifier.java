@@ -15,7 +15,6 @@
  */
 package org.calrissian.mango.domain.entity;
 
-
 import org.calrissian.mango.domain.Identifiable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -26,42 +25,17 @@ public class EntityIdentifier implements Identifiable {
     private final String id;
 
     public EntityIdentifier(String type, String id) {
-        checkNotNull(type);
-        checkNotNull(id);
-        this.type = type;
-        this.id = id;
-    }
-
-    public EntityIdentifier(Entity entity) {
-        this(entity.getType(), entity.getId());
+        this.type = checkNotNull(type);
+        this.id = checkNotNull(id);
     }
 
     public String getType() {
         return type;
     }
 
+    @Override
     public String getId() {
         return id;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof EntityIdentifier)) return false;
-
-        EntityIdentifier that = (EntityIdentifier) o;
-
-        if (!id.equals(that.id)) return false;
-        if (!type.equals(that.type)) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = type.hashCode();
-        result = 31 * result + id.hashCode();
-        return result;
     }
 
     @Override
@@ -70,5 +44,23 @@ public class EntityIdentifier implements Identifiable {
                 "type='" + type + '\'' +
                 ", id='" + id + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        EntityIdentifier that = (EntityIdentifier) o;
+
+        if (!type.equals(that.type)) return false;
+        return id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = type.hashCode();
+        result = 31 * result + id.hashCode();
+        return result;
     }
 }

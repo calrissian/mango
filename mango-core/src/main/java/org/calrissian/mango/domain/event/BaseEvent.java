@@ -15,7 +15,6 @@
  */
 package org.calrissian.mango.domain.event;
 
-
 import org.calrissian.mango.domain.Attribute;
 import org.calrissian.mango.domain.entity.BaseEntity;
 
@@ -24,45 +23,27 @@ import org.calrissian.mango.domain.entity.BaseEntity;
  */
 public class BaseEvent extends BaseEntity implements Event {
 
-    private final long timestamp; // in Millis
-
-    BaseEvent(String type, String id, long timestamp, Iterable<Attribute> attributes) {
-        super(type, id, attributes);
-        this.timestamp = timestamp;
+    public BaseEvent(EventIdentifier identifier, Iterable<Attribute> attributes) {
+        super(identifier, attributes);
     }
 
     /**
      * Copy constructor
      */
     public BaseEvent(Event event) {
-        this(event.getType(), event.getId(), event.getTimestamp(), event.getAttributes());
+        this(event.getIdentifier(), event.getAttributes());
     }
 
     /**
      * {@inheritDoc}
      */
     public long getTimestamp() {
-        return timestamp;
+        return ((EventIdentifier)identifier).getTimestamp();
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof BaseEvent)) return false;
-        if (!super.equals(o)) return false;
-
-        BaseEvent baseEvent = (BaseEvent) o;
-
-        if (timestamp != baseEvent.timestamp) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (int) (timestamp ^ (timestamp >>> 32));
-        return result;
+    public EventIdentifier getIdentifier() {
+        return (EventIdentifier) super.getIdentifier();
     }
 
     @Override
@@ -70,7 +51,7 @@ public class BaseEvent extends BaseEntity implements Event {
         return "BaseEvent{" +
                 "type='" + getType() + '\'' +
                 ", id='" + getId() + '\'' +
-                ", timestamp=" + timestamp +
+                ", timestamp=" + getTimestamp() +
                 ", attributes=" + getAttributes() +
                 '}';
     }

@@ -15,44 +15,30 @@
 */
 package org.calrissian.mango.domain.event;
 
-import com.google.common.base.Preconditions;
 import org.calrissian.mango.domain.BaseAttributeStoreBuilder;
 
-import java.util.UUID;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public class EventBuilder extends BaseAttributeStoreBuilder<Event, EventBuilder> {
 
-    protected String type;
-    protected String id;
+    private final EventIdentifier identifier;
 
-    protected long timestamp;
-
-    public static final EventBuilder create(String type, String id, long timestamp) {
-        return new EventBuilder(type, id, timestamp);
+    public static EventBuilder create(EventIdentifier identifier) {
+        checkNotNull(identifier);
+        return new EventBuilder(identifier);
     }
 
+    public static EventBuilder create(String type, String id, long timestamp) {
+        return create(new EventIdentifier(type, id, timestamp));
+    }
 
-
-    protected EventBuilder(String type, String id, long timestamp) {
+    protected EventBuilder(EventIdentifier identifier) {
         super();
-        Preconditions.checkNotNull(type);
-        Preconditions.checkNotNull(id);
-        this.type = type;
-        this.id = id;
-        this.timestamp = timestamp;
+        this.identifier = identifier;
     }
-
-    public EventBuilder(String type, String id) {
-        this(type, id, System.currentTimeMillis());
-    }
-
-    public EventBuilder(String type) {
-        this(type, UUID.randomUUID().toString(), System.currentTimeMillis());
-    }
-
 
     @Override
     public Event build() {
-        return new BaseEvent(type, id, timestamp, attributes);
+        return new BaseEvent(identifier, attributes);
     }
 }

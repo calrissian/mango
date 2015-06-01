@@ -25,41 +25,44 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class BaseEntity extends BaseAttributeStore implements Entity {
 
-    private final String id;
-    private final String type;
+    protected final EntityIdentifier identifier;
 
-    public BaseEntity(String type, String id, Iterable<Attribute> attributes) {
+    public BaseEntity(EntityIdentifier identifier, Iterable<Attribute> attributes) {
         super(attributes);
-        this.type = checkNotNull(type);
-        this.id = checkNotNull(id);
+        this.identifier = checkNotNull(identifier);
     }
 
     /**
      * Copy constructor.
      */
     public BaseEntity(Entity entity) {
-        this(entity.getType(), entity.getId(), entity.getAttributes());
+        this(entity.getIdentifier(), entity.getAttributes());
     }
 
     /**
      * {@inheritDoc}
      */
     public String getId() {
-        return id;
+        return identifier.getId();
     }
 
     /**
      * {@inheritDoc}
      */
     public String getType() {
-        return type;
+        return identifier.getType();
+    }
+
+    @Override
+    public EntityIdentifier getIdentifier() {
+        return identifier;
     }
 
     @Override
     public String toString() {
         return "BaseEntity{" +
-                "id='" + id + '\'' +
-                ", type='" + type + '\'' +
+                "id='" + getId() + '\'' +
+                ", type='" + getType() + '\'' +
                 ", attributes='" + getAttributes() + '\'' +
                 '}';
     }
@@ -67,22 +70,15 @@ public class BaseEntity extends BaseAttributeStore implements Entity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof BaseEntity)) return false;
-        if (!super.equals(o)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         BaseEntity that = (BaseEntity) o;
 
-        if (!id.equals(that.id)) return false;
-        if (!type.equals(that.type)) return false;
-
-        return true;
+        return identifier.equals(that.identifier);
     }
 
     @Override
     public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + id.hashCode();
-        result = 31 * result + type.hashCode();
-        return result;
+        return identifier.hashCode();
     }
 }

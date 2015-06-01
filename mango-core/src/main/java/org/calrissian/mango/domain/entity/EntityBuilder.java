@@ -15,28 +15,30 @@
 */
 package org.calrissian.mango.domain.entity;
 
-import com.google.common.base.Preconditions;
 import org.calrissian.mango.domain.BaseAttributeStoreBuilder;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public class EntityBuilder extends BaseAttributeStoreBuilder<Entity, EntityBuilder> {
 
-    protected String type;
-    protected String id;
+    private final EntityIdentifier identifier;
+
+    public static EntityBuilder create(EntityIdentifier identifier) {
+        checkNotNull(identifier);
+        return new EntityBuilder(identifier);
+    }
 
     public static EntityBuilder create(String type, String id) {
-        return new EntityBuilder(type, id);
+        return create(new EntityIdentifier(type, id));
     }
 
-    protected EntityBuilder(String type, String id) {
-
+    protected EntityBuilder(EntityIdentifier identifier) {
         super();
-        Preconditions.checkNotNull(type);
-        Preconditions.checkNotNull(id);
-        this.type = type;
-        this.id = id;
+        this.identifier = identifier;
     }
 
+    @Override
     public Entity build() {
-        return new BaseEntity(type, id, attributes);
+        return new BaseEntity(identifier, attributes);
     }
 }

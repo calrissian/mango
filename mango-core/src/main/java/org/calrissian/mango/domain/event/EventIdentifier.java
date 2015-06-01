@@ -15,57 +15,21 @@
  */
 package org.calrissian.mango.domain.event;
 
+import org.calrissian.mango.domain.Temporal;
 import org.calrissian.mango.domain.entity.EntityIdentifier;
 
-public class EventIdentifier extends EntityIdentifier {
+public class EventIdentifier extends EntityIdentifier implements Temporal {
 
-    private final Long timestamp;
+    private final long timestamp;
 
-    public EventIdentifier(String type, String id, Long timestamp) {
+    public EventIdentifier(String type, String id, long timestamp) {
         super(type, id);
         this.timestamp = timestamp;
     }
 
-    @Deprecated
-    public EventIdentifier(String id, Long timestamp) {
-        this("", id, timestamp);
-    }
-
-    public EventIdentifier(Event event) {
-        this(event.getType(), event.getId(), event.getTimestamp());
-    }
-
-    public EventIdentifier(String type, String id) {
-        this(type, id, null);
-    }
-
-    @Deprecated
-    public EventIdentifier(String id) {
-        this("", id, null);
-    }
-
-    public Long getTimestamp() {
+    @Override
+    public long getTimestamp() {
         return timestamp;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof EventIdentifier)) return false;
-        if (!super.equals(o)) return false;
-
-        EventIdentifier that = (EventIdentifier) o;
-
-        if (timestamp != null ? !timestamp.equals(that.timestamp) : that.timestamp != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (timestamp != null ? timestamp.hashCode() : 0);
-        return result;
     }
 
     @Override
@@ -73,7 +37,25 @@ public class EventIdentifier extends EntityIdentifier {
         return "EventIndex{" +
                 "type='" + getType() + '\'' +
                 ", id='" + getId() + '\'' +
-                ", timestamp=" + timestamp +
+                ", timestamp=" + getTimestamp() +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        EventIdentifier that = (EventIdentifier) o;
+
+        return timestamp == that.timestamp;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (int) (timestamp ^ (timestamp >>> 32));
+        return result;
     }
 }
