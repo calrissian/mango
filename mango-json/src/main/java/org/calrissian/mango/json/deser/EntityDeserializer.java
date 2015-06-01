@@ -15,7 +15,6 @@
  */
 package org.calrissian.mango.json.deser;
 
-
 import com.fasterxml.jackson.databind.JsonNode;
 import org.calrissian.mango.domain.entity.BaseEntity;
 import org.calrissian.mango.domain.entity.EntityBuilder;

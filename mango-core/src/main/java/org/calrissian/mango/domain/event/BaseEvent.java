@@ -16,12 +16,8 @@
 package org.calrissian.mango.domain.event;
 
 
-import com.google.common.collect.Multimap;
 import org.calrissian.mango.domain.Attribute;
 import org.calrissian.mango.domain.entity.BaseEntity;
-
-import static java.lang.System.currentTimeMillis;
-import static java.util.UUID.randomUUID;
 
 /**
  * Default implementation of {@link Event}
@@ -30,43 +26,7 @@ public class BaseEvent extends BaseEntity implements Event {
 
     private final long timestamp; // in Millis
 
-    /**
-     * New event with random UUID and timestamp defaulted to current time
-     */
-    @Deprecated
-    public BaseEvent() {
-        this("", randomUUID().toString());
-    }   // for backward compatibility
-
-    /**
-     * New event with ID. Timestamp defaults to current time.
-     */
-    @Deprecated
-    public BaseEvent(String type, String id) {
-        this(type, id, currentTimeMillis());
-    }
-
-
-    @Deprecated
-    public BaseEvent(String id) {
-        this("", id, currentTimeMillis());
-    }
-
-    /**
-     * New store entry with ID and a timestamp
-     */
-    @Deprecated
-    public BaseEvent(String type, String id, long timestamp) {
-        super(type, id);
-        this.timestamp = timestamp;
-    }
-
-    @Deprecated
-    public BaseEvent(String id, long timestamp) {
-        this("", id, timestamp);
-    }
-
-    BaseEvent(String type, String id, long timestamp, Multimap<String, Attribute> attributes) {
+    BaseEvent(String type, String id, long timestamp, Iterable<Attribute> attributes) {
         super(type, id, attributes);
         this.timestamp = timestamp;
     }
@@ -75,8 +35,7 @@ public class BaseEvent extends BaseEntity implements Event {
      * Copy constructor
      */
     public BaseEvent(Event event) {
-        this(event.getType(), event.getId(), event.getTimestamp());
-        putAll(event.getAttributes());
+        this(event.getType(), event.getId(), event.getTimestamp(), event.getAttributes());
     }
 
     /**

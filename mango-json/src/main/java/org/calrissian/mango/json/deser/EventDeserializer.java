@@ -15,7 +15,6 @@
  */
 package org.calrissian.mango.json.deser;
 
-
 import com.fasterxml.jackson.databind.JsonNode;
 import org.calrissian.mango.domain.event.BaseEvent;
 import org.calrissian.mango.domain.event.EventBuilder;
@@ -26,15 +25,9 @@ public class EventDeserializer extends BaseAttributeStoreDeserializer<BaseEvent,
 
     @Override
     public EventBuilder deserialize(JsonNode root) {
-        String type = "";
-
-        //TODO Next major release (2.x) remove this check as this should now be required.
-        if (root.has("type"))
-            type = root.get("type").asText();
-
+        String type = root.get("type").asText();
         String id = root.get("id").asText();
         long timestamp = root.get("timestamp").asLong();
-
 
         return create(type, id, timestamp);
     }

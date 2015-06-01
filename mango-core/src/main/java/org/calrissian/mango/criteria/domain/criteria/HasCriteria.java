@@ -39,7 +39,7 @@ public class HasCriteria extends KeyValueLeafCriteria {
         if(obj.get(key) == null)
             return false;
 
-        Collection<Attribute> attributes = obj.getAll(key);
+        Collection<Attribute> attributes = obj.getAttributes(key);
         if(attributes.size() > 0 && clazz == null)
             return true;
 

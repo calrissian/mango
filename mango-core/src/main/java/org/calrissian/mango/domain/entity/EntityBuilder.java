@@ -23,7 +23,7 @@ public class EntityBuilder extends BaseAttributeStoreBuilder<Entity, EntityBuild
     protected String type;
     protected String id;
 
-    public static final EntityBuilder create(String type, String id) {
+    public static EntityBuilder create(String type, String id) {
         return new EntityBuilder(type, id);
     }
 

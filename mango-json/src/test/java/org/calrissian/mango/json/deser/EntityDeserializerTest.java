@@ -35,7 +35,9 @@ public class EntityDeserializerTest {
     @Test
     public void testBasicDeserialization() throws Exception {
 
-        Entity entity = create("type", "id").attr("key", "value").build();
+        Entity entity = create("type", "id")
+                .attr("key", "value")
+                .build();
 
         String json = objectMapper.writeValueAsString(entity);
 

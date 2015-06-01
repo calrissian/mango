@@ -15,13 +15,10 @@
  */
 package org.calrissian.mango.domain.entity;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
 import org.calrissian.mango.domain.Attribute;
 import org.calrissian.mango.domain.BaseAttributeStore;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static java.util.UUID.randomUUID;
 
 /**
  * Default implementation of {@link Entity}.
@@ -31,39 +28,17 @@ public class BaseEntity extends BaseAttributeStore implements Entity {
     private final String id;
     private final String type;
 
-    /**
-     * Defines an {@link Entity} object for the given type and a random uuid.
-     */
-    @Deprecated
-    public BaseEntity(String type) {
-        this(type, randomUUID().toString());
-    }
-
-    /**
-     * Defines an {@link Entity} for the given type and id
-     */
-    @Deprecated
-    public BaseEntity(String type, String id) {
-        super(ArrayListMultimap.<String, Attribute>create());
-        checkNotNull(type);
-        checkNotNull(id);
-        this.id = id;
-        this.type = type;
-    }
-
-    protected BaseEntity(String type, String id, Multimap<String, Attribute> attributes) {
+    public BaseEntity(String type, String id, Iterable<Attribute> attributes) {
         super(attributes);
-        this.type = type;
-        this.id = id;
+        this.type = checkNotNull(type);
+        this.id = checkNotNull(id);
     }
-
 
     /**
      * Copy constructor.
      */
     public BaseEntity(Entity entity) {
-        this(checkNotNull(entity).getType(), entity.getId());
-        putAll(entity.getAttributes());
+        this(entity.getType(), entity.getId(), entity.getAttributes());
     }
 
     /**

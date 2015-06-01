@@ -15,34 +15,31 @@
 */
 package org.calrissian.mango.domain;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
-
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
 public abstract class BaseAttributeStoreBuilder<T, B extends BaseAttributeStoreBuilder> implements AttributeStoreBuilder<T> {
 
-    protected Multimap<String, Attribute> attributes = ArrayListMultimap.create();
+    protected Collection<Attribute> attributes = new ArrayList<>();
 
     public B attr(String key, Object val) {
-        attributes.put(key, new Attribute(key, val));
+        this.attributes.add(new Attribute<>(key, val));
         return (B)this;
     }
 
     public B attr(String key, Object val, Map<String,String> meta) {
-        attributes.put(key, new Attribute(key, val, meta));
+        this.attributes.add(new Attribute<>(key, val, meta));
         return (B)this;
     }
 
     public B attr(Attribute attribute) {
-        attributes.put(attribute.getKey(), attribute);
+        this.attributes.add(attribute);
         return (B)this;
     }
 
     public B attrs(Collection<Attribute> attributes) {
-        for(Attribute attr : attributes)
-            attr(attr);
+        this.attributes.addAll(attributes);
         return (B)this;
     }
 

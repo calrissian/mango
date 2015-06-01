@@ -18,7 +18,6 @@ package org.calrissian.mango.criteria.domain.criteria;
 import org.calrissian.mango.domain.Attribute;
 import org.calrissian.mango.domain.AttributeStore;
 
-import java.util.Collection;
 import java.util.Comparator;
 
 public class GreaterThanEqualsCriteria extends ComparableKeyValueLeafCriteria {
@@ -34,13 +33,10 @@ public class GreaterThanEqualsCriteria extends ComparableKeyValueLeafCriteria {
 
     @Override
     public boolean apply(AttributeStore obj) {
-        Collection<Attribute> attributes = obj.getAll(key);
-        if (attributes != null) {
-            for (Attribute attribute : attributes) {
-                return comparator.compare(attribute.getValue(), value) >= 0;
-            }
+        for (Attribute attribute : obj.getAttributes()) {
+            if (comparator.compare(attribute.getValue(), value) >= 0)
+                return true;
         }
-
         return false;
     }
 }

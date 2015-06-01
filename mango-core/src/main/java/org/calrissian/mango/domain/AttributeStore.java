@@ -22,16 +22,6 @@ import java.util.Set;
 public interface AttributeStore extends Serializable {
 
     /**
-     * Puts a single attribute in the current data store
-     */
-    void put(Attribute attribute);
-
-    /**
-     * Adds all the given getAttributes to the current data store
-     */
-    void putAll(Iterable<Attribute> attributes);
-
-    /**
      * Retrieves all the getAttributes.
      */
     Collection<Attribute> getAttributes();
@@ -39,7 +29,7 @@ public interface AttributeStore extends Serializable {
     /**
      * Retrieves all the attributes for the specified key.
      */
-    Collection<Attribute> getAll(String key);
+    Collection<Attribute> getAttributes(String key);
 
     /**
      * Retrieves the first attribute returned for the specified key. This method assumes a single-valued key.
@@ -55,28 +45,10 @@ public interface AttributeStore extends Serializable {
     /**
      * Returns true of there exist attributes with the specified key
      */
-    boolean containsKey(String key);
-
-    /**
-     * Removes the specified attribute
-     */
-    <T> Attribute<T> remove(Attribute<T> t);
-
-    /**
-     * Removes the first attribute belonging to the specified key. This method assumed single-valued key
-     */
-    <T> Attribute<T> remove(String key);
-
-    /**
-     * Revoves all the attributes with the given key.
-     */
-    Collection<Attribute> removeAll(String key);
-
-    Collection<Attribute> removeAll(Collection<Attribute> attributes);
+    boolean contains(String key);
 
     /**
      * Returns the size of the attributestore. This should be a constant-time operation
-     * @return
      */
     int size();
 }

@@ -49,7 +49,7 @@ public class AttributeDeserializerTest {
         assertEquals("value", attribute.getValue());
         assertEquals(1, attribute.getMetadata().size());
 
-        Set<Map.Entry<String, Object>> entrySet = attribute.getMetadata().entrySet();
+        Set<Map.Entry<String, String>> entrySet = attribute.getMetadata().entrySet();
         assertEquals("metaKey", entrySet.iterator().next().getKey());
         assertEquals("metaVal", entrySet.iterator().next().getValue());
     }

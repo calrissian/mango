@@ -18,141 +18,54 @@ package org.calrissian.mango.domain;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.Iterables.getFirst;
 import static java.util.Collections.unmodifiableCollection;
+import static java.util.Collections.unmodifiableSet;
 
 /**
  * A base attribute collection providing reusable implementations for interacting with a attribute store backed by
  * a hash map with sets in the value representing a multimap.
  */
-public class BaseAttributeStore implements AttributeStore {
+public abstract class BaseAttributeStore implements AttributeStore {
 
-    private Multimap<String, Attribute> attributes = ArrayListMultimap.create();
+    private final Multimap<String, Attribute> attributes;
 
-    protected BaseAttributeStore(Multimap<String, Attribute> attributes) {
-        this.attributes = attributes;
+    protected BaseAttributeStore(Iterable<Attribute> attributes) {
+        this.attributes = ArrayListMultimap.create();
+        for (Attribute attr : attributes) {
+            this.attributes.put(attr.getKey(), attr);
+        }
     }
 
-    @Deprecated
-    public void put(Attribute attribute) {
-        checkNotNull(attribute);
-        checkNotNull(attribute.getKey());
-
-        attributes.put(attribute.getKey(), attribute);
-    }
-
-    @Deprecated
-    public void putAll(Iterable<Attribute> attributes) {
-        checkNotNull(attributes);
-        for (Attribute attribute : attributes)
-            put(attribute);
-    }
-
-    /**
-     * Returns all the getAttributes set on the current entity
-     */
+    @Override
     public Collection<Attribute> getAttributes() {
         return unmodifiableCollection(attributes.values());
     }
 
-    /**
-     * A get operation for multi-valued keys
-     */
-    public Collection<Attribute> getAll(String key) {
-        checkNotNull(key);
-        return attributes.get(key);
+    @Override
+    public Collection<Attribute> getAttributes(String key) {
+        return unmodifiableCollection(attributes.get(key));
     }
 
-    /**
-     * A get operation for single-valued keys
-     */
+    @Override
     public <T> Attribute<T> get(String key) {
-        return attributes.containsKey(key) ? attributes.get(key).iterator().next() : null;
+        return getFirst(getAttributes(key), null);
     }
 
     @Override
     public Set<String> keys() {
-        return attributes.keySet();
+        return unmodifiableSet(attributes.keySet());
     }
 
     @Override
-    public boolean containsKey(String key) {
+    public boolean contains(String key) {
         return attributes.containsKey(key);
     }
 
-    @Deprecated
     @Override
-    public <T> Attribute<T> remove(Attribute<T> t) {
-        checkNotNull(t);
-        checkNotNull(t.getKey());
-
-        if (attributes.containsKey(t.getKey())) {
-            Collection<Attribute> tupelSet = attributes.get(t.getKey());
-            if(tupelSet.remove(t))
-                return t;
-        }
-        return null;
-    }
-
-    @Deprecated
-    @Override
-    public <T> Attribute<T> remove(String key) {
-        checkNotNull(key);
-        if (attributes.containsKey(key)) {
-            Collection<Attribute> attrSet = attributes.get(key);
-            Attribute t = attrSet.size() > 0 ? attrSet.iterator().next() : null;
-            if(t != null && attributes.get(key).remove(t))
-                return t;
-        }
-
-        return null;
-    }
-
-    @Deprecated
-    @Override
-    public Collection<Attribute> removeAll(String key){
-        checkNotNull(key);
-        return attributes.removeAll(key);
-    }
-
-
-    @Deprecated
-    @Override
-    public Collection<Attribute> removeAll(Collection<Attribute> attributes) {
-        checkNotNull(attributes);
-        Collection<Attribute> removedTuples = new ArrayList<>();
-        for (Attribute attribute : attributes)
-            removedTuples.add(remove(attribute));
-
-        return removedTuples;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof BaseAttributeStore)) return false;
-
-        BaseAttributeStore that = (BaseAttributeStore) o;
-
-        if (!attributes.equals(that.attributes)) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return attributes.hashCode();
-    }
-
-    /**
-     * Returns the size of the current attribute store. Since it's backed by a MultiMap, size() is a
-     * constant-time operation.
-     * @return
-     */
     public int size() {
         return attributes.size();
     }

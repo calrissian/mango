@@ -17,12 +17,11 @@ package org.calrissian.mango.json.ser;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.calrissian.mango.domain.Attribute;
-import org.calrissian.mango.domain.entity.BaseEntity;
 import org.calrissian.mango.domain.entity.Entity;
 import org.calrissian.mango.json.MangoModule;
 import org.junit.Test;
 
+import static org.calrissian.mango.domain.entity.EntityBuilder.create;
 import static org.calrissian.mango.types.SimpleTypeEncoders.SIMPLE_TYPES;
 import static org.junit.Assert.assertEquals;
 
@@ -34,9 +33,10 @@ public class EntitySerializerTest {
     @Test
     public void testSerializes() throws JsonProcessingException {
 
-        Entity entity = new BaseEntity("type", "id");
-        entity.put(new Attribute("key", "value"));
-        entity.put(new Attribute("key1", "valu1"));
+        Entity entity = create("type", "id")
+                .attr("key", "value")
+                .attr("key1", "valu1")
+                .build();
 
         String serialized = objectMapper.writeValueAsString(entity);
 

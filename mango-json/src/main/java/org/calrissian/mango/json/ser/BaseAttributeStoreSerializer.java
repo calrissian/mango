@@ -36,7 +36,7 @@ public abstract class BaseAttributeStoreSerializer<T extends AttributeStore> ext
         jsonGenerator.writeObjectFieldStart("attributes");
 
         for(String key : t.keys())
-            jsonGenerator.writeObjectField(key, t.getAll(key));
+            jsonGenerator.writeObjectField(key, t.getAttributes(key));
 
         jsonGenerator.writeEndObject();
 

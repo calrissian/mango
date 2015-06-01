@@ -15,9 +15,7 @@
  */
 package org.calrissian.mango.criteria.domain.criteria;
 
-import org.calrissian.mango.domain.Attribute;
-import org.calrissian.mango.domain.entity.BaseEntity;
-import org.calrissian.mango.domain.entity.Entity;
+import org.calrissian.mango.domain.entity.EntityBuilder;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
@@ -30,12 +28,13 @@ public class HasKeyCriteriaTest {
 
         HasCriteria criteria = new HasCriteria("key1", null);
 
-        Entity entity = new BaseEntity("type", "id");
-        entity.put(new Attribute("key2", "val2"));
+        EntityBuilder entity = EntityBuilder.create("type", "id")
+                .attr("key2", "val2");
 
-        assertFalse(criteria.apply(entity));
+        assertFalse(criteria.apply(entity.build()));
 
-        entity.put(new Attribute("key1", "val1"));
-        assertTrue(criteria.apply(entity));
+        entity = entity.attr("key1", "val1");
+
+        assertTrue(criteria.apply(entity.build()));
     }
 }
