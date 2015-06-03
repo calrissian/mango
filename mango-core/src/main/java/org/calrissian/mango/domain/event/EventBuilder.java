@@ -32,6 +32,11 @@ public class EventBuilder extends BaseAttributeStoreBuilder<Event, EventBuilder>
         return create(new EventIdentifier(type, id, timestamp));
     }
 
+    public static EventBuilder create(Event event) {
+        return create(event.getIdentifier())
+                .attrs(event.getAttributes());
+    }
+
     protected EventBuilder(EventIdentifier identifier) {
         super();
         this.identifier = identifier;

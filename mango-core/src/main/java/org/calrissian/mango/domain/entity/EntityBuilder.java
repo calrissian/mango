@@ -32,6 +32,11 @@ public class EntityBuilder extends BaseAttributeStoreBuilder<Entity, EntityBuild
         return create(new EntityIdentifier(type, id));
     }
 
+    public static EntityBuilder create(Entity entity) {
+        return create(entity.getIdentifier())
+                .attrs(entity.getAttributes());
+    }
+
     protected EntityBuilder(EntityIdentifier identifier) {
         super();
         this.identifier = identifier;
