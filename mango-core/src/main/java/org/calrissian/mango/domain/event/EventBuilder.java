@@ -15,11 +15,11 @@
 */
 package org.calrissian.mango.domain.event;
 
-import org.calrissian.mango.domain.BaseAttributeStoreBuilder;
+import org.calrissian.mango.domain.AbstractAttributeStoreBuilder;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class EventBuilder extends BaseAttributeStoreBuilder<Event, EventBuilder> {
+public class EventBuilder extends AbstractAttributeStoreBuilder<Event, EventBuilder> {
 
     private final EventIdentifier identifier;
 

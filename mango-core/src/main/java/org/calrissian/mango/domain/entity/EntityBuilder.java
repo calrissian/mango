@@ -15,11 +15,11 @@
 */
 package org.calrissian.mango.domain.entity;
 
-import org.calrissian.mango.domain.BaseAttributeStoreBuilder;
+import org.calrissian.mango.domain.AbstractAttributeStoreBuilder;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class EntityBuilder extends BaseAttributeStoreBuilder<Entity, EntityBuilder> {
+public class EntityBuilder extends AbstractAttributeStoreBuilder<Entity, EntityBuilder> {
 
     private final EntityIdentifier identifier;
 

@@ -40,6 +40,6 @@ public class EventSerializerTest {
 
         String serialized = objectMapper.writeValueAsString(event);
 
-        assertEquals(serialized, "{\"timestamp\":0,\"type\":\"\",\"id\":\"id\",\"attributes\":{\"key1\":[{\"key\":\"key1\",\"type\":\"string\",\"value\":\"valu1\",\"metadata\":[]}],\"key\":[{\"key\":\"key\",\"type\":\"string\",\"value\":\"value\",\"metadata\":[]}]}}");
+        assertEquals(serialized, "{\"type\":\"\",\"id\":\"id\",\"timestamp\":0,\"attributes\":{\"key1\":[{\"key\":\"key1\",\"type\":\"string\",\"value\":\"valu1\",\"metadata\":[]}],\"key\":[{\"key\":\"key\",\"type\":\"string\",\"value\":\"value\",\"metadata\":[]}]}}");
     }
 }

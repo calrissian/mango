@@ -21,7 +21,7 @@ import org.calrissian.mango.domain.event.EventBuilder;
 
 import static org.calrissian.mango.domain.event.EventBuilder.create;
 
-public class EventDeserializer extends BaseAttributeStoreDeserializer<BaseEvent, EventBuilder> {
+public class EventDeserializer extends AbstractAttributeStoreDeserializer<BaseEvent, EventBuilder> {
 
     @Override
     public EventBuilder deserialize(JsonNode root) {

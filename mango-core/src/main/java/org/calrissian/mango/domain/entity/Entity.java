@@ -26,6 +26,5 @@ import java.io.Serializable;
 public interface Entity extends AttributeStore, Serializable, Identifiable {
 
     String getType();
-
     EntityIdentifier getIdentifier();
 }

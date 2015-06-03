@@ -23,7 +23,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.calrissian.mango.domain.Attribute;
 import org.calrissian.mango.domain.AttributeStore;
-import org.calrissian.mango.domain.BaseAttributeStoreBuilder;
+import org.calrissian.mango.domain.AbstractAttributeStoreBuilder;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -31,7 +31,7 @@ import java.util.Map;
 
 import static com.google.common.collect.Iterables.concat;
 
-public abstract class BaseAttributeStoreDeserializer<T extends AttributeStore, B extends BaseAttributeStoreBuilder> extends JsonDeserializer<T> {
+abstract class AbstractAttributeStoreDeserializer<T extends AttributeStore, B extends AbstractAttributeStoreBuilder> extends JsonDeserializer<T> {
 
     private static final TypeReference TR = new TypeReference<Map<String, Collection<Attribute>>>(){};
     @Override

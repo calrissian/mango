@@ -29,11 +29,11 @@ import static java.util.Collections.unmodifiableSet;
  * A base attribute collection providing reusable implementations for interacting with a attribute store backed by
  * a hash map with sets in the value representing a multimap.
  */
-public abstract class BaseAttributeStore implements AttributeStore {
+public abstract class AbstractAttributeStore implements AttributeStore {
 
     private final Multimap<String, Attribute> attributes;
 
-    protected BaseAttributeStore(Iterable<Attribute> attributes) {
+    protected AbstractAttributeStore(Iterable<Attribute> attributes) {
         this.attributes = ArrayListMultimap.create();
         for (Attribute attr : attributes) {
             this.attributes.put(attr.getKey(), attr);

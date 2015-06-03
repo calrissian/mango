@@ -19,25 +19,29 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
-public abstract class BaseAttributeStoreBuilder<T, B extends BaseAttributeStoreBuilder> implements AttributeStoreBuilder<T> {
+public abstract class AbstractAttributeStoreBuilder<T extends AttributeStore, B extends AbstractAttributeStoreBuilder<T, B>> implements AttributeStoreBuilder<T> {
 
     protected Collection<Attribute> attributes = new ArrayList<>();
 
+    @Override
     public B attr(String key, Object val) {
         this.attributes.add(new Attribute<>(key, val));
         return (B)this;
     }
 
+    @Override
     public B attr(String key, Object val, Map<String,String> meta) {
         this.attributes.add(new Attribute<>(key, val, meta));
         return (B)this;
     }
 
+    @Override
     public B attr(Attribute attribute) {
         this.attributes.add(attribute);
         return (B)this;
     }
 
+    @Override
     public B attrs(Collection<Attribute> attributes) {
         this.attributes.addAll(attributes);
         return (B)this;

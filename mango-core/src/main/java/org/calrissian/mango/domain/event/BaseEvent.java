@@ -38,7 +38,7 @@ public class BaseEvent extends BaseEntity implements Event {
      * {@inheritDoc}
      */
     public long getTimestamp() {
-        return ((EventIdentifier)identifier).getTimestamp();
+        return ((EventIdentifier)super.getIdentifier()).getTimestamp();
     }
 
     @Override

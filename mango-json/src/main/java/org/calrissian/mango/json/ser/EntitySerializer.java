@@ -20,7 +20,7 @@ import org.calrissian.mango.domain.entity.Entity;
 
 import java.io.IOException;
 
-public class EntitySerializer extends BaseAttributeStoreSerializer<Entity> {
+public class EntitySerializer extends AbstractAttributeStoreSerializer<Entity> {
 
     @Override
     protected void writeUniqueFields(Entity entity, JsonGenerator generator) throws IOException {

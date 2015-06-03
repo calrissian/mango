@@ -20,12 +20,12 @@ import org.calrissian.mango.domain.event.Event;
 
 import java.io.IOException;
 
-public class EventSerializer extends BaseAttributeStoreSerializer<Event> {
+public class EventSerializer extends AbstractAttributeStoreSerializer<Event> {
 
     @Override
     protected void writeUniqueFields(Event event, JsonGenerator generator) throws IOException {
-        generator.writeObjectField("timestamp", event.getTimestamp());
         generator.writeObjectField("type", event.getType());
         generator.writeObjectField("id", event.getId());
+        generator.writeObjectField("timestamp", event.getTimestamp());
     }
 }

@@ -16,16 +16,16 @@
 package org.calrissian.mango.domain.entity;
 
 import org.calrissian.mango.domain.Attribute;
-import org.calrissian.mango.domain.BaseAttributeStore;
+import org.calrissian.mango.domain.AbstractAttributeStore;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Default implementation of {@link Entity}.
  */
-public class BaseEntity extends BaseAttributeStore implements Entity {
+public class BaseEntity extends AbstractAttributeStore implements Entity {
 
-    protected final EntityIdentifier identifier;
+    private final EntityIdentifier identifier;
 
     public BaseEntity(EntityIdentifier identifier, Iterable<Attribute> attributes) {
         super(attributes);

@@ -56,7 +56,6 @@ public class AttributeSerializer extends JsonSerializer<Attribute> {
                 jsonGenerator.writeEndObject();
             }
             jsonGenerator.writeEndArray();
-
         }
 
 

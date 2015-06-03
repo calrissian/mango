@@ -23,7 +23,7 @@ import org.calrissian.mango.domain.AttributeStore;
 
 import java.io.IOException;
 
-public abstract class BaseAttributeStoreSerializer<T extends AttributeStore> extends JsonSerializer<T> {
+abstract class AbstractAttributeStoreSerializer<T extends AttributeStore> extends JsonSerializer<T> {
 
 
     @Override

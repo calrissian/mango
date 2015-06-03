@@ -15,10 +15,11 @@
  */
 package org.calrissian.mango.domain.event;
 
+import org.calrissian.mango.domain.Identifiable;
 import org.calrissian.mango.domain.Temporal;
 import org.calrissian.mango.domain.entity.EntityIdentifier;
 
-public class EventIdentifier extends EntityIdentifier implements Temporal {
+public class EventIdentifier extends EntityIdentifier implements Identifiable, Temporal {
 
     private final long timestamp;
 

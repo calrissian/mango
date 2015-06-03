@@ -21,7 +21,7 @@ import org.calrissian.mango.domain.entity.EntityBuilder;
 
 import static org.calrissian.mango.domain.entity.EntityBuilder.create;
 
-public class EntityDeserializer extends BaseAttributeStoreDeserializer<BaseEntity, EntityBuilder> {
+public class EntityDeserializer extends AbstractAttributeStoreDeserializer<BaseEntity, EntityBuilder> {
 
     @Override
     public EntityBuilder deserialize(JsonNode root) {
