@@ -15,8 +15,8 @@
  */
 package org.calrissian.mango.domain.entity;
 
-import org.calrissian.mango.domain.Attribute;
 import org.calrissian.mango.domain.AbstractAttributeStore;
+import org.calrissian.mango.domain.Attribute;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -27,7 +27,7 @@ public class BaseEntity extends AbstractAttributeStore implements Entity {
 
     private final EntityIdentifier identifier;
 
-    public BaseEntity(EntityIdentifier identifier, Iterable<Attribute> attributes) {
+    public BaseEntity(EntityIdentifier identifier, Iterable<? extends Attribute> attributes) {
         super(attributes);
         this.identifier = checkNotNull(identifier);
     }

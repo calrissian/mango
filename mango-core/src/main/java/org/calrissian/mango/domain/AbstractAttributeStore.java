@@ -33,7 +33,7 @@ public abstract class AbstractAttributeStore implements AttributeStore {
 
     private final Multimap<String, Attribute> attributes;
 
-    protected AbstractAttributeStore(Iterable<Attribute> attributes) {
+    protected AbstractAttributeStore(Iterable<? extends Attribute> attributes) {
         this.attributes = ArrayListMultimap.create();
         for (Attribute attr : attributes) {
             this.attributes.put(attr.getKey(), attr);

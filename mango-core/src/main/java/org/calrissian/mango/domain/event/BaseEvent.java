@@ -23,7 +23,7 @@ import org.calrissian.mango.domain.entity.BaseEntity;
  */
 public class BaseEvent extends BaseEntity implements Event {
 
-    public BaseEvent(EventIdentifier identifier, Iterable<Attribute> attributes) {
+    public BaseEvent(EventIdentifier identifier, Iterable<? extends Attribute> attributes) {
         super(identifier, attributes);
     }
 

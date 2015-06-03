@@ -15,7 +15,6 @@
 */
 package org.calrissian.mango.domain;
 
-import java.util.Collection;
 import java.util.Map;
 
 public interface AttributeStoreBuilder<T extends AttributeStore> {
@@ -23,7 +22,7 @@ public interface AttributeStoreBuilder<T extends AttributeStore> {
     AttributeStoreBuilder<T> attr(String key, Object val);
     AttributeStoreBuilder<T> attr(String key, Object val, Map<String,String> meta);
     AttributeStoreBuilder<T> attr(Attribute attribute);
-    AttributeStoreBuilder<T> attrs(Collection<Attribute> attributes);
+    AttributeStoreBuilder<T> attrs(Iterable<? extends Attribute> attributes);
 
     T build();
 }

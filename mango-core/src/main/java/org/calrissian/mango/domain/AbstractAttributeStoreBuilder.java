@@ -19,7 +19,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
-public abstract class AbstractAttributeStoreBuilder<T extends AttributeStore, B extends AbstractAttributeStoreBuilder<T, B>> implements AttributeStoreBuilder<T> {
+import static com.google.common.collect.Iterables.addAll;
+
+public abstract class AbstractAttributeStoreBuilder<T extends AttributeStore, B extends AttributeStoreBuilder<T>> implements AttributeStoreBuilder<T> {
 
     protected Collection<Attribute> attributes = new ArrayList<>();
 
@@ -42,8 +44,8 @@ public abstract class AbstractAttributeStoreBuilder<T extends AttributeStore, B 
     }
 
     @Override
-    public B attrs(Collection<Attribute> attributes) {
-        this.attributes.addAll(attributes);
+    public B attrs(Iterable<? extends Attribute> attributes) {
+        addAll(this.attributes, attributes);
         return (B)this;
     }
 
