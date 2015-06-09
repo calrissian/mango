@@ -21,6 +21,7 @@ import com.google.common.collect.Multimap;
 import java.util.Collection;
 import java.util.Set;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Iterables.getFirst;
 import static java.util.Collections.unmodifiableCollection;
 import static java.util.Collections.unmodifiableSet;
@@ -34,6 +35,7 @@ public abstract class AbstractAttributeStore implements AttributeStore {
     private final Multimap<String, Attribute> attributes;
 
     protected AbstractAttributeStore(Iterable<? extends Attribute> attributes) {
+        checkNotNull(attributes);
         this.attributes = ArrayListMultimap.create();
         for (Attribute attr : attributes) {
             this.attributes.put(attr.getKey(), attr);
@@ -68,5 +70,21 @@ public abstract class AbstractAttributeStore implements AttributeStore {
     @Override
     public int size() {
         return attributes.size();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AbstractAttributeStore)) return false;
+
+        AbstractAttributeStore that = (AbstractAttributeStore) o;
+
+        return attributes.equals(that.attributes);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return attributes.hashCode();
     }
 }
