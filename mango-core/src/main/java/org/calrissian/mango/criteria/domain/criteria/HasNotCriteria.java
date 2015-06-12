@@ -16,8 +16,8 @@
 package org.calrissian.mango.criteria.domain.criteria;
 
 
-import org.calrissian.mango.domain.Tuple;
-import org.calrissian.mango.domain.TupleStore;
+import org.calrissian.mango.domain.Attribute;
+import org.calrissian.mango.domain.AttributeStore;
 
 import java.util.Collection;
 
@@ -35,16 +35,16 @@ public class HasNotCriteria extends KeyValueLeafCriteria {
     }
 
     @Override
-    public boolean apply(TupleStore obj) {
+    public boolean apply(AttributeStore obj) {
         if(obj.get(key) == null)
             return true;
 
-        Collection<Tuple> tuples = obj.getAll(key);
-        if(tuples.size() > 0 && clazz == null)
+        Collection<Attribute> attributes = obj.getAttributes(key);
+        if(attributes.size() > 0 && clazz == null)
             return false;
 
-        for(Tuple tuple : tuples) {
-            if(tuple.getValue().getClass().equals(clazz))
+        for(Attribute attribute : attributes) {
+            if(attribute.getValue().getClass().equals(clazz))
                 return false;
         }
 

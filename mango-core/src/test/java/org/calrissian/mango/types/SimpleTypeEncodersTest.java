@@ -18,7 +18,7 @@ package org.calrissian.mango.types;
 
 import com.google.common.primitives.UnsignedInteger;
 import com.google.common.primitives.UnsignedLong;
-import org.calrissian.mango.domain.entity.EntityRelationship;
+import org.calrissian.mango.domain.entity.EntityIdentifier;
 import org.calrissian.mango.domain.ip.IPv4;
 import org.calrissian.mango.domain.ip.IPv6;
 import org.junit.Test;
@@ -72,8 +72,8 @@ public class SimpleTypeEncodersTest {
         verifyBasicFunctionality(IPV4_ALIAS, IPv4.fromString("192.168.1.1"), ipv4Encoder());
         verifyBasicFunctionality(IPV6_ALIAS, IPv6.fromString("::192.168.1.1"), ipv6Encoder());
         verifyBasicFunctionality(IPV6_ALIAS, IPv6.fromString("::ffff:192.168.1.1"), ipv6Encoder());
-        verifyBasicFunctionality(ENTITY_RELATIONSHIP_ALIAS, new EntityRelationship("type", "id"), entityRelationshipEncoder());
-        verifyBasicFunctionality(ENTITY_RELATIONSHIP_ALIAS, new EntityRelationship("", ""), entityRelationshipEncoder());
+        verifyBasicFunctionality(ENTITY_IDENTIFIER_ALIAS, new EntityIdentifier("type", "id"), entityIdentifierEncoder());
+        verifyBasicFunctionality(ENTITY_IDENTIFIER_ALIAS, new EntityIdentifier("", ""), entityIdentifierEncoder());
         verifyBasicFunctionality(UNSIGNEDINTEGER_ALIAS, UnsignedInteger.fromIntBits(3), unsignedIntegerEncoder());
         verifyBasicFunctionality(UNSIGNEDINTEGER_ALIAS, UnsignedInteger.MAX_VALUE, unsignedIntegerEncoder());
         verifyBasicFunctionality(UNSIGNEDLONG_ALIAS, UnsignedLong.fromLongBits(3), unsignedLongEncoder());
@@ -107,7 +107,7 @@ public class SimpleTypeEncodersTest {
 
         assertEquals("85070591730234615847396907784232501249", bigIntegerEncoder().encode(BigInteger.valueOf(Long.MAX_VALUE).pow(2)));
 
-        assertEquals("entity://type#id", entityRelationshipEncoder().encode(new EntityRelationship("type", "id")));
+        assertEquals("entity://type#id", entityIdentifierEncoder().encode(new EntityIdentifier("type", "id")));
 
         assertEquals("192.168.1.1", ipv4Encoder().encode(IPv4.fromString("192.168.1.1")));
 

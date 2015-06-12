@@ -60,22 +60,6 @@ public class IPTest {
     }
 
     @Test
-    public void ipv4LegacyConstructorTest() {
-        IPv4 ip = new IPv4("1.2.3.4");
-        assertEquals(forIPv4String("1.2.3.4"), ip.getAddress());
-        assertArrayEquals(forIPv4String("1.2.3.4").getAddress(), ip.toByteArray());
-
-        ip = new IPv4(16909060);
-        assertEquals(forIPv4String("1.2.3.4"), ip.getAddress());
-        assertArrayEquals(forIPv4String("1.2.3.4").getAddress(), ip.toByteArray());
-
-        //Check integer overflow
-        ip = new IPv4(0xFFFFFFFF);
-        assertEquals(forIPv4String("255.255.255.255"), ip.getAddress());
-        assertArrayEquals(forIPv4String("255.255.255.255").getAddress(), ip.toByteArray());
-    }
-
-    @Test
     public void ipv4CidrRangeTest() {
         Range<IPv4> cidr = IPv4.cidrRange("255.255.255.255/16");
         assertEquals(IPv4.fromString("255.255.0.0"), cidr.lowerEndpoint());

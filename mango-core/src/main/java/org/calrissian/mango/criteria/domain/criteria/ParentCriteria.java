@@ -18,10 +18,6 @@ package org.calrissian.mango.criteria.domain.criteria;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Date: 11/9/12
- * Time: 1:52 PM
- */
 public abstract class ParentCriteria implements Criteria {
     private static final long serialVersionUID = 1L;
 

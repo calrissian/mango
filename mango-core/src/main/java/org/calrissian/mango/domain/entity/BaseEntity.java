@@ -15,86 +15,70 @@
  */
 package org.calrissian.mango.domain.entity;
 
-import org.calrissian.mango.domain.BaseTupleStore;
+import org.calrissian.mango.domain.AbstractAttributeStore;
+import org.calrissian.mango.domain.Attribute;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static java.util.UUID.randomUUID;
 
 /**
  * Default implementation of {@link Entity}.
  */
-public class BaseEntity extends BaseTupleStore implements Entity {
+public class BaseEntity extends AbstractAttributeStore implements Entity {
 
-    private final String id;
-    private final String type;
+    private final EntityIdentifier identifier;
 
-    /**
-     * Defines an {@link Entity} object for the given type and a random uuid.
-     */
-    public BaseEntity(String type) {
-        this(type, randomUUID().toString());
-    }
-
-    /**
-     * Defines an {@link Entity} for the given type and id
-     */
-    public BaseEntity(String type, String id) {
-        checkNotNull(type);
-        checkNotNull(id);
-        this.id = id;
-        this.type = type;
+    public BaseEntity(EntityIdentifier identifier, Iterable<? extends Attribute> attributes) {
+        super(attributes);
+        this.identifier = checkNotNull(identifier);
     }
 
     /**
      * Copy constructor.
      */
     public BaseEntity(Entity entity) {
-        this(checkNotNull(entity).getType(), entity.getId());
-        putAll(entity.getTuples());
+        this(entity.getIdentifier(), entity.getAttributes());
     }
 
     /**
      * {@inheritDoc}
      */
     public String getId() {
-        return id;
+        return identifier.getId();
     }
 
     /**
      * {@inheritDoc}
      */
     public String getType() {
-        return type;
+        return identifier.getType();
+    }
+
+    @Override
+    public EntityIdentifier getIdentifier() {
+        return identifier;
     }
 
     @Override
     public String toString() {
         return "BaseEntity{" +
-                "id='" + id + '\'' +
-                ", type='" + type + '\'' +
-                ", tuples='" + getTuples() + '\'' +
+                "id='" + getId() + '\'' +
+                ", type='" + getType() + '\'' +
+                ", attributes='" + getAttributes() + '\'' +
                 '}';
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof BaseEntity)) return false;
-        if (!super.equals(o)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         BaseEntity that = (BaseEntity) o;
 
-        if (!id.equals(that.id)) return false;
-        if (!type.equals(that.type)) return false;
-
-        return true;
+        return identifier.equals(that.identifier);
     }
 
     @Override
     public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + id.hashCode();
-        result = 31 * result + type.hashCode();
-        return result;
+        return identifier.hashCode();
     }
 }

@@ -23,4 +23,6 @@ import org.calrissian.mango.domain.entity.Entity;
  * dimension tha can be set directly or left untouched (defaulting in current time).
  */
 public interface Event extends Entity, Temporal {
+
+    EventIdentifier getIdentifier();
 }

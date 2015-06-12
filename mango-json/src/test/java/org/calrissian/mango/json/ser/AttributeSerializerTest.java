@@ -15,32 +15,33 @@
  */
 package org.calrissian.mango.json.ser;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.calrissian.mango.domain.entity.Entity;
+import com.google.common.collect.ImmutableMap;
+import org.calrissian.mango.domain.Attribute;
 import org.calrissian.mango.json.MangoModule;
 import org.junit.Test;
 
-import static org.calrissian.mango.domain.entity.EntityBuilder.create;
 import static org.calrissian.mango.types.SimpleTypeEncoders.SIMPLE_TYPES;
 import static org.junit.Assert.assertEquals;
 
-public class EntitySerializerTest {
+public class AttributeSerializerTest {
 
     private ObjectMapper objectMapper = new ObjectMapper()
             .registerModule(new MangoModule(SIMPLE_TYPES));
 
     @Test
-    public void testSerializes() throws JsonProcessingException {
+    public void testBasicSerialization() throws Exception {
+        Attribute attribute = new Attribute("key", "value");
+        String json = objectMapper.writeValueAsString(attribute);
+        assertEquals(json, "{\"key\":\"key\",\"type\":\"string\",\"value\":\"value\",\"metadata\":[]}");
+    }
 
-        Entity entity = create("type", "id")
-                .attr("key", "value")
-                .attr("key1", "valu1")
-                .build();
-
-        String serialized = objectMapper.writeValueAsString(entity);
-
-        assertEquals(serialized, "{\"type\":\"type\",\"id\":\"id\",\"attributes\":{\"key1\":[{\"key\":\"key1\",\"type\":\"string\",\"value\":\"valu1\",\"metadata\":[]}],\"key\":[{\"key\":\"key\",\"type\":\"string\",\"value\":\"value\",\"metadata\":[]}]}}");
+    @Test
+    public void testSerialization_withMetadata() throws Exception {
+        Attribute attribute = new Attribute("key", "value", ImmutableMap.of("metaKey", "metaVal"));
+        String json = objectMapper.writeValueAsString(attribute);
+        assertEquals(json, "{\"key\":\"key\",\"type\":\"string\",\"value\":\"value\",\"metadata\":[{\"value\":\"metaVal\",\"key\":\"metaKey\"}]}");
     }
 
 }

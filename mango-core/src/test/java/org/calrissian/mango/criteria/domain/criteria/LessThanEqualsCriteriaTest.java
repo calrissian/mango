@@ -16,9 +16,7 @@
 package org.calrissian.mango.criteria.domain.criteria;
 
 import org.calrissian.mango.criteria.support.ComparableComparator;
-import org.calrissian.mango.domain.Tuple;
-import org.calrissian.mango.domain.entity.BaseEntity;
-import org.calrissian.mango.domain.entity.Entity;
+import org.calrissian.mango.domain.entity.EntityBuilder;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
@@ -31,22 +29,20 @@ public class LessThanEqualsCriteriaTest {
 
         LessThanEqualsCriteria criteria = new LessThanEqualsCriteria("key1", 5, new ComparableComparator(), null);
 
-        Entity entity = new BaseEntity("type", "id");
+        EntityBuilder entity = EntityBuilder.create("type", "id");
 
-        // first test without tuple existing
-        assertFalse(criteria.apply(entity));
+        // first test without attribute existing
+        assertFalse(criteria.apply(entity.build()));
 
-        entity.put(new Tuple("key1", 10));
+        entity = entity.attr("key1", 10);
 
-        entity.removeAll("key1");
+        assertFalse(criteria.apply(entity.build()));
 
-        assertFalse(criteria.apply(entity));
+        entity = entity.attr("key1", 5);
+        assertTrue(criteria.apply(entity.build()));
 
-        entity.put(new Tuple("key1", 5));
-        assertTrue(criteria.apply(entity));
-
-        entity.put(new Tuple("key1", 4));
-        assertTrue(criteria.apply(entity));
+        entity = entity.attr("key1", 4);
+        assertTrue(criteria.apply(entity.build()));
 
     }
 }

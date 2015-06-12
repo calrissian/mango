@@ -13,31 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.criteria.domain.criteria;
+package org.calrissian.mango.types.encoders;
 
-import org.calrissian.mango.domain.AttributeStore;
+import org.calrissian.mango.domain.entity.EntityIdentifier;
+import org.calrissian.mango.types.TypeEncoder;
 
-public class OrCriteria extends ParentCriteria {
+import static org.calrissian.mango.types.encoders.AliasConstants.ENTITY_IDENTIFIER_ALIAS;
 
-    public OrCriteria(ParentCriteria parent) {
-        super(parent);
+public abstract class AbstractEntityIdentifierEncoder<U> implements TypeEncoder<EntityIdentifier, U> {
+
+    @Override
+    public String getAlias() {
+        return ENTITY_IDENTIFIER_ALIAS;
     }
 
     @Override
-    public Criteria clone(ParentCriteria node) {
-        OrCriteria cloned = new OrCriteria(node);
-        for (Criteria child : children())
-            cloned.addChild(child.clone(cloned));
-        return cloned;
-    }
-
-    @Override
-    public boolean apply(AttributeStore obj) {
-        for (Criteria node : children()) {
-            if (node.apply(obj))
-                return true;
-        }
-
-        return false;
+    public Class<EntityIdentifier> resolves() {
+        return EntityIdentifier.class;
     }
 }

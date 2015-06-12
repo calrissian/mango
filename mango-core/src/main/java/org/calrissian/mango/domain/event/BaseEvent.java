@@ -15,86 +15,35 @@
  */
 package org.calrissian.mango.domain.event;
 
-
+import org.calrissian.mango.domain.Attribute;
 import org.calrissian.mango.domain.entity.BaseEntity;
-
-import static java.lang.System.currentTimeMillis;
-import static java.util.UUID.randomUUID;
 
 /**
  * Default implementation of {@link Event}
  */
 public class BaseEvent extends BaseEntity implements Event {
 
-    private final long timestamp; // in Millis
-
-    /**
-     * New event with random UUID and timestamp defaulted to current time
-     */
-    @Deprecated
-    public BaseEvent() {
-        this("", randomUUID().toString());
-    }   // for backward compatibility
-
-    /**
-     * New event with ID. Timestamp defaults to current time.
-     */
-    public BaseEvent(String type, String id) {
-        this(type, id, currentTimeMillis());
-    }
-
-
-    @Deprecated
-    public BaseEvent(String id) {
-        this("", id, currentTimeMillis());
-    }
-
-    /**
-     * New store entry with ID and a timestamp
-     */
-    public BaseEvent(String type, String id, long timestamp) {
-        super(type, id);
-        this.timestamp = timestamp;
-    }
-
-    @Deprecated
-    public BaseEvent(String id, long timestamp) {
-        this("", id, timestamp);
+    public BaseEvent(EventIdentifier identifier, Iterable<? extends Attribute> attributes) {
+        super(identifier, attributes);
     }
 
     /**
      * Copy constructor
      */
     public BaseEvent(Event event) {
-        this(event.getType(), event.getId(), event.getTimestamp());
-        putAll(event.getTuples());
+        this(event.getIdentifier(), event.getAttributes());
     }
 
     /**
      * {@inheritDoc}
      */
     public long getTimestamp() {
-        return timestamp;
+        return ((EventIdentifier)super.getIdentifier()).getTimestamp();
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof BaseEvent)) return false;
-        if (!super.equals(o)) return false;
-
-        BaseEvent baseEvent = (BaseEvent) o;
-
-        if (timestamp != baseEvent.timestamp) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (int) (timestamp ^ (timestamp >>> 32));
-        return result;
+    public EventIdentifier getIdentifier() {
+        return (EventIdentifier) super.getIdentifier();
     }
 
     @Override
@@ -102,8 +51,8 @@ public class BaseEvent extends BaseEntity implements Event {
         return "BaseEvent{" +
                 "type='" + getType() + '\'' +
                 ", id='" + getId() + '\'' +
-                ", timestamp=" + timestamp +
-                ", tuples=" + getTuples() +
+                ", timestamp=" + getTimestamp() +
+                ", attributes=" + getAttributes() +
                 '}';
     }
 }

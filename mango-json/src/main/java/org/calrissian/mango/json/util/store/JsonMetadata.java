@@ -23,7 +23,7 @@ import static java.lang.Integer.parseInt;
 
 /**
  * A simple utility class for dealing with setting/getting of the metadata entries for flattening
- * and re-expanding nested json trees to and from {@link org.calrissian.mango.domain.TupleStore} objects.
+ * and re-expanding nested json trees to and from {@link org.calrissian.mango.domain.AttributeStore} objects.
  */
 class JsonMetadata {
 
@@ -40,8 +40,8 @@ class JsonMetadata {
      * @param level
      * @param index
      */
-    static void setArrayIndex(Map<String,Object> meta, int level, int index) {
-        meta.put(level + ARRAY_IDX_SUFFIX, index);
+    static void setArrayIndex(Map<String,String> meta, int level, int index) {
+        meta.put(level + ARRAY_IDX_SUFFIX, Integer.toString(index));
     }
 
 
@@ -51,8 +51,8 @@ class JsonMetadata {
      * @param level
      * @return
      */
-    static Integer getArrayIndex(Map<String,Object> meta, int level) {
-        return (Integer)meta.get(level + ARRAY_IDX_SUFFIX);
+    static Integer getArrayIndex(Map<String,String> meta, int level) {
+        return Integer.parseInt(meta.get(level + ARRAY_IDX_SUFFIX));
     }
 
     /**
@@ -62,7 +62,7 @@ class JsonMetadata {
      * @param level
      * @return
      */
-    static boolean hasArrayIndex(Map<String,Object> meta, int level) {
+    static boolean hasArrayIndex(Map<String,String> meta, int level) {
         return meta.containsKey(level + ARRAY_IDX_SUFFIX);
     }
 
@@ -74,12 +74,12 @@ class JsonMetadata {
      * @param meta
      * @return
      */
-    static Map<Integer, Integer> levelsToIndices(Map<String,Object> meta) {
-        Set<Map.Entry<String, Object>> entries = meta.entrySet();
+    static Map<Integer, Integer> levelsToIndices(Map<String,String> meta) {
+        Set<Map.Entry<String, String>> entries = meta.entrySet();
         Map<Integer, Integer> levelToIdx = new HashMap<>();
-        for(Map.Entry<String,Object> entry : entries)
+        for(Map.Entry<String,String> entry : entries)
             if(entry.getKey().endsWith(ARRAY_IDX_SUFFIX))
-                levelToIdx.put(parseInt(entry.getKey().substring(0, entry.getKey().indexOf('.'))), (Integer)entry.getValue());
+                levelToIdx.put(parseInt(entry.getKey().substring(0, entry.getKey().indexOf('.'))), parseInt(entry.getValue()));
 
         return levelToIdx;
     }

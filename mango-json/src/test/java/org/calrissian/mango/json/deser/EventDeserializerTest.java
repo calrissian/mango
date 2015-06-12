@@ -17,8 +17,6 @@ package org.calrissian.mango.json.deser;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.calrissian.mango.domain.Tuple;
-import org.calrissian.mango.domain.event.BaseEvent;
 import org.calrissian.mango.domain.event.Event;
 import org.calrissian.mango.json.MangoModule;
 import org.junit.Test;
@@ -26,6 +24,7 @@ import org.junit.Test;
 import java.util.HashSet;
 
 import static java.lang.System.currentTimeMillis;
+import static org.calrissian.mango.domain.event.EventBuilder.create;
 import static org.calrissian.mango.types.SimpleTypeEncoders.SIMPLE_TYPES;
 import static org.junit.Assert.assertEquals;
 
@@ -37,9 +36,10 @@ public class EventDeserializerTest {
     @Test
     public void testBasicDeserialization() throws Exception {
 
-        Event event = new BaseEvent();
-        event.put(new Tuple("key", "value"));
-        event.put(new Tuple("key1", "valu1"));
+        Event event = create("type", "id", 0)
+                .attr("key", "value")
+                .attr("key1", "valu1")
+                .build();
 
         String json = objectMapper.writeValueAsString(event);
 
@@ -47,15 +47,16 @@ public class EventDeserializerTest {
 
         assertEquals(actualEntity.getId(), event.getId());
         assertEquals(actualEntity.getTimestamp(), event.getTimestamp());
-        assertEquals(new HashSet<>(actualEntity.getTuples()), new HashSet<>(event.getTuples()));
+        assertEquals(new HashSet<>(actualEntity.getAttributes()), new HashSet<>(event.getAttributes()));
     }
 
     @Test
     public void testBasicDeserialization2() throws Exception {
 
-        Event event = new BaseEvent("type", "id", currentTimeMillis());
-        event.put(new Tuple("key", "value"));
-        event.put(new Tuple("key1", "valu1"));
+        Event event = create("type", "id", currentTimeMillis())
+                .attr("key", "value")
+                .attr("key1", "valu1")
+                .build();
 
         String json = objectMapper.writeValueAsString(event);
 
@@ -63,7 +64,7 @@ public class EventDeserializerTest {
 
         assertEquals(actualEntity.getId(), event.getId());
         assertEquals(actualEntity.getTimestamp(), event.getTimestamp());
-        assertEquals(new HashSet<>(actualEntity.getTuples()), new HashSet<>(event.getTuples()));
+        assertEquals(new HashSet<>(actualEntity.getAttributes()), new HashSet<>(event.getAttributes()));
     }
 
 

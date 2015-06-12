@@ -16,9 +16,7 @@
 package org.calrissian.mango.criteria.domain.criteria;
 
 import org.calrissian.mango.criteria.support.ComparableComparator;
-import org.calrissian.mango.domain.Tuple;
-import org.calrissian.mango.domain.entity.BaseEntity;
-import org.calrissian.mango.domain.entity.Entity;
+import org.calrissian.mango.domain.entity.EntityBuilder;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
@@ -30,20 +28,20 @@ public class EqualsCriteriaTest {
     public void testEquals() {
 
         Criteria eq = new EqualsCriteria("key1", "val1", new ComparableComparator(), null);
-        Entity entity = new BaseEntity("type", "id");
-        entity.put(new Tuple("key1", "val1"));
+        EntityBuilder entity = EntityBuilder.create("type", "id")
+                .attr("key1", "val1");
 
-        assertTrue(eq.apply(entity));
+        assertTrue(eq.apply(entity.build()));
     }
 
     @Test
     public void testNotEquals() {
 
         Criteria eq = new EqualsCriteria("key1", "val1", new ComparableComparator(), null);
-        Entity entity = new BaseEntity("type", "id");
-        entity.put(new Tuple("key1", "val2"));
+        EntityBuilder entity = EntityBuilder.create("type", "id")
+                .attr("key1", "val2");
 
-        assertFalse(eq.apply(entity));
+        assertFalse(eq.apply(entity.build()));
 
     }
 }

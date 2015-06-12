@@ -15,10 +15,9 @@
  */
 package org.calrissian.mango.criteria.domain.criteria;
 
-import org.calrissian.mango.domain.Tuple;
-import org.calrissian.mango.domain.TupleStore;
+import org.calrissian.mango.domain.Attribute;
+import org.calrissian.mango.domain.AttributeStore;
 
-import java.util.Collection;
 import java.util.Comparator;
 
 public class EqualsCriteria extends ComparableKeyValueLeafCriteria {
@@ -28,16 +27,11 @@ public class EqualsCriteria extends ComparableKeyValueLeafCriteria {
     }
 
     @Override
-    public boolean apply(TupleStore obj) {
-
-        Collection<Tuple> tuples = obj.getAll(key);
-        if (tuples != null) {
-            for (Tuple tuple : tuples) {
-                if (comparator.compare(value, tuple.getValue()) == 0)
-                    return true;
-            }
+    public boolean apply(AttributeStore obj) {
+        for (Attribute attribute : obj.getAttributes(key)) {
+            if (comparator.compare(attribute.getValue(), value) == 0)
+                return true;
         }
-
         return false;
     }
 

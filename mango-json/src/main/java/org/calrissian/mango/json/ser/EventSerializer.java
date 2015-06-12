@@ -16,17 +16,16 @@
 package org.calrissian.mango.json.ser;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.google.common.base.Strings;
 import org.calrissian.mango.domain.event.Event;
 
 import java.io.IOException;
 
-public class EventSerializer extends BaseTupleStoreSerializer<Event> {
+public class EventSerializer extends AbstractAttributeStoreSerializer<Event> {
 
     @Override
     protected void writeUniqueFields(Event event, JsonGenerator generator) throws IOException {
-        generator.writeObjectField("timestamp", event.getTimestamp());
         generator.writeObjectField("type", event.getType());
         generator.writeObjectField("id", event.getId());
+        generator.writeObjectField("timestamp", event.getTimestamp());
     }
 }

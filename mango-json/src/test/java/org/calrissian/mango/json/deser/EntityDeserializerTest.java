@@ -17,14 +17,13 @@ package org.calrissian.mango.json.deser;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.calrissian.mango.domain.Tuple;
-import org.calrissian.mango.domain.entity.BaseEntity;
 import org.calrissian.mango.domain.entity.Entity;
 import org.calrissian.mango.json.MangoModule;
 import org.junit.Test;
 
 import java.util.HashSet;
 
+import static org.calrissian.mango.domain.entity.EntityBuilder.create;
 import static org.calrissian.mango.types.SimpleTypeEncoders.SIMPLE_TYPES;
 import static org.junit.Assert.assertEquals;
 
@@ -36,8 +35,9 @@ public class EntityDeserializerTest {
     @Test
     public void testBasicDeserialization() throws Exception {
 
-        Entity entity = new BaseEntity("type", "id");
-        entity.put(new Tuple("key", "value"));
+        Entity entity = create("type", "id")
+                .attr("key", "value")
+                .build();
 
         String json = objectMapper.writeValueAsString(entity);
 
@@ -45,7 +45,7 @@ public class EntityDeserializerTest {
 
         assertEquals(actualEntity.getType(), entity.getType());
         assertEquals(actualEntity.getId(), entity.getId());
-        assertEquals(new HashSet<>(actualEntity.getTuples()), new HashSet<>(entity.getTuples()));
+        assertEquals(new HashSet<>(actualEntity.getAttributes()), new HashSet<>(entity.getAttributes()));
     }
 
 

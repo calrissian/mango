@@ -15,17 +15,24 @@
  */
 package org.calrissian.mango.json.deser;
 
-
 import com.fasterxml.jackson.databind.JsonNode;
 import org.calrissian.mango.domain.entity.BaseEntity;
+import org.calrissian.mango.domain.entity.EntityBuilder;
 
-public class EntityDeserializer extends BaseTupleStoreDeserializer<BaseEntity> {
+import static org.calrissian.mango.domain.entity.EntityBuilder.create;
+
+public class EntityDeserializer extends AbstractAttributeStoreDeserializer<BaseEntity, EntityBuilder> {
 
     @Override
-    public BaseEntity deserialize(JsonNode root) {
+    public EntityBuilder deserialize(JsonNode root) {
         String type = root.get("type").asText();
         String id = root.get("id").asText();
 
-        return new BaseEntity(type, id);
+        return create(type, id);
+    }
+
+    @Override
+    public BaseEntity build(EntityBuilder entityBuilder) {
+        return (BaseEntity)entityBuilder.build();
     }
 }

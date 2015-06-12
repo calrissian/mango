@@ -15,16 +15,14 @@
  */
 package org.calrissian.mango.criteria.domain.criteria;
 
-import org.calrissian.mango.domain.Tuple;
-import org.calrissian.mango.domain.TupleStore;
+import org.calrissian.mango.domain.Attribute;
+import org.calrissian.mango.domain.AttributeStore;
 
-import java.util.Collection;
 import java.util.Comparator;
 
 public class RangeCriteria extends ComparableKeyValueLeafCriteria {
 
     protected Object end;
-    protected String encodedEnd;
 
     public RangeCriteria(String key, Object start, Object end, Comparator comparator, ParentCriteria parentCriteria) {
         super(key, start, comparator, parentCriteria);
@@ -45,7 +43,6 @@ public class RangeCriteria extends ComparableKeyValueLeafCriteria {
 
         RangeCriteria that = (RangeCriteria) o;
 
-        if (encodedEnd != null ? !encodedEnd.equals(that.encodedEnd) : that.encodedEnd != null) return false;
         if (end != null ? !end.equals(that.end) : that.end != null) return false;
 
         return true;
@@ -55,20 +52,16 @@ public class RangeCriteria extends ComparableKeyValueLeafCriteria {
     public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + (end != null ? end.hashCode() : 0);
-        result = 31 * result + (encodedEnd != null ? encodedEnd.hashCode() : 0);
         return result;
     }
 
     @Override
-    public boolean apply(TupleStore obj) {
-        Collection<Tuple> tuples = obj.getAll(key);
-        if (tuples != null) {
-            for (Tuple tuple : tuples) {
-                int startCompare = comparator.compare(tuple.getValue(), value);
-                int endCompare = comparator.compare(tuple.getValue(), end);
-                if (startCompare >= 0 && endCompare <= 0) {
-                    return true;
-                }
+    public boolean apply(AttributeStore obj) {
+        for (Attribute attribute : obj.getAttributes(key)) {
+            int startCompare = comparator.compare(attribute.getValue(), value);
+            int endCompare = comparator.compare(attribute.getValue(), end);
+            if (startCompare >= 0 && endCompare <= 0) {
+                return true;
             }
         }
 

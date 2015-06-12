@@ -15,14 +15,12 @@
  */
 package org.calrissian.mango.domain.ip;
 
-
 import com.google.common.collect.DiscreteDomain;
 import com.google.common.collect.Range;
 
 import java.net.Inet4Address;
 
 import static com.google.common.collect.Range.closed;
-import static com.google.common.net.InetAddresses.fromInteger;
 import static com.google.common.primitives.Ints.fromByteArray;
 import static com.google.common.primitives.UnsignedBytes.lexicographicalComparator;
 import static java.lang.String.format;
@@ -37,30 +35,6 @@ public class IPv4 extends IP<Inet4Address> implements Comparable<IPv4> {
 
     public IPv4(Inet4Address address) {
         super(address);
-    }
-
-    /**
-     * @deprecated use {@code IPv4.fromString()}
-     */
-    @Deprecated
-    public IPv4(String ip) {
-        super(forIPv4String(ip));
-    }
-
-    /**
-     * @deprecated
-     */
-    @Deprecated
-    public IPv4(long ip) {
-        super(fromInteger((int) ip));
-    }
-
-    /**
-     * @deprecated
-     */
-    @Deprecated
-    public long getValue() {
-        return fromByteArray(toByteArray()) & 0xFFFFFFFFL;
     }
 
     @Override

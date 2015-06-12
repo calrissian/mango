@@ -36,7 +36,7 @@ class ArrayJsonNode implements JsonTreeNode {
     @Override
     public void visit(String[] keys, int level, Map<Integer, Integer> levelToIdx, ValueJsonNode valueJsonNode) {
         if(level == keys.length-1)
-            children.add(valueJsonNode);    // we know the tuples are sorted
+            children.add(valueJsonNode);    // we know the attributes are sorted
         else {
 
             JsonTreeNode child = null;
