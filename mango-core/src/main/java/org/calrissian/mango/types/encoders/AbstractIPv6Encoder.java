@@ -15,7 +15,7 @@
  */
 package org.calrissian.mango.types.encoders;
 
-import org.calrissian.mango.domain.ip.IPv6;
+import org.calrissian.mango.net.IPv6;
 import org.calrissian.mango.types.TypeEncoder;
 
 import static org.calrissian.mango.types.encoders.AliasConstants.IPV6_ALIAS;

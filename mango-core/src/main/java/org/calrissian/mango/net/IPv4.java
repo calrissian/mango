@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.domain.ip;
+package org.calrissian.mango.net;
 
 import com.google.common.collect.DiscreteDomain;
 import com.google.common.collect.Range;
