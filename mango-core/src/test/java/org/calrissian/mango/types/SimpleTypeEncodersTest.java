@@ -19,6 +19,7 @@ package org.calrissian.mango.types;
 import com.google.common.primitives.UnsignedInteger;
 import com.google.common.primitives.UnsignedLong;
 import org.calrissian.mango.domain.entity.EntityIdentifier;
+import org.calrissian.mango.domain.event.EventIdentifier;
 import org.calrissian.mango.domain.ip.IPv4;
 import org.calrissian.mango.domain.ip.IPv6;
 import org.junit.Test;
@@ -74,6 +75,8 @@ public class SimpleTypeEncodersTest {
         verifyBasicFunctionality(IPV6_ALIAS, IPv6.fromString("::ffff:192.168.1.1"), ipv6Encoder());
         verifyBasicFunctionality(ENTITY_IDENTIFIER_ALIAS, new EntityIdentifier("type", "id"), entityIdentifierEncoder());
         verifyBasicFunctionality(ENTITY_IDENTIFIER_ALIAS, new EntityIdentifier("", ""), entityIdentifierEncoder());
+        verifyBasicFunctionality(EVENT_IDENTIFIER_ALIAS, new EventIdentifier("type", "id", Long.MAX_VALUE), eventIdentifierEncoder());
+        verifyBasicFunctionality(EVENT_IDENTIFIER_ALIAS, new EventIdentifier("", "", 0), eventIdentifierEncoder());
         verifyBasicFunctionality(UNSIGNEDINTEGER_ALIAS, UnsignedInteger.fromIntBits(3), unsignedIntegerEncoder());
         verifyBasicFunctionality(UNSIGNEDINTEGER_ALIAS, UnsignedInteger.MAX_VALUE, unsignedIntegerEncoder());
         verifyBasicFunctionality(UNSIGNEDLONG_ALIAS, UnsignedLong.fromLongBits(3), unsignedLongEncoder());
@@ -108,6 +111,8 @@ public class SimpleTypeEncodersTest {
         assertEquals("85070591730234615847396907784232501249", bigIntegerEncoder().encode(BigInteger.valueOf(Long.MAX_VALUE).pow(2)));
 
         assertEquals("entity://type#id", entityIdentifierEncoder().encode(new EntityIdentifier("type", "id")));
+
+        assertEquals("event://type#id@9223372036854775807", eventIdentifierEncoder().encode(new EventIdentifier("type", "id", Long.MAX_VALUE)));
 
         assertEquals("192.168.1.1", ipv4Encoder().encode(IPv4.fromString("192.168.1.1")));
 

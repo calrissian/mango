@@ -19,6 +19,7 @@ package org.calrissian.mango.types;
 import com.google.common.primitives.UnsignedInteger;
 import com.google.common.primitives.UnsignedLong;
 import org.calrissian.mango.domain.entity.EntityIdentifier;
+import org.calrissian.mango.domain.event.EventIdentifier;
 import org.calrissian.mango.domain.ip.IPv4;
 import org.calrissian.mango.domain.ip.IPv6;
 import org.calrissian.mango.types.encoders.lexi.*;
@@ -58,13 +59,13 @@ public class LexiTypeEncoders {
      * Contains the full set of supported type encoders
      */
     public static final TypeRegistry<String> LEXI_TYPES = new TypeRegistry<>(LEXI_JAVA_TYPES,
-            ipv4Encoder(), ipv6Encoder(), entityIdentifierEncoder(),
+            ipv4Encoder(), ipv6Encoder(), entityIdentifierEncoder(), eventIdentifierEncoder(),
             unsignedIntegerEncoder(), unsignedLongEncoder()
     );
 
     public static final TypeRegistry<String> LEXI_REV_TYPES = new TypeRegistry<>(LEXI_REV_JAVA_TYPES,
-            ipv4RevEncoder(), ipv6RevEncoder(),
-            unsignedIntegerRevEncoder(), unsignedLongRevEncoder(), entityIdentifierRevEncoder()
+            ipv4RevEncoder(), ipv6RevEncoder(), entityIdentifierRevEncoder(), eventIdentifierRevEncoder(),
+            unsignedIntegerRevEncoder(), unsignedLongRevEncoder()
     );
 
     private static <T> TypeEncoder<T, String> reverseEncoder(TypeEncoder<T, String> sourceEncoder) {
@@ -195,11 +196,17 @@ public class LexiTypeEncoders {
         return SimpleTypeEncoders.entityIdentifierEncoder();
     }
 
-
     public static TypeEncoder<EntityIdentifier, String> entityIdentifierRevEncoder() {
         return reverseEncoder(SimpleTypeEncoders.entityIdentifierEncoder());
     }
 
+    public static TypeEncoder<EventIdentifier, String> eventIdentifierEncoder() {
+        return new EventIdentifierEncoder();
+    }
+
+    public static TypeEncoder<EventIdentifier, String> eventIdentifierRevEncoder() {
+        return reverseEncoder(eventIdentifierEncoder());
+    }
 
     public static TypeEncoder<UnsignedInteger, String> unsignedIntegerEncoder() {
         return new UnsignedIntegerEncoder();
