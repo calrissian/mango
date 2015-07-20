@@ -31,18 +31,13 @@ public class Serializables {
     }
 
     public static byte [] serialize(Serializable serializable, boolean compress) throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ObjectOutputStream  o;
-
-        if (compress)
-            o = new ObjectOutputStream(new GZIPOutputStream(baos));
-        else
-            o = new ObjectOutputStream(baos);
-
-        o.writeObject(serializable);
-        o.flush();
-        o.close();
-        return baos.toByteArray();
+        try (ByteArrayOutputStream o = new ByteArrayOutputStream();
+             ObjectOutputStream oos = new ObjectOutputStream(compress ? new GZIPOutputStream(o) : o)) {
+            oos.writeObject(serializable);
+            oos.flush();
+            oos.close();  //must close before getting bytes because GZip streams require it.
+            return o.toByteArray();
+        }
     }
 
     public static <T extends Serializable> T deserialize(byte[] bytes) throws IOException, ClassNotFoundException {
@@ -50,14 +45,10 @@ public class Serializables {
     }
 
     public static <T extends Serializable> T deserialize(byte[] bytes, boolean compressed) throws IOException, ClassNotFoundException {
-        InputStream i = new ByteArrayInputStream(bytes);
-        if (compressed)
-            i = new GZIPInputStream(i);
-
-        ObjectInputStream ois = new ObjectInputStream(i);
-        T retVal = (T) ois.readObject();
-        ois.close();
-        return retVal;
+        try (ByteArrayInputStream i = new ByteArrayInputStream(bytes);
+             ObjectInputStream ois = new ObjectInputStream(compressed ? new GZIPInputStream(i) : i)) {
+            return (T) ois.readObject();
+        }
     }
 
     public static byte[] toBase64(Serializable serializable) throws IOException {
