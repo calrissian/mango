@@ -19,6 +19,7 @@ import java.io.*;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static org.apache.commons.codec.binary.Base64.decodeBase64;
 import static org.apache.commons.codec.binary.Base64.encodeBase64;
 
@@ -31,6 +32,8 @@ public class Serializables {
     }
 
     public static byte [] serialize(Serializable serializable, boolean compress) throws IOException {
+        checkNotNull(serializable);
+
         try (ByteArrayOutputStream o = new ByteArrayOutputStream();
              ObjectOutputStream oos = new ObjectOutputStream(compress ? new GZIPOutputStream(o) : o)) {
             oos.writeObject(serializable);
@@ -45,6 +48,8 @@ public class Serializables {
     }
 
     public static <T extends Serializable> T deserialize(byte[] bytes, boolean compressed) throws IOException, ClassNotFoundException {
+        checkNotNull(bytes);
+
         try (ByteArrayInputStream i = new ByteArrayInputStream(bytes);
              ObjectInputStream ois = new ObjectInputStream(compressed ? new GZIPInputStream(i) : i)) {
             return (T) ois.readObject();
