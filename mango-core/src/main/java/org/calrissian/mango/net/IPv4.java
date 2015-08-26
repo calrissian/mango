@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.domain.ip;
+package org.calrissian.mango.net;
 
 import com.google.common.collect.DiscreteDomain;
 import com.google.common.collect.Range;
@@ -31,7 +31,7 @@ import static org.calrissian.mango.net.MoreInetAddresses.*;
  * that is comparable to allow its use in other data objects such as {@link java.util.TreeMap} or
  * {@link com.google.common.collect.Range}
  */
-public class IPv4 extends IP<Inet4Address> implements Comparable<IPv4> {
+public final class IPv4 extends IP<Inet4Address> implements Comparable<IPv4> {
 
     public IPv4(Inet4Address address) {
         super(address);
@@ -42,7 +42,7 @@ public class IPv4 extends IP<Inet4Address> implements Comparable<IPv4> {
         if (o == null)
             return 1;
 
-        return lexicographicalComparator().compare(toByteArray(), o.toByteArray());
+        return lexicographicalComparator().compare(bytes, o.bytes);
     }
 
     /**
@@ -89,8 +89,8 @@ public class IPv4 extends IP<Inet4Address> implements Comparable<IPv4> {
         @Override
         public long distance(IPv4 start, IPv4 end) {
             return longs().distance(
-                    fromByteArray(start.toByteArray()) & 0xFFFFFFFFL,
-                    fromByteArray(end.toByteArray()) & 0xFFFFFFFFL
+                    fromByteArray(start.bytes) & 0xFFFFFFFFL,
+                    fromByteArray(end.bytes) & 0xFFFFFFFFL
             );
         }
 

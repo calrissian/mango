@@ -13,39 +13,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.domain.ip;
+package org.calrissian.mango.net;
 
 
 import java.io.Serializable;
 import java.net.InetAddress;
+import java.util.Arrays;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.net.InetAddresses.toAddrString;
+import static org.calrissian.mango.net.MoreInetAddresses.bytesToInetAddress;
 
 /**
  * Intentionally package private.
  */
 abstract class IP<T extends InetAddress> implements Serializable {
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
 
-    private final T address;
+    final byte[] bytes;
 
     protected IP(T address) {
         checkNotNull(address);
-        this.address = address;
+        this.bytes = address.getAddress();
     }
 
+    @SuppressWarnings("unchecked")
     public T getAddress() {
-        return address;
+        return (T) bytesToInetAddress(bytes);
     }
 
     public byte[] toByteArray() {
-        return address.getAddress();
+        return bytes.clone();
     }
 
     @Override
     public String toString() {
-        return toAddrString(address);
+        return toAddrString(getAddress());
     }
 
     @Override
@@ -53,13 +56,13 @@ abstract class IP<T extends InetAddress> implements Serializable {
         if (this == o) return true;
         if (!(o instanceof IP)) return false;
 
-        IP ip = (IP) o;
+        IP<?> ip = (IP<?>) o;
 
-        return address.equals(ip.address);
+        return Arrays.equals(bytes, ip.bytes);
     }
 
     @Override
     public int hashCode() {
-        return address.hashCode();
+        return Arrays.hashCode(bytes);
     }
 }
