@@ -26,4 +26,9 @@ public class EqualsLeaf<T> extends TermValueLeaf<T> {
     public Node clone(ParentNode node) {
         return new EqualsLeaf<>(getTerm(), getValue(), node);
     }
+
+    @Override
+    public String toString() {
+        return getTerm() + " == " + getValue();
+    }
 }

@@ -25,4 +25,9 @@ public class LessThanEqualsLeaf<T> extends TermValueLeaf<T> {
     public Node clone(ParentNode node) {
         return new LessThanEqualsLeaf<>(getTerm(), getValue(), node);
     }
+
+    @Override
+    public String toString() {
+        return getTerm() + " <= " + getValue();
+    }
 }

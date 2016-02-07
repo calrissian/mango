@@ -26,4 +26,9 @@ public class GreaterThanEqualsLeaf<T> extends TermValueLeaf<T> {
     public Node clone(ParentNode node) {
         return new GreaterThanEqualsLeaf<>(getTerm(), getValue(), node);
     }
+
+    @Override
+    public String toString() {
+        return getTerm() + " >= " + getValue();
+    }
 }

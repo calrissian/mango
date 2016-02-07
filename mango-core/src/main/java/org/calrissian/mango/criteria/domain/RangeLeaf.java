@@ -55,4 +55,12 @@ public class RangeLeaf<T> extends TypedTermLeaf<T> {
     public int hashCode() {
         return Objects.hash(super.hashCode(), start, end);
     }
+
+    @Override
+    public String toString() {
+        return getTerm() + " within " +
+                (start == null ? "(-inf" : "[" + start) +
+                "," +
+                (end == null ? "inf)" : end + "]");
+    }
 }

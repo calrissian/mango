@@ -39,4 +39,9 @@ public class GreaterThanEqualsCriteria<T> extends ComparableTermValueCriteria<T>
     public Criteria clone(ParentCriteria parentCriteria) {
         return new GreaterThanEqualsCriteria<>(getTerm(), getValue(), getComparator(), parentCriteria);
     }
+
+    @Override
+    public String toString() {
+        return getTerm() + " >= " + getValue();
+    }
 }

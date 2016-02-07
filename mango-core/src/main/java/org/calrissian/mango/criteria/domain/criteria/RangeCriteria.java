@@ -68,4 +68,12 @@ public class RangeCriteria<T> extends TermCriteria {
     public int hashCode() {
         return Objects.hash(super.hashCode(), start, end, comparator);
     }
+
+    @Override
+    public String toString() {
+        return getTerm() + " within " +
+                (start == null ? "(-inf" : "[" + start) +
+                "," +
+                (end == null ? "inf)" : end + "]");
+    }
 }

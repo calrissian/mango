@@ -29,4 +29,9 @@ public class HasLeaf<T> extends TypedTermLeaf<T> {
     public Node clone(ParentNode node) {
         return new HasLeaf<>(getTerm(), getType(), node);
     }
+
+    @Override
+    public String toString() {
+        return "hasTerm('" + getTerm() + "')";
+    }
 }

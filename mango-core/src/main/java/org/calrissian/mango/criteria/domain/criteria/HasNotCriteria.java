@@ -51,10 +51,13 @@ public class HasNotCriteria<T> extends TermCriteria {
         return true;
     }
 
-  @Override
-  public Criteria clone(ParentCriteria parentCriteria) {
-    return new HasNotCriteria<>(getTerm(), clazz, parentCriteria);
-  }
+    @Override
+    public Criteria clone(ParentCriteria parentCriteria) {
+        return new HasNotCriteria<>(getTerm(), clazz, parentCriteria);
+    }
 
-
+    @Override
+    public String toString() {
+        return "!hasTerm('" + getTerm() + "')";
+    }
 }

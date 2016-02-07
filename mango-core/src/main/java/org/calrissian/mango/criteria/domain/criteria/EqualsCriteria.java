@@ -39,4 +39,9 @@ public class EqualsCriteria<T> extends ComparableTermValueCriteria<T> {
     public Criteria clone(ParentCriteria parentCriteria) {
         return new EqualsCriteria<>(getTerm(), getValue(), getComparator(), parentCriteria);
     }
+
+    @Override
+    public String toString() {
+        return getTerm() + " == " + getValue();
+    }
 }

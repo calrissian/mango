@@ -40,4 +40,8 @@ public class NotEqualsCriteria<T> extends ComparableTermValueCriteria<T> {
         return new NotEqualsCriteria<>(getTerm(), getValue(), getComparator(), parentCriteria);
     }
 
+    @Override
+    public String toString() {
+        return getTerm() + " != " + getValue();
+    }
 }

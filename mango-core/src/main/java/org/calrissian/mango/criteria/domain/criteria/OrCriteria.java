@@ -15,6 +15,7 @@
  */
 package org.calrissian.mango.criteria.domain.criteria;
 
+import com.google.common.base.Joiner;
 import org.calrissian.mango.domain.AttributeStore;
 
 public class OrCriteria extends ParentCriteria {
@@ -39,5 +40,10 @@ public class OrCriteria extends ParentCriteria {
         }
 
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "(" + Joiner.on(" or ").join(children()) + ")";
     }
 }

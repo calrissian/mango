@@ -56,4 +56,8 @@ public class HasCriteria<T> extends TermCriteria {
         return new HasCriteria<>(getTerm(), clazz, parentCriteria);
     }
 
+    @Override
+    public String toString() {
+        return "hasTerm('" + getTerm() + "')";
+    }
 }

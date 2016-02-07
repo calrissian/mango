@@ -15,6 +15,8 @@
  */
 package org.calrissian.mango.criteria.domain;
 
+import com.google.common.base.Joiner;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,5 +41,10 @@ public class AndNode extends ParentNode {
         for (Node child : children())
             cloned.addChild(child.clone(cloned));
         return cloned;
+    }
+
+    @Override
+    public String toString() {
+        return "(" + Joiner.on(" and ").join(getNodes()) + ")";
     }
 }

@@ -25,4 +25,9 @@ public class NotEqualsLeaf<T> extends TermValueLeaf<T> implements NegationLeaf {
     public Node clone(ParentNode node) {
         return new NotEqualsLeaf<>(getTerm(), getValue(), node);
     }
+
+    @Override
+    public String toString() {
+        return getTerm() + " != " + getValue();
+    }
 }

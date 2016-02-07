@@ -29,4 +29,9 @@ public class HasNotLeaf<T> extends TypedTermLeaf<T> implements NegationLeaf {
     public Node clone(ParentNode node) {
         return new HasNotLeaf<>(getTerm(), getType(), node);
     }
+
+    @Override
+    public String toString() {
+        return "!hasTerm('" + getTerm() + "')";
+    }
 }

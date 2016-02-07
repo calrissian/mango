@@ -39,4 +39,9 @@ public class LessThanCriteria<T> extends ComparableTermValueCriteria<T> {
     public Criteria clone(ParentCriteria parentCriteria) {
         return new LessThanCriteria<>(getTerm(), getValue(), getComparator(), parentCriteria);
     }
+
+    @Override
+    public String toString() {
+        return getTerm() + " < " + getValue();
+    }
 }
