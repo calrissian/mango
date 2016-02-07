@@ -25,6 +25,6 @@ public class NotInLeaf<T extends Collection> extends TermValueLeaf<T> {
 
     @Override
     public Node clone(ParentNode node) {
-        return new NotInLeaf(getTerm(), getValue(), node);
+        return new NotInLeaf<>(getTerm(), getValue(), node);
     }
 }

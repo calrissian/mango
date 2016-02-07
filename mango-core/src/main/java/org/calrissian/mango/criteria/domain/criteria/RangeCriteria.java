@@ -19,20 +19,38 @@ import org.calrissian.mango.domain.Attribute;
 import org.calrissian.mango.domain.AttributeStore;
 
 import java.util.Comparator;
+import java.util.Objects;
 
-public class RangeCriteria extends ComparableKeyValueLeafCriteria {
+import static com.google.common.base.Preconditions.checkNotNull;
 
-    protected Object end;
+public class RangeCriteria<T> extends TermCriteria {
 
-    public RangeCriteria(String key, Object start, Object end, Comparator comparator, ParentCriteria parentCriteria) {
-        super(key, start, comparator, parentCriteria);
+    private final T start;
+    private final T end;
+    private final Comparator<T> comparator;
+
+    public RangeCriteria(String term, T start, T end, Comparator<T> comparator, ParentCriteria parentCriteria) {
+        super(term, parentCriteria);
+        this.start = start;
         this.end = end;
+        this.comparator = checkNotNull(comparator);
     }
 
+    @Override
+    public boolean apply(AttributeStore obj) {
+        for (Attribute attribute : obj.getAttributes(getTerm())) {
+            if (comparator.compare((T)(attribute.getValue()), start) >= 0
+                    && comparator.compare((T)(attribute.getValue()), end) <= 0) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     @Override
     public Criteria clone(ParentCriteria parentCriteria) {
-        return new RangeCriteria(key, value, end, comparator, parentCriteria);
+        return new RangeCriteria<>(getTerm(), start, end, comparator, parentCriteria);
     }
 
     @Override
@@ -40,31 +58,14 @@ public class RangeCriteria extends ComparableKeyValueLeafCriteria {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-
-        RangeCriteria that = (RangeCriteria) o;
-
-        if (end != null ? !end.equals(that.end) : that.end != null) return false;
-
-        return true;
+        RangeCriteria<?> that = (RangeCriteria<?>) o;
+        return Objects.equals(start, that.start) &&
+                Objects.equals(end, that.end) &&
+                Objects.equals(comparator, that.comparator);
     }
 
     @Override
     public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (end != null ? end.hashCode() : 0);
-        return result;
-    }
-
-    @Override
-    public boolean apply(AttributeStore obj) {
-        for (Attribute attribute : obj.getAttributes(key)) {
-            int startCompare = comparator.compare(attribute.getValue(), value);
-            int endCompare = comparator.compare(attribute.getValue(), end);
-            if (startCompare >= 0 && endCompare <= 0) {
-                return true;
-            }
-        }
-
-        return false;
+        return Objects.hash(super.hashCode(), start, end, comparator);
     }
 }

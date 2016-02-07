@@ -21,12 +21,12 @@ public class HasNotLeaf<T> extends TypedTermLeaf<T> implements NegationLeaf {
         super(term, clazz, parent);
     }
 
-    public HasNotLeaf(String key, ParentNode parentNode) {
-        this(key, null, parentNode);
+    public HasNotLeaf(String term, ParentNode parentNode) {
+        this(term, null, parentNode);
     }
 
     @Override
     public Node clone(ParentNode node) {
-        return new HasNotLeaf(getTerm(), getType(), node);
+        return new HasNotLeaf<>(getTerm(), getType(), node);
     }
 }

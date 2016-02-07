@@ -23,6 +23,6 @@ public class LessThanEqualsLeaf<T> extends TermValueLeaf<T> {
 
     @Override
     public Node clone(ParentNode node) {
-        return new LessThanEqualsLeaf(getTerm(), getValue(), node);
+        return new LessThanEqualsLeaf<>(getTerm(), getValue(), node);
     }
 }

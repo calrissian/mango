@@ -19,8 +19,7 @@ import java.util.List;
 
 public abstract class LeafCriteria implements Criteria {
 
-    protected List<Criteria> nodes;
-    protected ParentCriteria parent;
+    private final ParentCriteria parent;
 
     public LeafCriteria(ParentCriteria parentCriteria) {
         this.parent = parentCriteria;
@@ -50,8 +49,7 @@ public abstract class LeafCriteria implements Criteria {
     @Override
     public String toString() {
         return "LeafCriteria{" +
-                "nodes=" + nodes +
-                ", parent=" + parent +
+                "parent=" + parent +
                 '}';
     }
 
@@ -59,19 +57,13 @@ public abstract class LeafCriteria implements Criteria {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
-        LeafCriteria that = (LeafCriteria) o;
-
-        if (nodes != null ? !nodes.equals(that.nodes) : that.nodes != null) return false;
-        if (parent != null ? !parent.equals(that.parent) : that.parent != null) return false;
-
+        //Don't include parent in equals check.
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = nodes != null ? nodes.hashCode() : 0;
-        result = 31 * result + (parent != null ? parent.hashCode() : 0);
-        return result;
+        //Don't include parent in hashcode.
+        return 0;
     }
 }

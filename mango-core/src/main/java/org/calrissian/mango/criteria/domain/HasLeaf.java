@@ -21,12 +21,12 @@ public class HasLeaf<T> extends TypedTermLeaf<T> {
         super(term, clazz, parent);
     }
 
-    public HasLeaf(String key, ParentNode parent) {
-        super(key, null, parent);
+    public HasLeaf(String term, ParentNode parent) {
+        super(term, null, parent);
     }
 
     @Override
     public Node clone(ParentNode node) {
-        return new HasLeaf(getTerm(), getType(), node);
+        return new HasLeaf<>(getTerm(), getType(), node);
     }
 }

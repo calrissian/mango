@@ -23,6 +23,6 @@ public class GreaterThanLeaf<T> extends TermValueLeaf<T> {
 
     @Override
     public Node clone(ParentNode node) {
-        return new GreaterThanLeaf(getTerm(), getValue(), node);
+        return new GreaterThanLeaf<>(getTerm(), getValue(), node);
     }
 }

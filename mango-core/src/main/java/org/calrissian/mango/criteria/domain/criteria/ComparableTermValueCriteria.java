@@ -17,12 +17,17 @@ package org.calrissian.mango.criteria.domain.criteria;
 
 import java.util.Comparator;
 
-public abstract class ComparableKeyValueLeafCriteria extends KeyValueLeafCriteria {
-    protected Comparator comparator;
+import static com.google.common.base.Preconditions.checkNotNull;
 
-    public ComparableKeyValueLeafCriteria(String key, Object value, Comparator comparator,
-                                          ParentCriteria parentCriteria) {
-        super(key, value, parentCriteria);
-        this.comparator = comparator;
+abstract class ComparableTermValueCriteria<T> extends TermValueCriteria<T> {
+    private final Comparator<T> comparator;
+
+    public ComparableTermValueCriteria(String term, T value, Comparator<T> comparator, ParentCriteria parentCriteria) {
+        super(term, value, parentCriteria);
+        this.comparator = checkNotNull(comparator);
+    }
+
+    protected Comparator<T> getComparator() {
+        return comparator;
     }
 }

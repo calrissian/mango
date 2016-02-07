@@ -17,27 +17,28 @@ package org.calrissian.mango.criteria.domain.criteria;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import static java.util.Collections.unmodifiableList;
 
 public abstract class ParentCriteria implements Criteria {
     private static final long serialVersionUID = 1L;
 
-    protected List<Criteria> nodes;
-    protected ParentCriteria parent;
+    private final List<Criteria> nodes;
+    private final ParentCriteria parent;
 
     public ParentCriteria() {
-        nodes = new ArrayList<>();
+        this(null);
+    }
+
+    public ParentCriteria(ParentCriteria parent) {
+        this(parent, new ArrayList<Criteria>());
     }
 
     public ParentCriteria(ParentCriteria parent, List<Criteria> nodes) {
         this.parent = parent;
         this.nodes = nodes;
     }
-
-    public ParentCriteria(ParentCriteria parent) {
-        this.parent = parent;
-        this.nodes = new ArrayList<>();
-    }
-
 
     @Override
     public ParentCriteria parent() {
@@ -46,7 +47,7 @@ public abstract class ParentCriteria implements Criteria {
 
     @Override
     public List<Criteria> children() {
-        return nodes;
+        return unmodifiableList(nodes);
     }
 
     @Override
@@ -59,39 +60,26 @@ public abstract class ParentCriteria implements Criteria {
         nodes.remove(node);
     }
 
-    public List<Criteria> getNodes() {
-        return nodes;
-    }
-
-    public void setNodes(List<Criteria> nodes) {
-        this.nodes = nodes;
-    }
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         ParentCriteria that = (ParentCriteria) o;
-
-        if (nodes != null ? !nodes.equals(that.nodes) : that.nodes != null) return false;
-
-        return true;
+        //Don't include parent in equals check.
+        return Objects.equals(nodes, that.nodes);
     }
 
     @Override
     public int hashCode() {
-        int result = nodes != null ? nodes.hashCode() : 0;
-        result = 31 * result + (parent != null ? parent.hashCode() : 0);
-        return result;
+        //Don't include parent in hashcode.
+        return Objects.hash(nodes);
     }
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "{" +
+        return "ParentCriteria{" +
                 "nodes=" + nodes +
-                ", parent=" + (parent != null ? parent.getClass().getSimpleName() : "null") +
+                ", parent=" + parent +
                 '}';
     }
 }

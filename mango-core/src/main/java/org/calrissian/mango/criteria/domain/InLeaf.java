@@ -25,6 +25,6 @@ public class InLeaf<T extends Collection> extends TermValueLeaf<T> {
 
     @Override
     public Node clone(ParentNode node) {
-        return new InLeaf(getTerm(), getValue(), node);
+        return new InLeaf<>(getTerm(), getValue(), node);
     }
 }

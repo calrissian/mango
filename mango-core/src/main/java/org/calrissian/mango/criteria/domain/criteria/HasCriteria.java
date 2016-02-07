@@ -21,25 +21,25 @@ import org.calrissian.mango.domain.AttributeStore;
 
 import java.util.Collection;
 
-public class HasCriteria extends KeyValueLeafCriteria {
+public class HasCriteria<T> extends TermCriteria {
 
-    private final Class clazz;
+    private final Class<T> clazz;
 
-    public HasCriteria(String key, Class clazz, ParentCriteria parentCriteria) {
-        super(key, null, parentCriteria);
+    public HasCriteria(String term, Class<T> clazz, ParentCriteria parentCriteria) {
+        super(term, parentCriteria);
         this.clazz = clazz;
     }
 
-    public HasCriteria(String key, ParentCriteria parentCriteria) {
-        this(key, null, parentCriteria);
+    public HasCriteria(String term, ParentCriteria parentCriteria) {
+        this(term, null, parentCriteria);
     }
 
     @Override
     public boolean apply(AttributeStore obj) {
-        if(obj.get(key) == null)
+        if(obj.get(getTerm()) == null)
             return false;
 
-        Collection<Attribute> attributes = obj.getAttributes(key);
+        Collection<Attribute> attributes = obj.getAttributes(getTerm());
         if(attributes.size() > 0 && clazz == null)
             return true;
 
@@ -53,7 +53,7 @@ public class HasCriteria extends KeyValueLeafCriteria {
 
     @Override
     public Criteria clone(ParentCriteria parentCriteria) {
-        return new HasCriteria(key, clazz, parentCriteria);
+        return new HasCriteria<>(getTerm(), clazz, parentCriteria);
     }
 
 }

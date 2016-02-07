@@ -13,32 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.criteria.domain;
+package org.calrissian.mango.criteria.domain.criteria;
 
 import java.util.Objects;
 
-public class RangeLeaf<T> extends TypedTermLeaf<T> {
+public abstract class TermCriteria extends LeafCriteria {
 
-    private final T start;
-    private final T end;
+    private final String term;
 
-    public RangeLeaf(String term, T start, T end, ParentNode parent) {
-        super(term, firstKnownType(start, end), parent);
-        this.start = start;
-        this.end = end;
+    public TermCriteria(String term, ParentCriteria parentCriteria) {
+        super(parentCriteria);
+        this.term = term;
     }
 
-    public Object getStart() {
-        return start;
-    }
-
-    public Object getEnd() {
-        return end;
-    }
-
-    @Override
-    public Node clone(ParentNode node) {
-        return new RangeLeaf<>(getTerm(), getStart(), getEnd(), node);
+    public String getTerm() {
+        return term;
     }
 
     @Override
@@ -46,13 +35,19 @@ public class RangeLeaf<T> extends TypedTermLeaf<T> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        RangeLeaf<?> rangeLeaf = (RangeLeaf<?>) o;
-        return Objects.equals(start, rangeLeaf.start) &&
-                Objects.equals(end, rangeLeaf.end);
+        TermCriteria that = (TermCriteria) o;
+        return Objects.equals(term, that.term);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), start, end);
+        return Objects.hash(super.hashCode(), term);
+    }
+
+    @Override
+    public String toString() {
+        return "TermCriteria{" +
+                "term='" + term + '\'' +
+                '}';
     }
 }

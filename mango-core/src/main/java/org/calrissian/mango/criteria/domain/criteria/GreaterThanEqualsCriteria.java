@@ -20,23 +20,23 @@ import org.calrissian.mango.domain.AttributeStore;
 
 import java.util.Comparator;
 
-public class GreaterThanEqualsCriteria extends ComparableKeyValueLeafCriteria {
-    public GreaterThanEqualsCriteria(String key, Object value, Comparator comparator, ParentCriteria parentCriteria) {
-        super(key, value, comparator, parentCriteria);
-    }
+public class GreaterThanEqualsCriteria<T> extends ComparableTermValueCriteria<T> {
 
-
-    @Override
-    public Criteria clone(ParentCriteria parentCriteria) {
-        return new GreaterThanEqualsCriteria(key, value, comparator, parentCriteria);
+    public GreaterThanEqualsCriteria(String term, T value, Comparator<T> comparator, ParentCriteria parentCriteria) {
+        super(term, value, comparator, parentCriteria);
     }
 
     @Override
     public boolean apply(AttributeStore obj) {
-        for (Attribute attribute : obj.getAttributes()) {
-            if (comparator.compare(attribute.getValue(), value) >= 0)
+        for (Attribute attribute : obj.getAttributes(getTerm())) {
+            if (getComparator().compare((T)(attribute.getValue()), getValue()) >= 0)
                 return true;
         }
         return false;
+    }
+
+    @Override
+    public Criteria clone(ParentCriteria parentCriteria) {
+        return new GreaterThanEqualsCriteria<>(getTerm(), getValue(), getComparator(), parentCriteria);
     }
 }

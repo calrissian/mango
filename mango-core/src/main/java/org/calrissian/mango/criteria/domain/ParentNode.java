@@ -19,6 +19,7 @@ import org.calrissian.mango.criteria.visitor.NodeVisitor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Date: 11/9/12
@@ -80,16 +81,12 @@ public abstract class ParentNode implements Node {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         ParentNode that = (ParentNode) o;
-
-        if (nodes != null ? !nodes.equals(that.nodes) : that.nodes != null) return false;
-
-        return true;
+        return Objects.equals(nodes, that.nodes);
     }
 
     @Override
     public int hashCode() {
-        return nodes != null ? nodes.hashCode() : 0;
+        return Objects.hash(nodes);
     }
 }
