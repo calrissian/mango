@@ -13,12 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.domain.ip;
-
+package org.calrissian.mango.net;
 
 import com.google.common.collect.DiscreteDomain;
 import com.google.common.collect.Range;
-import org.calrissian.mango.net.MoreInetAddresses;
 
 import java.math.BigInteger;
 import java.net.Inet6Address;
@@ -33,7 +31,7 @@ import static org.calrissian.mango.net.MoreInetAddresses.*;
  * that is comparable to allow its use in other data objects such as {@link java.util.TreeMap} or
  * {@link com.google.common.collect.Range}
  */
-public class IPv6 extends IP<Inet6Address> implements Comparable<IPv6>{
+public final class IPv6 extends IP<Inet6Address> implements Comparable<IPv6>{
 
     public IPv6(Inet6Address address) {
         super(address);
@@ -44,7 +42,7 @@ public class IPv6 extends IP<Inet6Address> implements Comparable<IPv6>{
         if (o == null)
             return 1;
 
-        return lexicographicalComparator().compare(toByteArray(), o.toByteArray());
+        return lexicographicalComparator().compare(bytes, o.bytes);
     }
 
     /**
@@ -96,8 +94,8 @@ public class IPv6 extends IP<Inet6Address> implements Comparable<IPv6>{
             //Use the bigInteger distance for simplicity, but be careful to set the signum as positive (1) so that
             //BigInteger does not decode the bytes as a signed number.
             return bigIntegers().distance(
-                    new BigInteger(1, start.toByteArray()),
-                    new BigInteger(1, end.toByteArray())
+                    new BigInteger(1, start.bytes),
+                    new BigInteger(1, end.bytes)
             );
         }
 

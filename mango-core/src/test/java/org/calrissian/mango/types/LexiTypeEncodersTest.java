@@ -19,8 +19,8 @@ import com.google.common.primitives.UnsignedInteger;
 import com.google.common.primitives.UnsignedLong;
 import org.calrissian.mango.domain.entity.EntityIdentifier;
 import org.calrissian.mango.domain.event.EventIdentifier;
-import org.calrissian.mango.domain.ip.IPv4;
-import org.calrissian.mango.domain.ip.IPv6;
+import org.calrissian.mango.net.IPv4;
+import org.calrissian.mango.net.IPv6;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -161,8 +161,6 @@ public class LexiTypeEncodersTest {
         assertEquals("ffffffffffffffffffffffffffffffff", inet6AddressEncoder().encode(forIPv6String("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff")));
 
         assertEquals("entity://type#id", entityIdentifierEncoder().encode(new EntityIdentifier("type", "id")));
-        assertEquals("event://type#id@ffffffffffffffff", eventIdentifierEncoder().encode(new EventIdentifier("type", "id", Long.MAX_VALUE)));
-
 
         assertEquals("00000003", unsignedIntegerEncoder().encode(UnsignedInteger.fromIntBits(3)));
         assertEquals("ffffffff", unsignedIntegerEncoder().encode(UnsignedInteger.MAX_VALUE));

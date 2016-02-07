@@ -16,7 +16,7 @@
 package org.calrissian.mango.types.encoders.lexi;
 
 
-import org.calrissian.mango.domain.ip.IPv6;
+import org.calrissian.mango.net.IPv6;
 import org.calrissian.mango.types.encoders.AbstractIPv6Encoder;
 
 import static com.google.common.base.Preconditions.checkNotNull;

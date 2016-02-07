@@ -20,8 +20,8 @@ import com.google.common.primitives.UnsignedInteger;
 import com.google.common.primitives.UnsignedLong;
 import org.calrissian.mango.domain.entity.EntityIdentifier;
 import org.calrissian.mango.domain.event.EventIdentifier;
-import org.calrissian.mango.domain.ip.IPv4;
-import org.calrissian.mango.domain.ip.IPv6;
+import org.calrissian.mango.net.IPv4;
+import org.calrissian.mango.net.IPv6;
 import org.calrissian.mango.types.encoders.lexi.*;
 
 import java.math.BigDecimal;

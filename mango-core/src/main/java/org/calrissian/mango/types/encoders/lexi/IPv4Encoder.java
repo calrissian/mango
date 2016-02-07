@@ -16,7 +16,7 @@
 package org.calrissian.mango.types.encoders.lexi;
 
 
-import org.calrissian.mango.domain.ip.IPv4;
+import org.calrissian.mango.net.IPv4;
 import org.calrissian.mango.types.encoders.AbstractIPv4Encoder;
 
 import static com.google.common.base.Preconditions.checkNotNull;
