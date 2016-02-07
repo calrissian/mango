@@ -16,14 +16,14 @@
 package org.calrissian.mango.criteria.domain;
 
 
-public class GreaterThanEqualsLeaf extends AbstractKeyValueLeaf {
+public class GreaterThanEqualsLeaf<T> extends TermValueLeaf<T> {
 
-    public GreaterThanEqualsLeaf(String key, Object value, ParentNode parent) {
-        super(key, value, parent);
+    public GreaterThanEqualsLeaf(String term, T value, ParentNode parent) {
+        super(term, value, parent);
     }
 
     @Override
     public Node clone(ParentNode node) {
-        return new GreaterThanEqualsLeaf(key, value, node);
+        return new GreaterThanEqualsLeaf(getTerm(), getValue(), node);
     }
 }

@@ -35,7 +35,7 @@ public class NodeDeserializer extends JsonDeserializer<Node> {
     }
 
     /**
-     * {"or":{"children":[{"and":{"children":[{"eq":{"key":"k1","type":"string","value":"v1"}},{"neq":{"key":"k2","type":"ipv4","value":"1.2.3.4"}}]}},{"and":{"children":[{"eq":{"key":"k3","type":"integer","value":"1234"}}]}}]}}
+     * {"or":{"children":[{"and":{"children":[{"eq":{"term":"k1","type":"string","value":"v1"}},{"neq":{"term":"k2","type":"ipv4","value":"1.2.3.4"}}]}},{"and":{"children":[{"eq":{"term":"k3","type":"integer","value":"1234"}}]}}]}}
      */
     @Override
     public Node deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
@@ -61,8 +61,8 @@ public class NodeDeserializer extends JsonDeserializer<Node> {
                         JsonNode entry = elements.next();
                         Iterator<String> fieldNames = entry.fieldNames();
                         while (fieldNames.hasNext()) {
-                            String key = fieldNames.next();
-                            andNode.addChild(parseField(key, entry.get(key)));
+                            String term = fieldNames.next();
+                            andNode.addChild(parseField(term, entry.get(term)));
                         }
                     }
                 }
@@ -78,38 +78,38 @@ public class NodeDeserializer extends JsonDeserializer<Node> {
                         JsonNode entry = elements.next();
                         Iterator<String> fieldNames = entry.fieldNames();
                         while (fieldNames.hasNext()) {
-                            String key = fieldNames.next();
-                            orNode.addChild(parseField(key, entry.get(key)));
+                            String term = fieldNames.next();
+                            orNode.addChild(parseField(term, entry.get(term)));
                         }
                     }
                 }
                 return orNode;
             }
             case "eq": {
-                String key = fieldJson.get("key").asText();
+                String term = fieldJson.get("term").asText();
                 String type = fieldJson.get("type").asText();
                 String val_str = fieldJson.get("value").asText();
 
                 Object obj = this.typeRegistry.decode(type, val_str);
-                return new EqualsLeaf(key, obj, null);
+                return new EqualsLeaf(term, obj, null);
             }
             case "neq": {
-                String key = fieldJson.get("key").asText();
+                String term = fieldJson.get("term").asText();
                 String type = fieldJson.get("type").asText();
                 String val_str = fieldJson.get("value").asText();
 
                 Object obj = this.typeRegistry.decode(type, val_str);
-                return new NotEqualsLeaf(key, obj, null);
+                return new NotEqualsLeaf(term, obj, null);
             }
             case "range": {
-                String key = fieldJson.get("key").asText();
+                String term = fieldJson.get("term").asText();
                 String type = fieldJson.get("type").asText();
                 String start_str = fieldJson.get("start").asText();
                 String end_str = fieldJson.get("end").asText();
 
                 Object start = this.typeRegistry.decode(type, start_str);
                 Object end = this.typeRegistry.decode(type, end_str);
-                return new RangeLeaf(key, start, end, null);
+                return new RangeLeaf(term, start, end, null);
             }
             default:
                 throw new IllegalArgumentException("Unsupported field: " + fieldKey);

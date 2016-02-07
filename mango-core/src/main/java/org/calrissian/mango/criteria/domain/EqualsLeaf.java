@@ -15,15 +15,15 @@
  */
 package org.calrissian.mango.criteria.domain;
 
-public class EqualsLeaf extends AbstractKeyValueLeaf {
+public class EqualsLeaf<T> extends TermValueLeaf<T> {
     private static final long serialVersionUID = 1L;
 
-    public EqualsLeaf(String key, Object value, ParentNode parent) {
-        super(key, value, parent);
+    public EqualsLeaf(String term, T value, ParentNode parent) {
+        super(term, value, parent);
     }
 
     @Override
     public Node clone(ParentNode node) {
-        return new EqualsLeaf(key, value, node);
+        return new EqualsLeaf(getTerm(), getValue(), node);
     }
 }

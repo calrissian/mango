@@ -63,15 +63,15 @@ public class PrintNodeVisitor implements NodeVisitor {
     }
 
     public void visit(EqualsLeaf equalsLeaf) {
-        write(String.format("Equals[%s,%s],", equalsLeaf.getKey(), equalsLeaf.getValue().toString()));
+        write(String.format("Equals[%s,%s],", equalsLeaf.getTerm(), equalsLeaf.getValue().toString()));
     }
 
     public void visit(NotEqualsLeaf notEqualsLeaf) {
-        write(String.format("NotEquals[%s,%s],", notEqualsLeaf.getKey(), notEqualsLeaf.getValue().toString()));
+        write(String.format("NotEquals[%s,%s],", notEqualsLeaf.getTerm(), notEqualsLeaf.getValue().toString()));
     }
 
     public void visit(RangeLeaf range) {
-        write(String.format("Range[%s,(%s,%s)],", range.getKey(), range.getStart().toString(), range.getEnd().toString()));
+        write(String.format("Range[%s,(%s,%s)],", range.getTerm(), range.getStart().toString(), range.getEnd().toString()));
     }
 
     protected void write(String contents) {

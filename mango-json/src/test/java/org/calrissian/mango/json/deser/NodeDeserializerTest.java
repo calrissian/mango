@@ -33,7 +33,7 @@ public class NodeDeserializerTest {
 
     @Test
     public void testEqDeserialize() throws Exception {
-        String json = "{\"eq\":{\"key\":\"k1\",\"type\":\"string\",\"value\":\"v1\"}}";
+        String json = "{\"eq\":{\"term\":\"k1\",\"type\":\"string\",\"value\":\"v1\"}}";
         Node node = objectMapper.readValue(json, Node.class);
         StringWriter writer = new StringWriter();
         node.accept(new PrintNodeVisitor(writer));
@@ -46,7 +46,7 @@ public class NodeDeserializerTest {
     @Test
     public void testRangeDeserialize() throws Exception {
 
-        String json = "{\"range\":{\"key\":\"k1\",\"type\":\"string\",\"start\":\"v1\",\"end\":\"v2\"}}";
+        String json = "{\"range\":{\"term\":\"k1\",\"type\":\"string\",\"start\":\"v1\",\"end\":\"v2\"}}";
         Node node = objectMapper.readValue(json, Node.class);
         StringWriter writer = new StringWriter();
         node.accept(new PrintNodeVisitor(writer));
@@ -58,7 +58,7 @@ public class NodeDeserializerTest {
 
     @Test
     public void testAndEqDeserialize() throws Exception {
-        String json = "{\"and\":{\"children\":[{\"eq\":{\"key\":\"k1\",\"type\":\"string\",\"value\":\"v1\"}},{\"eq\":{\"key\":\"k2\",\"type\":\"string\",\"value\":\"v2\"}}]}}";
+        String json = "{\"and\":{\"children\":[{\"eq\":{\"term\":\"k1\",\"type\":\"string\",\"value\":\"v1\"}},{\"eq\":{\"term\":\"k2\",\"type\":\"string\",\"value\":\"v2\"}}]}}";
         Node node = objectMapper.readValue(json, Node.class);
         StringWriter writer = new StringWriter();
         node.accept(new PrintNodeVisitor(writer));
@@ -70,7 +70,7 @@ public class NodeDeserializerTest {
 
     @Test
     public void testOrEqDeserialize() throws Exception {
-        String json = "{\"or\":{\"children\":[{\"eq\":{\"key\":\"k1\",\"type\":\"string\",\"value\":\"v1\"}},{\"eq\":{\"key\":\"k2\",\"type\":\"string\",\"value\":\"v2\"}}]}}";
+        String json = "{\"or\":{\"children\":[{\"eq\":{\"term\":\"k1\",\"type\":\"string\",\"value\":\"v1\"}},{\"eq\":{\"term\":\"k2\",\"type\":\"string\",\"value\":\"v2\"}}]}}";
         Node node = objectMapper.readValue(json, Node.class);
         StringWriter writer = new StringWriter();
         node.accept(new PrintNodeVisitor(writer));
@@ -82,7 +82,7 @@ public class NodeDeserializerTest {
 
     @Test
     public void testAndOrEqNeqDeserialize() throws Exception {
-        String json = "{\"or\":{\"children\":[{\"and\":{\"children\":[{\"eq\":{\"key\":\"k1\",\"type\":\"string\",\"value\":\"v1\"}},{\"neq\":{\"key\":\"k2\",\"type\":\"ipv4\",\"value\":\"1.2.3.4\"}}]}},{\"and\":{\"children\":[{\"eq\":{\"key\":\"k3\",\"type\":\"integer\",\"value\":\"1234\"}}]}}]}}";
+        String json = "{\"or\":{\"children\":[{\"and\":{\"children\":[{\"eq\":{\"term\":\"k1\",\"type\":\"string\",\"value\":\"v1\"}},{\"neq\":{\"term\":\"k2\",\"type\":\"ipv4\",\"value\":\"1.2.3.4\"}}]}},{\"and\":{\"children\":[{\"eq\":{\"term\":\"k3\",\"type\":\"integer\",\"value\":\"1234\"}}]}}]}}";
         Node node = objectMapper.readValue(json, Node.class);
         StringWriter writer = new StringWriter();
         node.accept(new PrintNodeVisitor(writer));

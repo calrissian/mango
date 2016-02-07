@@ -25,9 +25,6 @@ public abstract class Leaf implements Node {
 
     private ParentNode parent;
 
-    public Leaf() {
-    }
-
     public Leaf(ParentNode parent) {
         this.parent = parent;
     }
@@ -62,15 +59,13 @@ public abstract class Leaf implements Node {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Leaf leaf = (Leaf) o;
-
-        if (parent != null ? !parent.equals(leaf.parent) : leaf.parent != null) return false;
-
+        //Don't include parent in equals check.
         return true;
     }
 
     @Override
     public int hashCode() {
-        return parent != null ? parent.hashCode() : 0;
+        //Don't include parent in hashcode.
+        return 0;
     }
 }

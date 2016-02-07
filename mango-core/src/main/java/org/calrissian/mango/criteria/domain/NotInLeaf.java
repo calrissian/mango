@@ -17,14 +17,14 @@ package org.calrissian.mango.criteria.domain;
 
 import java.util.Collection;
 
-public class NotInLeaf extends AbstractKeyValueLeaf {
+public class NotInLeaf<T extends Collection> extends TermValueLeaf<T> {
 
-    public NotInLeaf(String key, Collection<Object> value, ParentNode parent) {
+    public NotInLeaf(String key, T value, ParentNode parent) {
         super(key, value, parent);
     }
 
     @Override
     public Node clone(ParentNode node) {
-        return new NotInLeaf(key, (Collection<Object>) value, node);
+        return new NotInLeaf(getTerm(), getValue(), node);
     }
 }

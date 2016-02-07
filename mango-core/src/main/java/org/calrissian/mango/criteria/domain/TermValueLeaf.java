@@ -17,28 +17,18 @@ package org.calrissian.mango.criteria.domain;
 
 import java.util.Objects;
 
-public class RangeLeaf<T> extends TypedTermLeaf<T> {
+public abstract class TermValueLeaf<T> extends TypedTermLeaf<T> {
+    private static final long serialVersionUID = 1L;
 
-    private final T start;
-    private final T end;
+    private final T value;
 
-    public RangeLeaf(String term, T start, T end, ParentNode parent) {
-        super(term, firstKnownType(start, end), parent);
-        this.start = start;
-        this.end = end;
+    public TermValueLeaf(String key, T value, ParentNode parent) {
+        super(key, firstKnownType(value), parent);
+        this.value = value;
     }
 
-    public Object getStart() {
-        return start;
-    }
-
-    public Object getEnd() {
-        return end;
-    }
-
-    @Override
-    public Node clone(ParentNode node) {
-        return new RangeLeaf(getTerm(), getStart(), getEnd(), node);
+    public T getValue() {
+        return value;
     }
 
     @Override
@@ -46,13 +36,12 @@ public class RangeLeaf<T> extends TypedTermLeaf<T> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        RangeLeaf<?> rangeLeaf = (RangeLeaf<?>) o;
-        return Objects.equals(start, rangeLeaf.start) &&
-                Objects.equals(end, rangeLeaf.end);
+        TermValueLeaf<?> that = (TermValueLeaf<?>) o;
+        return Objects.equals(value, that.value);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), start, end);
+        return Objects.hash(super.hashCode(), value);
     }
 }

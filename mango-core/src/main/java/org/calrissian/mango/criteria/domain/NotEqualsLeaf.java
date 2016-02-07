@@ -15,19 +15,14 @@
  */
 package org.calrissian.mango.criteria.domain;
 
-/**
- * Date: 11/9/12
- * Time: 1:57 PM
- */
-public class NotEqualsLeaf extends AbstractKeyValueLeaf implements NegationLeaf {
-    private static final long serialVersionUID = 1L;
+public class NotEqualsLeaf<T> extends TermValueLeaf<T> implements NegationLeaf {
 
-    public NotEqualsLeaf(String key, Object value, ParentNode parent) {
-        super(key, value, parent);
+    public NotEqualsLeaf(String term, T value, ParentNode parent) {
+        super(term, value, parent);
     }
 
     @Override
     public Node clone(ParentNode node) {
-        return new NotEqualsLeaf(key, value, node);
+        return new NotEqualsLeaf(getTerm(), getValue(), node);
     }
 }

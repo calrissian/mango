@@ -15,14 +15,14 @@
  */
 package org.calrissian.mango.criteria.domain;
 
-public class LessThanLeaf extends AbstractKeyValueLeaf {
+public class LessThanLeaf<T> extends TermValueLeaf<T> {
 
-    public LessThanLeaf(String key, Object value, ParentNode parent) {
-        super(key, value, parent);
+    public LessThanLeaf(String term, T value, ParentNode parent) {
+        super(term, value, parent);
     }
 
     @Override
     public Node clone(ParentNode node) {
-        return new LessThanLeaf(key, value, node);
+        return new LessThanLeaf(getTerm(), getValue(), node);
     }
 }
