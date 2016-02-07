@@ -26,5 +26,5 @@ public interface CloseableIterator<T> extends Iterator<T>, Closeable {
      * <p>Unconditionally closes the iterator.</p>
      * <p>Equivalent to {@link CloseableIterator#close()}, except any exceptions will be ignored.</p>
      */
-    public void closeQuietly();
+    void closeQuietly();
 }

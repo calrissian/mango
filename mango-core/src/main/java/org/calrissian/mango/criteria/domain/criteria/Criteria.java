@@ -29,13 +29,13 @@ public interface Criteria extends Predicate<AttributeStore>, Serializable, Clone
 
     boolean apply(AttributeStore obj);
 
-    public ParentCriteria parent();
+    ParentCriteria parent();
 
-    public List<Criteria> children();
+    List<Criteria> children();
 
-    public void addChild(Criteria node);
+    void addChild(Criteria node);
 
-    public void removeChild(Criteria node);
+    void removeChild(Criteria node);
 
-    public Criteria clone(ParentCriteria parentCriteria);
+    Criteria clone(ParentCriteria parentCriteria);
 }

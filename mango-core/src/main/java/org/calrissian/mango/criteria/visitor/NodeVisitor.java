@@ -24,9 +24,9 @@ import org.calrissian.mango.criteria.domain.ParentNode;
  */
 public interface NodeVisitor {
 
-    public void begin(ParentNode node);
+    void begin(ParentNode node);
 
-    public void end(ParentNode node);
+    void end(ParentNode node);
 
-    public void visit(Leaf node);
+    void visit(Leaf node);
 }

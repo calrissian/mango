@@ -27,7 +27,7 @@ public class QueryBuilder {
     protected QueryBuilder parentBuilder;
     protected boolean finished = false;
 
-    public static final QueryBuilder create() {
+    public static QueryBuilder create() {
         return new QueryBuilder();
     }
 

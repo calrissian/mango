@@ -23,12 +23,12 @@ public interface TypeEncoder<T, U> extends Serializable {
     /**
      * Returns the "alias" of the type so that the encoded form can be decoded.
      */
-    public String getAlias();
+    String getAlias();
 
     /**
      * The java class that the implementations encodes.
      */
-    public Class<T> resolves();
+    Class<T> resolves();
 
     /**
      * Encodes a value.
