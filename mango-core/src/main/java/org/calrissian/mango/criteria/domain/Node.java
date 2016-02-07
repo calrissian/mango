@@ -27,16 +27,16 @@ import java.util.List;
  */
 public interface Node extends Serializable, Cloneable {
 
-    public ParentNode parent();
+    ParentNode parent();
 
-    public List<Node> children();
+    List<Node> children();
 
-    public void addChild(Node node);
+    void addChild(Node node);
 
-    public void removeChild(Node node);
+    void removeChild(Node node);
 
-    public void accept(NodeVisitor visitor);
+    void accept(NodeVisitor visitor);
 
-    public Node clone(ParentNode node);
+    Node clone(ParentNode node);
 
 }

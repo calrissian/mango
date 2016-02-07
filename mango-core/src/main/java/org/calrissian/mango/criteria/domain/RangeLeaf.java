@@ -21,9 +21,6 @@ public class RangeLeaf extends AbstractKeyValueLeaf {
     protected String key;
     protected Object end;
 
-    public RangeLeaf() {
-    }
-
     public RangeLeaf(String key, Object start, Object end, ParentNode parent) {
         super(key, start, parent);
         this.key = key;

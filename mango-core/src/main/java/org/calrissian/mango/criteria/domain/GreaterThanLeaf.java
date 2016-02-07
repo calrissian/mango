@@ -16,6 +16,7 @@
 package org.calrissian.mango.criteria.domain;
 
 public class GreaterThanLeaf extends AbstractKeyValueLeaf {
+
     public GreaterThanLeaf(String key, Object value, ParentNode parent) {
         super(key, value, parent);
     }

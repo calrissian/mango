@@ -16,6 +16,7 @@
 package org.calrissian.mango.criteria.domain;
 
 public class LessThanEqualsLeaf extends AbstractKeyValueLeaf {
+
     public LessThanEqualsLeaf(String key, Object value, ParentNode parent) {
         super(key, value, parent);
     }

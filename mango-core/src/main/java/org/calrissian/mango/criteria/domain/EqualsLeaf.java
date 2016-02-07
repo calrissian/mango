@@ -18,9 +18,6 @@ package org.calrissian.mango.criteria.domain;
 public class EqualsLeaf extends AbstractKeyValueLeaf {
     private static final long serialVersionUID = 1L;
 
-    public EqualsLeaf() {
-    }
-
     public EqualsLeaf(String key, Object value, ParentNode parent) {
         super(key, value, parent);
     }
