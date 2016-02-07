@@ -13,11 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.domain.ip;
+package org.calrissian.mango.net;
 
 
 import com.google.common.collect.DiscreteDomain;
 import com.google.common.collect.Range;
+import org.calrissian.mango.net.IPv4;
+import org.calrissian.mango.net.IPv6;
 import org.junit.Test;
 
 import static org.calrissian.mango.net.MoreInetAddresses.forIPv4String;

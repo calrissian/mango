@@ -41,7 +41,7 @@ import static java.util.Arrays.copyOfRange;
 public class MoreInetAddresses {
     private MoreInetAddresses() {/*intentionally private*/}
 
-    private static InetAddress bytesToInetAddress(byte[] bytes) {
+    static InetAddress bytesToInetAddress(byte[] bytes) {
         return bytes.length == 4 ?
                 getInet4Address(bytes) :
                 getInet6Address(bytes);
@@ -54,7 +54,7 @@ public class MoreInetAddresses {
      * @return {@link Inet4Address} corresponding to the supplied byte array
      * @throws IllegalArgumentException if a valid {@link Inet4Address} can not be created
      */
-    private static Inet4Address getInet4Address(byte[] bytes) {
+    static Inet4Address getInet4Address(byte[] bytes) {
         Preconditions.checkArgument(bytes.length == 4,
                 "Byte array has invalid length for an IPv4 address: %s != 4.",
                 bytes.length);
@@ -74,7 +74,7 @@ public class MoreInetAddresses {
      * @return {@link Inet6Address} corresponding to the supplied byte array
      * @throws IllegalArgumentException if a valid {@link Inet6Address} can not be created
      */
-    private static Inet6Address getInet6Address(byte[] bytes) {
+    static Inet6Address getInet6Address(byte[] bytes) {
         Preconditions.checkArgument(bytes.length == 16,
                 "Byte array has invalid length for an IPv4 address: %s != 16.",
                 bytes.length);
