@@ -15,15 +15,19 @@
  */
 package org.calrissian.mango.criteria.domain;
 
-public class RangeLeaf extends AbstractKeyValueLeaf {
+import java.util.Objects;
+
+public class RangeLeaf extends Leaf {
     private static final long serialVersionUID = 1L;
 
     protected String key;
+    protected Object start;
     protected Object end;
 
     public RangeLeaf(String key, Object start, Object end, ParentNode parent) {
-        super(key, start, parent);
+        super(parent);
         this.key = key;
+        this.start = start;
         this.end = end;
     }
 
@@ -36,11 +40,11 @@ public class RangeLeaf extends AbstractKeyValueLeaf {
     }
 
     public Object getStart() {
-        return getValue();
+        return start;
     }
 
     public void setStart(Object start) {
-        this.value = start;
+        this.start = start;
     }
 
     public Object getEnd() {
@@ -52,30 +56,23 @@ public class RangeLeaf extends AbstractKeyValueLeaf {
     }
 
     @Override
+    public Node clone(ParentNode node) {
+        return new RangeLeaf(key, start, end, node);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (!(o instanceof RangeLeaf)) return false;
 
         RangeLeaf rangeLeaf = (RangeLeaf) o;
-
-        if (end != null ? !end.equals(rangeLeaf.end) : rangeLeaf.end != null) return false;
-        if (key != null ? !key.equals(rangeLeaf.key) : rangeLeaf.key != null) return false;
-
-        return true;
+        return Objects.equals(key, rangeLeaf.key) &&
+                Objects.equals(start, rangeLeaf.start) &&
+                Objects.equals(end, rangeLeaf.end);
     }
 
     @Override
     public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (key != null ? key.hashCode() : 0);
-        result = 31 * result + (end != null ? end.hashCode() : 0);
-        return result;
-    }
-
-
-    @Override
-    public Node clone(ParentNode node) {
-        return new RangeLeaf(key, value, end, node);
+        return Objects.hash(key, start, end);
     }
 }

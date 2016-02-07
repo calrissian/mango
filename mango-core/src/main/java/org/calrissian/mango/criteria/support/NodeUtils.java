@@ -96,28 +96,33 @@ public class NodeUtils {
     }
 
     private static Criteria parseLeaf(Node node, Comparator rangeComparator, ParentCriteria parent) {
-        AbstractKeyValueLeaf leaf = ((AbstractKeyValueLeaf) node);
-        if (node instanceof EqualsLeaf)
-            return new EqualsCriteria(leaf.getKey(), leaf.getValue(), rangeComparator, parent);
-        else if (node instanceof NotEqualsLeaf)
-            return new NotEqualsCriteria(leaf.getKey(), leaf.getValue(), rangeComparator, parent);
-        else if (node instanceof HasLeaf)
-            return new HasCriteria(leaf.getKey(), ((HasLeaf)leaf).getClazz(),  parent);
-        else if (node instanceof HasNotLeaf)
-            return new HasNotCriteria(leaf.getKey(), ((HasNotLeaf)leaf).getClazz(), parent);
-        else if (node instanceof LessThanLeaf)
-            return new LessThanCriteria(leaf.getKey(), leaf.getValue(), rangeComparator, parent);
-        else if (node instanceof LessThanEqualsLeaf)
-            return new LessThanEqualsCriteria(leaf.getKey(), leaf.getValue(), rangeComparator, parent);
-        else if (node instanceof GreaterThanLeaf)
-            return new GreaterThanCriteria(leaf.getKey(), leaf.getValue(), rangeComparator, parent);
-        else if (node instanceof GreaterThanEqualsLeaf)
-            return new GreaterThanEqualsCriteria(leaf.getKey(), leaf.getValue(), rangeComparator, parent);
-        else if (node instanceof RangeLeaf) {
-            RangeLeaf rangeLeaf = (RangeLeaf) leaf;
-            return new RangeCriteria(leaf.getKey(), leaf.getValue(), rangeLeaf.getEnd(), rangeComparator, parent);
-        } else
-            throw new IllegalArgumentException("An unsupported leaf was encountered: " + node.getClass());
+
+        if (node instanceof AbstractKeyValueLeaf) {
+            AbstractKeyValueLeaf leaf = ((AbstractKeyValueLeaf) node);
+            if (node instanceof EqualsLeaf)
+                return new EqualsCriteria(leaf.getKey(), leaf.getValue(), rangeComparator, parent);
+            else if (node instanceof NotEqualsLeaf)
+                return new NotEqualsCriteria(leaf.getKey(), leaf.getValue(), rangeComparator, parent);
+            else if (node instanceof HasLeaf)
+                return new HasCriteria(leaf.getKey(), ((HasLeaf) leaf).getClazz(), parent);
+            else if (node instanceof HasNotLeaf)
+                return new HasNotCriteria(leaf.getKey(), ((HasNotLeaf) leaf).getClazz(), parent);
+            else if (node instanceof LessThanLeaf)
+                return new LessThanCriteria(leaf.getKey(), leaf.getValue(), rangeComparator, parent);
+            else if (node instanceof LessThanEqualsLeaf)
+                return new LessThanEqualsCriteria(leaf.getKey(), leaf.getValue(), rangeComparator, parent);
+            else if (node instanceof GreaterThanLeaf)
+                return new GreaterThanCriteria(leaf.getKey(), leaf.getValue(), rangeComparator, parent);
+            else if (node instanceof GreaterThanEqualsLeaf)
+                return new GreaterThanEqualsCriteria(leaf.getKey(), leaf.getValue(), rangeComparator, parent);
+        } else {
+            if (node instanceof RangeLeaf) {
+                RangeLeaf rangeLeaf = (RangeLeaf) node;
+                return new RangeCriteria(rangeLeaf.getKey(), rangeLeaf.getStart(), rangeLeaf.getEnd(), rangeComparator, parent);
+            }
+        }
+
+        throw new IllegalArgumentException("An unsupported leaf was encountered: " + node.getClass());
     }
 
 }
