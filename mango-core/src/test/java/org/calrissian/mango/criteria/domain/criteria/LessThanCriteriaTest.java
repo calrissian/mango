@@ -15,10 +15,10 @@
  */
 package org.calrissian.mango.criteria.domain.criteria;
 
-import org.calrissian.mango.criteria.support.ComparableComparator;
 import org.calrissian.mango.domain.entity.EntityBuilder;
 import org.junit.Test;
 
+import static com.google.common.collect.Ordering.natural;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -27,7 +27,7 @@ public class LessThanCriteriaTest {
     @Test
     public void test() {
 
-        LessThanCriteria criteria = new LessThanCriteria("key1", 5, new ComparableComparator(), null);
+        LessThanCriteria criteria = new LessThanCriteria("key1", 5, natural(), null);
 
         EntityBuilder entity = EntityBuilder.create("type", "id");
 

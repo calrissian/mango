@@ -20,6 +20,8 @@ import org.calrissian.mango.criteria.domain.criteria.*;
 
 import java.util.Comparator;
 
+import static com.google.common.collect.Ordering.natural;
+
 public class NodeUtils {
 
     public NodeUtils() {/* private constructor */}
@@ -60,7 +62,7 @@ public class NodeUtils {
      * Creates criteria from a node. A default comparator is used which assumes values implement Comparable.
      */
     public static Criteria criteriaFromNode(Node node) {
-        return criteriaFromNode(node, new ComparableComparator(), null);
+        return criteriaFromNode(node, natural(), null);
     }
 
     /**

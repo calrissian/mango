@@ -15,10 +15,10 @@
  */
 package org.calrissian.mango.criteria.domain.criteria;
 
-import org.calrissian.mango.criteria.support.ComparableComparator;
 import org.calrissian.mango.domain.entity.EntityBuilder;
 import org.junit.Test;
 
+import static com.google.common.collect.Ordering.natural;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -27,7 +27,7 @@ public class EqualsCriteriaTest {
     @Test
     public void testEquals() {
 
-        Criteria eq = new EqualsCriteria("key1", "val1", new ComparableComparator(), null);
+        Criteria eq = new EqualsCriteria("key1", "val1", natural(), null);
         EntityBuilder entity = EntityBuilder.create("type", "id")
                 .attr("key1", "val1");
 
@@ -37,7 +37,7 @@ public class EqualsCriteriaTest {
     @Test
     public void testNotEquals() {
 
-        Criteria eq = new EqualsCriteria("key1", "val1", new ComparableComparator(), null);
+        Criteria eq = new EqualsCriteria("key1", "val1", natural(), null);
         EntityBuilder entity = EntityBuilder.create("type", "id")
                 .attr("key1", "val2");
 
