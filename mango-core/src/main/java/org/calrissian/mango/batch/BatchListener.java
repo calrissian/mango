@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 The Calrissian Authors
+ * Copyright (C) 2016 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,11 @@ package org.calrissian.mango.batch;
 
 import java.util.Collection;
 
+/**
+ * Listens for new batches from a {@link Batcher}. Each call to {@code onBatch} is executed on a separate thread and
+ * therefore the BatchListener is responsible for managing its own thread safety.
+ * @param <T>
+ */
 public interface BatchListener<T> {
 
     /**

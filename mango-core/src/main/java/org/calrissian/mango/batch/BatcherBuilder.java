@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 The Calrissian Authors
+ * Copyright (C) 2016 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,11 +61,11 @@ public final class BatcherBuilder {
 
     /**
      * Add a max time component for a batcher.  If specified a batcher will call the {@link BatchListener}
-     * as sppon as the time bound has been exceeded.
+     * as soon as the time bound has been exceeded.
      *
      * NOTE: This interval is the time since successfully sending the last batch to the batchlistener.  This means
      * that if a blocking {@link BatcherBuilder#listenerService(ExecutorService)} is used then the time interval will not
-     * restart until it has been successfully handed of to the {@link BatcherBuilder#listenerService(ExecutorService)}.
+     * restart until it has been successfully handed off to the {@link BatcherBuilder#listenerService(ExecutorService)}.
      */
     public BatcherBuilder timeBound(long time, TimeUnit timeUnit) {
         checkState(this.interval == UNSET_INT, "Max time already set");

@@ -33,8 +33,7 @@ import static com.google.common.util.concurrent.MoreExecutors.sameThreadExecutor
 import static java.lang.Thread.sleep;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class BatcherTest {
 
@@ -48,7 +47,6 @@ public class BatcherTest {
 
     @Test
     public void sizeBatcherTest() throws InterruptedException {
-
         TestListenter<Integer> listenter = new TestListenter<>();
         final Batcher<Integer> batcher = BatcherBuilder.create()
                 .sizeBound(100)
@@ -59,7 +57,7 @@ public class BatcherTest {
         start.countDown();
         done.await();
 
-        sleep(20);
+        sleep(40);
         batcher.close();
 
         assertEquals(1000, listenter.getCount());
@@ -71,7 +69,6 @@ public class BatcherTest {
 
     @Test
     public void sizeBatcherNonFullBatchTest() throws InterruptedException {
-
         TestListenter<Integer> listenter = new TestListenter<>();
         final Batcher<Integer> batcher = BatcherBuilder.create()
                 .sizeBound(100)
@@ -82,9 +79,9 @@ public class BatcherTest {
         start.countDown();
         done.await();
 
-        sleep(20);
+        sleep(40);
         batcher.close();
-        sleep(20);
+        sleep(40); //wait for handler thread after close to process leftover batch.
 
         assertEquals(1020, listenter.getCount());
         assertTrue(listenter.getNumBatches() == 11);
@@ -101,7 +98,6 @@ public class BatcherTest {
 
     @Test
     public void timeBatcherTest() throws InterruptedException {
-
         TestListenter<Integer> listenter = new TestListenter<>();
         final Batcher<Integer> batcher = BatcherBuilder.create()
                 .timeBound(10, MILLISECONDS)
@@ -113,7 +109,7 @@ public class BatcherTest {
         done.await();
 
         //wait double time bound.
-        sleep(20);
+        sleep(40);
         batcher.close();
 
         assertEquals(1000, listenter.getCount());
@@ -125,7 +121,6 @@ public class BatcherTest {
 
     @Test
     public void sizeAndTimeBatcherTest() throws InterruptedException {
-
         TestListenter<Integer> listenter = new TestListenter<>();
         final Batcher<Integer> batcher = BatcherBuilder.create()
                 .sizeBound(100)
@@ -138,7 +133,7 @@ public class BatcherTest {
         done.await();
 
         //wait double time bound.
-        sleep(20);
+        sleep(40);
         batcher.close();
 
         assertEquals(1000, listenter.getCount());
@@ -166,8 +161,7 @@ public class BatcherTest {
         for (int i = 0;i < 1000;i++)
             batcher.add(i);
 
-        Thread.sleep(20);
-        batcher.close();
+        results.addAll(batcher.closeAndFlush());
 
         assertEquals(1000, results.size());
         for (int i = 0;i< 1000;i++)
@@ -190,8 +184,7 @@ public class BatcherTest {
         for (int i = 0;i < 1000;i++)
             batcher.add(i);
 
-        Thread.sleep(20);
-        batcher.close();
+        results.addAll(batcher.closeAndFlush());
 
         assertEquals(1000, results.size());
         for (int i = 0;i< 1000;i++)
@@ -215,8 +208,7 @@ public class BatcherTest {
         for (int i = 0;i < 1000;i++)
             batcher.add(i);
 
-        Thread.sleep(20);
-        batcher.close();
+        results.addAll(batcher.closeAndFlush());
 
         assertEquals(1000, results.size());
         for (int i = 0;i< 1000;i++)
@@ -247,9 +239,7 @@ public class BatcherTest {
         start.countDown();
         done.await();
 
-        sleep(20);
         List<Integer> flushed = batcher.closeAndFlush();
-
         assertEquals(900, flushed.size());
 
         //Listener should have received the partial batch
@@ -271,7 +261,7 @@ public class BatcherTest {
                         try {
                             sleep(1000000);
                         } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
+                            throw new RuntimeException();
                         }
                     }
                 });
@@ -282,7 +272,6 @@ public class BatcherTest {
         done.await();
 
         List<Integer> flushed = batcher.closeAndFlush();
-
         assertEquals(900, flushed.size());
 
         //Listener should have received the partial batch
@@ -391,7 +380,7 @@ public class BatcherTest {
         batcher.addOrWait(1);
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void handlerExceptionClose() throws InterruptedException {
         final AtomicBoolean wasCalled = new AtomicBoolean(false);
         Batcher<Integer> batcher = BatcherBuilder.create()
@@ -409,10 +398,15 @@ public class BatcherTest {
         batcher.add(1);
 
         //Wait to make sure that the batcher has time
-        Thread.sleep(100);
+        sleep(40);
 
         assertTrue(wasCalled.get());
-        batcher.add(1);
+        try {
+            batcher.add(1);
+            fail();
+        } catch (IllegalStateException ignored) {}
+
+        batcher.close();
     }
 
     @After
