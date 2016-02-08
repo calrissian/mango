@@ -17,27 +17,20 @@ package org.calrissian.mango.criteria.domain;
 
 import org.calrissian.mango.criteria.visitor.NodeVisitor;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * Date: 11/9/12
- * Time: 1:52 PM
- */
+import static com.google.common.base.Preconditions.checkNotNull;
+
 public abstract class ParentNode implements Node {
     private static final long serialVersionUID = 1L;
 
-    protected List<Node> nodes;
-    protected ParentNode parent;
+    private final List<Node> nodes;
+    private final ParentNode parent;
 
-    public ParentNode() {
-        nodes = new ArrayList<>();
-    }
-
-    public ParentNode(ParentNode parent, List<Node> nodes) {
+    public ParentNode(List<Node> nodes, ParentNode parent) {
+        this.nodes = checkNotNull(nodes);
         this.parent = parent;
-        this.nodes = nodes;
     }
 
     @Override
@@ -62,10 +55,6 @@ public abstract class ParentNode implements Node {
 
     public List<Node> getNodes() {
         return nodes;
-    }
-
-    public void setNodes(List<Node> nodes) {
-        this.nodes = nodes;
     }
 
     @Override

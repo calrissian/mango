@@ -15,8 +15,9 @@
  */
 package org.calrissian.mango.criteria.domain;
 
-
 import java.util.Objects;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public abstract class TermLeaf extends Leaf {
 
@@ -24,7 +25,7 @@ public abstract class TermLeaf extends Leaf {
 
     public TermLeaf(String term, ParentNode parent) {
         super(parent);
-        this.term = term;
+        this.term = checkNotNull(term);
     }
 
     public String getTerm() {
@@ -36,8 +37,8 @@ public abstract class TermLeaf extends Leaf {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        TermLeaf that = (TermLeaf) o;
-        return Objects.equals(term, that.term);
+        TermLeaf termLeaf = (TermLeaf) o;
+        return Objects.equals(term, termLeaf.term);
     }
 
     @Override

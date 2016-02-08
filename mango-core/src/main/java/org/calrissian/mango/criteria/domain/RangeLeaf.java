@@ -17,6 +17,8 @@ package org.calrissian.mango.criteria.domain;
 
 import java.util.Objects;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 public class RangeLeaf<T> extends TypedTermLeaf<T> {
 
     private final T start;
@@ -24,8 +26,8 @@ public class RangeLeaf<T> extends TypedTermLeaf<T> {
 
     public RangeLeaf(String term, T start, T end, ParentNode parent) {
         super(term, firstKnownType(start, end), parent);
-        this.start = start;
-        this.end = end;
+        this.start = checkNotNull(start);
+        this.end = checkNotNull(end);
     }
 
     public Object getStart() {
@@ -58,9 +60,6 @@ public class RangeLeaf<T> extends TypedTermLeaf<T> {
 
     @Override
     public String toString() {
-        return getTerm() + " within " +
-                (start == null ? "(-inf" : "[" + start) +
-                "," +
-                (end == null ? "inf)" : end + "]");
+        return getTerm() + " within " + "[" + start + "," + end + "]";
     }
 }

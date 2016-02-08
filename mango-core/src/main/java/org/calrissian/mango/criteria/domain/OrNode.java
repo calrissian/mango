@@ -24,14 +24,15 @@ public class OrNode extends ParentNode {
     private static final long serialVersionUID = 1L;
 
     public OrNode() {
-    }
-
-    public OrNode(ParentNode parent, List<Node> nodes) {
-        super(parent, nodes);
+        this(null);
     }
 
     public OrNode(ParentNode parent) {
-        super(parent, new ArrayList<Node>());
+        this(new ArrayList<Node>(), parent);
+    }
+
+    public OrNode(List<Node> nodes, ParentNode parent) {
+        super(nodes, parent);
     }
 
     @Override

@@ -18,10 +18,17 @@ package org.calrissian.mango.criteria.domain.criteria;
 import com.google.common.base.Joiner;
 import org.calrissian.mango.domain.AttributeStore;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class OrCriteria extends ParentCriteria {
 
     public OrCriteria(ParentCriteria parent) {
-        super(parent);
+        this(new ArrayList<Criteria>(), parent);
+    }
+
+    public OrCriteria(List<Criteria> nodes, ParentCriteria parent) {
+        super(nodes, parent);
     }
 
     @Override

@@ -24,16 +24,16 @@ public class AndNode extends ParentNode {
     private static final long serialVersionUID = 1L;
 
     public AndNode() {
+        this(null);
     }
 
-    public AndNode(ParentNode parent, List<Node> nodes) {
-        super(parent, nodes);
+    public AndNode(ParentNode parent) {
+        this(new ArrayList<Node>(), parent);
     }
 
-    public AndNode(ParentNode parentNode) {
-        super(parentNode, new ArrayList<Node>());
+    public AndNode(List<Node> nodes, ParentNode parent) {
+        super(nodes, parent);
     }
-
 
     @Override
     public Node clone(ParentNode node) {

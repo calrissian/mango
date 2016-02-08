@@ -103,26 +103,26 @@ public class NodeUtils {
             if (node instanceof TermValueLeaf) {
                 TermValueLeaf leaf = (TermValueLeaf) node;
                 if (node instanceof EqualsLeaf)
-                    return new EqualsCriteria(leaf.getTerm(), leaf.getValue(), rangeComparator, parent);
+                    return new EqualsCriteria<>(leaf.getTerm(), leaf.getValue(), rangeComparator, parent);
                 else if (node instanceof NotEqualsLeaf)
-                    return new NotEqualsCriteria(leaf.getTerm(), leaf.getValue(), rangeComparator, parent);
+                    return new NotEqualsCriteria<>(leaf.getTerm(), leaf.getValue(), rangeComparator, parent);
                 else if (node instanceof LessThanLeaf)
-                    return new LessThanCriteria(leaf.getTerm(), leaf.getValue(), rangeComparator, parent);
+                    return new LessThanCriteria<>(leaf.getTerm(), leaf.getValue(), rangeComparator, parent);
                 else if (node instanceof LessThanEqualsLeaf)
-                    return new LessThanEqualsCriteria(leaf.getTerm(), leaf.getValue(), rangeComparator, parent);
+                    return new LessThanEqualsCriteria<>(leaf.getTerm(), leaf.getValue(), rangeComparator, parent);
                 else if (node instanceof GreaterThanLeaf)
-                    return new GreaterThanCriteria(leaf.getTerm(), leaf.getValue(), rangeComparator, parent);
+                    return new GreaterThanCriteria<>(leaf.getTerm(), leaf.getValue(), rangeComparator, parent);
                 else if (node instanceof GreaterThanEqualsLeaf)
-                    return new GreaterThanEqualsCriteria(leaf.getTerm(), leaf.getValue(), rangeComparator, parent);
+                    return new GreaterThanEqualsCriteria<>(leaf.getTerm(), leaf.getValue(), rangeComparator, parent);
             } else if (node instanceof RangeLeaf) {
                 RangeLeaf rangeLeaf = (RangeLeaf) node;
-                return new RangeCriteria(rangeLeaf.getTerm(), rangeLeaf.getStart(), rangeLeaf.getEnd(), rangeComparator, parent);
+                return new RangeCriteria<>(rangeLeaf.getTerm(), rangeLeaf.getStart(), rangeLeaf.getEnd(), rangeComparator, parent);
             } else if (node instanceof HasLeaf) {
                 HasLeaf leaf = (HasLeaf) node;
-                return new HasCriteria(leaf.getTerm(), leaf.getType(), parent);
+                return new HasCriteria<>(leaf.getTerm(), leaf.getType(), parent);
             } else if (node instanceof HasNotLeaf) {
                 HasNotLeaf leaf = (HasNotLeaf) node;
-                return new HasNotCriteria(leaf.getTerm(), leaf.getType(), parent);
+                return new HasNotCriteria<>(leaf.getTerm(), leaf.getType(), parent);
             }
         }
 

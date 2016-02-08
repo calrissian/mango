@@ -19,7 +19,6 @@ import org.calrissian.mango.criteria.visitor.NodeVisitor;
 
 import java.util.List;
 
-
 public abstract class Leaf implements Node {
     private static final long serialVersionUID = 1L;
 

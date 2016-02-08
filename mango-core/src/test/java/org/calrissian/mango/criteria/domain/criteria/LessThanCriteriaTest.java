@@ -27,7 +27,7 @@ public class LessThanCriteriaTest {
     @Test
     public void test() {
 
-        LessThanCriteria criteria = new LessThanCriteria("key1", 5, natural(), null);
+        LessThanCriteria criteria = new LessThanCriteria<>("key1", 5, natural(), null);
 
         EntityBuilder entity = EntityBuilder.create("type", "id");
 

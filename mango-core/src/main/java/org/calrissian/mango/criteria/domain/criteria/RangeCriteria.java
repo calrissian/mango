@@ -31,8 +31,8 @@ public class RangeCriteria<T> extends TermCriteria {
 
     public RangeCriteria(String term, T start, T end, Comparator<T> comparator, ParentCriteria parentCriteria) {
         super(term, parentCriteria);
-        this.start = start;
-        this.end = end;
+        this.start = checkNotNull(start);
+        this.end = checkNotNull(end);
         this.comparator = checkNotNull(comparator);
     }
 
@@ -71,9 +71,6 @@ public class RangeCriteria<T> extends TermCriteria {
 
     @Override
     public String toString() {
-        return getTerm() + " within " +
-                (start == null ? "(-inf" : "[" + start) +
-                "," +
-                (end == null ? "inf)" : end + "]");
+        return getTerm() + " within " + "[" + start + "," + end + "]";
     }
 }

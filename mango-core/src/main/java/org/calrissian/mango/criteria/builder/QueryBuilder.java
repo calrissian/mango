@@ -41,7 +41,7 @@ public class QueryBuilder {
 
     public QueryBuilder and() {
         checkFinished();
-        AndNode andNode = new AndNode(current, new ArrayList<Node>());
+        AndNode andNode = new AndNode(current);
         if (current != null) {
             current.addChild(andNode);
             return new QueryBuilder(andNode, this);
@@ -52,7 +52,7 @@ public class QueryBuilder {
 
     public QueryBuilder or() {
         checkFinished();
-        OrNode orNode = new OrNode(current, new ArrayList<Node>());
+        OrNode orNode = new OrNode(current);
         if (current != null) {
             current.addChild(orNode);
             return new QueryBuilder(orNode, this);
@@ -72,7 +72,7 @@ public class QueryBuilder {
             this.current = new AndNode();
             finished = true;
         }
-        EqualsLeaf equalsLeaf = new EqualsLeaf(type, value, current);
+        EqualsLeaf equalsLeaf = new EqualsLeaf<>(type, value, current);
         this.current.addChild(equalsLeaf);
         return this;
     }
@@ -110,7 +110,7 @@ public class QueryBuilder {
             this.current = new AndNode();
             finished = true;
         }
-        InLeaf leaf = new InLeaf(key, values, current);
+        InLeaf leaf = new InLeaf<>(key, values, current);
         this.current.addChild(leaf);
         return this;
     }
@@ -125,7 +125,7 @@ public class QueryBuilder {
             this.current = new AndNode();
             finished = true;
         }
-        NotInLeaf leaf = new NotInLeaf(key, values, current);
+        NotInLeaf leaf = new NotInLeaf<>(key, values, current);
         this.current.addChild(leaf);
         return this;
     }
@@ -141,7 +141,7 @@ public class QueryBuilder {
             this.current = new AndNode();
             finished = true;
         }
-        NotEqualsLeaf notEqualsLeaf = new NotEqualsLeaf(type, value, current);
+        NotEqualsLeaf notEqualsLeaf = new NotEqualsLeaf<>(type, value, current);
         this.current.addChild(notEqualsLeaf);
         return this;
     }
@@ -153,7 +153,7 @@ public class QueryBuilder {
             this.current = new AndNode();
             finished = true;
         }
-        LessThanLeaf leaf = new LessThanLeaf(type, value, current);
+        LessThanLeaf leaf = new LessThanLeaf<>(type, value, current);
         this.current.addChild(leaf);
         return this;
     }
@@ -164,7 +164,7 @@ public class QueryBuilder {
             this.current = new AndNode();
             finished = true;
         }
-        LessThanEqualsLeaf leaf = new LessThanEqualsLeaf(type, value, current);
+        LessThanEqualsLeaf leaf = new LessThanEqualsLeaf<>(type, value, current);
         this.current.addChild(leaf);
         return this;
     }
@@ -175,7 +175,7 @@ public class QueryBuilder {
             this.current = new AndNode();
             finished = true;
         }
-        GreaterThanLeaf leaf = new GreaterThanLeaf(type, value, current);
+        GreaterThanLeaf leaf = new GreaterThanLeaf<>(type, value, current);
         this.current.addChild(leaf);
         return this;
     }
@@ -186,7 +186,7 @@ public class QueryBuilder {
             this.current = new AndNode();
             finished = true;
         }
-        GreaterThanEqualsLeaf leaf = new GreaterThanEqualsLeaf(type, value, current);
+        GreaterThanEqualsLeaf leaf = new GreaterThanEqualsLeaf<>(type, value, current);
         this.current.addChild(leaf);
         return this;
     }
@@ -198,7 +198,7 @@ public class QueryBuilder {
             this.current = new AndNode();
             finished = true;
         }
-        RangeLeaf rangeLeaf = new RangeLeaf(type, start, end, current);
+        RangeLeaf rangeLeaf = new RangeLeaf<>(type, start, end, current);
         this.current.addChild(rangeLeaf);
         return this;
     }

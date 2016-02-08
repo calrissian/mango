@@ -22,7 +22,7 @@ public class HasLeaf<T> extends TypedTermLeaf<T> {
     }
 
     public HasLeaf(String term, ParentNode parent) {
-        super(term, null, parent);
+        this(term, null, parent);
     }
 
     @Override

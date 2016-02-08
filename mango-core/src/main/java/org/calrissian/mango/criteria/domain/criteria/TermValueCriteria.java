@@ -17,13 +17,15 @@ package org.calrissian.mango.criteria.domain.criteria;
 
 import java.util.Objects;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 public abstract class TermValueCriteria<T> extends TermCriteria {
 
     private final T value;
 
     public TermValueCriteria(String term, T value, ParentCriteria parentCriteria) {
         super(term, parentCriteria);
-        this.value = value;
+        this.value = checkNotNull(value);;
     }
 
     public T getValue() {

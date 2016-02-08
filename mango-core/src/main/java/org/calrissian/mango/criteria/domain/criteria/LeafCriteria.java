@@ -47,13 +47,6 @@ public abstract class LeafCriteria implements Criteria {
     }
 
     @Override
-    public String toString() {
-        return "LeafCriteria{" +
-                "parent=" + parent +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

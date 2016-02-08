@@ -15,10 +15,10 @@
  */
 package org.calrissian.mango.criteria.domain.criteria;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static java.util.Collections.unmodifiableList;
 
 public abstract class ParentCriteria implements Criteria {
@@ -27,17 +27,9 @@ public abstract class ParentCriteria implements Criteria {
     private final List<Criteria> nodes;
     private final ParentCriteria parent;
 
-    public ParentCriteria() {
-        this(null);
-    }
-
-    public ParentCriteria(ParentCriteria parent) {
-        this(parent, new ArrayList<Criteria>());
-    }
-
-    public ParentCriteria(ParentCriteria parent, List<Criteria> nodes) {
+    public ParentCriteria(List<Criteria> nodes, ParentCriteria parent) {
+        this.nodes = checkNotNull(nodes);
         this.parent = parent;
-        this.nodes = nodes;
     }
 
     @Override
@@ -73,13 +65,5 @@ public abstract class ParentCriteria implements Criteria {
     public int hashCode() {
         //Don't include parent in hashcode.
         return Objects.hash(nodes);
-    }
-
-    @Override
-    public String toString() {
-        return "ParentCriteria{" +
-                "nodes=" + nodes +
-                ", parent=" + parent +
-                '}';
     }
 }
