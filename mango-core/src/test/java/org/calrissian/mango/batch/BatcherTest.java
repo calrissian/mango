@@ -47,10 +47,10 @@ public class BatcherTest {
 
     @Test
     public void sizeBatcherTest() throws InterruptedException {
-        TestListenter<Integer> listenter = new TestListenter<>();
+        TestListenter<Integer> listener = new TestListenter<>();
         final Batcher<Integer> batcher = BatcherBuilder.create()
                 .sizeBound(100)
-                .build(listenter);
+                .build(listener);
 
         CountDownLatch start = new CountDownLatch(1);
         CountDownLatch done = setupProducers(batcher, start, 10, 100);
@@ -60,19 +60,19 @@ public class BatcherTest {
         sleep(40);
         batcher.close();
 
-        assertEquals(1000, listenter.getCount());
-        assertTrue(listenter.getNumBatches() >= 10);
-        for (Collection<Integer> batch : listenter.getBatches()) {
+        assertEquals(1000, listener.getCount());
+        assertTrue(listener.getNumBatches() >= 10);
+        for (Collection<Integer> batch : listener.getBatches()) {
             assertEquals(100, batch.size());
         }
     }
 
     @Test
     public void sizeBatcherNonFullBatchTest() throws InterruptedException {
-        TestListenter<Integer> listenter = new TestListenter<>();
+        TestListenter<Integer> listener = new TestListenter<>();
         final Batcher<Integer> batcher = BatcherBuilder.create()
                 .sizeBound(100)
-                .build(listenter);
+                .build(listener);
 
         CountDownLatch start = new CountDownLatch(1);
         CountDownLatch done = setupProducers(batcher, start, 10, 102); //don't align with batch size
@@ -83,10 +83,10 @@ public class BatcherTest {
         batcher.close();
         sleep(40); //wait for handler thread after close to process leftover batch.
 
-        assertEquals(1020, listenter.getCount());
-        assertTrue(listenter.getNumBatches() == 11);
+        assertEquals(1020, listener.getCount());
+        assertTrue(listener.getNumBatches() == 11);
         int count = 0;
-        for (Collection<Integer> batch : listenter.getBatches()) {
+        for (Collection<Integer> batch : listener.getBatches()) {
             if (count == 10) {
                 assertEquals(20, batch.size());
             } else {
@@ -98,10 +98,10 @@ public class BatcherTest {
 
     @Test
     public void timeBatcherTest() throws InterruptedException {
-        TestListenter<Integer> listenter = new TestListenter<>();
+        TestListenter<Integer> listener = new TestListenter<>();
         final Batcher<Integer> batcher = BatcherBuilder.create()
                 .timeBound(10, MILLISECONDS)
-                .build(listenter);
+                .build(listener);
 
         CountDownLatch start = new CountDownLatch(1);
         CountDownLatch done = setupProducers(batcher, start, 10, 100);
@@ -112,20 +112,20 @@ public class BatcherTest {
         sleep(40);
         batcher.close();
 
-        assertEquals(1000, listenter.getCount());
-        assertTrue(listenter.getNumBatches() >= 1);
-        for (Collection<Integer> batch : listenter.getBatches()) {
+        assertEquals(1000, listener.getCount());
+        assertTrue(listener.getNumBatches() >= 1);
+        for (Collection<Integer> batch : listener.getBatches()) {
             assertTrue(!batch.isEmpty());
         }
     }
 
     @Test
     public void sizeAndTimeBatcherTest() throws InterruptedException {
-        TestListenter<Integer> listenter = new TestListenter<>();
+        TestListenter<Integer> listener = new TestListenter<>();
         final Batcher<Integer> batcher = BatcherBuilder.create()
                 .sizeBound(100)
                 .timeBound(10, MILLISECONDS)
-                .build(listenter);
+                .build(listener);
 
         CountDownLatch start = new CountDownLatch(1);
         CountDownLatch done = setupProducers(batcher, start, 10, 100);
@@ -136,9 +136,9 @@ public class BatcherTest {
         sleep(40);
         batcher.close();
 
-        assertEquals(1000, listenter.getCount());
-        assertTrue(listenter.getNumBatches() >= 10);
-        for (Collection<Integer> batch : listenter.getBatches()) {
+        assertEquals(1000, listener.getCount());
+        assertTrue(listener.getNumBatches() >= 10);
+        for (Collection<Integer> batch : listener.getBatches()) {
             assertTrue(!batch.isEmpty());
             assertTrue(batch.size() <= 100);
         }
