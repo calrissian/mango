@@ -84,11 +84,18 @@ public class BatcherTest {
 
         sleep(20);
         batcher.close();
+        sleep(20);
 
-        assertEquals(1000, listenter.getCount());
-        assertTrue(listenter.getNumBatches() >= 10);
+        assertEquals(1020, listenter.getCount());
+        assertTrue(listenter.getNumBatches() == 11);
+        int count = 0;
         for (Collection<Integer> batch : listenter.getBatches()) {
-            assertEquals(100, batch.size());
+            if (count == 10) {
+                assertEquals(20, batch.size());
+            } else {
+                assertEquals(100, batch.size());
+            }
+            count++;
         }
     }
 
@@ -214,6 +221,72 @@ public class BatcherTest {
         assertEquals(1000, results.size());
         for (int i = 0;i< 1000;i++)
             assertEquals(i, results.get(i).intValue());
+    }
+
+    @Test
+    public void closeAndFlushTest() throws InterruptedException {
+        final List<Integer> results = new ArrayList<>(1000);
+        final Batcher<Integer> batcher = BatcherBuilder.create()
+                .sizeBound(100)
+                .timeBound(1000000, MILLISECONDS)
+                .bufferSize(1000)
+                .listenerService(sameThreadExecutor()) //Required to guarantee sleep pauses batch thread.
+                .build(new BatchListener<Integer>() {
+                    @Override
+                    public void onBatch(Collection<Integer> batch) {
+                        try {
+                            results.addAll(batch);
+                            //Sleep here to slow down the processing of the batch thread so it can be killed before the second batch.
+                            sleep(1000000);
+                        } catch (InterruptedException ignored) {}
+                    }
+                });
+
+        CountDownLatch start = new CountDownLatch(1);
+        CountDownLatch done = setupProducers(batcher, start, 10, 100);
+        start.countDown();
+        done.await();
+
+        sleep(20);
+        List<Integer> flushed = batcher.closeAndFlush();
+
+        assertEquals(900, flushed.size());
+
+        //Listener should have received the partial batch
+        assertEquals(100, results.size());
+    }
+
+    @Test
+    public void closeAndFlushAfterHandlerExceptionTest() throws InterruptedException {
+        final List<Integer> results = new ArrayList<>(1000);
+        final Batcher<Integer> batcher = BatcherBuilder.create()
+                .sizeBound(100)
+                .timeBound(1000000, MILLISECONDS)
+                .bufferSize(1000)
+                .listenerService(sameThreadExecutor()) //Required to guarantee sleep pauses batch thread.
+                .build(new BatchListener<Integer>() {
+                    @Override
+                    public void onBatch(Collection<Integer> batch) {
+                        results.addAll(batch);
+                        try {
+                            sleep(1000000);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                });
+
+        CountDownLatch start = new CountDownLatch(1);
+        CountDownLatch done = setupProducers(batcher, start, 10, 100);
+        start.countDown();
+        done.await();
+
+        List<Integer> flushed = batcher.closeAndFlush();
+
+        assertEquals(900, flushed.size());
+
+        //Listener should have received the partial batch
+        assertEquals(100, results.size());
     }
 
     //Exception tests

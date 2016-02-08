@@ -16,6 +16,7 @@
 package org.calrissian.mango.batch;
 
 import java.io.Closeable;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public interface Batcher<T> extends Closeable {
@@ -43,7 +44,12 @@ public interface Batcher<T> extends Closeable {
     boolean addOrWait(T item) throws InterruptedException;
 
     /**
-     * {@inheritDoc}
+     * Closes the underlying batcher and flushes the remaining elements in the batch queue to a list.
+     */
+    List<T> closeAndFlush();
+
+    /**
+     * Closes the underlying batcher and any .
      */
     @Override
     void close();

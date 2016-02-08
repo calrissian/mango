@@ -21,6 +21,7 @@ import java.util.concurrent.*;
 
 import static com.google.common.base.Preconditions.*;
 import static java.lang.System.nanoTime;
+import static java.lang.Thread.currentThread;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
@@ -134,19 +135,21 @@ public final class BatcherBuilder {
         @Override
         protected Collection<T> generateBatch(BlockingQueue<T> backingQueue) throws InterruptedException {
             Collection<T> batch = new ArrayList<>(maxSize);
+            try {
+                int remainingSize = maxSize;
 
-            int remainingSize = maxSize;
+                while (remainingSize > 0) {
+                    //First try to drain the queue into the batch, but if there is not enough data then fall back to a
+                    //blocking call to wait for data to enter the queue.
+                    if (backingQueue.drainTo(batch, remainingSize) != remainingSize) {
+                        batch.add(backingQueue.take());
+                    }
 
-            while (remainingSize > 0) {
-                //First try to drain the queue into the batch, but if there is not enough data then fall back to a
-                //blocking call to wait for data to enter the queue.
-                if (backingQueue.drainTo(batch, remainingSize) != remainingSize) {
-                    batch.add(backingQueue.take());
+                    remainingSize = maxSize - batch.size();
                 }
-
-                remainingSize = maxSize - batch.size();
+            } catch (InterruptedException e) {
+                currentThread().interrupt();
             }
-
             return batch;
         }
     }
@@ -163,25 +166,27 @@ public final class BatcherBuilder {
         @Override
         protected Collection<T> generateBatch(BlockingQueue<T> backingQueue) throws InterruptedException {
             Collection<T> batch = new ArrayList<>();
+            try {
+                long startTime = nanoTime();
+                long remainingTime = interval;
 
-            long startTime = nanoTime();
-            long remainingTime = interval;
+                while (remainingTime > 0) {
+                    //First try to drain the queue into the batch, but if there is no data then fall back to a
+                    //blocking call to wait for data to enter the queue.
+                    if (backingQueue.drainTo(batch) == 0) {
+                        T item = backingQueue.poll(remainingTime, NANOSECONDS);
+                        if (item == null)
+                            break; //poll timed out, should try and send batch
 
-            while (remainingTime > 0) {
-                //First try to drain the queue into the batch, but if there is no data then fall back to a
-                //blocking call to wait for data to enter the queue.
-                if (backingQueue.drainTo(batch) == 0) {
-                    T item = backingQueue.poll(remainingTime, NANOSECONDS);
-                    if (item == null)
-                        break; //poll timed out, should try and send batch
+                        batch.add(item);
+                    }
 
-                    batch.add(item);
+                    //Order of operations matters to minimize overflows
+                    remainingTime = interval - (nanoTime() - startTime);
                 }
-
-                //Order of operations matters to minimize overflows
-                remainingTime = interval - (nanoTime() - startTime);
+            } catch (InterruptedException e) {
+                currentThread().interrupt();
             }
-
             return batch;
         }
     }
@@ -200,27 +205,29 @@ public final class BatcherBuilder {
         @Override
         protected Collection<T> generateBatch(BlockingQueue<T> backingQueue) throws InterruptedException {
             Collection<T> batch = new ArrayList<>(maxSize);
+            try{
+                long startTime = nanoTime();
+                long remainingTime = interval;
+                int remainingSize = maxSize;
 
-            long startTime = nanoTime();
-            long remainingTime = interval;
-            int remainingSize = maxSize;
+                while (remainingSize > 0 && remainingTime > 0) {
+                    //First try to drain the queue into the batch, but if there is not enough data then fall back to a
+                    //blocking call to wait for data to enter the queue.
+                    if (backingQueue.drainTo(batch, remainingSize) != remainingSize) {
+                        T item = backingQueue.poll(remainingTime, NANOSECONDS);
+                        if (item == null)
+                            break; //poll timed out, should try and send batch
 
-            while (remainingSize > 0 && remainingTime > 0) {
-                //First try to drain the queue into the batch, but if there is not enough data then fall back to a
-                //blocking call to wait for data to enter the queue.
-                if (backingQueue.drainTo(batch, remainingSize) != remainingSize) {
-                    T item = backingQueue.poll(remainingTime, NANOSECONDS);
-                    if (item == null)
-                        break; //poll timed out, should try and send batch
+                        batch.add(item);
+                    }
 
-                    batch.add(item);
+                    //Order of operations matters to minimize overflows
+                    remainingTime = interval - (nanoTime() - startTime);
+                    remainingSize = maxSize - batch.size();
                 }
-
-                //Order of operations matters to minimize overflows
-                remainingTime = interval - (nanoTime() - startTime);
-                remainingSize = maxSize - batch.size();
+            } catch (InterruptedException e) {
+                currentThread().interrupt();
             }
-
             return batch;
         }
     }
