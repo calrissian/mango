@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 The Calrissian Authors
+ * Copyright (C) 2016 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,10 @@ package org.calrissian.mango.hash.tree;
 
 
 import java.util.List;
+import java.util.Objects;
+
+import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Collections.emptyList;
 
 /**
  * A leaf represents a single hashed "bucket" of data- it needs to be sortable. Raw data should NOT be carried along
@@ -27,16 +31,15 @@ public abstract class HashLeaf implements Node {
 
     protected String hash;
 
-    public HashLeaf() {
-    }
 
     public HashLeaf(String hash) {
+        checkNotNull(hash);
         this.hash = hash;
     }
 
     @Override
     public List<Node> getChildren() {
-        return null;
+        return emptyList();
     }
 
     @Override
@@ -54,17 +57,13 @@ public abstract class HashLeaf implements Node {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof HashLeaf)) return false;
-
-        HashLeaf leaf = (HashLeaf) o;
-
-        if (hash != null ? !hash.equals(leaf.hash) : leaf.hash != null) return false;
-
-        return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        HashLeaf hashLeaf = (HashLeaf) o;
+        return Objects.equals(hash, hashLeaf.hash);
     }
 
     @Override
     public int hashCode() {
-        return hash != null ? hash.hashCode() : 0;
+        return Objects.hash(hash);
     }
 }

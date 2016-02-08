@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 The Calrissian Authors
+ * Copyright (C) 2016 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,10 @@ package org.calrissian.mango.hash.tree;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
 /**
  * A standard MerkleTree that takes a collection of @link{Hashable} objects and creates a tree, aggregating the hashes as
@@ -26,12 +30,9 @@ import java.util.List;
 public class MerkleTree<T extends HashLeaf> implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private int dimensions = 2;  // default to a binary tree
-    private int numLeaves;       // keeping this around for future optimizations
-    private Node topHash;
-
-    public MerkleTree() {
-    }
+    private final int dimensions;  // default to a binary tree
+    private final int numLeaves;       // keeping this around for future optimizations
+    private final Node topHash;
 
     /**
      * Creates Merkle Tree with default dimension with the given leaves
@@ -40,8 +41,7 @@ public class MerkleTree<T extends HashLeaf> implements Serializable {
      * @throws IllegalStateException
      */
     public MerkleTree(List<T> leaves) throws IllegalStateException {
-        this.topHash = buildTop(leaves);
-        this.numLeaves = leaves.size();
+        this(leaves, 2);
     }
 
     /**
@@ -59,8 +59,6 @@ public class MerkleTree<T extends HashLeaf> implements Serializable {
 
     /**
      * Accessor for the root of the tree
-     *
-     * @return
      */
     public Node getTopHash() {
         return topHash;
@@ -81,22 +79,19 @@ public class MerkleTree<T extends HashLeaf> implements Serializable {
      * @return
      */
     private Node buildTop(List<T> leaves) {
-
+        checkNotNull(leaves);
         List<Node> hashNodes = new ArrayList<>();
-        List<T> curLeaves;
         for (int i = 0; i < leaves.size(); i += dimensions) {
-            int idx = i + dimensions > leaves.size() ? leaves.size() : i + dimensions;
-            curLeaves = leaves.subList(i, idx);
+            int idx = i + dimensions > leaves.size()
+                    ? leaves.size()
+                    : i + dimensions;
+            List<T> curLeaves = leaves.subList(i, idx);
             hashNodes.add(curLeaves.size() == 1 ? curLeaves.get(0) : new HashNode(new ArrayList<Node>(curLeaves)));
         }
 
         List<Node> finalTree = build(hashNodes);
-
-        if (finalTree != null && finalTree.size() > 0) {
-            return finalTree.get(0);
-        } else {
-            throw new IllegalStateException("Final tree cannot have 0 root nodes.");
-        }
+        checkState(finalTree.size() > 0, "Final tree cannot have 0 root nodes.");
+        return finalTree.get(0);
     }
 
     /**
@@ -106,14 +101,14 @@ public class MerkleTree<T extends HashLeaf> implements Serializable {
      * @return
      */
     private List<Node> build(List<Node> nodes) {
-
         List<Node> hashNodes = new ArrayList<>();
-        List<Node> curNodes;
-        for (int i = 0; i < nodes.size(); i += dimensions) {
 
+        for (int i = 0; i < nodes.size(); i += dimensions) {
             int idx = i + dimensions > nodes.size() ? nodes.size() : i + dimensions;
-            curNodes = nodes.subList(i, idx);
-            hashNodes.add(curNodes.size() == 1 ? curNodes.get(0) : new HashNode(new ArrayList<>(curNodes)));
+            List<Node> curNodes = nodes.subList(i, idx);
+            hashNodes.add(curNodes.size() == 1
+                    ? curNodes.get(0) :
+                    new HashNode(new ArrayList<>(curNodes)));
         }
 
         if (hashNodes.size() > 1) {
@@ -148,8 +143,8 @@ public class MerkleTree<T extends HashLeaf> implements Serializable {
 
             if (nodes1 == null) {
                 return differences;
-            } else if (nodes1 != null && nodes2 == null) {
-                differences.addAll(getLeaves(nodes2));
+            } else if (nodes2 == null) {
+                differences.addAll(getLeaves(nodes1));
             } else {
                 for (int i = 0; i < nodes1.size(); i++) {
 
@@ -179,19 +174,14 @@ public class MerkleTree<T extends HashLeaf> implements Serializable {
 
         if (!one.getHash().equals(two.getHash())) {
 
-            if (one.getChildren() == null) {
+            if (one.getChildren().isEmpty()) {
                 differences.add((T) one);
-
-            } else if (one.getChildren() != null && two.getChildren() == null) {
+            } else if (two.getChildren().isEmpty()) {
                 differences.addAll(getLeaves(one.getChildren()));
-
             } else {
-
                 for (int i = 0; i < one.getChildren().size(); i++) {
-
                     Node node1 = one.getChildren().get(i);
                     Node noe2 = two.getChildren().get(i);
-
                     differences.addAll(diff(node1, noe2));
                 }
             }
@@ -223,34 +213,26 @@ public class MerkleTree<T extends HashLeaf> implements Serializable {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MerkleTree<?> that = (MerkleTree<?>) o;
+        return dimensions == that.dimensions &&
+                numLeaves == that.numLeaves &&
+                Objects.equals(topHash, that.topHash);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(dimensions, numLeaves, topHash);
+    }
+
+    @Override
     public String toString() {
         return "MerkleTree{" +
                 "dimensions=" + dimensions +
                 ", numLeaves=" + numLeaves +
                 ", topHash=" + topHash +
                 '}';
-    }
-
-    @SuppressWarnings("rawtypes")
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof MerkleTree)) return false;
-
-        MerkleTree that = (MerkleTree) o;
-
-        if (dimensions != that.dimensions) return false;
-        if (numLeaves != that.numLeaves) return false;
-        if (topHash != null ? !topHash.equals(that.topHash) : that.topHash != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = dimensions;
-        result = 31 * result + numLeaves;
-        result = 31 * result + (topHash != null ? topHash.hashCode() : 0);
-        return result;
     }
 }

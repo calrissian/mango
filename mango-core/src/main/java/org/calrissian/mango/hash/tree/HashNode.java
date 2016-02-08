@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 The Calrissian Authors
+ * Copyright (C) 2016 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,11 @@
 package org.calrissian.mango.hash.tree;
 
 import java.security.MessageDigest;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
+import static java.util.Collections.unmodifiableList;
 import static org.apache.commons.codec.binary.Hex.encodeHexString;
 import static org.apache.commons.codec.digest.DigestUtils.getMd5Digest;
 
@@ -29,9 +32,6 @@ public class HashNode implements Node {
 
     protected String hash;
     protected List<Node> children;
-
-    public HashNode() {
-    }
 
     public HashNode(List<Node> children) {
         this.children = children;
@@ -50,7 +50,7 @@ public class HashNode implements Node {
      */
     @Override
     public List<Node> getChildren() {
-        return children;
+        return unmodifiableList(children);
     }
 
     /**
@@ -61,7 +61,6 @@ public class HashNode implements Node {
      */
     @Override
     public String getHash() {
-
         return hash;
     }
 
@@ -76,20 +75,14 @@ public class HashNode implements Node {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof HashNode)) return false;
-
+        if (o == null || getClass() != o.getClass()) return false;
         HashNode hashNode = (HashNode) o;
-
-        if (hash != null ? !hash.equals(hashNode.hash) : hashNode.hash != null) return false;
-        if (children != null ? !children.equals(hashNode.children) : hashNode.children != null) return false;
-
-        return true;
+        return Objects.equals(hash, hashNode.hash) &&
+                Objects.equals(children, hashNode.children);
     }
 
     @Override
     public int hashCode() {
-        int result = hash != null ? hash.hashCode() : 0;
-        result = 31 * result + (children != null ? children.hashCode() : 0);
-        return result;
+        return Objects.hash(hash, children);
     }
 }

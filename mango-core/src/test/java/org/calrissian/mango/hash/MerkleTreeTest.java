@@ -15,7 +15,7 @@
  */
 package org.calrissian.mango.hash;
 
-import org.calrissian.mango.hash.mock.MockLeaf;
+import org.calrissian.mango.hash.tree.HashLeaf;
 import org.calrissian.mango.hash.tree.MerkleTree;
 import org.junit.Test;
 
@@ -125,5 +125,13 @@ public class MerkleTreeTest {
 
         assertEquals(leaf3, diffs.get(0));
         assertEquals(1, diffs.size());
+    }
+
+    private static class MockLeaf extends HashLeaf {
+        private static final long serialVersionUID = 1L;
+
+        public MockLeaf(String hash) {
+            super(hash);
+        }
     }
 }
