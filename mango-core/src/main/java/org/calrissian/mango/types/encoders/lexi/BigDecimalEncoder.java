@@ -22,6 +22,7 @@ import java.math.BigInteger;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class BigDecimalEncoder extends AbstractBigDecimalEncoder<String> {
     private static final long serialVersionUID = 1L;
@@ -35,7 +36,7 @@ public class BigDecimalEncoder extends AbstractBigDecimalEncoder<String> {
      * Assumes a string where all characters are 0-9 (0x30 - 0x39 ascii).
      */
     private static String tensComplement(String digitStr) {
-        byte[] digits = digitStr.getBytes();
+        byte[] digits = digitStr.getBytes(UTF_8);
         byte[] comp = new byte[digits.length];
 
         //9's complement
@@ -53,7 +54,7 @@ public class BigDecimalEncoder extends AbstractBigDecimalEncoder<String> {
             comp[i] = 0x30;
         }
 
-        return new String(comp);
+        return new String(comp, UTF_8);
     }
 
     @Override

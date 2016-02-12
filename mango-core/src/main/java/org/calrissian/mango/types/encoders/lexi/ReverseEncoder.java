@@ -44,13 +44,13 @@ public class ReverseEncoder<T> implements TypeEncoder<T, String> {
     @Override
     public String encode(T value) {
         String encoded = encoder.encode(value);
-        return new String(reverse(encoded.getBytes()), ISO_8859_1);
+        return new String(reverse(encoded.getBytes(ISO_8859_1)), ISO_8859_1);
     }
 
     @Override
     public T decode(String value) {
         checkNotNull(value, "Null values are not allowed");
-        String reversed = new String(reverse(value.getBytes(ISO_8859_1)));
+        String reversed = new String(reverse(value.getBytes(ISO_8859_1)), ISO_8859_1);
         return encoder.decode(reversed);
     }
 }
