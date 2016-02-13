@@ -22,6 +22,7 @@ import java.math.BigInteger;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.lang.Integer.MIN_VALUE;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class BigDecimalEncoder extends AbstractBigDecimalEncoder<String> {
@@ -57,18 +58,26 @@ public class BigDecimalEncoder extends AbstractBigDecimalEncoder<String> {
         return new String(comp, UTF_8);
     }
 
+    private static boolean isZeroEnc(String value) {
+        for (int i = 0; i< value.length();i++) {
+            if (value.charAt(i) != '0')
+                return false;
+        }
+        return true;
+    }
+
     @Override
     public String encode(BigDecimal value) {
         checkNotNull(value, "Null values are not allowed");
 
         int exp = value.precision() - value.scale() - 1;
         String mantissa;
-
+        String encExp;
         if (value.signum() == 0) {
             //Zero requires special handling as BigInteger.toString() has a special shortcutting for zeros which
             //ignores the least significant zeros.  These are required however to reconstruct the original scale.
             mantissa = new String(new char[1 - exp]).replace('\0', '0');
-            exp = 0;
+            exp = MIN_VALUE; //Set specially so that int encoder will produce all 0's
         } else if (value.signum() < 0) {
             mantissa = tensComplement(value.unscaledValue().negate().toString());
             exp = -exp;
@@ -91,6 +100,10 @@ public class BigDecimalEncoder extends AbstractBigDecimalEncoder<String> {
             exp = -exp;
             unscaled = new BigInteger(tensComplement(mantissa)).negate();
         } else {
+            //if mantissa is all 0 then it is a representation of zero and should convert exp back to 0
+            if (isZeroEnc(mantissa))
+                exp = 0;
+
             unscaled = new BigInteger(mantissa);
         }
 
