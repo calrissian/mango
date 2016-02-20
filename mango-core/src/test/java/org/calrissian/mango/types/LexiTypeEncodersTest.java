@@ -135,7 +135,7 @@ public class LexiTypeEncodersTest {
         assertEquals("7ffffff0c000000000000000ffffffffffffffff", bigIntegerEncoder().encode(BigInteger.valueOf(Long.MAX_VALUE).pow(2).negate()));
 
         //0 is a special case that requires different handling to preserve the scale.
-        assertEquals("18000000000000000", bigDecimalEncoder().encode(new BigDecimal("0.0000000")));
+        assertEquals("10000000000000000", bigDecimalEncoder().encode(new BigDecimal("0.0000000")));
         assertEquals("180000268323170060713109998320439596646649", bigDecimalEncoder().encode(BigDecimal.valueOf(Double.MAX_VALUE).pow(2)));
         assertEquals("07ffffd98676829939286890001679560403353351", bigDecimalEncoder().encode(BigDecimal.valueOf(Double.MAX_VALUE).pow(2).negate()));
         assertEquals("1800000001000", bigDecimalEncoder().encode(new BigDecimal("1.000")));
@@ -189,7 +189,7 @@ public class LexiTypeEncodersTest {
         assertEquals("800000103fffffffffffffff0000000000000000", bigIntegerRevEncoder().encode(BigInteger.valueOf(Long.MAX_VALUE).pow(2).negate()));
 
         //0 is a special case that requires different handling to preserve the scale.
-        assertEquals("18000000000000000", bigDecimalRevEncoder().encode(new BigDecimal("0.0000000")));
+        assertEquals("10000000000000000", bigDecimalRevEncoder().encode(new BigDecimal("0.0000000")));
         assertEquals("07ffffd98676829939286890001679560403353351", bigDecimalRevEncoder().encode(BigDecimal.valueOf(Double.MAX_VALUE).pow(2)));
         assertEquals("180000268323170060713109998320439596646649", bigDecimalRevEncoder().encode(BigDecimal.valueOf(Double.MAX_VALUE).pow(2).negate()));
         assertEquals("0800000009000", bigDecimalRevEncoder().encode(new BigDecimal("1.000")));
