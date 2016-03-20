@@ -19,6 +19,7 @@ package org.calrissian.mango.types;
 import com.google.common.primitives.UnsignedInteger;
 import com.google.common.primitives.UnsignedLong;
 import org.calrissian.mango.domain.entity.EntityIdentifier;
+import org.calrissian.mango.domain.event.EventIdentifier;
 import org.calrissian.mango.net.IPv4;
 import org.calrissian.mango.net.IPv6;
 import org.junit.Test;
@@ -108,6 +109,8 @@ public class SimpleTypeEncodersTest {
         assertEquals("85070591730234615847396907784232501249", bigIntegerEncoder().encode(BigInteger.valueOf(Long.MAX_VALUE).pow(2)));
 
         assertEquals("entity://type#id", entityIdentifierEncoder().encode(new EntityIdentifier("type", "id")));
+
+        assertEquals("event://type#id@9223372036854775807", eventIdentifierEncoder().encode(new EventIdentifier("type", "id", Long.MAX_VALUE)));
 
         assertEquals("192.168.1.1", ipv4Encoder().encode(IPv4.fromString("192.168.1.1")));
 

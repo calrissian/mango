@@ -19,6 +19,7 @@ package org.calrissian.mango.types;
 import com.google.common.primitives.UnsignedInteger;
 import com.google.common.primitives.UnsignedLong;
 import org.calrissian.mango.domain.entity.EntityIdentifier;
+import org.calrissian.mango.domain.event.EventIdentifier;
 import org.calrissian.mango.net.IPv4;
 import org.calrissian.mango.net.IPv6;
 import org.calrissian.mango.types.encoders.simple.*;
@@ -118,6 +119,10 @@ public class SimpleTypeEncoders {
 
     public static TypeEncoder<EntityIdentifier, String> entityIdentifierEncoder() {
         return new EntityIdentifierEncoder();
+    }
+
+    public static TypeEncoder<EventIdentifier, String> eventIdentifierEncoder() {
+        return new EventIdentifierEncoder();
     }
 
     public static TypeEncoder<UnsignedInteger, String> unsignedIntegerEncoder() {

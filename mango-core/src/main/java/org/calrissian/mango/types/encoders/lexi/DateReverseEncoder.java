@@ -25,16 +25,16 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class DateReverseEncoder extends AbstractDateEncoder<String> {
     private static final long serialVersionUID = 1L;
 
-    private static final LongEncoder longEncoder = new LongEncoder();
+    private static final LongReverseEncoder longEncoder = new LongReverseEncoder();
 
     @Override
     public String encode(Date value) {
         checkNotNull(value, "Null values are not allowed");
-        return longEncoder.encode(~value.getTime());
+        return longEncoder.encode(value.getTime());
     }
 
     @Override
     public Date decode(String value) {
-        return new Date(~longEncoder.decode(value));
+        return new Date(longEncoder.decode(value));
     }
 }

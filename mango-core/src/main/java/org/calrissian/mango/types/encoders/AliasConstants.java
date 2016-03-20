@@ -33,7 +33,8 @@ public class AliasConstants {
     public static String INET6_ALIAS = "inet6";
 
     //Mango types
-    public static String ENTITY_IDENTIFIER_ALIAS = "entityIndex";
+    public static String ENTITY_IDENTIFIER_ALIAS = "entityId";
+    public static String EVENT_IDENTIFIER_ALIAS = "eventId";
     public static String IPV4_ALIAS = "ipv4";
     public static String IPV6_ALIAS = "ipv6";
 
