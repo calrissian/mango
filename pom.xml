@@ -32,7 +32,6 @@ limitations under the License.
     <junit.version>4.11</junit.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <slf4j.version>1.6.4</slf4j.version>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -50,12 +49,6 @@ limitations under the License.
         <groupId>org.calrissian.mango</groupId>
         <artifactId>mango-core</artifactId>
         <version>${project.version}</version>
-      </dependency>
-      <!--Logging-->
-      <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-api</artifactId>
-        <version>${slf4j.version}</version>
       </dependency>
       <!--Test-->
       <dependency>
