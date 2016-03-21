@@ -31,6 +31,8 @@ import static java.util.Collections.unmodifiableSet;
  */
 public class Attribute<T> implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     protected final String key;
     protected final T value;
 

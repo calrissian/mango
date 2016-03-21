@@ -23,6 +23,8 @@ import org.calrissian.mango.domain.entity.BaseEntity;
  */
 public class BaseEvent extends BaseEntity implements Event {
 
+    private static final long serialVersionUID = 1L;
+
     public BaseEvent(EventIdentifier identifier, Iterable<? extends Attribute> attributes) {
         super(identifier, attributes);
     }

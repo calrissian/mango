@@ -17,9 +17,13 @@ package org.calrissian.mango.domain.entity;
 
 import org.calrissian.mango.domain.Identifiable;
 
+import java.io.Serializable;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class EntityIdentifier implements Identifiable {
+public class EntityIdentifier implements Identifiable, Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private final String type;
     private final String id;

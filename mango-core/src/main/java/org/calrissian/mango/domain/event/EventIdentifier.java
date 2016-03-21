@@ -21,6 +21,8 @@ import org.calrissian.mango.domain.entity.EntityIdentifier;
 
 public class EventIdentifier extends EntityIdentifier implements Identifiable, Temporal {
 
+    private static final long serialVersionUID = 1L;
+
     private final long timestamp;
 
     public EventIdentifier(String type, String id, long timestamp) {

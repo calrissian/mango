@@ -32,7 +32,9 @@ import static java.util.Collections.unmodifiableSet;
  */
 public abstract class AbstractAttributeStore implements AttributeStore {
 
-    private final Multimap<String, Attribute> attributes;
+    private static final long serialVersionUID = 1L;
+
+    private final ArrayListMultimap<String, Attribute> attributes;
 
     protected AbstractAttributeStore(Iterable<? extends Attribute> attributes) {
         checkNotNull(attributes);

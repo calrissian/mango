@@ -25,6 +25,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class BaseEntity extends AbstractAttributeStore implements Entity {
 
+    private static final long serialVersionUID = 1L;
+
     private final EntityIdentifier identifier;
 
     public BaseEntity(EntityIdentifier identifier, Iterable<? extends Attribute> attributes) {
