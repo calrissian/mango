@@ -74,7 +74,7 @@ public class NodeSerializer extends JsonSerializer<Node> {
             //eq
             jsonGenerator.writeObjectFieldStart("eq");
             EqualsLeaf equalsLeaf = (EqualsLeaf) node;
-            jsonGenerator.writeStringField("key", equalsLeaf.getKey());
+            jsonGenerator.writeStringField("term", equalsLeaf.getTerm());
 
             Object value = equalsLeaf.getValue();
             String type = typeRegistry.getAlias(value);
@@ -87,7 +87,7 @@ public class NodeSerializer extends JsonSerializer<Node> {
             //neq
             NotEqualsLeaf leaf = (NotEqualsLeaf) node;
             jsonGenerator.writeObjectFieldStart("neq");
-            jsonGenerator.writeStringField("key", leaf.getKey());
+            jsonGenerator.writeStringField("term", leaf.getTerm());
 
             Object value = leaf.getValue();
             String type = typeRegistry.getAlias(value);
@@ -100,7 +100,7 @@ public class NodeSerializer extends JsonSerializer<Node> {
             //range
             RangeLeaf leaf = (RangeLeaf) node;
             jsonGenerator.writeObjectFieldStart("range");
-            jsonGenerator.writeStringField("key", leaf.getKey());
+            jsonGenerator.writeStringField("term", leaf.getTerm());
 
             Object start = leaf.getStart();
             String type = typeRegistry.getAlias(start);

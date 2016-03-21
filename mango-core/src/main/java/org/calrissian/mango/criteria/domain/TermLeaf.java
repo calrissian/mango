@@ -15,23 +15,34 @@
  */
 package org.calrissian.mango.criteria.domain;
 
-public class HasLeaf<T> extends TypedTermLeaf<T> {
+import java.util.Objects;
 
-    public HasLeaf(String term, Class<T> clazz, ParentNode parent) {
-        super(term, clazz, parent);
+import static com.google.common.base.Preconditions.checkNotNull;
+
+public abstract class TermLeaf extends Leaf {
+
+    private final String term;
+
+    public TermLeaf(String term, ParentNode parent) {
+        super(parent);
+        this.term = checkNotNull(term);
     }
 
-    public HasLeaf(String term, ParentNode parent) {
-        this(term, null, parent);
+    public String getTerm() {
+        return term;
     }
 
     @Override
-    public Node clone(ParentNode node) {
-        return new HasLeaf<>(getTerm(), getType(), node);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        TermLeaf termLeaf = (TermLeaf) o;
+        return Objects.equals(term, termLeaf.term);
     }
 
     @Override
-    public String toString() {
-        return "hasTerm('" + getTerm() + "')";
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), term);
     }
 }

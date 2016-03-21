@@ -15,48 +15,42 @@
  */
 package org.calrissian.mango.criteria.domain.criteria;
 
-import java.util.List;
+import java.util.Objects;
 
-public abstract class LeafCriteria implements Criteria {
+import static com.google.common.base.Preconditions.checkNotNull;
 
-    private final ParentCriteria parent;
+public abstract class TermValueCriteria<T> extends TermCriteria {
 
-    public LeafCriteria(ParentCriteria parentCriteria) {
-        this.parent = parentCriteria;
+    private final T value;
+
+    public TermValueCriteria(String term, T value, ParentCriteria parentCriteria) {
+        super(term, parentCriteria);
+        this.value = checkNotNull(value);;
     }
 
-    @Override
-    public ParentCriteria parent() {
-        return parent;
-    }
-
-    @Override
-    public List<Criteria> children() {
-        return null;
-    }
-
-    @Override
-    public void addChild(Criteria node) {
-        throw new UnsupportedOperationException("Leaf does not have children");
-    }
-
-
-    @Override
-    public void removeChild(Criteria node) {
-        throw new UnsupportedOperationException("Leaf does not have children");
+    public T getValue() {
+        return value;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        //Don't include parent in equals check.
-        return true;
+        if (!super.equals(o)) return false;
+        TermValueCriteria<?> that = (TermValueCriteria<?>) o;
+        return Objects.equals(value, that.value);
     }
 
     @Override
     public int hashCode() {
-        //Don't include parent in hashcode.
-        return 0;
+        return Objects.hash(super.hashCode(), value);
+    }
+
+    @Override
+    public String toString() {
+        return "TermValueCriteria{" +
+                "term=" + getTerm() +
+                "value=" + value +
+                '}';
     }
 }

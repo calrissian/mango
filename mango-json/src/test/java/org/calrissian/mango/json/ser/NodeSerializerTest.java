@@ -36,48 +36,48 @@ public class NodeSerializerTest {
     public void testEqSerialization() throws Exception {
         EqualsLeaf equalsLeaf = new EqualsLeaf("k1", "v1", null);
         String json = objectMapper.writeValueAsString(equalsLeaf);
-        assertEquals("{\"eq\":{\"key\":\"k1\",\"type\":\"string\",\"value\":\"v1\"}}", json);
+        assertEquals("{\"eq\":{\"term\":\"k1\",\"type\":\"string\",\"value\":\"v1\"}}", json);
     }
 
     @Test
     public void testRangeSerialization() throws Exception {
         RangeLeaf leaf = new RangeLeaf("k1", "v1", "v2", null);
         String json = objectMapper.writeValueAsString(leaf);
-        assertEquals("{\"range\":{\"key\":\"k1\",\"type\":\"string\",\"start\":\"v1\",\"end\":\"v2\"}}", json);
+        assertEquals("{\"range\":{\"term\":\"k1\",\"type\":\"string\",\"start\":\"v1\",\"end\":\"v2\"}}", json);
     }
 
     @Test
     public void testAndEqEqSerialization() throws Exception {
         Node node = QueryBuilder.create().and().eq("k1", "v1").eq("k2", "v2").end().build();
         String json = objectMapper.writeValueAsString(node);
-        assertEquals("{\"and\":{\"children\":[{\"eq\":{\"key\":\"k1\",\"type\":\"string\",\"value\":\"v1\"}},{\"eq\":{\"key\":\"k2\",\"type\":\"string\",\"value\":\"v2\"}}]}}", json);
+        assertEquals("{\"and\":{\"children\":[{\"eq\":{\"term\":\"k1\",\"type\":\"string\",\"value\":\"v1\"}},{\"eq\":{\"term\":\"k2\",\"type\":\"string\",\"value\":\"v2\"}}]}}", json);
     }
 
     @Test
     public void testAndEqEqDiffTypeSerialization() throws Exception {
         Node node = QueryBuilder.create().and().eq("k1", "v1").eq("k2", IPv4.fromString("1.2.3.4")).end().build();
         String json = objectMapper.writeValueAsString(node);
-        assertEquals("{\"and\":{\"children\":[{\"eq\":{\"key\":\"k1\",\"type\":\"string\",\"value\":\"v1\"}},{\"eq\":{\"key\":\"k2\",\"type\":\"ipv4\",\"value\":\"1.2.3.4\"}}]}}", json);
+        assertEquals("{\"and\":{\"children\":[{\"eq\":{\"term\":\"k1\",\"type\":\"string\",\"value\":\"v1\"}},{\"eq\":{\"term\":\"k2\",\"type\":\"ipv4\",\"value\":\"1.2.3.4\"}}]}}", json);
     }
 
     @Test
     public void testAndEqNeqDiffTypeSerialization() throws Exception {
         Node node = QueryBuilder.create().and().eq("k1", "v1").notEq("k2", IPv4.fromString("1.2.3.4")).end().build();
         String json = objectMapper.writeValueAsString(node);
-        assertEquals("{\"and\":{\"children\":[{\"eq\":{\"key\":\"k1\",\"type\":\"string\",\"value\":\"v1\"}},{\"neq\":{\"key\":\"k2\",\"type\":\"ipv4\",\"value\":\"1.2.3.4\"}}]}}", json);
+        assertEquals("{\"and\":{\"children\":[{\"eq\":{\"term\":\"k1\",\"type\":\"string\",\"value\":\"v1\"}},{\"neq\":{\"term\":\"k2\",\"type\":\"ipv4\",\"value\":\"1.2.3.4\"}}]}}", json);
     }
 
     @Test
     public void testOrEqNeqDiffTypeSerialization() throws Exception {
         Node node = QueryBuilder.create().or().eq("k1", "v1").notEq("k2", IPv4.fromString("1.2.3.4")).end().build();
         String json = objectMapper.writeValueAsString(node);
-        assertEquals("{\"or\":{\"children\":[{\"eq\":{\"key\":\"k1\",\"type\":\"string\",\"value\":\"v1\"}},{\"neq\":{\"key\":\"k2\",\"type\":\"ipv4\",\"value\":\"1.2.3.4\"}}]}}", json);
+        assertEquals("{\"or\":{\"children\":[{\"eq\":{\"term\":\"k1\",\"type\":\"string\",\"value\":\"v1\"}},{\"neq\":{\"term\":\"k2\",\"type\":\"ipv4\",\"value\":\"1.2.3.4\"}}]}}", json);
     }
 
     @Test
     public void testAndOrEqNeqDiffTypeSerialization() throws Exception {
         Node node = QueryBuilder.create().or().and().eq("k1", "v1").notEq("k2", IPv4.fromString("1.2.3.4")).end().and().eq("k3", 1234).end().end().build();
         String json = objectMapper.writeValueAsString(node);
-        assertEquals("{\"or\":{\"children\":[{\"and\":{\"children\":[{\"eq\":{\"key\":\"k1\",\"type\":\"string\",\"value\":\"v1\"}},{\"neq\":{\"key\":\"k2\",\"type\":\"ipv4\",\"value\":\"1.2.3.4\"}}]}},{\"and\":{\"children\":[{\"eq\":{\"key\":\"k3\",\"type\":\"integer\",\"value\":\"1234\"}}]}}]}}", json);
+        assertEquals("{\"or\":{\"children\":[{\"and\":{\"children\":[{\"eq\":{\"term\":\"k1\",\"type\":\"string\",\"value\":\"v1\"}},{\"neq\":{\"term\":\"k2\",\"type\":\"ipv4\",\"value\":\"1.2.3.4\"}}]}},{\"and\":{\"children\":[{\"eq\":{\"term\":\"k3\",\"type\":\"integer\",\"value\":\"1234\"}}]}}]}}", json);
     }
 }

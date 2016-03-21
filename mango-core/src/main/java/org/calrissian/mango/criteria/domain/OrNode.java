@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 The Calrissian Authors
+ * Copyright (C) 2016 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
  */
 package org.calrissian.mango.criteria.domain;
 
+import com.google.common.base.Joiner;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,14 +24,15 @@ public class OrNode extends ParentNode {
     private static final long serialVersionUID = 1L;
 
     public OrNode() {
-    }
-
-    public OrNode(ParentNode parent, List<Node> nodes) {
-        super(parent, nodes);
+        this(null);
     }
 
     public OrNode(ParentNode parent) {
-        super(parent, new ArrayList<Node>());
+        this(new ArrayList<Node>(), parent);
+    }
+
+    public OrNode(List<Node> nodes, ParentNode parent) {
+        super(nodes, parent);
     }
 
     @Override
@@ -38,5 +41,10 @@ public class OrNode extends ParentNode {
         for (Node child : children())
             cloned.addChild(child.clone(cloned));
         return cloned;
+    }
+
+    @Override
+    public String toString() {
+        return "(" + Joiner.on(" or ").join(getNodes()) + ")";
     }
 }

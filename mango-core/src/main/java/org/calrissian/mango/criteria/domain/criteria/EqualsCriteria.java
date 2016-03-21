@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 The Calrissian Authors
+ * Copyright (C) 2016 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,16 +20,16 @@ import org.calrissian.mango.domain.AttributeStore;
 
 import java.util.Comparator;
 
-public class EqualsCriteria extends ComparableKeyValueLeafCriteria {
+public class EqualsCriteria<T> extends ComparableTermValueCriteria<T> {
 
-    public EqualsCriteria(String key, Object value, Comparator comparator, ParentCriteria parentCriteria) {
-        super(key, value, comparator, parentCriteria);
+    public EqualsCriteria(String term, T value, Comparator<T> comparator, ParentCriteria parentCriteria) {
+        super(term, value, comparator, parentCriteria);
     }
 
     @Override
     public boolean apply(AttributeStore obj) {
-        for (Attribute attribute : obj.getAttributes(key)) {
-            if (comparator.compare(attribute.getValue(), value) == 0)
+        for (Attribute attribute : obj.getAttributes(getTerm())) {
+            if (getComparator().compare((T)(attribute.getValue()), getValue()) == 0)
                 return true;
         }
         return false;
@@ -37,6 +37,11 @@ public class EqualsCriteria extends ComparableKeyValueLeafCriteria {
 
     @Override
     public Criteria clone(ParentCriteria parentCriteria) {
-        return new EqualsCriteria(key, value, comparator, parentCriteria);
+        return new EqualsCriteria<>(getTerm(), getValue(), getComparator(), parentCriteria);
+    }
+
+    @Override
+    public String toString() {
+        return getTerm() + " == " + getValue();
     }
 }

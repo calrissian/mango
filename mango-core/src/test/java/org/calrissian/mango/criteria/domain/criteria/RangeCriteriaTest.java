@@ -27,7 +27,7 @@ public class RangeCriteriaTest {
     @Test
     public void test() {
 
-        RangeCriteria criteria = new RangeCriteria("key1", 5, 10, natural(), null);
+        RangeCriteria criteria = new RangeCriteria<>("key1", 5, 10, natural(), null);
 
         EntityBuilder entity = EntityBuilder.create("type", "id");
 
@@ -50,7 +50,7 @@ public class RangeCriteriaTest {
 
     @Test
     public void acceptAnyTupleWithinRange() {
-        RangeCriteria criteria = new RangeCriteria("key1", 5, 10, natural(), null);
+        RangeCriteria criteria = new RangeCriteria<>("key1", 5, 10, natural(), null);
 
         EntityBuilder entity = EntityBuilder.create("type", "id")
                 .attr("key1", 4)

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 The Calrissian Authors
+ * Copyright (C) 2016 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
  */
 package org.calrissian.mango.criteria.domain;
 
+import com.google.common.base.Joiner;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,16 +24,16 @@ public class AndNode extends ParentNode {
     private static final long serialVersionUID = 1L;
 
     public AndNode() {
+        this(null);
     }
 
-    public AndNode(ParentNode parent, List<Node> nodes) {
-        super(parent, nodes);
+    public AndNode(ParentNode parent) {
+        this(new ArrayList<Node>(), parent);
     }
 
-    public AndNode(ParentNode parentNode) {
-        super(parentNode, new ArrayList<Node>());
+    public AndNode(List<Node> nodes, ParentNode parent) {
+        super(nodes, parent);
     }
-
 
     @Override
     public Node clone(ParentNode node) {
@@ -39,5 +41,10 @@ public class AndNode extends ParentNode {
         for (Node child : children())
             cloned.addChild(child.clone(cloned));
         return cloned;
+    }
+
+    @Override
+    public String toString() {
+        return "(" + Joiner.on(" and ").join(getNodes()) + ")";
     }
 }

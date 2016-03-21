@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 The Calrissian Authors
+ * Copyright (C) 2016 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,26 +17,20 @@ package org.calrissian.mango.criteria.domain;
 
 import org.calrissian.mango.criteria.visitor.NodeVisitor;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-/**
- * Date: 11/9/12
- * Time: 1:52 PM
- */
+import static com.google.common.base.Preconditions.checkNotNull;
+
 public abstract class ParentNode implements Node {
     private static final long serialVersionUID = 1L;
 
-    protected List<Node> nodes;
-    protected ParentNode parent;
+    private final List<Node> nodes;
+    private final ParentNode parent;
 
-    public ParentNode() {
-        nodes = new ArrayList<>();
-    }
-
-    public ParentNode(ParentNode parent, List<Node> nodes) {
+    public ParentNode(List<Node> nodes, ParentNode parent) {
+        this.nodes = checkNotNull(nodes);
         this.parent = parent;
-        this.nodes = nodes;
     }
 
     @Override
@@ -63,10 +57,6 @@ public abstract class ParentNode implements Node {
         return nodes;
     }
 
-    public void setNodes(List<Node> nodes) {
-        this.nodes = nodes;
-    }
-
     @Override
     public void accept(NodeVisitor visitor) {
         visitor.begin(this);
@@ -80,16 +70,12 @@ public abstract class ParentNode implements Node {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         ParentNode that = (ParentNode) o;
-
-        if (nodes != null ? !nodes.equals(that.nodes) : that.nodes != null) return false;
-
-        return true;
+        return Objects.equals(nodes, that.nodes);
     }
 
     @Override
     public int hashCode() {
-        return nodes != null ? nodes.hashCode() : 0;
+        return Objects.hash(nodes);
     }
 }

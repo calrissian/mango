@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 The Calrissian Authors
+ * Copyright (C) 2016 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +15,19 @@
  */
 package org.calrissian.mango.criteria.domain;
 
-public class LessThanEqualsLeaf extends AbstractKeyValueLeaf {
+public class LessThanEqualsLeaf<T> extends TermValueLeaf<T> {
 
-    public LessThanEqualsLeaf(String key, Object value, ParentNode parent) {
-        super(key, value, parent);
+    public LessThanEqualsLeaf(String term, T value, ParentNode parent) {
+        super(term, value, parent);
     }
 
     @Override
     public Node clone(ParentNode node) {
-        return new LessThanEqualsLeaf(key, value, node);
+        return new LessThanEqualsLeaf<>(getTerm(), getValue(), node);
+    }
+
+    @Override
+    public String toString() {
+        return getTerm() + " <= " + getValue();
     }
 }

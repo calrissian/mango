@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 The Calrissian Authors
+ * Copyright (C) 2016 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,16 +15,23 @@
  */
 package org.calrissian.mango.criteria.domain;
 
+import com.google.common.base.Joiner;
+
 import java.util.Collection;
 
-public class InLeaf extends AbstractKeyValueLeaf {
+public class InLeaf<T extends Collection> extends TermValueLeaf<T> {
 
-    public InLeaf(String key, Collection<Object> value, ParentNode parent) {
-        super(key, value, parent);
+    public InLeaf(String term, T value, ParentNode parent) {
+        super(term, value, parent);
     }
 
     @Override
     public Node clone(ParentNode node) {
-        return new InLeaf(key, (Collection<Object>) value, node);
+        return new InLeaf<>(getTerm(), getValue(), node);
+    }
+
+    @Override
+    public String toString() {
+        return getTerm() + " in(" + Joiner.on(",").join(getValue()) + ")";
     }
 }

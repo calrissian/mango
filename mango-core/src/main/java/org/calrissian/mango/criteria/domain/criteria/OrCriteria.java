@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 The Calrissian Authors
+ * Copyright (C) 2016 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,12 +15,20 @@
  */
 package org.calrissian.mango.criteria.domain.criteria;
 
+import com.google.common.base.Joiner;
 import org.calrissian.mango.domain.AttributeStore;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class OrCriteria extends ParentCriteria {
 
     public OrCriteria(ParentCriteria parent) {
-        super(parent);
+        this(new ArrayList<Criteria>(), parent);
+    }
+
+    public OrCriteria(List<Criteria> nodes, ParentCriteria parent) {
+        super(nodes, parent);
     }
 
     @Override
@@ -39,5 +47,10 @@ public class OrCriteria extends ParentCriteria {
         }
 
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "(" + Joiner.on(" or ").join(children()) + ")";
     }
 }

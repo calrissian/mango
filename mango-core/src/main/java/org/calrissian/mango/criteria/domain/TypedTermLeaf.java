@@ -15,56 +15,41 @@
  */
 package org.calrissian.mango.criteria.domain;
 
-import org.calrissian.mango.criteria.visitor.NodeVisitor;
 
-import java.util.List;
+import java.util.Objects;
 
-public abstract class Leaf implements Node {
-    private static final long serialVersionUID = 1L;
+public abstract class TypedTermLeaf<T> extends TermLeaf {
 
-    private ParentNode parent;
-
-    public Leaf(ParentNode parent) {
-        this.parent = parent;
-    }
-
-    @Override
-    public List<Node> children() {
+    //Utility method to allow subclasses to extract type from known variables.
+    protected static <T> Class<T> firstKnownType(T... objects) {
+        for (T obj : objects)
+            if (obj != null)
+                return (Class<T>) obj.getClass();
         return null;
     }
 
-    @Override
-    public void addChild(Node node) {
-        throw new UnsupportedOperationException("Leaf does not have children");
+    private final Class<T> type;
+
+    public TypedTermLeaf(String term, Class<T> type, ParentNode parent) {
+        super(term, parent);
+        this.type = type;
     }
 
-    @Override
-    public void accept(NodeVisitor visitor) {
-        visitor.visit(this);
-    }
-
-    @Override
-    public ParentNode parent() {
-        return parent;
-    }
-
-    @Override
-    public void removeChild(Node node) {
-        throw new UnsupportedOperationException("Leaf does not have children");
+    public Class<T> getType() {
+        return type;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
-        //Don't include parent in equals check.
-        return true;
+        if (!super.equals(o)) return false;
+        TypedTermLeaf<?> that = (TypedTermLeaf<?>) o;
+        return Objects.equals(type, that.type);
     }
 
     @Override
     public int hashCode() {
-        //Don't include parent in hashcode.
-        return 0;
+        return Objects.hash(super.hashCode(), type);
     }
 }

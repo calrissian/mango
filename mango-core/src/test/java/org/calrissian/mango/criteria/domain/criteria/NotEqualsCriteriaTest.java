@@ -27,7 +27,7 @@ public class NotEqualsCriteriaTest {
     @Test
     public void testNotEquals() {
 
-        Criteria eq = new NotEqualsCriteria("key1", "val1", natural(), null);
+        Criteria eq = new NotEqualsCriteria<>("key1", "val1", natural(), null);
         EntityBuilder entity = EntityBuilder.create("type", "id")
                 .attr("key1", "val2");
 
@@ -37,7 +37,7 @@ public class NotEqualsCriteriaTest {
     @Test
     public void testEquals() {
 
-        Criteria eq = new NotEqualsCriteria("key1", "val1", natural(), null);
+        Criteria eq = new NotEqualsCriteria<>("key1", "val1", natural(), null);
         EntityBuilder entity = EntityBuilder.create("type", "id")
                 .attr("key1", "val1");
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 The Calrissian Authors
+ * Copyright (C) 2016 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,25 +15,23 @@
  */
 package org.calrissian.mango.criteria.domain;
 
-public class HasNotLeaf extends AbstractKeyValueLeaf implements NegationLeaf {
+public class HasNotLeaf<T> extends TypedTermLeaf<T> implements NegationLeaf {
 
-    private final Class clazz;
-
-    public HasNotLeaf(String key, Class clazz, ParentNode parent) {
-        super(key, null, parent);
-        this.clazz = clazz;
+    public HasNotLeaf(String term, Class<T> clazz, ParentNode parent) {
+        super(term, clazz, parent);
     }
 
-    public HasNotLeaf(String key, ParentNode parentNode) {
-        this(key, null, parentNode);
-    }
-
-    public Class getClazz() {
-        return clazz;
+    public HasNotLeaf(String term, ParentNode parentNode) {
+        this(term, null, parentNode);
     }
 
     @Override
     public Node clone(ParentNode node) {
-        return new HasNotLeaf(key, clazz, node);
+        return new HasNotLeaf<>(getTerm(), getType(), node);
+    }
+
+    @Override
+    public String toString() {
+        return "!hasTerm('" + getTerm() + "')";
     }
 }

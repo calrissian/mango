@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 The Calrissian Authors
+ * Copyright (C) 2016 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,40 +15,32 @@
  */
 package org.calrissian.mango.criteria.domain;
 
-public class RangeLeaf extends AbstractKeyValueLeaf {
-    private static final long serialVersionUID = 1L;
+import java.util.Objects;
 
-    protected String key;
-    protected Object end;
+import static com.google.common.base.Preconditions.checkNotNull;
 
-    public RangeLeaf(String key, Object start, Object end, ParentNode parent) {
-        super(key, start, parent);
-        this.key = key;
-        this.end = end;
-    }
+public class RangeLeaf<T> extends TypedTermLeaf<T> {
 
-    public String getKey() {
-        return key;
-    }
+    private final T start;
+    private final T end;
 
-    public void setKey(String key) {
-        this.key = key;
+    public RangeLeaf(String term, T start, T end, ParentNode parent) {
+        super(term, firstKnownType(start, end), parent);
+        this.start = checkNotNull(start);
+        this.end = checkNotNull(end);
     }
 
     public Object getStart() {
-        return getValue();
-    }
-
-    public void setStart(Object start) {
-        this.value = start;
+        return start;
     }
 
     public Object getEnd() {
         return end;
     }
 
-    public void setEnd(Object end) {
-        this.end = end;
+    @Override
+    public Node clone(ParentNode node) {
+        return new RangeLeaf<>(getTerm(), getStart(), getEnd(), node);
     }
 
     @Override
@@ -56,26 +48,18 @@ public class RangeLeaf extends AbstractKeyValueLeaf {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-
-        RangeLeaf rangeLeaf = (RangeLeaf) o;
-
-        if (end != null ? !end.equals(rangeLeaf.end) : rangeLeaf.end != null) return false;
-        if (key != null ? !key.equals(rangeLeaf.key) : rangeLeaf.key != null) return false;
-
-        return true;
+        RangeLeaf<?> rangeLeaf = (RangeLeaf<?>) o;
+        return Objects.equals(start, rangeLeaf.start) &&
+                Objects.equals(end, rangeLeaf.end);
     }
 
     @Override
     public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (key != null ? key.hashCode() : 0);
-        result = 31 * result + (end != null ? end.hashCode() : 0);
-        return result;
+        return Objects.hash(super.hashCode(), start, end);
     }
 
-
     @Override
-    public Node clone(ParentNode node) {
-        return new RangeLeaf(key, value, end, node);
+    public String toString() {
+        return getTerm() + " within " + "[" + start + "," + end + "]";
     }
 }

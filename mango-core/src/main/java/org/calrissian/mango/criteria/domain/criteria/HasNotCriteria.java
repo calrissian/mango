@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 The Calrissian Authors
+ * Copyright (C) 2016 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,25 +21,25 @@ import org.calrissian.mango.domain.AttributeStore;
 
 import java.util.Collection;
 
-public class HasNotCriteria extends KeyValueLeafCriteria {
+public class HasNotCriteria<T> extends TermCriteria {
 
-    private final Class clazz;
+    private final Class<T> clazz;
 
-    public HasNotCriteria(String key, Class clazz, ParentCriteria parentCriteria) {
-        super(key, null, parentCriteria);
+    public HasNotCriteria(String term, Class<T> clazz, ParentCriteria parentCriteria) {
+        super(term, parentCriteria);
         this.clazz = clazz;
     }
 
-    public HasNotCriteria(String key, ParentCriteria parentCriteria) {
-        this(key, null, parentCriteria);
+    public HasNotCriteria(String term, ParentCriteria parentCriteria) {
+        this(term, null, parentCriteria);
     }
 
     @Override
     public boolean apply(AttributeStore obj) {
-        if(obj.get(key) == null)
+        if(obj.get(getTerm()) == null)
             return true;
 
-        Collection<Attribute> attributes = obj.getAttributes(key);
+        Collection<Attribute> attributes = obj.getAttributes(getTerm());
         if(attributes.size() > 0 && clazz == null)
             return false;
 
@@ -51,10 +51,13 @@ public class HasNotCriteria extends KeyValueLeafCriteria {
         return true;
     }
 
-  @Override
-  public Criteria clone(ParentCriteria parentCriteria) {
-    return new HasNotCriteria(key, clazz, parentCriteria);
-  }
+    @Override
+    public Criteria clone(ParentCriteria parentCriteria) {
+        return new HasNotCriteria<>(getTerm(), clazz, parentCriteria);
+    }
 
-
+    @Override
+    public String toString() {
+        return "!hasTerm('" + getTerm() + "')";
+    }
 }

@@ -15,56 +15,35 @@
  */
 package org.calrissian.mango.criteria.domain;
 
-import org.calrissian.mango.criteria.visitor.NodeVisitor;
+import java.util.Objects;
 
-import java.util.List;
+import static com.google.common.base.Preconditions.checkNotNull;
 
-public abstract class Leaf implements Node {
+public abstract class TermValueLeaf<T> extends TypedTermLeaf<T> {
     private static final long serialVersionUID = 1L;
 
-    private ParentNode parent;
+    private final T value;
 
-    public Leaf(ParentNode parent) {
-        this.parent = parent;
+    public TermValueLeaf(String key, T value, ParentNode parent) {
+        super(key, firstKnownType(value), parent);
+        this.value = checkNotNull(value);
     }
 
-    @Override
-    public List<Node> children() {
-        return null;
-    }
-
-    @Override
-    public void addChild(Node node) {
-        throw new UnsupportedOperationException("Leaf does not have children");
-    }
-
-    @Override
-    public void accept(NodeVisitor visitor) {
-        visitor.visit(this);
-    }
-
-    @Override
-    public ParentNode parent() {
-        return parent;
-    }
-
-    @Override
-    public void removeChild(Node node) {
-        throw new UnsupportedOperationException("Leaf does not have children");
+    public T getValue() {
+        return value;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
-        //Don't include parent in equals check.
-        return true;
+        if (!super.equals(o)) return false;
+        TermValueLeaf<?> that = (TermValueLeaf<?>) o;
+        return Objects.equals(value, that.value);
     }
 
     @Override
     public int hashCode() {
-        //Don't include parent in hashcode.
-        return 0;
+        return Objects.hash(super.hashCode(), value);
     }
 }
