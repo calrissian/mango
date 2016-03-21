@@ -15,7 +15,6 @@
  */
 package org.calrissian.mango.criteria.domain.criteria;
 
-import org.calrissian.mango.criteria.support.ComparableComparator;
 import org.calrissian.mango.domain.entity.EntityBuilder;
 import org.junit.Test;
 

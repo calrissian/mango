@@ -17,7 +17,6 @@ package org.calrissian.mango.criteria.builder;
 
 import org.calrissian.mango.criteria.domain.*;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import static java.util.Arrays.asList;
