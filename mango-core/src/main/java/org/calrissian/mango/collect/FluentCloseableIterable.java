@@ -16,6 +16,7 @@
 package org.calrissian.mango.collect;
 
 import com.google.common.base.Function;
+import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
@@ -32,7 +33,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * with {@link CloseableIterable}s
  */
 public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterable<T> {
-
     protected FluentCloseableIterable() {
     }
 
@@ -40,6 +40,9 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
      * The rest of the methods are taken from guava directly
      */
 
+    /**
+     * Create a {@link FluentCloseableIterable} from a {@link CloseableIterable}
+     */
     public static <E> FluentCloseableIterable<E> from(final CloseableIterable<E> iterable) {
         return (iterable instanceof FluentCloseableIterable) ? (FluentCloseableIterable<E>) iterable
                 : new FluentCloseableIterable<E>() {
@@ -87,21 +90,21 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
 
     /**
      * Returns {@code true} if this fluent iterable contains any object for which
-     * {@code equals(element)} is true.
+     * {@code equals(target)} is true.
      */
-    public final boolean contains(Object element) {
-        return Iterables.contains(this, element);
+    public final boolean contains(Object target) {
+        return Iterables.contains(this, target);
     }
 
     /**
      * Returns a fluent iterable whose {@code Iterator} cycles indefinitely over the elements of
      * this fluent iterable.
-     * <p/>
+     *
      * <p>That iterator supports {@code remove()} if {@code iterable.iterator()} does. After
      * {@code remove()} is called, subsequent cycles omit the removed element, which is no longer in
      * this fluent iterable. The iterator's {@code hasNext()} method returns {@code true} until
      * this fluent iterable is empty.
-     * <p/>
+     *
      * <p><b>Warning:</b> Typical uses of the resulting iterator may produce an infinite loop. You
      * should use an explicit {@code break} or be certain that you will eventually remove all the
      * elements.
@@ -112,7 +115,7 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
 
     /**
      * Returns the elements from this fluent iterable that satisfy a predicate. The
-     * resulting fluent iterable's iterator does not decorator {@code remove()}.
+     * resulting fluent iterable's iterator does not support {@code remove()}.
      */
     public final FluentCloseableIterable<T> filter(Predicate<? super T> predicate) {
         return from(CloseableIterables.filter(this, predicate));
@@ -120,8 +123,6 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
 
     /**
      * Returns the elements from this fluent iterable that are instances of class {@code type}.
-     *
-     * @param type the type of elements desired
      */
     public final <E> FluentCloseableIterable<E> filter(Class<E> type) {
         return from(CloseableIterables.filter(this, type));
@@ -143,9 +144,9 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
     }
 
     /**
-     * Returns an {@link com.google.common.base.Optional} containing the first element in this fluent iterable that
+     * Returns an {@link Optional} containing the first element in this fluent iterable that
      * satisfies the given predicate, if such an element exists.
-     * <p/>
+     *
      * <p><b>Warning:</b> avoid using a {@code predicate} that matches {@code null}. If {@code null}
      * is matched in this fluent iterable, a {@link NullPointerException} will be thrown.
      */
@@ -156,7 +157,7 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
     /**
      * Returns a fluent iterable that applies {@code function} to each element of this
      * fluent iterable.
-     * <p/>
+     *
      * <p>The returned fluent iterable's iterator supports {@code remove()} if this iterable's
      * iterator does. After a successful {@code remove()} call, this fluent iterable no longer
      * contains the corresponding element.
@@ -169,7 +170,7 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
      * Applies {@code function} to each element of this fluent iterable and returns
      * a fluent iterable with the concatenated combination of results.  {@code function}
      * returns an Iterable of results.
-     * <p/>
+     *
      * <p>The returned fluent iterable's iterator supports {@code remove()} if this
      * function-returned iterables' iterator does. After a successful {@code remove()} call,
      * the returned fluent iterable no longer contains the corresponding element.
@@ -182,9 +183,6 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
     /**
      * Returns an {@link Optional} containing the first element in this fluent iterable.
      * If the iterable is empty, {@code Optional.absent()} is returned.
-     *
-     * @throws NullPointerException if the first element is null; if this is a possibility, use
-     *                              {@code iterator().next()} or {@link Iterables#getFirst} instead.
      */
     public final Optional<T> first() {
         Iterator<T> iterator = this.iterator();
@@ -196,9 +194,6 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
     /**
      * Returns an {@link Optional} containing the last element in this fluent iterable.
      * If the iterable is empty, {@code Optional.absent()} is returned.
-     *
-     * @throws NullPointerException if the last element is null; if this is a possibility, use
-     *                              {@link Iterables#getLast} instead.
      */
     public final Optional<T> last() {
         // Iterables#getLast was inlined here so we don't have to throw/catch a NSEE
@@ -219,12 +214,12 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
      * Returns a view of this fluent iterable that skips its first {@code numberToSkip}
      * elements. If this fluent iterable contains fewer than {@code numberToSkip} elements,
      * the returned fluent iterable skips all of its elements.
-     * <p/>
+     *
      * <p>Modifications to this fluent iterable before a call to {@code iterator()} are
      * reflected in the returned fluent iterable. That is, the its iterator skips the first
      * {@code numberToSkip} elements that exist when the iterator is created, not when {@code skip()}
      * is called.
-     * <p/>
+     *
      * <p>The returned fluent iterable's iterator supports {@code remove()} if the
      * {@code Iterator} of this fluent iterable supports it. Note that it is <i>not</i>
      * possible to delete the last skipped element by immediately calling {@code remove()} on the
@@ -242,9 +237,6 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
      * the returned fluent iterable will have the same behavior as this fluent iterable.
      * The returned fluent iterable's iterator supports {@code remove()} if this
      * fluent iterable's iterator does.
-     *
-     * @param size the maximum number of elements in the returned fluent iterable
-     * @throws IllegalArgumentException if {@code size} is negative
      */
     public final FluentCloseableIterable<T> limit(int size) {
         return from(CloseableIterables.limit(this, size));
@@ -258,56 +250,55 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
     }
 
     /**
-     * Returns an {@code ImmutableList} containing all of the elements from this
-     * fluent iterable in proper sequence.
+     * Returns an {@code ImmutableList} containing all of the elements from this fluent iterable in
+     * proper sequence.
      */
     public final ImmutableList<T> toList() {
         return ImmutableList.copyOf(this);
     }
 
     /**
-     * Returns an {@code ImmutableList} containing all of the elements from this
-     * {@code FluentCloseableIterable} in the order specified by {@code comparator}.  To produce an
-     * {@code ImmutableList} sorted by its natural ordering, use
-     * {@code toSortedImmutableList(Ordering.natural())}.
-     *
-     * @param comparator the function by which to sort list elements
-     * @throws NullPointerException if any element is null
+     * Returns an {@code ImmutableList} containing all of the elements from this {@code
+     * FluentIterable} in the order specified by {@code comparator}.  To produce an {@code
+     * ImmutableList} sorted by its natural ordering, use {@code toSortedList(Ordering.natural())}.
      */
     public final ImmutableList<T> toSortedList(Comparator<? super T> comparator) {
         return Ordering.from(comparator).immutableSortedCopy(this);
     }
 
     /**
-     * Returns an {@code ImmutableSet} containing all of the elements from this
-     * fluent iterable with duplicates removed.
+     * Returns an {@code ImmutableSet} containing all of the elements from this fluent iterable with
+     * duplicates removed.
      */
     public final ImmutableSet<T> toSet() {
         return ImmutableSet.copyOf(this);
     }
 
     /**
-     * Returns an {@code ImmutableSortedSet} containing all of the elements from this
-     * {@code FluentCloseableIterable} in the order specified by {@code comparator}, with duplicates
-     * (determined by {@code comaprator.compare(x, y) == 0}) removed. To produce an
-     * {@code ImmutableSortedSet} sorted by its natural ordering, use
-     * {@code toImmutableSortedSet(Ordering.natural())}.
-     *
-     * @param comparator the function by which to sort set elements
-     * @throws NullPointerException if any element is null
+     * Returns an {@code ImmutableSortedSet} containing all of the elements from this {@code
+     * FluentIterable} in the order specified by {@code comparator}, with duplicates (determined by
+     * {@code comparator.compare(x, y) == 0}) removed. To produce an {@code ImmutableSortedSet} sorted
+     * by its natural ordering, use {@code toSortedSet(Ordering.natural())}.
      */
     public final ImmutableSortedSet<T> toSortedSet(Comparator<? super T> comparator) {
         return ImmutableSortedSet.copyOf(comparator, this);
     }
 
     /**
-     * Returns an immutable map for which the elements of this {@code FluentIterable} are the keys in
-     * the same order, mapped to values by the given function. If this iterable contains duplicate
-     * elements, the returned map will contain each distinct element once in the order it first
-     * appears.
+     * Returns an {@code ImmutableMultiset} containing all of the elements from this fluent iterable.
+     */
+    public final ImmutableMultiset<T> toMultiset() {
+        return ImmutableMultiset.copyOf(this);
+    }
+
+    /**
+     * Returns an immutable map whose keys are the distinct elements of this {@code FluentIterable}
+     * and whose value for each key was computed by {@code valueFunction}. The map's iteration order
+     * is the order of the first appearance of each key in this iterable.
      *
-     * @throws NullPointerException if any element of this iterable is {@code null}, or if {@code
-     *                              valueFunction} produces {@code null} for any key
+     * <p>When there are multiple instances of a key in this iterable, it is unspecified whether
+     * {@code valueFunction} will be applied to more than one instance of that key and, if it is,
+     * which result will be mapped to that key in the returned map.
      */
     public final <V> ImmutableMap<T, V> toMap(Function<? super T, V> valueFunction) {
         return Maps.toMap(this, valueFunction);
@@ -321,29 +312,27 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
      * calling the function on that value. The resulting multimap is created as an immutable snapshot.
      * In the returned multimap, keys appear in the order they are first encountered, and the values
      * corresponding to each key appear in the same order as they are encountered.
-     *
-     * @param keyFunction the function used to produce the key for each value
-     * @throws NullPointerException if any of the following cases is true:
-     *                              <ul>
-     *                              <li>{@code keyFunction} is null
-     *                              <li>An element in this fluent iterable is null
-     *                              <li>{@code keyFunction} returns {@code null} for any element of this iterable
-     *                              </ul>
      */
     public final <K> ImmutableListMultimap<K, T> index(Function<? super T, K> keyFunction) {
         return Multimaps.index(this, keyFunction);
     }
 
     /**
-     * Returns an immutable map for which the {@link java.util.Map#values} are the elements of this
-     * {@code FluentIterable} in the given order, and each key is the product of invoking a supplied
-     * function on its corresponding value.
+     * Returns a map with the contents of this {@code FluentIterable} as its {@code values}, indexed
+     * by keys derived from those values. In other words, each input value produces an entry in the
+     * map whose key is the result of applying {@code keyFunction} to that value. These entries appear
+     * in the same order as they appeared in this fluent iterable. Example usage:
+     * <pre>   {@code
      *
-     * @param keyFunction the function used to produce the key for each value
-     * @throws IllegalArgumentException if {@code keyFunction} produces the same key for more than one
-     *                                  value in this fluent iterable
-     * @throws NullPointerException     if any element of this fluent iterable is null, or if
-     *                                  {@code keyFunction} produces {@code null} for any value
+     *   Color red = new Color("red", 255, 0, 0);
+     *   ...
+     *   FluentIterable<Color> allColors = FluentIterable.from(ImmutableSet.of(red, green, blue));
+     *
+     *   Map<String, Color> colorForName = allColors.uniqueIndex(toStringFunction());
+     *   assertThat(colorForName).containsEntry("red", red);}</pre>
+     *
+     * <p>If your index may associate multiple values with each key, use {@link #index(Function)
+     * index}.
      */
     public final <K> ImmutableMap<K, T> uniqueIndex(Function<? super T, K> keyFunction) {
         return Maps.uniqueIndex(this, keyFunction);
@@ -351,10 +340,6 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
 
     /**
      * Returns an array containing all of the elements from this fluent iterable in iteration order.
-     *
-     * @param type the type of the elements
-     * @return a newly-allocated array into which all the elements of this fluent iterable have
-     * been copied
      */
     public final T[] toArray(Class<T> type) {
         return Iterables.toArray(this, type);
@@ -363,9 +348,6 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
     /**
      * Copies all the elements from this fluent iterable to {@code collection}. This is equivalent to
      * calling {@code Iterables.addAll(collection, this)}.
-     *
-     * @param collection the collection to copy elements to
-     * @return {@code collection}, for convenience
      */
     public final <C extends Collection<? super T>> C copyInto(C collection) {
         checkNotNull(collection);
@@ -376,12 +358,15 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
     }
 
     /**
+     * Returns a {@link String} containing all of the elements of this fluent iterable joined with
+     * {@code joiner}.
+     */
+    public final String join(Joiner joiner) {
+        return joiner.join(this);
+    }
+
+    /**
      * Returns the element at the specified position in this fluent iterable.
-     *
-     * @param position position of the element to return
-     * @return the element at the specified position in this fluent iterable
-     * @throws IndexOutOfBoundsException if {@code position} is negative or greater than or equal to
-     *                                   the size of this fluent iterable
      */
     public final T get(int position) {
         return Iterables.get(this, position);
