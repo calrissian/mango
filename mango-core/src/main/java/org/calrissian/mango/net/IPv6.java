@@ -42,7 +42,7 @@ public final class IPv6 extends IP<Inet6Address> implements Comparable<IPv6>{
         if (o == null)
             return 1;
 
-        return lexicographicalComparator().compare(bytes, o.bytes);
+        return lexicographicalComparator().compare(toByteArray(), o.toByteArray());
     }
 
     /**
@@ -94,8 +94,8 @@ public final class IPv6 extends IP<Inet6Address> implements Comparable<IPv6>{
             //Use the bigInteger distance for simplicity, but be careful to set the signum as positive (1) so that
             //BigInteger does not decode the bytes as a signed number.
             return bigIntegers().distance(
-                    new BigInteger(1, start.bytes),
-                    new BigInteger(1, end.bytes)
+                    new BigInteger(1, start.toByteArray()),
+                    new BigInteger(1, end.toByteArray())
             );
         }
 

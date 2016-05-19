@@ -42,7 +42,7 @@ public final class IPv4 extends IP<Inet4Address> implements Comparable<IPv4> {
         if (o == null)
             return 1;
 
-        return lexicographicalComparator().compare(bytes, o.bytes);
+        return lexicographicalComparator().compare(toByteArray(), o.toByteArray());
     }
 
     /**
@@ -89,8 +89,8 @@ public final class IPv4 extends IP<Inet4Address> implements Comparable<IPv4> {
         @Override
         public long distance(IPv4 start, IPv4 end) {
             return longs().distance(
-                    fromByteArray(start.bytes) & 0xFFFFFFFFL,
-                    fromByteArray(end.bytes) & 0xFFFFFFFFL
+                    fromByteArray(start.toByteArray()) & 0xFFFFFFFFL,
+                    fromByteArray(end.toByteArray()) & 0xFFFFFFFFL
             );
         }
 

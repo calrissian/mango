@@ -30,25 +30,25 @@ import static org.calrissian.mango.net.MoreInetAddresses.bytesToInetAddress;
 abstract class IP<T extends InetAddress> implements Serializable {
     private static final long serialVersionUID = 2L;
 
-    final byte[] bytes;
+    private final T address;
 
     protected IP(T address) {
         checkNotNull(address);
-        this.bytes = address.getAddress();
+        this.address = address;
     }
 
     @SuppressWarnings("unchecked")
     public T getAddress() {
-        return (T) bytesToInetAddress(bytes);
+        return address;
     }
 
     public byte[] toByteArray() {
-        return bytes.clone();
+        return address.getAddress();
     }
 
     @Override
     public String toString() {
-        return toAddrString(getAddress());
+        return toAddrString(address);
     }
 
     @Override
@@ -56,13 +56,13 @@ abstract class IP<T extends InetAddress> implements Serializable {
         if (this == o) return true;
         if (!(o instanceof IP)) return false;
 
-        IP<?> ip = (IP<?>) o;
+        IP ip = (IP) o;
 
-        return Arrays.equals(bytes, ip.bytes);
+        return address.equals(ip.address);
     }
 
     @Override
     public int hashCode() {
-        return Arrays.hashCode(bytes);
+        return address.hashCode();
     }
 }
