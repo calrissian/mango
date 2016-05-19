@@ -274,8 +274,7 @@ public class CloseableIterators {
      */
 
     /**
-     * Autoclose the iterator when exhausted or if an exception is thrown. It is currently set to protected, so that only
-     * classes in this package can use.
+     * Autoclose the iterator when exhausted or if an exception is thrown.
      * <p/>
      * Note that when using this method the order of calls matters. {@code limit()} is an example of one method which can
      * prevent the completion of an iterator.  For instance limit(autoClose(iterator), 1) will not close the

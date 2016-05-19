@@ -20,10 +20,6 @@ import org.calrissian.mango.criteria.domain.*;
 import java.io.IOException;
 import java.io.Writer;
 
-/**
- * Date: 11/12/12
- * Time: 5:47 PM
- */
 public class PrintNodeVisitor implements NodeVisitor {
 
     private Writer writer;
