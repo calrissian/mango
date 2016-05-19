@@ -15,7 +15,6 @@
  */
 package org.calrissian.mango.net;
 
-import com.google.common.base.Preconditions;
 import com.google.common.net.InetAddresses;
 
 import java.net.Inet4Address;
@@ -31,7 +30,7 @@ import static java.lang.String.format;
 import static java.util.Arrays.copyOfRange;
 
 /**
- * Static utility methods pertaining to {@link InetAddress} instances and not alread provided in {@link com.google.common.net.InetAddresses}.
+ * Static utility methods pertaining to {@link InetAddress} instances and not already provided in {@link com.google.common.net.InetAddresses}.
  *
  * Unlike {@link com.google.common.net.InetAddresses} these methods, all provide full support for IPV6 "IPv4 mapped"
  * addresses {@code "::ffff:192.168.0.1"} inside an Inet6Address container.  This is a deviation from the
@@ -55,7 +54,7 @@ public class MoreInetAddresses {
      * @throws IllegalArgumentException if a valid {@link Inet4Address} can not be created
      */
     static Inet4Address getInet4Address(byte[] bytes) {
-        Preconditions.checkArgument(bytes.length == 4,
+        checkArgument(bytes.length == 4,
                 "Byte array has invalid length for an IPv4 address: %s != 4.",
                 bytes.length);
 
@@ -75,7 +74,7 @@ public class MoreInetAddresses {
      * @throws IllegalArgumentException if a valid {@link Inet6Address} can not be created
      */
     static Inet6Address getInet6Address(byte[] bytes) {
-        Preconditions.checkArgument(bytes.length == 16,
+        checkArgument(bytes.length == 16,
                 "Byte array has invalid length for an IPv4 address: %s != 16.",
                 bytes.length);
 
@@ -128,7 +127,7 @@ public class MoreInetAddresses {
             if (parsed instanceof Inet4Address)
                 return (Inet4Address) parsed;
 
-        }catch(Exception ignored){}
+        } catch(Exception ignored){}
 
         throw new IllegalArgumentException(format("Invalid IPv4 representation: %s", ipString));
     }
@@ -149,7 +148,7 @@ public class MoreInetAddresses {
             if (parsed instanceof Inet6Address)
                 return (Inet6Address) parsed;
 
-        }catch(Exception ignored){}
+        } catch(Exception ignored){}
 
         throw new IllegalArgumentException(format("Invalid IPv6 representation: %s", ipString));
     }
@@ -185,8 +184,8 @@ public class MoreInetAddresses {
      * @throws IllegalArgumentException if the argument is not a valid IPv4 mapped address
      */
     public static Inet4Address getMappedIPv4Address(Inet6Address ip) {
-        Preconditions.checkArgument(isMappedIPv4Address(ip),
-                "Address '%s' is not IPv4-compatible.", toAddrString(ip));
+        checkArgument(isMappedIPv4Address(ip),
+                "Address '%s' is not IPv4-mapped.", toAddrString(ip));
 
         return getInet4Address(copyOfRange(ip.getAddress(), 12, 16));
     }
@@ -261,7 +260,7 @@ public class MoreInetAddresses {
             addr[i] = 0;
             i--;
         }
-        Preconditions.checkArgument(i >= 0, "Incrementing %s would wrap.", address);
+        checkArgument(i >= 0, "Incrementing %s would wrap.", address);
         addr[i]++;
         return addr;
     }
@@ -295,7 +294,7 @@ public class MoreInetAddresses {
             addr[i] = (byte) 0xff;
             i--;
         }
-        Preconditions.checkArgument(i >= 0, "Decrementing %s would wrap.", address);
+        checkArgument(i >= 0, "Decrementing %s would wrap.", address);
         addr[i]--;
         return addr;
     }
