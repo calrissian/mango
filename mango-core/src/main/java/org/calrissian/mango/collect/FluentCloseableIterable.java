@@ -27,6 +27,8 @@ import java.util.Comparator;
 import java.util.Iterator;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Arrays.asList;
+import static org.calrissian.mango.collect.CloseableIterables.wrap;
 
 /**
  * A class to provide the same basic functionality as {@link com.google.common.collect.FluentIterable} to work
@@ -111,6 +113,26 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
      */
     public final FluentCloseableIterable<T> cycle() {
         return from(CloseableIterables.cycle(this));
+    }
+
+    /**
+     * Returns a fluent iterable whose iterators traverse first the elements of this fluent iterable,
+     * followed by those of {@code other}. The iterators are not polled until necessary.
+     *
+     * <p>The returned iterable's {@code Iterator} supports {@code remove()} when the corresponding
+     * {@code Iterator} supports it.
+     */
+    public final FluentCloseableIterable<T> append(Iterable<? extends T> other) {
+        return from(wrap(Iterables.concat(this, other), this));
+    }
+
+    /**
+     * Returns a fluent iterable whose iterators traverse first the elements of this fluent iterable,
+     * followed by {@code elements}.
+     */
+    @SafeVarargs
+    public final FluentCloseableIterable<T> append(T... elements) {
+        return from(wrap(Iterables.concat(this, asList(elements)), this));
     }
 
     /**
