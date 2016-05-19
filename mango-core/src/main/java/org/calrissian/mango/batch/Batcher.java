@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 The Calrissian Authors
+ * Copyright (C) 2016 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,18 @@
 package org.calrissian.mango.batch;
 
 import java.io.Closeable;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Batches items into collections. Items can be added to a batcher to be included in a batch. To construct a new Batcher,
+ * use {@link BatcherBuilder} to generate a configured Batcher.
+ * <p>
+ * Batchers utilize a queue to buffer items while batches are being constructed. When a buffer size if provided, callers
+ * can be prevented from overwhelming the queue with data. Use the appropriate {@code add} method to manage a full
+ * queue.
+ * </p>
+ */
 public interface Batcher<T> extends Closeable {
 
     /**
@@ -43,7 +53,13 @@ public interface Batcher<T> extends Closeable {
     boolean addOrWait(T item) throws InterruptedException;
 
     /**
-     * {@inheritDoc}
+     * Closes the underlying batcher and flushes the remaining elements in the queue to a list. This blocks until all
+     * submitted batches have been processed.
+     */
+    List<T> closeAndFlush();
+
+    /**
+     * Closes the underlying batcher. This blocks until all submitted batches have been processed.
      */
     @Override
     void close();

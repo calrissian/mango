@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 The Calrissian Authors
+ * Copyright (C) 2016 The Calrissian Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,32 +15,35 @@
  */
 package org.calrissian.mango.batch;
 
-
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
+import static com.google.common.base.Throwables.propagate;
+import static java.lang.Long.MAX_VALUE;
 import static java.lang.Thread.interrupted;
 import static java.util.Collections.unmodifiableCollection;
 import static java.util.concurrent.Executors.newSingleThreadExecutor;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.logging.Level.SEVERE;
 
 /**
- * Intentionally left package private
+ * Handles the core logic for handling batches and the {@link ExecutorService}s responsible for executing the batch
+ * processes.
+ * </p>
+ * Intentionally left package private.
  */
 abstract class AbstractBatcher<T> implements Batcher<T> {
 
     private static final Logger logger = Logger.getLogger(AbstractBatcher.class.getName());
 
-
     private final ExecutorService batchService;
-    private final BatchRunnable batchRunnable;
-    private Future<?> batchFuture;
 
     private final BlockingQueue<T> backingQueue;
     private final BatchListener<T> listener;
@@ -54,7 +57,6 @@ abstract class AbstractBatcher<T> implements Batcher<T> {
         this.handler = handler;
 
         batchService = newSingleThreadExecutor();
-        batchRunnable = new BatchRunnable();
     }
 
     /**
@@ -66,7 +68,7 @@ abstract class AbstractBatcher<T> implements Batcher<T> {
      * To be called after construction of any subclass to instantiate the batching thread.
      */
     protected AbstractBatcher<T> start() {
-        batchFuture = batchService.submit(batchRunnable);
+        batchService.submit(new BatchRunnable());
         return this;
     }
 
@@ -106,16 +108,45 @@ abstract class AbstractBatcher<T> implements Batcher<T> {
     }
 
     /**
+     * Used to shutdown the batching thread in case of an error or user requested close.
+     */
+    private void stopRunnable() {
+        isClosed = true;
+        //Force an interrupt on running thread and shutdown executor cleanly.
+        batchService.shutdownNow();
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public void close() {
-        isClosed = true;
-        //Force an interrupt on running thread and shutdown executor cleanly.
-        batchFuture.cancel(true);
-        batchService.shutdown();
+        stopRunnable();
+        try {
+            batchService.awaitTermination(MAX_VALUE, MILLISECONDS);
+        } catch (InterruptedException e) {
+            throw propagate(e);
+        }
 
-        handler.shutdownNow();
+        handler.shutdown();
+        try {
+            handler.awaitTermination(MAX_VALUE, MILLISECONDS);
+        } catch (InterruptedException e) {
+            throw propagate(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<T> closeAndFlush() {
+        close();
+        //Must wait until after close to drain
+        ArrayList<T> remaining = new ArrayList<>();
+        backingQueue.drainTo(remaining);
+
+        return remaining;
     }
 
     private class BatchRunnable implements Runnable {
@@ -123,20 +154,12 @@ abstract class AbstractBatcher<T> implements Batcher<T> {
         @Override
         public void run() {
             try {
-                while (!isClosed && !interrupted() && !handler.isShutdown()) {
-
-
-                    final Collection<T> batch;
-                    try {
-                        batch = generateBatch(backingQueue);
-                    } catch (InterruptedException e) {
-                        //When shut down it is expecting an interrupt, so simply exit cleanly.
-                        break;
-                    }
+                while (!isClosed && !handler.isShutdown() && !interrupted()) {
+                    //Each batcher should return complete batches or partial batches in the case of interrupts.
+                    final Collection<T> batch = generateBatch(backingQueue);
 
                     //Good faith handler shutdown check
                     if (!batch.isEmpty() && !handler.isShutdown()) {
-
                         try {
                             handler.execute(new Runnable() {
                                 @Override
@@ -146,16 +169,16 @@ abstract class AbstractBatcher<T> implements Batcher<T> {
                             });
                         } catch (Exception e) {
                             //Handler threw exception.  Close the batcher and exit cleanly.
-                            logger.log(SEVERE, "Encountered exception sending to batch listener.  Closing the batcher", e);
-                            close();
+                            logger.log(SEVERE, "Encountered exception sending to batch listener.  Stopping the batcher", e);
+                            stopRunnable();
                         }
                     }
                 }
             } catch (Throwable e) {
                 //Unknown exception
                 try {
-                    logger.log(SEVERE, "Batcher should not have throw exception.  Closing the batcher", e);
-                    close();
+                    logger.log(SEVERE, "Batcher should not have throw exception.  Stopping the batcher", e);
+                    stopRunnable();
                 } catch (Throwable e2) {
                     //Do nothing, just exit cleanly
                 }
