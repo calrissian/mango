@@ -32,8 +32,7 @@ public class DeletingFileInputStream extends FileInputStream {
         this((name != null ? new File(name) : null), deleteOnClose);
     }
 
-    public DeletingFileInputStream(File file, boolean deleteOnClose)
-            throws FileNotFoundException {
+    public DeletingFileInputStream(File file, boolean deleteOnClose) throws FileNotFoundException {
         super(file);
         this.file = file;
         this.deleteOnClose = deleteOnClose;
@@ -44,9 +43,12 @@ public class DeletingFileInputStream extends FileInputStream {
      */
     @Override
     public void close() throws IOException {
-        super.close();
-        if (deleteOnClose && file != null) {
-            file.delete();
+        try {
+            super.close();
+        } finally {
+            if (deleteOnClose && file != null) {
+                file.delete();
+            }
         }
     }
 }
