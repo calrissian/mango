@@ -117,7 +117,7 @@ public class TypeRegistry<U> implements Serializable {
         if (encoder != null)
             return encoder.decode(value);
 
-        throw new TypeDecodingException("An unknown alias [" + value + "] was encountered");
+        throw new TypeDecodingException("An unknown alias [" + alias + "] was encountered while decoding value [" + value + "]. Valid aliases are " + String.join(", ", aliasMapping.keySet()));
     }
 
     /**
