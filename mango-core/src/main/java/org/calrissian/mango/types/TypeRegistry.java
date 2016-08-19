@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.google.common.base.Joiner;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Iterables.concat;
 import static java.util.Arrays.asList;
@@ -117,7 +118,7 @@ public class TypeRegistry<U> implements Serializable {
         if (encoder != null)
             return encoder.decode(value);
 
-        throw new TypeDecodingException("An unknown alias [" + alias + "] was encountered while decoding value [" + value + "]. Valid aliases are " + String.join(", ", aliasMapping.keySet()));
+        throw new TypeDecodingException("An unknown alias [" + alias + "] was encountered while decoding value [" + value + "]. Valid aliases are " + Joiner.on(", ").join(aliasMapping.keySet()));
     }
 
     /**
