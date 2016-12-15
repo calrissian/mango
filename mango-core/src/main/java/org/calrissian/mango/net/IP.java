@@ -15,19 +15,13 @@
  */
 package org.calrissian.mango.net;
 
-
 import java.io.Serializable;
 import java.net.InetAddress;
-import java.util.Arrays;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.net.InetAddresses.toAddrString;
-import static org.calrissian.mango.net.MoreInetAddresses.bytesToInetAddress;
 
-/**
- * Intentionally package private.
- */
-abstract class IP<T extends InetAddress> implements Serializable {
+public abstract class IP<T extends InetAddress> implements Serializable {
     private static final long serialVersionUID = 2L;
 
     private final T address;
