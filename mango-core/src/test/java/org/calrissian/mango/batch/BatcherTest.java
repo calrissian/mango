@@ -29,7 +29,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.google.common.collect.Iterables.consumingIterable;
-import static com.google.common.util.concurrent.MoreExecutors.sameThreadExecutor;
+import static com.google.common.util.concurrent.MoreExecutors.newDirectExecutorService;
 import static java.lang.Thread.sleep;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
@@ -150,7 +150,7 @@ public class BatcherTest {
         final List<Integer> results = new ArrayList<>(1000);
         final Batcher<Integer> batcher = BatcherBuilder.create()
                 .sizeBound(100)
-                .listenerService(sameThreadExecutor()) //Required to guarantee ordering
+                .listenerService(newDirectExecutorService()) //Required to guarantee ordering
                 .build(new BatchListener<Integer>() {
                     @Override
                     public void onBatch(Collection<Integer> batch) {
@@ -173,7 +173,7 @@ public class BatcherTest {
         final List<Integer> results = new ArrayList<>(1000);
         final Batcher<Integer> batcher = BatcherBuilder.create()
                 .timeBound(10, MILLISECONDS)
-                .listenerService(sameThreadExecutor()) //Required to guarantee ordering
+                .listenerService(newDirectExecutorService()) //Required to guarantee ordering
                 .build(new BatchListener<Integer>() {
                     @Override
                     public void onBatch(Collection<Integer> batch) {
@@ -197,7 +197,7 @@ public class BatcherTest {
         final Batcher<Integer> batcher = BatcherBuilder.create()
                 .sizeBound(100)
                 .timeBound(10, MILLISECONDS)
-                .listenerService(sameThreadExecutor()) //Required to guarantee ordering
+                .listenerService(newDirectExecutorService()) //Required to guarantee ordering
                 .build(new BatchListener<Integer>() {
                     @Override
                     public void onBatch(Collection<Integer> batch) {
@@ -222,7 +222,7 @@ public class BatcherTest {
                 .sizeBound(100)
                 .timeBound(1000000, MILLISECONDS)
                 .bufferSize(1000)
-                .listenerService(sameThreadExecutor()) //Required to guarantee sleep pauses batch thread.
+                .listenerService(newDirectExecutorService()) //Required to guarantee sleep pauses batch thread.
                 .build(new BatchListener<Integer>() {
                     @Override
                     public void onBatch(Collection<Integer> batch) {
@@ -253,7 +253,7 @@ public class BatcherTest {
                 .sizeBound(100)
                 .timeBound(1000000, MILLISECONDS)
                 .bufferSize(1000)
-                .listenerService(sameThreadExecutor()) //Required to guarantee sleep pauses batch thread.
+                .listenerService(newDirectExecutorService()) //Required to guarantee sleep pauses batch thread.
                 .build(new BatchListener<Integer>() {
                     @Override
                     public void onBatch(Collection<Integer> batch) {
@@ -339,8 +339,8 @@ public class BatcherTest {
     @Test(expected = IllegalStateException.class)
     public void doubleSetListenerService() {
         BatcherBuilder.create()
-                .listenerService(sameThreadExecutor())
-                .listenerService(sameThreadExecutor());
+                .listenerService(newDirectExecutorService())
+                .listenerService(newDirectExecutorService());
     }
 
     @Test(expected = NullPointerException.class)
@@ -385,7 +385,7 @@ public class BatcherTest {
         final AtomicBoolean wasCalled = new AtomicBoolean(false);
         Batcher<Integer> batcher = BatcherBuilder.create()
                 .sizeBound(1)
-                .listenerService(sameThreadExecutor()) //Required to send exception to batch thread
+                .listenerService(newDirectExecutorService()) //Required to send exception to batch thread
                 .build(new BatchListener<Integer>() {
                     @Override
                     public void onBatch(Collection<Integer> batch) {
