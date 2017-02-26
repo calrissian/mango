@@ -19,7 +19,7 @@ limitations under the License.
   <parent>
     <groupId>org.calrissian.mango</groupId>
     <artifactId>mango-parent</artifactId>
-    <version>1.4.0</version>
+    <version>1.4.1-SNAPSHOT</version>
   </parent>
   <artifactId>mango-core</artifactId>
   <packaging>bundle</packaging>
