@@ -23,6 +23,7 @@ import com.google.common.io.Closeables;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -35,7 +36,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class CloseableIterators {
 
     @SuppressWarnings("rawtypes")
-    private static final CloseableIterator EMPTY_ITERATOR = wrap(Iterators.emptyIterator());
+    private static final CloseableIterator EMPTY_ITERATOR = wrap(Collections.emptyIterator());
 
     private CloseableIterators() {/* private constructor */}
 
