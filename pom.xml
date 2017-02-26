@@ -28,7 +28,7 @@ limitations under the License.
   </modules>
   <properties>
     <commons.codec.version>1.8</commons.codec.version>
-    <guava.version>15.0</guava.version>
+    <guava.version>20.0</guava.version>
     <junit.version>4.11</junit.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>

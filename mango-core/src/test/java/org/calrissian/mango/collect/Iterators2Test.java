@@ -23,8 +23,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import static com.google.common.collect.Iterators.elementsEqual;
-import static com.google.common.collect.Iterators.emptyIterator;
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyIterator;
 import static org.calrissian.mango.collect.Iterators2.distinct;
 import static org.calrissian.mango.collect.Iterators2.groupBy;
 import static org.junit.Assert.*;
