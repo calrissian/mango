@@ -324,7 +324,7 @@ public class MoreInetAddresses {
     /**
      * Examines a CIDR {@code 192.168.0.0/16} or {@code 1234::/16} string representation and calculates the network and
      * broadcast IP addresses for that subnet.  This accepts both IPv4 and IPv6 representations of a CIDR and will return
-     * the appropriate {@link InetAddress) classes for the provided value.
+     * the appropriate {@link InetAddress} classes for the provided value.
      *
      * <p>Note: This supports IPv6 "IPv4 mapped" addresses and will create a valid Inet6Address to account for them.
      */

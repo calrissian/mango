@@ -21,7 +21,7 @@ import java.io.InputStream;
 
 /**
  * Utility class to allow for the source of the stream data to control the buffer size.  Useful for when the source of
- * of the stream data can be provided in chunks that can be reassembled into a contiguous {@link java.io.InputStream)
+ * of the stream data can be provided in chunks that can be reassembled into a contiguous {@link java.io.InputStream}
  */
 public abstract class AbstractBufferedInputStream extends InputStream {
 

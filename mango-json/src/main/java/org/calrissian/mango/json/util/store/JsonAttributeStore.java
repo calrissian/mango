@@ -57,8 +57,6 @@ public class JsonAttributeStore {
     /**
      * Flattens a raw nested json string representation into a collection of attributes that
      * can be used to construct a {@link org.calrissian.mango.domain.AttributeStore} implementation.
-     * @param object
-     * @return
      * @throws IOException
      */
     public static Collection<Attribute> fromJson(ObjectNode object) throws IOException {
@@ -73,9 +71,6 @@ public class JsonAttributeStore {
      * {@link org.calrissian.mango.domain.AttributeStore} implementation. This method has the same effect as
      * {@link #fromJson(com.fasterxml.jackson.databind.node.ObjectNode)}, except it takes a json as a string
      * and a configured object mapper instance.
-     * @param json
-     * @param objectMapper
-     * @return
      * @throws java.io.IOException
      */
     public static Collection<Attribute> fromJson(String json, ObjectMapper objectMapper) throws IOException {
@@ -92,8 +87,6 @@ public class JsonAttributeStore {
      * Flattens a Map<String,Object> into a collection of attributes that can be used to construct a
      * {@link org.calrissian.mango.domain.AttributeStore} implementation. This allows objects which have
      * already been parsed from json strings and processed to be turned into attribute stores as well.
-     * @param map
-     * @return
      */
     public static Collection<Attribute> fromMap(Map<String,Object> map) {
         checkNotNull(map);
@@ -106,9 +99,6 @@ public class JsonAttributeStore {
     /**
      * Re-expands a flattened json representation from a {@link org.calrissian.mango.domain.AttributeStore} back into a raw
      * nested json string.
-     * @param attributeCollection
-     * @param objectMapper
-     * @return
      */
     public static String toJsonString(Collection<Attribute> attributeCollection, ObjectMapper objectMapper) throws JsonProcessingException {
         return objectMapper.writeValueAsString(toObject(attributeCollection));
@@ -121,8 +111,6 @@ public class JsonAttributeStore {
      *
      * NOTE: It is possible that this method could fail in the case where attributes were added to a attribute collection
      * which changed from a primitive type to a container type, from one container type to another, or vice versa.
-     * @param attributeCollection
-     * @return
      */
     public static Map<String,Object> toObject(Collection<Attribute> attributeCollection) {
 
@@ -169,8 +157,6 @@ public class JsonAttributeStore {
         /**
          * Calculating the occurrence of a string within another can be costly so .'s and ['s will be
          * cached so they only need to be done once.
-         * @param attribute
-         * @return
          */
         private int getLevels(Attribute attribute) {
 

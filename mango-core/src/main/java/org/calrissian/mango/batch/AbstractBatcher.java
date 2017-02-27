@@ -25,7 +25,6 @@ import java.util.logging.Logger;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
-import static com.google.common.base.Throwables.propagate;
 import static java.lang.Long.MAX_VALUE;
 import static java.lang.Thread.interrupted;
 import static java.util.Collections.unmodifiableCollection;
@@ -125,14 +124,14 @@ abstract class AbstractBatcher<T> implements Batcher<T> {
         try {
             batchService.awaitTermination(MAX_VALUE, MILLISECONDS);
         } catch (InterruptedException e) {
-            throw propagate(e);
+            throw new RuntimeException(e);
         }
 
         handler.shutdown();
         try {
             handler.awaitTermination(MAX_VALUE, MILLISECONDS);
         } catch (InterruptedException e) {
-            throw propagate(e);
+            throw new RuntimeException(e);
         }
     }
 
