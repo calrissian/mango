@@ -346,7 +346,7 @@ public class MoreInetAddresses {
                     network[i] = bytes[i];
                     broadcast[i] = bytes[i];
                 } else if (remainingBits > 0) {
-                    int byteMask = -1 << remainingBits;
+                    int byteMask = -1 << (8 - remainingBits);
                     network [i] = (byte) (bytes[i] & byteMask);
                     broadcast [i] = (byte) (bytes[i] | ~byteMask);
                 } else {

@@ -294,6 +294,12 @@ public class MoreInetAddressesTest {
         assertEquals("0.0.0.0", toAddrString(cidr.getNetwork()));
         assertEquals("0.0.15.255", toAddrString(cidr.getBroadcast()));
 
+        cidr = MoreInetAddresses.parseCIDR("123.45.67.0/21");
+        assertTrue(cidr.getNetwork() instanceof Inet4Address);
+        assertEquals("123.45.64.0", toAddrString(cidr.getNetwork()));
+        assertEquals("123.45.71.255", toAddrString(cidr.getBroadcast()));
+
+
         cidr = MoreInetAddresses.parseCIDR("1.2.3.4/32");
         assertTrue(cidr.getNetwork() instanceof Inet4Address);
         assertEquals("1.2.3.4", toAddrString(cidr.getNetwork()));
