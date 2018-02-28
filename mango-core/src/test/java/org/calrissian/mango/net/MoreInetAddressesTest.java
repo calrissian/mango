@@ -25,6 +25,7 @@ import java.net.UnknownHostException;
 import static com.google.common.net.InetAddresses.toAddrString;
 import static org.calrissian.mango.net.MoreInetAddresses.forIPv4String;
 import static org.calrissian.mango.net.MoreInetAddresses.forIPv6String;
+import static org.calrissian.mango.net.MoreInetAddresses.isInCidrRange;
 import static org.junit.Assert.*;
 
 public class MoreInetAddressesTest {
@@ -373,5 +374,38 @@ public class MoreInetAddressesTest {
     public void forCIDRStringMalformedCidrTest() {
         assertInvalidCidr("1.2.3.4");
         assertInvalidCidr("1.2.3.4/0/0");
+    }
+
+    @Test
+    public void cidrRangeTest() {
+        assertTrue(isInCidrRange("192.168.100.14","192.168.100.0/24"));
+        assertTrue(isInCidrRange("0.0.0.0","0.0.0.0/0"));
+        assertTrue(isInCidrRange("255.255.255.255","0.0.0.0/0"));
+        assertTrue(isInCidrRange("10.10.1.44","10.10.1.32/27"));
+        assertTrue(isInCidrRange("1.2.3.4","1.2.3.4/32"));
+
+        assertTrue(isInCidrRange("2001:0db8:0123::1234","2001:0db8:0123::/51"));
+        assertTrue(isInCidrRange("::","::/0"));
+        assertTrue(isInCidrRange("ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff","::/0"));
+        assertTrue(isInCidrRange("2001:4860:4860::8888","2001:4860:4860::8888/128"));
+        assertTrue(isInCidrRange("::1","::/127"));
+
+        assertFalse(isInCidrRange("192.168.99.0","192.168.100.0/24"));
+        assertFalse(isInCidrRange("8.8.8.8","192.168.100.14/24"));
+        assertFalse(isInCidrRange("10.10.1.90","10.10.1.32/27"));
+
+        assertFalse(isInCidrRange("2001:4860:4860::8888","2001:0db8:0123::/51"));
+        assertFalse(isInCidrRange("::1","::/128"));
+        assertFalse(isInCidrRange("::ffff:102:ffff","::ffff:1.2.3.4/113"));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void unmatchedInet6AddressFamilyInCidrComparison(){
+        isInCidrRange("1:2:3:4:5:6:7:8","1.2.0.0/16");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void unmatchedInet4AddressFamilyInCidrComparison(){
+        isInCidrRange("8.8.8.8","2001:0db8:0123::/51");
     }
 }
