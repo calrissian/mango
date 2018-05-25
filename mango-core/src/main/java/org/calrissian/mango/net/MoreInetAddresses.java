@@ -54,9 +54,8 @@ public class MoreInetAddresses {
      * @throws IllegalArgumentException if a valid {@link Inet4Address} can not be created
      */
     static Inet4Address getInet4Address(byte[] bytes) {
-        checkArgument(bytes.length == 4,
-                "Byte array has invalid length for an IPv4 address: %s != 4.",
-                bytes.length);
+        if (bytes.length != 4)
+            throw new IllegalArgumentException(format("Byte array has invalid length for an IPv4 address: %s != 4.", bytes.length));
 
         try {
             // Given a 4-byte array, this cast should always succeed.
@@ -74,9 +73,8 @@ public class MoreInetAddresses {
      * @throws IllegalArgumentException if a valid {@link Inet6Address} can not be created
      */
     static Inet6Address getInet6Address(byte[] bytes) {
-        checkArgument(bytes.length == 16,
-                "Byte array has invalid length for an IPv4 address: %s != 16.",
-                bytes.length);
+        if (bytes.length != 16)
+            throw new IllegalArgumentException(format("Byte array has invalid length for an IPv6 address: %s != 16.", bytes.length));
 
         try {
             //This is a simple way to bypass the automatic conversion to Inet4Address as the default behavior
@@ -260,7 +258,10 @@ public class MoreInetAddresses {
             addr[i] = 0;
             i--;
         }
-        checkArgument(i >= 0, "Incrementing %s would wrap.", address);
+
+        if (i < 0)
+            throw new IllegalArgumentException(format("Incrementing %s would wrap.", address));
+
         addr[i]++;
         return addr;
     }
@@ -294,7 +295,10 @@ public class MoreInetAddresses {
             addr[i] = (byte) 0xff;
             i--;
         }
-        checkArgument(i >= 0, "Decrementing %s would wrap.", address);
+
+        if (i < 0)
+            throw new IllegalArgumentException(format("Decrementing %s would wrap.", address));
+
         addr[i]--;
         return addr;
     }
