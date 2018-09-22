@@ -177,8 +177,8 @@ limitations under the License.
   <scm>
     <connection>scm:git:git@github.com:calrissian/mango.git</connection>
     <developerConnection>scm:git:git@github.com:calrissian/mango.git</developerConnection>
-    <tag>HEAD</tag>
     <url>git@github.com:calrissian/mango.git</url>
+    <tag>HEAD</tag>
   </scm>
   <distributionManagement>
     <repository>

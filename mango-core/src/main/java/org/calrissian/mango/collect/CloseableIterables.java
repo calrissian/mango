@@ -38,9 +38,6 @@ public class CloseableIterables {
 
     private static final CloseableIterable EMPTY_ITERABLE = new CloseableIterable() {
         @Override
-        public void closeQuietly() { }
-
-        @Override
         public void close() throws IOException { }
 
         @Override
@@ -223,7 +220,7 @@ public class CloseableIterables {
         //and don't want to close it on them.
         return new FluentCloseableIterable<T>() {
             @Override
-            protected void doClose() throws IOException {
+            protected void doClose() {
                 for (CloseableIterable<? extends T> curr : iterables)
                     curr.closeQuietly();
             }
