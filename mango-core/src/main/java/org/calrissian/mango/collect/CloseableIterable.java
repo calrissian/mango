@@ -15,7 +15,12 @@
  */
 package org.calrissian.mango.collect;
 
+import com.google.common.io.Closeables;
+
 import java.io.Closeable;
+import java.io.IOException;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * Iterable that is closeable to release underlying resources
@@ -24,8 +29,25 @@ public interface CloseableIterable<T> extends Iterable<T>, Closeable {
 
     /**
      * <p>Unconditionally closes the iterator.</p>
-     * <p>Equivalent to {@link CloseableIterator#close()}, except any exceptions will be ignored.</p>
+     * <p>Equivalent to {@link CloseableIterable#close()}, except any exceptions will be ignored.</p>
      */
-    void closeQuietly();
+    default void closeQuietly() {
+        try {
+            Closeables.close(this, true);
+        } catch (IOException e) {
+            // IOException should not have been thrown
+        }
+    }
+
+    default Stream<T> stream() {
+        return StreamSupport.stream(spliterator(), false)
+                .onClose(() -> {
+                    try {
+                        close();
+                    } catch (IOException e) {
+                        throw new IllegalStateException("Unable to close stream", e);
+                    }
+                });
+    }
 
 }

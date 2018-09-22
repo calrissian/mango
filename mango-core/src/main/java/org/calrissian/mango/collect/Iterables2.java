@@ -17,7 +17,6 @@ package org.calrissian.mango.collect;
 
 import com.google.common.base.Function;
 
-import java.util.Iterator;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -35,12 +34,7 @@ public class Iterables2 {
      */
     public static <T> Iterable<T> simpleIterable(final Iterable<T> iterable) {
         checkNotNull(iterable);
-        return new Iterable<T>() {
-            @Override
-            public Iterator<T> iterator() {
-                return iterable.iterator();
-            }
-        };
+        return () -> iterable.iterator();
     }
 
     /**
@@ -49,12 +43,7 @@ public class Iterables2 {
      */
     public static <T> Iterable<T> distinct(final Iterable<T> iterable) {
         checkNotNull(iterable);
-        return new Iterable<T>() {
-            @Override
-            public Iterator<T> iterator() {
-                return Iterators2.distinct(iterable.iterator());
-            }
-        };
+        return () -> Iterators2.distinct(iterable.iterator());
     }
 
     /**
@@ -69,11 +58,6 @@ public class Iterables2 {
     public static <T> Iterable<List<T>> groupBy(final Iterable<? extends T> iterable, final Function<? super T, ?> groupingFunction) {
         checkNotNull(iterable);
         checkNotNull(groupingFunction);
-        return new Iterable<List<T>>() {
-            @Override
-            public Iterator<List<T>> iterator() {
-                return Iterators2.groupBy(iterable.iterator(), groupingFunction);
-            }
-        };
+        return () -> Iterators2.groupBy(iterable.iterator(), groupingFunction);
     }
 }

@@ -19,7 +19,6 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.PeekingIterator;
-import com.google.common.io.Closeables;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -145,11 +144,6 @@ public class CloseableIterators {
         final PeekingIterator<T> peeking = Iterators.peekingIterator(iterator);
         return new PeekingCloseableIterator<T>() {
             @Override
-            public void closeQuietly() {
-                iterator.closeQuietly();
-            }
-
-            @Override
             public void close() throws IOException {
                 iterator.close();
             }
@@ -227,16 +221,7 @@ public class CloseableIterators {
             CloseableIterator<? extends T> curr = emptyIterator();
 
             @Override
-            public void closeQuietly() {
-                try {
-                    Closeables.close(this, true);
-                } catch (IOException e) {
-                    // IOException should not have been thrown
-                }
-            }
-
-            @Override
-            public void close() throws IOException {
+            public void close() {
                 //Close the current one then close all the others
                 if (curr != null)
                     curr.closeQuietly();
@@ -286,15 +271,6 @@ public class CloseableIterators {
         checkNotNull(iterator);
         return new CloseableIterator<T>() {
             private boolean closed = false;
-
-            @Override
-            public void closeQuietly() {
-                try {
-                    Closeables.close(this, true);
-                } catch (IOException e) {
-                    // IOException should not have been thrown
-                }
-            }
 
             @Override
             public void close() throws IOException {
@@ -357,16 +333,6 @@ public class CloseableIterators {
         if (iterator instanceof CloseableIterator) return (CloseableIterator<T>) iterator;
 
         return new CloseableIterator<T>() {
-
-            @Override
-            public void closeQuietly() {
-                try {
-                    Closeables.close(this, true);
-                } catch (IOException e) {
-                    // IOException should not have been thrown
-                }
-            }
-
             @Override
             public void close() throws IOException {
                 if (iterator instanceof Closeable)
@@ -398,15 +364,6 @@ public class CloseableIterators {
      */
     static <T> CloseableIterator<T> wrap(final Iterator<T> iterator, final Closeable closeable) {
         return new CloseableIterator<T>() {
-
-            @Override
-            public void closeQuietly() {
-                try {
-                    Closeables.close(this, true);
-                } catch (IOException e) {
-                    // IOException should not have been thrown
-                }
-            }
 
             @Override
             public void close() throws IOException {

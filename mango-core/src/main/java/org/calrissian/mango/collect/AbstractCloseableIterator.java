@@ -16,9 +16,7 @@
 package org.calrissian.mango.collect;
 
 import com.google.common.collect.AbstractIterator;
-import com.google.common.io.Closeables;
 
-import java.io.IOException;
 import java.util.Iterator;
 
 /**
@@ -26,16 +24,4 @@ import java.util.Iterator;
  * support for closing the {@link Iterator} quietly.
  */
 public abstract class AbstractCloseableIterator<T> extends AbstractIterator<T> implements CloseableIterator<T> {
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void closeQuietly() {
-        try {
-            Closeables.close(this, true);
-        } catch (IOException e) {
-            // IOException should not have been thrown
-        }
-    }
 }
