@@ -45,4 +45,10 @@ public class SerializablesTest {
         byte[] base64 = toBase64(testObject);
         assertEquals(testObject, fromBase64(base64));
     }
+
+    @Test
+    public void testBase64EncodingCompressed() throws Exception {
+        byte[] base64 = toBase64(testObject, true);
+        assertEquals(testObject, fromBase64(base64, true));
+    }
 }
