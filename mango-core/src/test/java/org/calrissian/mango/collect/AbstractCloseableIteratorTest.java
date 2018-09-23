@@ -17,8 +17,6 @@ package org.calrissian.mango.collect;
 
 import org.junit.Test;
 
-import java.io.IOException;
-
 public class AbstractCloseableIteratorTest {
 
     @SuppressWarnings("deprecation")
@@ -37,7 +35,7 @@ public class AbstractCloseableIteratorTest {
             }
 
             @Override
-            public void close() throws IOException {
+            public void close() {
                 //do nothing.
             }
         };

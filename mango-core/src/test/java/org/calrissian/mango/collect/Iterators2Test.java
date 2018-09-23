@@ -16,7 +16,6 @@
 package org.calrissian.mango.collect;
 
 
-import com.google.common.base.Function;
 import org.junit.Test;
 
 import java.util.Iterator;
@@ -48,12 +47,7 @@ public class Iterators2Test {
     public void groupByTest() {
         List<Integer> testdata = asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 
-        Iterator<List<Integer>> grouped = groupBy(testdata.iterator(), new Function<Integer, Object>() {
-            @Override
-            public Object apply(Integer input) {
-                return input / 5;
-            }
-        });
+        Iterator<List<Integer>> grouped = groupBy(testdata.iterator(), input -> input / 5);
 
         assertTrue(grouped.hasNext());
         assertEquals(asList(0, 1, 2, 3, 4), grouped.next());
@@ -61,24 +55,14 @@ public class Iterators2Test {
         assertFalse(grouped.hasNext());
 
         //no grouped
-        grouped = groupBy(testdata.iterator(), new Function<Integer, Object>() {
-            @Override
-            public Object apply(Integer input) {
-                return null;
-            }
-        });
+        grouped = groupBy(testdata.iterator(), input -> null);
 
         assertTrue(grouped.hasNext());
         assertEquals(testdata, grouped.next());
         assertFalse(grouped.hasNext());
 
         //all grouped
-        grouped = groupBy(testdata.iterator(), new Function<Integer, Object>() {
-            @Override
-            public Object apply(Integer input) {
-                return input;
-            }
-        });
+        grouped = groupBy(testdata.iterator(), input -> input);
 
         assertTrue(grouped.hasNext());
         for (int i = 0; i< testdata.size(); i++) {
@@ -92,12 +76,7 @@ public class Iterators2Test {
 
     @Test(expected = NullPointerException.class)
     public void groupByNullIteratorTest() {
-        groupBy(null, new Function<Object, Object>() {
-            @Override
-            public Object apply(Object input) {
-                return null;
-            }
-        });
+        groupBy(null, input -> null);
     }
 
     @Test(expected = NullPointerException.class)

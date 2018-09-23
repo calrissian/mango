@@ -15,15 +15,11 @@
  */
 package org.calrissian.mango.collect;
 
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import org.junit.Test;
 
-import java.io.IOException;
-
 import static java.util.Arrays.asList;
-import static org.calrissian.mango.collect.CloseableIterables.wrap;
+import static org.calrissian.mango.collect.CloseableIterables.fromIterable;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -32,22 +28,14 @@ import static org.junit.Assert.fail;
 public class FluentCloseableIterableTest {
 
     @Test
-    public void testFluent() throws IOException {
-        CloseableIterable<Integer> closeableIterable = wrap(asList(1, 2, 3, 4, 5));
+    public void testFluent() {
+        CloseableIterable<Integer> closeableIterable = fromIterable(asList(1, 2, 3, 4, 5));
 
         FluentCloseableIterable<Integer> filter = FluentCloseableIterable.
                 from(closeableIterable).
-                transform(new Function<Integer, Integer>() {
-                    @Override
-                    public Integer apply(Integer input) {
-                        return input + 1;
-                    }
-                }).
-                filter(new Predicate<Integer>() {
-                    @Override
-                    public boolean apply(Integer input) {
-                        return (input % 2) == 0;      //even only
-                    }
+                transform(input -> input + 1).
+                filter(input -> {
+                    return (input % 2) == 0;      //even only
                 });
 
         Iterables.elementsEqual(asList(2, 4, 6), filter);
@@ -63,8 +51,8 @@ public class FluentCloseableIterableTest {
     }
 
     @Test
-    public void testLimit() throws IOException {
-        CloseableIterable<Integer> closeableIterable = wrap(asList(1, 2, 3, 4, 5));
+    public void testLimit() {
+        CloseableIterable<Integer> closeableIterable = fromIterable(asList(1, 2, 3, 4, 5));
 
         FluentCloseableIterable<Integer> limit = FluentCloseableIterable.
                 from(closeableIterable).limit(3);

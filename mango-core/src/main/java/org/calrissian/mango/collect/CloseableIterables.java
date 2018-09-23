@@ -21,11 +21,10 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.UnmodifiableIterator;
 
-import java.io.Closeable;
-import java.io.IOException;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.util.Arrays.asList;
@@ -38,7 +37,7 @@ public class CloseableIterables {
 
     private static final CloseableIterable EMPTY_ITERABLE = new CloseableIterable() {
         @Override
-        public void close() throws IOException { }
+        public void close() { }
 
         @Override
         public Iterator iterator() {
@@ -47,6 +46,42 @@ public class CloseableIterables {
     };
 
     private CloseableIterables() {/* private constructor */}
+
+    /**
+     * Creates a {@link CloseableIterable} from a standard {@link Stream}.
+     */
+    public static <T> CloseableIterable<T> fromStream(Stream<T> stream) {
+        return wrap(stream::iterator, stream);
+    }
+
+    /**
+     * Creates a {@link CloseableIterable} from a standard {@link Iterable}. If {@code iterable} is already
+     * a {@link CloseableIterable} it will simply be returned as is.
+     */
+    public static <T> CloseableIterable<T> fromIterable(Iterable<T> iterable) {
+        checkNotNull(iterable);
+        if (iterable instanceof CloseableIterable) return (CloseableIterable<T>) iterable;
+
+        return new FluentCloseableIterable<T>() {
+            @Override
+            protected void doClose() {
+                if (iterable instanceof AutoCloseable) {
+                    try {
+                        ((AutoCloseable) iterable).close();
+                    } catch (RuntimeException re) {
+                        throw re;
+                    } catch (Exception e) {
+                        throw new IllegalStateException(e);
+                    }
+                }
+            }
+
+            @Override
+            protected Iterator<T> retrieveIterator() {
+                return iterable.iterator();
+            }
+        };
+    }
 
     /**
      * If we can assume the closeable iterable is sorted, return the distinct elements.
@@ -248,7 +283,7 @@ public class CloseableIterables {
         checkNotNull(iterable);
         return new FluentCloseableIterable<T>() {
             @Override
-            protected void doClose() throws IOException {
+            protected void doClose() {
                 iterable.close();
             }
 
@@ -280,29 +315,18 @@ public class CloseableIterables {
      * java.util.Collections#singleton}.
      */
     public static <T> CloseableIterable<T> singleton(T value) {
-        return wrap(Collections.singleton(value));
+        return fromIterable(Collections.singleton(value));
     }
 
     /**
-     * Creates a {@link CloseableIterable} from a standard iterable. If {@code iterable} is already
+     * Creates a {@link CloseableIterable} from a standard {@link Iterable}. If {@code iterable} is already
      * a {@link CloseableIterable} it will simply be returned as is.
+     *
+     * @deprecated Use {@link CloseableIterables#fromIterable(Iterable)}
      */
+    @Deprecated
     public static <T> CloseableIterable<T> wrap(final Iterable<T> iterable) {
-        checkNotNull(iterable);
-        if (iterable instanceof CloseableIterable) return (CloseableIterable<T>) iterable;
-
-        return new FluentCloseableIterable<T>() {
-            @Override
-            protected void doClose() throws IOException {
-                if (iterable instanceof Closeable)
-                    ((Closeable) iterable).close();
-            }
-
-            @Override
-            protected Iterator<T> retrieveIterator() {
-                return iterable.iterator();
-            }
-        };
+        return fromIterable(iterable);
     }
 
     /**
@@ -311,11 +335,17 @@ public class CloseableIterables {
      * <p/>
      * Intentionally left package private.
      */
-    static <T> FluentCloseableIterable<T> wrap(final Iterable<T> iterable, final Closeable closeable) {
+    static <T> FluentCloseableIterable<T> wrap(final Iterable<T> iterable, final AutoCloseable closeable) {
         return new FluentCloseableIterable<T>() {
             @Override
-            protected void doClose() throws IOException {
-                closeable.close();
+            protected void doClose() {
+                try {
+                    closeable.close();
+                } catch (RuntimeException re) {
+                    throw re;
+                } catch (Exception e) {
+                    throw new IllegalStateException(e);
+                }
             }
 
             @Override

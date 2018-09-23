@@ -15,10 +15,8 @@
  */
 package org.calrissian.mango.collect.mock;
 
-import com.google.common.io.Closeables;
 import org.calrissian.mango.collect.CloseableIterable;
 
-import java.io.IOException;
 import java.util.Iterator;
 
 public class MockIterable<T> implements CloseableIterable<T> {
@@ -30,16 +28,7 @@ public class MockIterable<T> implements CloseableIterable<T> {
     }
 
     @Override
-    public void closeQuietly() {
-        try {
-            Closeables.close(this, true);
-        } catch (IOException e) {
-            // IOException should not have been thrown
-        }
-    }
-
-    @Override
-    public void close() throws IOException {
+    public void close() {
         closed = true;
     }
 

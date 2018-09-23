@@ -21,7 +21,6 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -50,7 +49,7 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
                 : new FluentCloseableIterable<E>() {
 
             @Override
-            protected void doClose() throws IOException {
+            protected void doClose() {
                 iterable.close();
             }
 
