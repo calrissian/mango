@@ -15,15 +15,12 @@
  */
 package org.calrissian.mango.collect;
 
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
 import com.google.common.collect.AbstractIterator;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 import org.calrissian.mango.collect.mock.MockIterable;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.util.Iterator;
 
 import static com.google.common.collect.Iterables.elementsEqual;
@@ -47,8 +44,8 @@ public class CloseableIterablesTest {
     }
 
     @Test
-    public void testWrap() throws Exception {
-        CloseableIterable<Integer> wrapped = CloseableIterables.wrap(asList(1, 2, 3, 4, 5));
+    public void testWrap() {
+        CloseableIterable<Integer> wrapped = CloseableIterables.fromIterable(asList(1, 2, 3, 4, 5));
 
         assertTrue(elementsEqual(asList(1, 2, 3, 4, 5), wrapped));
 
@@ -63,21 +60,11 @@ public class CloseableIterablesTest {
     }
 
     @Test
-    public void testTransform() throws IOException {
+    public void testTransform() {
         //add one
-        CloseableIterable<Integer> addOne = transform(testIterable(), new Function<Integer, Integer>() {
-            @Override
-            public Integer apply(Integer input) {
-                return input + 1;
-            }
-        });
+        CloseableIterable<Integer> addOne = transform(testIterable(), input -> input + 1);
         //multiply by ten
-        CloseableIterable<Integer> multTen = transform(addOne, new Function<Integer, Integer>() {
-            @Override
-            public Integer apply(Integer input) {
-                return input * 10;
-            }
-        });
+        CloseableIterable<Integer> multTen = transform(addOne, input -> input * 10);
 
         assertTrue(elementsEqual(asList(20, 30, 40, 50, 60), multTen));
         multTen.close();
@@ -92,7 +79,7 @@ public class CloseableIterablesTest {
     }
 
     @Test
-    public void testLimit() throws IOException {
+    public void testLimit() {
 
         CloseableIterable<Integer> firstThree = limit(testIterable(), 3);
 
@@ -110,14 +97,9 @@ public class CloseableIterablesTest {
     }
 
     @Test
-    public void testFilter() throws IOException {
+    public void testFilter() {
         //filter odd
-        CloseableIterable<Integer> odd = filter(testIterable(), new Predicate<Integer>() {
-            @Override
-            public boolean apply(java.lang.Integer input) {
-                return input % 2 == 0;
-            }
-        });
+        CloseableIterable<Integer> odd = filter(testIterable(), input -> input % 2 == 0);
 
         assertTrue(elementsEqual(asList(2, 4), odd));
 
@@ -134,8 +116,8 @@ public class CloseableIterablesTest {
 
 
     @Test
-    public void testDistinct() throws Exception {
-        CloseableIterable<Integer> distinct = distinct(wrap(asList(1, 1, 2, 2, 3, 3, 3, 4, 5, 6, 7, 7, 7)));
+    public void testDistinct() {
+        CloseableIterable<Integer> distinct = distinct(fromIterable(asList(1, 1, 2, 2, 3, 3, 3, 4, 5, 6, 7, 7, 7)));
 
         assertEquals(7, Iterables.size(distinct));
         assertTrue(elementsEqual(asList(1, 2, 3, 4, 5, 6, 7), distinct));
@@ -151,7 +133,7 @@ public class CloseableIterablesTest {
     }
 
     @Test
-    public void testAutoClose() throws Exception {
+    public void testAutoClose() {
 
         MockIterable<Integer> iterable = testIterable();
         CloseableIterable<Integer> closeableIterable = autoClose(iterable);
@@ -187,7 +169,6 @@ public class CloseableIterablesTest {
             @Override
             public Iterator<Integer> iterator() {
                 return new AbstractIterator<Integer>() {
-
                     @Override
                     protected Integer computeNext() {
                         throw new RuntimeException("I throw because I want to");

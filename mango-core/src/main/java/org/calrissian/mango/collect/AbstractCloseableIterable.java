@@ -15,7 +15,6 @@
  */
 package org.calrissian.mango.collect;
 
-import java.io.IOException;
 import java.util.Iterator;
 
 /**
@@ -32,10 +31,8 @@ public abstract class AbstractCloseableIterable<T> implements CloseableIterable<
 
     /**
      * Performes the logic to cleanup any held resources
-     *
-     * @throws IOException
      */
-    protected abstract void doClose() throws IOException;
+    protected abstract void doClose();
 
     /**
      * Returns an iterator over a set of elements of type T.
@@ -48,7 +45,7 @@ public abstract class AbstractCloseableIterable<T> implements CloseableIterable<
      * {@inheritDoc}
      */
     @Override
-    public void close() throws IOException {
+    public void close() {
         if (!closed) {
             doClose();
             closed = true;

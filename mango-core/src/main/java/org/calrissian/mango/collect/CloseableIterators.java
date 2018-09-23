@@ -20,12 +20,11 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.PeekingIterator;
 
-import java.io.Closeable;
-import java.io.IOException;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Stream;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -35,9 +34,55 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class CloseableIterators {
 
     @SuppressWarnings("rawtypes")
-    private static final CloseableIterator EMPTY_ITERATOR = wrap(Collections.emptyIterator());
+    private static final CloseableIterator EMPTY_ITERATOR = fromIterator(Collections.emptyIterator());
 
     private CloseableIterators() {/* private constructor */}
+
+    /**
+     * Creates a {@link CloseableIterable} from a standard {@link Stream}.
+     */
+    public static <T> CloseableIterator<T> fromStream(Stream<T> stream) {
+        return wrap(stream.iterator(), stream);
+    }
+
+    /**
+     * Creates a {@link CloseableIterator} from a standard {@link Iterator}. If {@code iterator} is already
+     * a {@link CloseableIterator} it will simply be returned as is.
+     */
+    public static <T> CloseableIterator<T> fromIterator(Iterator<T> iterator) {
+        checkNotNull(iterator);
+        if (iterator instanceof CloseableIterator) return (CloseableIterator<T>) iterator;
+
+        return new CloseableIterator<T>() {
+            @Override
+            public void close() {
+                if (iterator instanceof AutoCloseable) {
+                    try {
+                        ((AutoCloseable) iterator).close();
+                    } catch (RuntimeException re) {
+                        throw re;
+                    } catch (Exception e) {
+                        throw new IllegalStateException(e);
+                    }
+                }
+            }
+
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public T next() {
+                return iterator.next();
+            }
+
+            @Override
+            public void remove() {
+                iterator.remove();
+            }
+        };
+    }
 
     /**
      * If we can assume the closeable iterator is sorted, return the distinct elements.
@@ -144,7 +189,7 @@ public class CloseableIterators {
         final PeekingIterator<T> peeking = Iterators.peekingIterator(iterator);
         return new PeekingCloseableIterator<T>() {
             @Override
-            public void close() throws IOException {
+            public void close() {
                 iterator.close();
             }
 
@@ -177,7 +222,7 @@ public class CloseableIterators {
      * java.util.Collections#singleton}.
      */
     public static <T> CloseableIterator<T> singletonIterator(T value) {
-        return wrap(Iterators.singletonIterator(value));
+        return fromIterator(Iterators.singletonIterator(value));
     }
 
     /**
@@ -273,7 +318,7 @@ public class CloseableIterators {
             private boolean closed = false;
 
             @Override
-            public void close() throws IOException {
+            public void close() {
                 if (closed)
                     return;
 
@@ -326,34 +371,14 @@ public class CloseableIterators {
     }
 
     /**
-     * Creates a {@link CloseableIterator} from a standard iterator.
+     * Creates a {@link CloseableIterator} from a standard {@link Iterator}. If {@code iterator} is already
+     * a {@link CloseableIterator} it will simply be returned as is.
+     *
+     * @deprecated Use {@link CloseableIterators#fromIterator(Iterator)}
      */
+    @Deprecated
     public static <T> CloseableIterator<T> wrap(final Iterator<T> iterator) {
-        checkNotNull(iterator);
-        if (iterator instanceof CloseableIterator) return (CloseableIterator<T>) iterator;
-
-        return new CloseableIterator<T>() {
-            @Override
-            public void close() throws IOException {
-                if (iterator instanceof Closeable)
-                    ((Closeable) iterator).close();
-            }
-
-            @Override
-            public boolean hasNext() {
-                return iterator.hasNext();
-            }
-
-            @Override
-            public T next() {
-                return iterator.next();
-            }
-
-            @Override
-            public void remove() {
-                iterator.remove();
-            }
-        };
+        return fromIterator(iterator);
     }
 
     /**
@@ -362,12 +387,18 @@ public class CloseableIterators {
      * <p/>
      * Intentionally left package private.
      */
-    static <T> CloseableIterator<T> wrap(final Iterator<T> iterator, final Closeable closeable) {
+    static <T> CloseableIterator<T> wrap(final Iterator<T> iterator, final AutoCloseable closeable) {
         return new CloseableIterator<T>() {
 
             @Override
-            public void close() throws IOException {
-                closeable.close();
+            public void close() {
+                try {
+                    closeable.close();
+                } catch (RuntimeException re) {
+                    throw re;
+                } catch (Exception e) {
+                    throw new IllegalStateException(e);
+                }
             }
 
             @Override

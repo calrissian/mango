@@ -15,10 +15,7 @@
  */
 package org.calrissian.mango.collect;
 
-import com.google.common.io.Closeables;
-
 import java.io.Closeable;
-import java.io.IOException;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -27,27 +24,37 @@ import java.util.stream.StreamSupport;
  */
 public interface CloseableIterable<T> extends Iterable<T>, Closeable {
 
+    @Override
+    void close();
+
     /**
      * <p>Unconditionally closes the iterator.</p>
      * <p>Equivalent to {@link CloseableIterable#close()}, except any exceptions will be ignored.</p>
      */
     default void closeQuietly() {
         try {
-            Closeables.close(this, true);
-        } catch (IOException e) {
-            // IOException should not have been thrown
+            close();
+        } catch (Exception e) {
+            // Ignore exceptions
         }
     }
 
+    /**
+     * Returns a sequential {@code Stream} with this iterable as its source. The resulting stream also close the
+     * underlying resource if it {@link Stream#close()} method is called.
+     *
+     * <p>This method should be overridden when the {@link #spliterator()}
+     * method cannot return a spliterator that is {@code IMMUTABLE},
+     * {@code CONCURRENT}, or <em>late-binding</em>. (See {@link #spliterator()}
+     * for details.)
+     *
+     * @implSpec
+     * The default implementation creates a sequential {@code Stream} from the
+     * collection's {@code Spliterator}.
+     */
     default Stream<T> stream() {
         return StreamSupport.stream(spliterator(), false)
-                .onClose(() -> {
-                    try {
-                        close();
-                    } catch (IOException e) {
-                        throw new IllegalStateException("Unable to close stream", e);
-                    }
-                });
+                .onClose(this::close);
     }
 
 }

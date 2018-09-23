@@ -48,44 +48,24 @@ public class Iterables2Test {
     @Test
     public void groupByTest() {
 
-        Multimaps.index(asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), new Function<Integer, Object>() {
-            @Override
-            public Object apply(Integer input) {
-                return input/5;
-            }
-        }).values();
+        Multimaps.index(asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), (Function<Integer, Object>) input -> input/5).values();
 
         List<Integer> testdata = asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 
-        Iterable<List<Integer>> grouped = groupBy(testdata, new Function<Integer, Object>() {
-            @Override
-            public Object apply(Integer input) {
-                return input / 5;
-            }
-        });
+        Iterable<List<Integer>> grouped = groupBy(testdata, input -> input / 5);
 
         assertEquals(2, size(grouped));
         assertEquals(asList(0, 1, 2, 3, 4), get(grouped, 0));
         assertEquals(asList(5, 6, 7, 8, 9), get(grouped, 1));
 
         //no grouped
-        grouped = groupBy(testdata, new Function<Integer, Object>() {
-            @Override
-            public Object apply(Integer input) {
-                return null;
-            }
-        });
+        grouped = groupBy(testdata, input -> null);
 
         assertEquals(1, size(grouped));
         assertEquals(testdata, get(grouped, 0));
 
         //all grouped
-        grouped = groupBy(testdata, new Function<Integer, Object>() {
-            @Override
-            public Object apply(Integer input) {
-                return input;
-            }
-        });
+        grouped = groupBy(testdata, input -> input);
 
         assertEquals(10, size(grouped));
         for (int i = 0; i< testdata.size(); i++) {
@@ -97,12 +77,7 @@ public class Iterables2Test {
 
     @Test(expected = NullPointerException.class)
     public void groupByNullIteratorTest() {
-        groupBy(null, new Function<Object, Object>() {
-            @Override
-            public Object apply(Object input) {
-                return null;
-            }
-        });
+        groupBy(null, input -> null);
     }
 
     @Test(expected = NullPointerException.class)
