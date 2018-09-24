@@ -47,7 +47,7 @@ public class BatcherTest {
 
     @Test
     public void sizeBatcherTest() throws InterruptedException {
-        TestListenter<Integer> listener = new TestListenter<>();
+        TestListener<Integer> listener = new TestListener<>();
         final Batcher<Integer> batcher = BatcherBuilder.create()
                 .sizeBound(100)
                 .build(listener);
@@ -69,7 +69,7 @@ public class BatcherTest {
 
     @Test
     public void sizeBatcherNonFullBatchTest() throws InterruptedException {
-        TestListenter<Integer> listener = new TestListenter<>();
+        TestListener<Integer> listener = new TestListener<>();
         final Batcher<Integer> batcher = BatcherBuilder.create()
                 .sizeBound(100)
                 .build(listener);
@@ -84,7 +84,7 @@ public class BatcherTest {
         sleep(40); //wait for handler thread after close to process leftover batch.
 
         assertEquals(1020, listener.getCount());
-        assertTrue(listener.getNumBatches() == 11);
+        assertEquals(11, listener.getNumBatches());
         int count = 0;
         for (Collection<Integer> batch : listener.getBatches()) {
             if (count == 10) {
@@ -98,7 +98,7 @@ public class BatcherTest {
 
     @Test
     public void timeBatcherTest() throws InterruptedException {
-        TestListenter<Integer> listener = new TestListenter<>();
+        TestListener<Integer> listener = new TestListener<>();
         final Batcher<Integer> batcher = BatcherBuilder.create()
                 .timeBound(10, MILLISECONDS)
                 .build(listener);
@@ -121,7 +121,7 @@ public class BatcherTest {
 
     @Test
     public void sizeAndTimeBatcherTest() throws InterruptedException {
-        TestListenter<Integer> listener = new TestListenter<>();
+        TestListener<Integer> listener = new TestListener<>();
         final Batcher<Integer> batcher = BatcherBuilder.create()
                 .sizeBound(100)
                 .timeBound(10, MILLISECONDS)
@@ -146,17 +146,12 @@ public class BatcherTest {
 
     //Tests to verify that ordering is maintained within batchers.
     @Test
-    public void sequentialSizeBatcherTest() throws InterruptedException {
+    public void sequentialSizeBatcherTest() {
         final List<Integer> results = new ArrayList<>(1000);
         final Batcher<Integer> batcher = BatcherBuilder.create()
                 .sizeBound(100)
                 .listenerService(newDirectExecutorService()) //Required to guarantee ordering
-                .build(new BatchListener<Integer>() {
-                    @Override
-                    public void onBatch(Collection<Integer> batch) {
-                        results.addAll(batch);
-                    }
-                });
+                .build(results::addAll);
 
         for (int i = 0;i < 1000;i++)
             batcher.add(i);
@@ -169,17 +164,12 @@ public class BatcherTest {
     }
 
     @Test
-    public void sequentialTimeBatcherTest() throws InterruptedException {
+    public void sequentialTimeBatcherTest() {
         final List<Integer> results = new ArrayList<>(1000);
         final Batcher<Integer> batcher = BatcherBuilder.create()
                 .timeBound(10, MILLISECONDS)
                 .listenerService(newDirectExecutorService()) //Required to guarantee ordering
-                .build(new BatchListener<Integer>() {
-                    @Override
-                    public void onBatch(Collection<Integer> batch) {
-                        results.addAll(batch);
-                    }
-                });
+                .build(results::addAll);
 
         for (int i = 0;i < 1000;i++)
             batcher.add(i);
@@ -192,18 +182,13 @@ public class BatcherTest {
     }
 
     @Test
-    public void sequentialSizeOrTimeBatcherTest() throws InterruptedException {
+    public void sequentialSizeOrTimeBatcherTest() {
         final List<Integer> results = new ArrayList<>(1000);
         final Batcher<Integer> batcher = BatcherBuilder.create()
                 .sizeBound(100)
                 .timeBound(10, MILLISECONDS)
                 .listenerService(newDirectExecutorService()) //Required to guarantee ordering
-                .build(new BatchListener<Integer>() {
-                    @Override
-                    public void onBatch(Collection<Integer> batch) {
-                        results.addAll(batch);
-                    }
-                });
+                .build(results::addAll);
 
         for (int i = 0;i < 1000;i++)
             batcher.add(i);
@@ -223,15 +208,12 @@ public class BatcherTest {
                 .timeBound(1000000, MILLISECONDS)
                 .bufferSize(1000)
                 .listenerService(newDirectExecutorService()) //Required to guarantee sleep pauses batch thread.
-                .build(new BatchListener<Integer>() {
-                    @Override
-                    public void onBatch(Collection<Integer> batch) {
-                        try {
-                            results.addAll(batch);
-                            //Sleep here to slow down the processing of the batch thread so it can be killed before the second batch.
-                            sleep(1000000);
-                        } catch (InterruptedException ignored) {}
-                    }
+                .build(batch -> {
+                    try {
+                        results.addAll(batch);
+                        //Sleep here to slow down the processing of the batch thread so it can be killed before the second batch.
+                        sleep(1000000);
+                    } catch (InterruptedException ignored) {}
                 });
 
         CountDownLatch start = new CountDownLatch(1);
@@ -254,15 +236,12 @@ public class BatcherTest {
                 .timeBound(1000000, MILLISECONDS)
                 .bufferSize(1000)
                 .listenerService(newDirectExecutorService()) //Required to guarantee sleep pauses batch thread.
-                .build(new BatchListener<Integer>() {
-                    @Override
-                    public void onBatch(Collection<Integer> batch) {
-                        results.addAll(batch);
-                        try {
-                            sleep(1000000);
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException();
-                        }
+                .build(batch -> {
+                    results.addAll(batch);
+                    try {
+                        sleep(1000000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException();
                     }
                 });
 
@@ -282,7 +261,7 @@ public class BatcherTest {
     @Test(expected = IllegalStateException.class)
     public void noSizeOrTimeBound() {
         BatcherBuilder.create()
-                .build(new TestListenter<>());
+                .build(new TestListener<>());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -354,7 +333,7 @@ public class BatcherTest {
         Batcher<Integer> batcher = BatcherBuilder.create()
                 .sizeBound(100)
                 .timeBound(10, MILLISECONDS)
-                .build(new TestListenter<Integer>());
+                .build(new TestListener<>());
         batcher.close();
         batcher.add(1);
 
@@ -365,7 +344,7 @@ public class BatcherTest {
         Batcher<Integer> batcher = BatcherBuilder.create()
                 .sizeBound(100)
                 .timeBound(10, MILLISECONDS)
-                .build(new TestListenter<Integer>());
+                .build(new TestListener<>());
         batcher.close();
         batcher.add(1, 10, MILLISECONDS);
     }
@@ -375,7 +354,7 @@ public class BatcherTest {
         Batcher<Integer> batcher = BatcherBuilder.create()
                 .sizeBound(100)
                 .timeBound(10, MILLISECONDS)
-                .build(new TestListenter<Integer>());
+                .build(new TestListener<>());
         batcher.close();
         batcher.addOrWait(1);
     }
@@ -386,14 +365,11 @@ public class BatcherTest {
         Batcher<Integer> batcher = BatcherBuilder.create()
                 .sizeBound(1)
                 .listenerService(newDirectExecutorService()) //Required to send exception to batch thread
-                .build(new BatchListener<Integer>() {
-                    @Override
-                    public void onBatch(Collection<Integer> batch) {
-                        wasCalled.set(true);
+                .build(batch -> {
+                    wasCalled.set(true);
 
-                        //Force exception that will fall into the handler catch block.
-                        throw new RuntimeException();
-                    }
+                    //Force exception that will fall into the handler catch block.
+                    throw new RuntimeException();
                 });
         batcher.add(1);
 
@@ -417,26 +393,23 @@ public class BatcherTest {
     private CountDownLatch setupProducers(final Batcher<Integer> batcher, final CountDownLatch startLatch, int numProducers, final int amountProduced) {
         final CountDownLatch latch = new CountDownLatch(numProducers);
         for (int i = 0; i< numProducers; i++) {
-            producerService.submit(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        startLatch.await();
+            producerService.submit(() -> {
+                try {
+                    startLatch.await();
 
-                        for (int i = 0; i < amountProduced; i++)
-                            batcher.addOrWait(i);
+                    for (int i1 = 0; i1 < amountProduced; i1++)
+                        batcher.addOrWait(i1);
 
-                        latch.countDown();
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
+                    latch.countDown();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
                 }
             });
         }
         return latch;
     }
 
-    private static class TestListenter<T> implements BatchListener<T> {
+    private static class TestListener<T> implements BatchListener<T> {
 
         private AtomicInteger numBatches = new AtomicInteger(0);
         private AtomicInteger count = new AtomicInteger(0);

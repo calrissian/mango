@@ -42,7 +42,7 @@ public class EventIdentifierEncoder extends AbstractEventIdentifierEncoder<Strin
         checkNotNull(value, "Null values are not allowed");
         checkArgument(value.startsWith(SCHEME) && value.contains("#") && value.contains("@"), "The value is not a valid encoding");
 
-        String rel = value.substring(SCHEME.length(), value.length());
+        String rel = value.substring(SCHEME.length());
         int idx = rel.indexOf('#');
         int tsIdx = rel.lastIndexOf('@');
         return new EventIdentifier(rel.substring(0, idx), rel.substring(idx + 1, tsIdx), longEncoder.decode(rel.substring(tsIdx + 1)));

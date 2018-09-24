@@ -16,6 +16,7 @@
 package org.calrissian.mango.types.encoders;
 
 public class AliasConstants {
+    private AliasConstants() { }
 
     //Java types
     public static final String BOOLEAN_ALIAS = "boolean";

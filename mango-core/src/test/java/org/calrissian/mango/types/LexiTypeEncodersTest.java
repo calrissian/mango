@@ -170,7 +170,7 @@ public class LexiTypeEncodersTest {
     }
 
     @Test
-    public void testCorrectReverseEncoding() throws Exception {
+    public void testCorrectReverseEncoding() {
 
         assertEquals("0", booleanRevEncoder().encode(true));
         assertEquals("1", booleanRevEncoder().encode(false));
