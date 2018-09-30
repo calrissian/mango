@@ -15,8 +15,10 @@
  */
 package org.calrissian.mango.net;
 
+import com.google.common.collect.Range;
 import com.google.common.net.InetAddresses;
 
+import java.math.BigInteger;
 import java.net.Inet4Address;
 import java.net.Inet6Address;
 import java.net.InetAddress;
@@ -323,6 +325,41 @@ public class MoreInetAddresses {
      */
     public static Inet6Address decrement(Inet6Address ip) {
         return getInet6Address(decrementBytes(ip));
+    }
+
+    /**
+     * Returns {@code true} if {@code address} is within the bounds of the {@code cidr}.
+     *
+     * @param address   the {@link InetAddress} to check
+     * @param cidr      the {@link CidrInfo} block to check bounds against
+     * @return          {@code true} if {@code address} is within the {@code cidr} range. {@code false} otherwise.
+     */
+    public static Boolean isInCidrRange(InetAddress address, CidrInfo cidr) {
+
+        if (!(address.getClass().equals(cidr.getNetwork().getClass()))) {
+            throw new IllegalArgumentException(
+                    format("CIDR [%s] is of different INET Address family compared to address [%s]",
+                            cidr,
+                            toAddrString(address)));
+        }
+
+        Range<BigInteger> cidrRange =
+                Range.closed(
+                        new BigInteger(1, cidr.getNetwork().getAddress()),
+                        new BigInteger(1, cidr.getBroadcast().getAddress()));
+
+        return cidrRange.contains(new BigInteger(1, address.getAddress()));
+    }
+
+    /**
+     * Returns {@code true} if {@code address} is within the bounds of the {@code cidr}.
+     *
+     * @param address   the string representation of the address to check
+     * @param cidr      the string representation of the CIDR block to check against
+     * @return          {@code true} if {@code address} is within the {@code cidr} range. {@code false} otherwise.
+     */
+    public static Boolean isInCidrRange(String address, String cidr) {
+        return isInCidrRange(forString(address), parseCIDR(cidr));
     }
 
     /**
