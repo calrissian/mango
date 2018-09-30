@@ -32,14 +32,14 @@ public class LessThanCriteriaTest {
         EntityBuilder entity = EntityBuilder.create("type", "id");
 
         // first test without attribute existing
-        assertFalse(criteria.apply(entity.build()));
+        assertFalse(criteria.test(entity.build()));
 
         entity = entity.attr("key1", 10);
 
-        assertFalse(criteria.apply(entity.build()));
+        assertFalse(criteria.test(entity.build()));
 
         entity = entity.attr("key1", 4);
 
-        assertTrue(criteria.apply(entity.build()));
+        assertTrue(criteria.test(entity.build()));
     }
 }

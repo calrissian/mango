@@ -15,13 +15,13 @@
  */
 package org.calrissian.mango.collect;
 
-import com.google.common.base.Function;
 import com.google.common.collect.AbstractIterator;
 import com.google.common.collect.PeekingIterator;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Function;
 
 import static com.google.common.base.Objects.equal;
 import static com.google.common.collect.Iterators.peekingIterator;

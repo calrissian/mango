@@ -31,7 +31,7 @@ public class NotEqualsCriteriaTest {
         EntityBuilder entity = EntityBuilder.create("type", "id")
                 .attr("key1", "val2");
 
-        assertTrue(eq.apply(entity.build()));
+        assertTrue(eq.test(entity.build()));
     }
 
     @Test
@@ -41,6 +41,6 @@ public class NotEqualsCriteriaTest {
         EntityBuilder entity = EntityBuilder.create("type", "id")
                 .attr("key1", "val1");
 
-        assertFalse(eq.apply(entity.build()));
+        assertFalse(eq.test(entity.build()));
     }
 }

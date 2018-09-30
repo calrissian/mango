@@ -15,8 +15,6 @@
  */
 package org.calrissian.mango.json.util.store;
 
-import com.google.common.base.Function;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -64,19 +62,11 @@ class ArrayJsonNode implements JsonTreeNode {
 
     @Override
     public Collection<Object> toObject() {
-        return transform(children, function);
+        return transform(children, jsonTreeNode -> jsonTreeNode.toObject());
     }
 
     @Override
     public String toString() {
         return toObject().toString();
     }
-
-    private static final Function<JsonTreeNode, Object> function = new Function<JsonTreeNode, Object>() {
-
-        @Override
-        public Object apply(JsonTreeNode jsonTreeNode) {
-            return jsonTreeNode.toObject();
-        }
-    };
 }

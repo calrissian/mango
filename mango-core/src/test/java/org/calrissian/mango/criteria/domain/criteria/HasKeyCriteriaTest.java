@@ -31,10 +31,10 @@ public class HasKeyCriteriaTest {
         EntityBuilder entity = EntityBuilder.create("type", "id")
                 .attr("key2", "val2");
 
-        assertFalse(criteria.apply(entity.build()));
+        assertFalse(criteria.test(entity.build()));
 
         entity = entity.attr("key1", "val1");
 
-        assertTrue(criteria.apply(entity.build()));
+        assertTrue(criteria.test(entity.build()));
     }
 }

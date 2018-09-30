@@ -35,7 +35,7 @@ public class HasNotCriteria<T> extends TermCriteria {
     }
 
     @Override
-    public boolean apply(AttributeStore obj) {
+    public boolean test(AttributeStore obj) {
         if(obj.get(getTerm()) == null)
             return true;
 

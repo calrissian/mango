@@ -15,8 +15,6 @@
  */
 package org.calrissian.mango.collect;
 
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.UnmodifiableIterator;
@@ -24,6 +22,8 @@ import com.google.common.collect.UnmodifiableIterator;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import static java.util.Arrays.asList;
@@ -155,7 +155,7 @@ public class CloseableIterables {
      * resulting closeable iterable's iterator does not support {@code remove()}.
      */
     public static <T> CloseableIterable<T> filter(final CloseableIterable<T> iterable, final Predicate<? super T> filter) {
-        return wrap(Iterables.filter(iterable, filter), iterable);
+        return wrap(Iterables.filter(iterable, filter::test), iterable);
     }
 
     /**
@@ -224,7 +224,7 @@ public class CloseableIterables {
      * fromIterable}.
      */
     public static <F, T> CloseableIterable<T> transform(final CloseableIterable<F> iterable, final Function<? super F, ? extends T> function) {
-        return wrap(Iterables.transform(iterable, function), iterable);
+        return wrap(Iterables.transform(iterable, function::apply), iterable);
     }
 
     /**

@@ -15,9 +15,8 @@
  */
 package org.calrissian.mango.collect;
 
-import com.google.common.base.Function;
-
 import java.util.List;
+import java.util.function.Function;
 
 import static java.util.Objects.requireNonNull;
 
