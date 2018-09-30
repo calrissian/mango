@@ -40,9 +40,9 @@ public class OrCriteria extends ParentCriteria {
     }
 
     @Override
-    public boolean apply(AttributeStore obj) {
+    public boolean test(AttributeStore obj) {
         for (Criteria node : children()) {
-            if (node.apply(obj))
+            if (node.test(obj))
                 return true;
         }
 

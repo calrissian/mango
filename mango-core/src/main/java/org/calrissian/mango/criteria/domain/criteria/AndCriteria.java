@@ -24,7 +24,7 @@ import java.util.List;
 public class AndCriteria extends ParentCriteria {
 
     public AndCriteria(ParentCriteria parent) {
-        this(new ArrayList<Criteria>(), parent);
+        this(new ArrayList<>(), parent);
     }
 
     public AndCriteria(List<Criteria> nodes, ParentCriteria parent) {
@@ -32,9 +32,9 @@ public class AndCriteria extends ParentCriteria {
     }
 
     @Override
-    public boolean apply(AttributeStore obj) {
+    public boolean test(AttributeStore obj) {
         for (Criteria node : children()) {
-            if (!node.apply(obj))
+            if (!node.test(obj))
                 return false;
         }
 

@@ -15,8 +15,6 @@
  */
 package org.calrissian.mango.collect;
 
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.PeekingIterator;
 
@@ -24,6 +22,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
@@ -132,7 +132,7 @@ public class CloseableIterators {
      * Returns the elements of {@code unfiltered} that satisfy a predicate.
      */
     public static <T> CloseableIterator<T> filter(final CloseableIterator<T> iterator, final Predicate<T> filter) {
-        return wrap(Iterators.filter(iterator, filter), iterator);
+        return wrap(Iterators.filter(iterator, filter::test), iterator);
     }
 
     /**
@@ -230,7 +230,7 @@ public class CloseableIterators {
      * fromIterator}.
      */
     public static <F, T> CloseableIterator<T> transform(CloseableIterator<F> iterator, Function<F, T> function) {
-        return wrap(Iterators.transform(iterator, function), iterator);
+        return wrap(Iterators.transform(iterator, function::apply), iterator);
     }
 
     /**

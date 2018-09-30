@@ -32,19 +32,19 @@ public class RangeCriteriaTest {
         EntityBuilder entity = EntityBuilder.create("type", "id");
 
         // first test without attribute existing
-        assertFalse(criteria.apply(entity.build()));
+        assertFalse(criteria.test(entity.build()));
 
         entity = entity.attr("key1", 11);
-        assertFalse(criteria.apply(entity.build()));
+        assertFalse(criteria.test(entity.build()));
 
         entity = entity.attr("key1", 4);
-        assertFalse(criteria.apply(entity.build()));
+        assertFalse(criteria.test(entity.build()));
 
         entity = entity.attr("key1", 5);
-        assertTrue(criteria.apply(entity.build()));
+        assertTrue(criteria.test(entity.build()));
 
         entity = entity.attr("key1", 6);
-        assertTrue(criteria.apply(entity.build()));
+        assertTrue(criteria.test(entity.build()));
 
     }
 
@@ -55,6 +55,6 @@ public class RangeCriteriaTest {
         EntityBuilder entity = EntityBuilder.create("type", "id")
                 .attr("key1", 4)
                 .attr("key1", 6);
-        assertTrue(criteria.apply(entity.build()));
+        assertTrue(criteria.test(entity.build()));
     }
 }

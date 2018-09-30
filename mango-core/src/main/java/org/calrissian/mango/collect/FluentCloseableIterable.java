@@ -15,18 +15,20 @@
  */
 package org.calrissian.mango.collect;
 
-import com.google.common.base.Function;
 import com.google.common.base.Joiner;
-import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
 import com.google.common.collect.*;
 
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 import static java.util.Arrays.asList;
 import static java.util.Objects.requireNonNull;
+import static java.util.Optional.empty;
+import static java.util.Optional.ofNullable;
 import static org.calrissian.mango.collect.CloseableIterables.wrap;
 
 /**
@@ -153,7 +155,7 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
      * Returns {@code true} if any element in this fluent iterable satisfies the predicate.
      */
     public final boolean anyMatch(Predicate<? super T> predicate) {
-        return Iterables.any(this, predicate);
+        return Iterables.any(this, predicate::test);
     }
 
     /**
@@ -161,7 +163,7 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
      * If this fluent iterable is empty, {@code true} is returned.
      */
     public final boolean allMatch(Predicate<? super T> predicate) {
-        return Iterables.all(this, predicate);
+        return Iterables.all(this, predicate::test);
     }
 
     /**
@@ -172,7 +174,7 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
      * is matched in this fluent iterable, a {@link NullPointerException} will be thrown.
      */
     public final Optional<T> firstMatch(Predicate<? super T> predicate) {
-        return Iterables.tryFind(this, predicate);
+        return ofNullable(Iterables.tryFind(this, predicate::test).orNull());
     }
 
     /**
@@ -196,8 +198,7 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
      * function-returned iterables' iterator does. After a successful {@code remove()} call,
      * the returned fluent iterable no longer contains the corresponding element.
      */
-    public final <E> FluentCloseableIterable<E> transformAndConcat(
-            Function<? super T, ? extends Iterable<E>> function) {
+    public final <E> FluentCloseableIterable<E> transformAndConcat(Function<? super T, ? extends Iterable<E>> function) {
         return from(CloseableIterables.concat(transform(function)));
     }
 
@@ -209,7 +210,7 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
         Iterator<T> iterator = this.iterator();
         return iterator.hasNext()
                 ? Optional.of(iterator.next())
-                : Optional.<T>absent();
+                : empty();
     }
 
     /**
@@ -220,7 +221,7 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
         // Iterables#getLast was inlined here so we don't have to throw/catch a NSEE
         Iterator<T> iterator = this.iterator();
         if (!iterator.hasNext()) {
-            return Optional.absent();
+            return empty();
         }
 
         while (true) {
@@ -322,7 +323,7 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
      * which result will be mapped to that key in the returned map.
      */
     public final <V> ImmutableMap<T, V> toMap(Function<? super T, V> valueFunction) {
-        return Maps.toMap(this, valueFunction);
+        return Maps.toMap(this, valueFunction::apply);
     }
 
     /**
@@ -335,7 +336,7 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
      * corresponding to each key appear in the same order as they are encountered.
      */
     public final <K> ImmutableListMultimap<K, T> index(Function<? super T, K> keyFunction) {
-        return Multimaps.index(this, keyFunction);
+        return Multimaps.index(this, keyFunction::apply);
     }
 
     /**
@@ -356,7 +357,7 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
      * index}.
      */
     public final <K> ImmutableMap<K, T> uniqueIndex(Function<? super T, K> keyFunction) {
-        return Maps.uniqueIndex(this, keyFunction);
+        return Maps.uniqueIndex(this, keyFunction::apply);
     }
 
     /**

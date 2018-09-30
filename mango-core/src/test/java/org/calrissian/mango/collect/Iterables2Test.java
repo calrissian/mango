@@ -16,8 +16,6 @@
 package org.calrissian.mango.collect;
 
 
-import com.google.common.base.Function;
-import com.google.common.collect.Multimaps;
 import org.junit.Test;
 
 import java.util.List;
@@ -47,8 +45,6 @@ public class Iterables2Test {
 
     @Test
     public void groupByTest() {
-
-        Multimaps.index(asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), (Function<Integer, Object>) input -> input/5).values();
 
         List<Integer> testdata = asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 

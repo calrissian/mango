@@ -15,19 +15,17 @@
  */
 package org.calrissian.mango.criteria.domain.criteria;
 
-import com.google.common.base.Predicate;
 import org.calrissian.mango.domain.AttributeStore;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * Criteria represents a predicate tree which can applied to {@link org.calrissian.mango.domain.AttributeStore} objects. Custom predicates can
  * also be plugged in to the tree and evaluated.
  */
 public interface Criteria extends Predicate<AttributeStore>, Serializable, Cloneable {
-
-    boolean apply(AttributeStore obj);
 
     ParentCriteria parent();
 
