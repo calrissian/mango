@@ -15,8 +15,6 @@
  */
 package org.calrissian.mango.json.util.store;
 
-import com.google.common.collect.Maps;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -67,7 +65,7 @@ class ObjectJsonNode implements JsonTreeNode {
 
     @Override
     public Map<String, Object> toObject() {
-        return transformEntries(children, function);
+        return transformEntries(children, (s, jsonTreeNode) -> jsonTreeNode.toObject());
     }
 
 
@@ -75,11 +73,4 @@ class ObjectJsonNode implements JsonTreeNode {
     public String toString() {
         return toObject().toString();
     }
-
-    private static final Maps.EntryTransformer<String, JsonTreeNode, Object> function = new Maps.EntryTransformer<String, JsonTreeNode, Object>() {
-        @Override
-        public Object transformEntry(String s, JsonTreeNode jsonTreeNode) {
-            return jsonTreeNode.toObject();
-        }
-    };
 }
