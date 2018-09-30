@@ -18,7 +18,7 @@ package org.calrissian.mango.criteria.domain.criteria;
 import org.calrissian.mango.domain.entity.EntityBuilder;
 import org.junit.Test;
 
-import static com.google.common.collect.Ordering.natural;
+import static java.util.Comparator.naturalOrder;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -27,7 +27,7 @@ public class NotEqualsCriteriaTest {
     @Test
     public void testNotEquals() {
 
-        Criteria eq = new NotEqualsCriteria<>("key1", "val1", natural(), null);
+        Criteria eq = new NotEqualsCriteria<>("key1", "val1", naturalOrder(), null);
         EntityBuilder entity = EntityBuilder.create("type", "id")
                 .attr("key1", "val2");
 
@@ -37,7 +37,7 @@ public class NotEqualsCriteriaTest {
     @Test
     public void testEquals() {
 
-        Criteria eq = new NotEqualsCriteria<>("key1", "val1", natural(), null);
+        Criteria eq = new NotEqualsCriteria<>("key1", "val1", naturalOrder(), null);
         EntityBuilder entity = EntityBuilder.create("type", "id")
                 .attr("key1", "val1");
 
