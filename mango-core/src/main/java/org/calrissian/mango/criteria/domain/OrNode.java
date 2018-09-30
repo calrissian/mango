@@ -15,10 +15,11 @@
  */
 package org.calrissian.mango.criteria.domain;
 
-import com.google.common.base.Joiner;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import static java.util.stream.Collectors.joining;
 
 public class OrNode extends ParentNode {
     private static final long serialVersionUID = 1L;
@@ -28,7 +29,7 @@ public class OrNode extends ParentNode {
     }
 
     public OrNode(ParentNode parent) {
-        this(new ArrayList<Node>(), parent);
+        this(new ArrayList<>(), parent);
     }
 
     public OrNode(List<Node> nodes, ParentNode parent) {
@@ -45,6 +46,6 @@ public class OrNode extends ParentNode {
 
     @Override
     public String toString() {
-        return "(" + Joiner.on(" or ").join(getNodes()) + ")";
+        return "(" + getNodes().stream().map(Objects::toString).collect(joining(" or ")) + ")";
     }
 }

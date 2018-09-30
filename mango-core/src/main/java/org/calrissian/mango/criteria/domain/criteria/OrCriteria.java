@@ -15,11 +15,13 @@
  */
 package org.calrissian.mango.criteria.domain.criteria;
 
-import com.google.common.base.Joiner;
 import org.calrissian.mango.domain.AttributeStore;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import static java.util.stream.Collectors.joining;
 
 public class OrCriteria extends ParentCriteria {
 
@@ -51,6 +53,6 @@ public class OrCriteria extends ParentCriteria {
 
     @Override
     public String toString() {
-        return "(" + Joiner.on(" or ").join(children()) + ")";
+        return "(" + children().stream().map(Objects::toString).collect(joining(" or ")) + ")";
     }
 }

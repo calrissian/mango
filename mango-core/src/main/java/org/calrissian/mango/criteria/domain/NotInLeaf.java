@@ -15,9 +15,10 @@
  */
 package org.calrissian.mango.criteria.domain;
 
-import com.google.common.base.Joiner;
-
 import java.util.Collection;
+import java.util.Objects;
+
+import static java.util.stream.Collectors.joining;
 
 public class NotInLeaf<T extends Collection> extends TermValueLeaf<T> {
 
@@ -32,6 +33,6 @@ public class NotInLeaf<T extends Collection> extends TermValueLeaf<T> {
 
     @Override
     public String toString() {
-        return getTerm() + " !in(" + Joiner.on(",").join(getValue()) + ")";
+        return "!in(" + getValue().stream().map(Objects::toString).collect(joining(",")) + ")";
     }
 }
