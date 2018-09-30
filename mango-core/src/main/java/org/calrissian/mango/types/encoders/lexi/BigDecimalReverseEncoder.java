@@ -19,7 +19,7 @@ import org.calrissian.mango.types.encoders.AbstractBigDecimalEncoder;
 
 import java.math.BigDecimal;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 public class BigDecimalReverseEncoder extends AbstractBigDecimalEncoder<String> {
     private static final long serialVersionUID = 1L;
@@ -28,7 +28,7 @@ public class BigDecimalReverseEncoder extends AbstractBigDecimalEncoder<String> 
 
     @Override
     public String encode(BigDecimal value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         return bigDecEncoder.encode(value.negate());
     }
 

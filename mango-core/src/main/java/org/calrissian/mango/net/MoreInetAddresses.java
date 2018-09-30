@@ -23,11 +23,11 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.net.InetAddresses.toAddrString;
 import static java.lang.Integer.parseInt;
 import static java.lang.String.format;
 import static java.util.Arrays.copyOfRange;
+import static java.util.Objects.requireNonNull;
 
 /**
  * Static utility methods pertaining to {@link InetAddress} instances and not already provided in {@link com.google.common.net.InetAddresses}.
@@ -100,7 +100,7 @@ public class MoreInetAddresses {
      * @throws IllegalArgumentException if the argument is not a valid IP string literal
      */
     public static InetAddress forString(String ipString) {
-        checkNotNull(ipString);
+        requireNonNull(ipString);
 
         InetAddress address = InetAddresses.forString(ipString);
 
@@ -117,7 +117,7 @@ public class MoreInetAddresses {
      * does not represent a valid ip address like {@code InetAddress.getByName()}.
      */
     public static Inet4Address forIPv4String(String ipString) {
-        checkNotNull(ipString);
+        requireNonNull(ipString);
 
         try{
             InetAddress parsed = forString(ipString);
@@ -138,7 +138,7 @@ public class MoreInetAddresses {
      * instance.
      */
     public static Inet6Address forIPv6String(String ipString) {
-        checkNotNull(ipString);
+        requireNonNull(ipString);
 
         try{
             InetAddress parsed = forString(ipString);
@@ -333,7 +333,7 @@ public class MoreInetAddresses {
      * <p>Note: This supports IPv6 "IPv4 mapped" addresses and will create a valid Inet6Address to account for them.
      */
     public static CidrInfo parseCIDR(String cidr) {
-        checkNotNull(cidr);
+        requireNonNull(cidr);
         try {
             String[] parts = cidr.split("/");
             checkArgument(parts.length == 2);

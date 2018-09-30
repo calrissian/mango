@@ -18,8 +18,8 @@ package org.calrissian.mango.types.encoders.lexi;
 
 import org.calrissian.mango.types.TypeEncoder;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
+import static java.util.Objects.requireNonNull;
 import static org.calrissian.mango.types.encoders.lexi.EncodingUtils.reverse;
 
 public class ReverseEncoder<T> implements TypeEncoder<T, String> {
@@ -49,7 +49,7 @@ public class ReverseEncoder<T> implements TypeEncoder<T, String> {
 
     @Override
     public T decode(String value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         String reversed = new String(reverse(value.getBytes(ISO_8859_1)), ISO_8859_1);
         return encoder.decode(reversed);
     }

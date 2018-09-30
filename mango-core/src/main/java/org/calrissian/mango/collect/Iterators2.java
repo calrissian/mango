@@ -24,9 +24,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import static com.google.common.base.Objects.equal;
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Iterators.peekingIterator;
 import static java.util.Collections.unmodifiableList;
+import static java.util.Objects.requireNonNull;
 
 /**
  * Additional functions for working on Iterators
@@ -40,7 +40,7 @@ public class Iterators2 {
      * if the data provided is sorted.
      */
     public static <T> Iterator<T> distinct(final Iterator<T> iterator) {
-        checkNotNull(iterator);
+        requireNonNull(iterator);
         return new AbstractIterator<T>() {
             private final PeekingIterator<T> peekingIterator = peekingIterator(iterator);
             private T curr = null;
@@ -69,8 +69,8 @@ public class Iterators2 {
      * <p>The returned lists implement {@link java.util.RandomAccess}.
      */
     public static <T> Iterator<List<T>> groupBy(final Iterator<? extends T> iterator, final Function<? super T, ?> groupingFunction) {
-        checkNotNull(iterator);
-        checkNotNull(groupingFunction);
+        requireNonNull(iterator);
+        requireNonNull(groupingFunction);
         return new AbstractIterator<List<T>>() {
             private final PeekingIterator<T> peekingIterator = peekingIterator(iterator);
 

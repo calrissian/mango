@@ -18,8 +18,8 @@ package org.calrissian.mango.net;
 import java.io.Serializable;
 import java.net.InetAddress;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.net.InetAddresses.toAddrString;
+import static java.util.Objects.requireNonNull;
 
 public abstract class IP<T extends InetAddress> implements Serializable {
     private static final long serialVersionUID = 2L;
@@ -27,7 +27,7 @@ public abstract class IP<T extends InetAddress> implements Serializable {
     private final T address;
 
     protected IP(T address) {
-        checkNotNull(address);
+        requireNonNull(address);
         this.address = address;
     }
 

@@ -19,7 +19,7 @@ package org.calrissian.mango.types.encoders.lexi;
 import org.calrissian.mango.types.encoders.AbstractFloatEncoder;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 import static org.calrissian.mango.types.encoders.lexi.EncodingUtils.*;
 
 public class FloatReverseEncoder extends AbstractFloatEncoder<String> {
@@ -27,13 +27,13 @@ public class FloatReverseEncoder extends AbstractFloatEncoder<String> {
 
     @Override
     public String encode(Float value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         return encodeUInt(~normalizeFloat(value));
     }
 
     @Override
     public Float decode(String value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         checkArgument(value.length() == 8, "The value is not a valid encoding");
         return denormalizeFloat(~(int) fromHex(value));
     }

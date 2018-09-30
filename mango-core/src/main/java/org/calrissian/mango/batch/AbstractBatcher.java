@@ -23,11 +23,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static java.lang.Long.MAX_VALUE;
 import static java.lang.Thread.interrupted;
 import static java.util.Collections.unmodifiableCollection;
+import static java.util.Objects.requireNonNull;
 import static java.util.concurrent.Executors.newSingleThreadExecutor;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.logging.Level.SEVERE;
@@ -76,7 +76,7 @@ abstract class AbstractBatcher<T> implements Batcher<T> {
      */
     @Override
     public final boolean add(T item) {
-        checkNotNull(item);
+        requireNonNull(item);
         checkState(!isClosed, "The batcher has been closed");
 
         return backingQueue.offer(item);
@@ -87,8 +87,8 @@ abstract class AbstractBatcher<T> implements Batcher<T> {
      */
     @Override
     public final boolean add(T item, long timeout, TimeUnit unit) throws InterruptedException {
-        checkNotNull(item);
-        checkNotNull(unit);
+        requireNonNull(item);
+        requireNonNull(unit);
         checkState(!isClosed, "The batcher has been closed");
 
         return backingQueue.offer(item, timeout, unit);
@@ -99,7 +99,7 @@ abstract class AbstractBatcher<T> implements Batcher<T> {
      */
     @Override
     public final boolean addOrWait(T item) throws InterruptedException {
-        checkNotNull(item);
+        requireNonNull(item);
         checkState(!isClosed, "The batcher has been closed");
 
         backingQueue.put(item);

@@ -18,7 +18,7 @@ package org.calrissian.mango.types.encoders.lexi;
 
 import org.calrissian.mango.types.encoders.AbstractIntegerEncoder;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 public class IntegerReverseEncoder extends AbstractIntegerEncoder<String> {
     private static final long serialVersionUID = 1L;
@@ -27,7 +27,7 @@ public class IntegerReverseEncoder extends AbstractIntegerEncoder<String> {
 
     @Override
     public String encode(Integer value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         return intEncoder.encode(~value);
     }
 

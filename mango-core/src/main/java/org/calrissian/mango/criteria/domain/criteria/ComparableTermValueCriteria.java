@@ -17,14 +17,14 @@ package org.calrissian.mango.criteria.domain.criteria;
 
 import java.util.Comparator;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 abstract class ComparableTermValueCriteria<T> extends TermValueCriteria<T> {
     private final Comparator<T> comparator;
 
     public ComparableTermValueCriteria(String term, T value, Comparator<T> comparator, ParentCriteria parentCriteria) {
         super(term, value, parentCriteria);
-        this.comparator = checkNotNull(comparator);
+        this.comparator = requireNonNull(comparator);
     }
 
     protected Comparator<T> getComparator() {

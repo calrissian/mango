@@ -17,14 +17,14 @@ package org.calrissian.mango.domain.entity;
 
 import org.calrissian.mango.domain.AbstractAttributeStoreBuilder;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 public class EntityBuilder extends AbstractAttributeStoreBuilder<Entity, EntityBuilder> {
 
     private final EntityIdentifier identifier;
 
     public static EntityBuilder create(EntityIdentifier identifier) {
-        checkNotNull(identifier);
+        requireNonNull(identifier);
         return new EntityBuilder(identifier);
     }
 

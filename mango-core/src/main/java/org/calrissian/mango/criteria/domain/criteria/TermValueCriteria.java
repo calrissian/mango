@@ -17,7 +17,7 @@ package org.calrissian.mango.criteria.domain.criteria;
 
 import java.util.Objects;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 public abstract class TermValueCriteria<T> extends TermCriteria {
 
@@ -25,7 +25,7 @@ public abstract class TermValueCriteria<T> extends TermCriteria {
 
     public TermValueCriteria(String term, T value, ParentCriteria parentCriteria) {
         super(term, parentCriteria);
-        this.value = checkNotNull(value);;
+        this.value = requireNonNull(value);;
     }
 
     public T getValue() {

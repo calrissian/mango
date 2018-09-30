@@ -20,7 +20,7 @@ import org.calrissian.mango.criteria.visitor.NodeVisitor;
 import java.util.List;
 import java.util.Objects;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 public abstract class ParentNode implements Node {
     private static final long serialVersionUID = 1L;
@@ -29,7 +29,7 @@ public abstract class ParentNode implements Node {
     private final ParentNode parent;
 
     public ParentNode(List<Node> nodes, ParentNode parent) {
-        this.nodes = checkNotNull(nodes);
+        this.nodes = requireNonNull(nodes);
         this.parent = parent;
     }
 

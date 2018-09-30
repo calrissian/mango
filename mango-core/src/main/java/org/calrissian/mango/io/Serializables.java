@@ -19,7 +19,7 @@ import java.io.*;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 import static org.apache.commons.codec.binary.Base64.decodeBase64;
 import static org.apache.commons.codec.binary.Base64.encodeBase64;
 
@@ -41,7 +41,7 @@ public class Serializables {
      * then the bytes will be run through gzip compression.
      */
     public static byte [] serialize(Serializable serializable, boolean compress) throws IOException {
-        checkNotNull(serializable);
+        requireNonNull(serializable);
 
         try (ByteArrayOutputStream o = new ByteArrayOutputStream();
              ObjectOutputStream oos = new ObjectOutputStream(compress ? new GZIPOutputStream(o) : o)) {
@@ -64,7 +64,7 @@ public class Serializables {
      * data was originally compresses when using the {@link Serializables#serialize(Serializable, boolean)} method.
      */
     public static <T extends Serializable> T deserialize(byte[] bytes, boolean compressed) throws IOException, ClassNotFoundException {
-        checkNotNull(bytes);
+        requireNonNull(bytes);
 
         try (ByteArrayInputStream i = new ByteArrayInputStream(bytes);
              ObjectInputStream ois = new ObjectInputStream(compressed ? new GZIPInputStream(i) : i)) {

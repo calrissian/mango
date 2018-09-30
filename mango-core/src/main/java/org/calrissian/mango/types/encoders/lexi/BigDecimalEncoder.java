@@ -21,9 +21,9 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
 import static java.lang.Integer.MIN_VALUE;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.Objects.requireNonNull;
 
 public class BigDecimalEncoder extends AbstractBigDecimalEncoder<String> {
     private static final long serialVersionUID = 1L;
@@ -68,7 +68,7 @@ public class BigDecimalEncoder extends AbstractBigDecimalEncoder<String> {
 
     @Override
     public String encode(BigDecimal value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
 
         int exp = value.precision() - value.scale() - 1;
         String mantissa;
@@ -90,7 +90,7 @@ public class BigDecimalEncoder extends AbstractBigDecimalEncoder<String> {
 
     @Override
     public BigDecimal decode(String value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         checkArgument(value.length() > 9, "The value is not a valid encoding");
 
         int exp = intEncoder.decode(value.substring(1, 9));

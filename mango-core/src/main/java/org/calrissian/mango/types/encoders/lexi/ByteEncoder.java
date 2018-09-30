@@ -19,7 +19,7 @@ package org.calrissian.mango.types.encoders.lexi;
 import org.calrissian.mango.types.encoders.AbstractByteEncoder;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 import static org.calrissian.mango.types.encoders.lexi.EncodingUtils.fromHex;
 
 public class ByteEncoder extends AbstractByteEncoder<String> {
@@ -27,13 +27,13 @@ public class ByteEncoder extends AbstractByteEncoder<String> {
 
     @Override
     public String encode(Byte value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         return String.format("%02x", value);
     }
 
     @Override
     public Byte decode(String value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         checkArgument(value.length() == 2, "The value is not a valid encoding");
         return (byte) fromHex(value);
     }

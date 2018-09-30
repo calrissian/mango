@@ -18,8 +18,8 @@ package org.calrissian.mango.criteria.domain.criteria;
 import java.util.List;
 import java.util.Objects;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static java.util.Collections.unmodifiableList;
+import static java.util.Objects.requireNonNull;
 
 public abstract class ParentCriteria implements Criteria {
     private static final long serialVersionUID = 1L;
@@ -28,7 +28,7 @@ public abstract class ParentCriteria implements Criteria {
     private final ParentCriteria parent;
 
     public ParentCriteria(List<Criteria> nodes, ParentCriteria parent) {
-        this.nodes = checkNotNull(nodes);
+        this.nodes = requireNonNull(nodes);
         this.parent = parent;
     }
 

@@ -18,21 +18,21 @@ package org.calrissian.mango.types.encoders.simple;
 
 import org.calrissian.mango.types.encoders.AbstractBooleanEncoder;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static java.lang.Boolean.parseBoolean;
+import static java.util.Objects.requireNonNull;
 
 public class BooleanEncoder extends AbstractBooleanEncoder<String> {
     private static final long serialVersionUID = 1L;
 
     @Override
     public String encode(Boolean value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         return value.toString();
     }
 
     @Override
     public Boolean decode(String value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
 
         String lowercase = value.toLowerCase();
         if (!lowercase.equals("true") && !lowercase.equals("false"))

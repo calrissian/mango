@@ -19,7 +19,7 @@ import com.google.common.base.Function;
 
 import java.util.List;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 /**
  * Additional functions for working on Iterables
@@ -33,7 +33,7 @@ public class Iterables2 {
      * with libraries that use reflection to determine bean definitions such as Jackson.
      */
     public static <T> Iterable<T> simpleIterable(final Iterable<T> iterable) {
-        checkNotNull(iterable);
+        requireNonNull(iterable);
         return () -> iterable.iterator();
     }
 
@@ -42,7 +42,7 @@ public class Iterables2 {
      * if the data provided is sorted.
      */
     public static <T> Iterable<T> distinct(final Iterable<T> iterable) {
-        checkNotNull(iterable);
+        requireNonNull(iterable);
         return () -> Iterators2.distinct(iterable.iterator());
     }
 
@@ -56,8 +56,8 @@ public class Iterables2 {
      * <p>The returned lists implement {@link java.util.RandomAccess}.
      */
     public static <T> Iterable<List<T>> groupBy(final Iterable<? extends T> iterable, final Function<? super T, ?> groupingFunction) {
-        checkNotNull(iterable);
-        checkNotNull(groupingFunction);
+        requireNonNull(iterable);
+        requireNonNull(groupingFunction);
         return () -> Iterators2.groupBy(iterable.iterator(), groupingFunction);
     }
 }

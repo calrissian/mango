@@ -18,7 +18,7 @@ package org.calrissian.mango.types.encoders.lexi;
 
 import org.calrissian.mango.types.encoders.AbstractBooleanEncoder;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 public class BooleanReverseEncoder extends AbstractBooleanEncoder<String> {
     private static final long serialVersionUID = 1L;
@@ -27,7 +27,7 @@ public class BooleanReverseEncoder extends AbstractBooleanEncoder<String> {
 
     @Override
     public String encode(Boolean value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         return booleanEncoder.encode(!value);
     }
 

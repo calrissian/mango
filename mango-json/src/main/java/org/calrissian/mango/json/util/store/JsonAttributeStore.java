@@ -28,8 +28,8 @@ import org.calrissian.mango.domain.Pair;
 import java.io.IOException;
 import java.util.*;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static java.util.Collections.sort;
+import static java.util.Objects.requireNonNull;
 import static org.calrissian.mango.json.util.store.JsonMetadata.*;
 import static org.calrissian.mango.json.util.store.JsonUtil.nodeToObject;
 
@@ -61,7 +61,7 @@ public class JsonAttributeStore {
      */
     public static Collection<Attribute> fromJson(ObjectNode object) throws IOException {
         Collection<Attribute> attributes = new HashSet<>();
-        convertJsonObject(attributes, object, "", 0, new HashMap<String, String>());
+        convertJsonObject(attributes, object, "", 0, new HashMap<>());
 
         return attributes;
     }
@@ -74,7 +74,7 @@ public class JsonAttributeStore {
      * @throws java.io.IOException
      */
     public static Collection<Attribute> fromJson(String json, ObjectMapper objectMapper) throws IOException {
-        checkNotNull(json);
+        requireNonNull(json);
         JsonNode object = objectMapper.readTree(json);
         if(object.isObject())
             return fromJson((ObjectNode)object);
@@ -89,9 +89,9 @@ public class JsonAttributeStore {
      * already been parsed from json strings and processed to be turned into attribute stores as well.
      */
     public static Collection<Attribute> fromMap(Map<String,Object> map) {
-        checkNotNull(map);
+        requireNonNull(map);
         Collection<Attribute> attributes = new HashSet<>();
-        convertObject(attributes, map, "", 0, new HashMap<String, String>());
+        convertObject(attributes, map, "", 0, new HashMap<>());
         return attributes;
     }
 
@@ -114,7 +114,7 @@ public class JsonAttributeStore {
      */
     public static Map<String,Object> toObject(Collection<Attribute> attributeCollection) {
 
-        checkNotNull(attributeCollection);
+        requireNonNull(attributeCollection);
 
         List<Attribute> attributes = new ArrayList<>(attributeCollection);
 

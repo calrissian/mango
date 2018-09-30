@@ -20,20 +20,20 @@ import org.calrissian.mango.types.exception.TypeEncodingException;
 
 import java.math.BigInteger;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 public class BigIntegerEncoder extends AbstractBigIntegerEncoder<String> {
     private static final long serialVersionUID = 1L;
 
     @Override
     public String encode(BigInteger value) throws TypeEncodingException {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         return value.toString();
     }
 
     @Override
     public BigInteger decode(String value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         return new BigInteger(value);
     }
 }

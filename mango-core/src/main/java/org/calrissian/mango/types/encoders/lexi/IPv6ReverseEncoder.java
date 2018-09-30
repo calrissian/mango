@@ -19,7 +19,7 @@ package org.calrissian.mango.types.encoders.lexi;
 import org.calrissian.mango.net.IPv6;
 import org.calrissian.mango.types.encoders.AbstractIPv6Encoder;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 public class IPv6ReverseEncoder extends AbstractIPv6Encoder<String> {
     private static final long serialVersionUID = 1L;
@@ -28,13 +28,13 @@ public class IPv6ReverseEncoder extends AbstractIPv6Encoder<String> {
 
     @Override
     public String encode(IPv6 value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         return addressEncoder.encode(value.getAddress());
     }
 
     @Override
     public IPv6 decode(String value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         return new IPv6(addressEncoder.decode(value));
     }
 }

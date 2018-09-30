@@ -26,9 +26,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyIterator;
+import static java.util.Objects.requireNonNull;
 
 /**
  * Utility class to develop commonly used closeable iterables functions.
@@ -59,7 +59,7 @@ public class CloseableIterables {
      * a {@link CloseableIterable} it will simply be returned as is.
      */
     public static <T> CloseableIterable<T> fromIterable(Iterable<T> iterable) {
-        checkNotNull(iterable);
+        requireNonNull(iterable);
         if (iterable instanceof CloseableIterable) return (CloseableIterable<T>) iterable;
 
         return new FluentCloseableIterable<T>() {
@@ -249,7 +249,7 @@ public class CloseableIterables {
      * necessary.
      */
     public static <T> CloseableIterable<T> chain(final Iterable<? extends CloseableIterable<? extends T>> iterables) {
-        checkNotNull(iterables);
+        requireNonNull(iterables);
 
         //Don't use CloseableIterators here, as Iterables can reiterate over their data
         //and don't want to close it on them.
@@ -280,7 +280,7 @@ public class CloseableIterables {
      * resource.
      */
     public static <T> CloseableIterable<T> autoClose(final CloseableIterable<? extends T> iterable) {
-        checkNotNull(iterable);
+        requireNonNull(iterable);
         return new FluentCloseableIterable<T>() {
             @Override
             protected void doClose() {

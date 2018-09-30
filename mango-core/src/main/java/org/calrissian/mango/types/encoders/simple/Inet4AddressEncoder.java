@@ -20,20 +20,20 @@ import org.calrissian.mango.types.encoders.AbstractInet4AddressEncoder;
 
 import java.net.Inet4Address;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.net.InetAddresses.toAddrString;
+import static java.util.Objects.requireNonNull;
 import static org.calrissian.mango.net.MoreInetAddresses.forIPv4String;
 
 public class Inet4AddressEncoder extends AbstractInet4AddressEncoder<String> {
     @Override
     public String encode(Inet4Address value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         return toAddrString(value);
     }
 
     @Override
     public Inet4Address decode(String value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
 
         return forIPv4String(value);
     }

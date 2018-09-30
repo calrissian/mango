@@ -19,7 +19,7 @@ import org.calrissian.mango.domain.Identifiable;
 
 import java.io.Serializable;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 public class EntityIdentifier implements Identifiable, Serializable {
 
@@ -29,8 +29,8 @@ public class EntityIdentifier implements Identifiable, Serializable {
     private final String id;
 
     public EntityIdentifier(String type, String id) {
-        this.type = checkNotNull(type);
-        this.id = checkNotNull(id);
+        this.type = requireNonNull(type);
+        this.id = requireNonNull(id);
     }
 
     public String getType() {

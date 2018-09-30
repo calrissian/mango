@@ -18,21 +18,21 @@ package org.calrissian.mango.types.encoders.simple;
 
 import org.calrissian.mango.types.encoders.AbstractDoubleEncoder;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static java.lang.Double.parseDouble;
+import static java.util.Objects.requireNonNull;
 
 public class DoubleEncoder extends AbstractDoubleEncoder<String> {
     private static final long serialVersionUID = 1L;
 
     @Override
     public String encode(Double value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         return value.toString();
     }
 
     @Override
     public Double decode(String value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         return parseDouble(value);
     }
 }

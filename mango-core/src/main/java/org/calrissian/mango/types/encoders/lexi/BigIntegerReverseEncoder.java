@@ -20,7 +20,7 @@ import org.calrissian.mango.types.exception.TypeDecodingException;
 
 import java.math.BigInteger;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 public class BigIntegerReverseEncoder extends AbstractBigIntegerEncoder<String> {
     private static final long serialVersionUID = 1L;
@@ -29,7 +29,7 @@ public class BigIntegerReverseEncoder extends AbstractBigIntegerEncoder<String> 
 
     @Override
     public String encode(BigInteger value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         return bigIntEncoder.encode(value.not());
     }
 

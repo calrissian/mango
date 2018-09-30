@@ -19,7 +19,7 @@ package org.calrissian.mango.types.encoders.lexi;
 import org.calrissian.mango.net.IPv4;
 import org.calrissian.mango.types.encoders.AbstractIPv4Encoder;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 public class IPv4Encoder extends AbstractIPv4Encoder<String> {
     private static final long serialVersionUID = 1L;
@@ -28,13 +28,13 @@ public class IPv4Encoder extends AbstractIPv4Encoder<String> {
 
     @Override
     public String encode(IPv4 value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         return addressEncoder.encode(value.getAddress());
     }
 
     @Override
     public IPv4 decode(String value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         return new IPv4(addressEncoder.decode(value));
     }
 }

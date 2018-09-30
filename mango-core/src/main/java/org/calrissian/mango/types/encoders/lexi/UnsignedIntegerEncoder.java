@@ -20,8 +20,8 @@ import com.google.common.primitives.UnsignedInteger;
 import org.calrissian.mango.types.encoders.AbstractUnsignedIntegerEncoder;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.primitives.UnsignedInteger.fromIntBits;
+import static java.util.Objects.requireNonNull;
 import static org.calrissian.mango.types.encoders.lexi.EncodingUtils.encodeUInt;
 import static org.calrissian.mango.types.encoders.lexi.EncodingUtils.fromHex;
 
@@ -30,13 +30,13 @@ public class UnsignedIntegerEncoder extends AbstractUnsignedIntegerEncoder<Strin
 
     @Override
     public String encode(UnsignedInteger value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         return encodeUInt(value.intValue());
     }
 
     @Override
     public UnsignedInteger decode(String value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         checkArgument(value.length() == 8, "The value is not a valid encoding");
         return fromIntBits((int) fromHex(value));
     }
