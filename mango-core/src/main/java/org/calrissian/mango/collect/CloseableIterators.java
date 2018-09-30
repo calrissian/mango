@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Stream;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 /**
  * Utility class to develop commonly used closeable iterator functions.
@@ -50,7 +50,7 @@ public class CloseableIterators {
      * a {@link CloseableIterator} it will simply be returned as is.
      */
     public static <T> CloseableIterator<T> fromIterator(Iterator<T> iterator) {
-        checkNotNull(iterator);
+        requireNonNull(iterator);
         if (iterator instanceof CloseableIterator) return (CloseableIterator<T>) iterator;
 
         return new CloseableIterator<T>() {
@@ -261,7 +261,7 @@ public class CloseableIterators {
      * the closeable iterators in {@code inputs} which have not been exhausted.
      */
     public static <T> CloseableIterator<T> chain(final Iterator<? extends CloseableIterator<? extends T>> iterator) {
-        checkNotNull(iterator);
+        requireNonNull(iterator);
         return new CloseableIterator<T>() {
             CloseableIterator<? extends T> curr = emptyIterator();
 
@@ -313,7 +313,7 @@ public class CloseableIterators {
      * resource.
      */
     public static <T> CloseableIterator<T> autoClose(final CloseableIterator<? extends T> iterator) {
-        checkNotNull(iterator);
+        requireNonNull(iterator);
         return new CloseableIterator<T>() {
             private boolean closed = false;
 

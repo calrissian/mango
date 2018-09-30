@@ -20,20 +20,20 @@ import org.calrissian.mango.types.exception.TypeEncodingException;
 
 import java.math.BigDecimal;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 public class BigDecimalEncoder extends AbstractBigDecimalEncoder<String> {
     private static final long serialVersionUID = 1L;
 
     @Override
     public String encode(BigDecimal value) throws TypeEncodingException {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         return value.toString();
     }
 
     @Override
     public BigDecimal decode(String value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         return new BigDecimal(value);
     }
 }

@@ -22,7 +22,7 @@ import org.calrissian.mango.types.exception.TypeDecodingException;
 import java.math.BigInteger;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 import static org.apache.commons.codec.binary.Hex.decodeHex;
 import static org.apache.commons.codec.binary.Hex.encodeHex;
 
@@ -33,7 +33,7 @@ public class BigIntegerEncoder extends AbstractBigIntegerEncoder<String> {
 
     @Override
     public String encode(BigInteger value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
 
         byte[] bytes = value.toByteArray();
         int length = bytes.length;
@@ -47,7 +47,7 @@ public class BigIntegerEncoder extends AbstractBigIntegerEncoder<String> {
 
     @Override
     public BigInteger decode(String value) throws TypeDecodingException {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         checkArgument(value.length() > 8, "The value is not a valid encoding");
         try {
             return new BigInteger(decodeHex(value.substring(8).toCharArray()));

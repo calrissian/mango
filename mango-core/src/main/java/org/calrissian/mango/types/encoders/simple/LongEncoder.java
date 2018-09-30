@@ -17,21 +17,21 @@ package org.calrissian.mango.types.encoders.simple;
 
 import org.calrissian.mango.types.encoders.AbstractLongEncoder;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static java.lang.Long.parseLong;
+import static java.util.Objects.requireNonNull;
 
 public class LongEncoder extends AbstractLongEncoder<String> {
     private static final long serialVersionUID = 1L;
 
     @Override
     public String encode(Long value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         return value.toString();
     }
 
     @Override
     public Long decode(String value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         return parseLong(value);
     }
 }

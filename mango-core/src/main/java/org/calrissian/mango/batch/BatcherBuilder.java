@@ -19,9 +19,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.*;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkState;
 import static java.lang.System.nanoTime;
 import static java.lang.Thread.currentThread;
+import static java.util.Objects.requireNonNull;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
@@ -70,7 +72,7 @@ public final class BatcherBuilder {
     public BatcherBuilder timeBound(long time, TimeUnit timeUnit) {
         checkState(this.interval == UNSET_INT, "Max time already set");
         checkArgument(time > 0, "Required to have a time interval greater than 0");
-        checkNotNull(timeUnit);
+        requireNonNull(timeUnit);
         this.interval = timeUnit.toNanos(time);
         return this;
     }
@@ -94,7 +96,7 @@ public final class BatcherBuilder {
      */
     public BatcherBuilder listenerService(ExecutorService listenerService) {
         checkState(this.listenerService == null, "A listener service has already been set");
-        checkNotNull(listenerService);
+        requireNonNull(listenerService);
         this.listenerService = listenerService;
         return this;
     }
@@ -105,7 +107,7 @@ public final class BatcherBuilder {
      * Note: The builder is required to have either a time or size bound to build a batch.
      */
     public <T> Batcher<T> build(BatchListener<T> listener) {
-        checkNotNull(listener);
+        requireNonNull(listener);
         checkState(maxSize != UNSET_INT || interval != UNSET_INT, "All batchers are required to have either a time or size bound.");
 
         ExecutorService handler = (listenerService == null ? newCachedThreadPool() : listenerService);

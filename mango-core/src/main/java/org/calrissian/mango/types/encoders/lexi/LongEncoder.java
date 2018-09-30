@@ -18,7 +18,7 @@ package org.calrissian.mango.types.encoders.lexi;
 import org.calrissian.mango.types.encoders.AbstractLongEncoder;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 import static org.calrissian.mango.types.encoders.lexi.EncodingUtils.encodeULong;
 import static org.calrissian.mango.types.encoders.lexi.EncodingUtils.fromHex;
 
@@ -27,13 +27,13 @@ public class LongEncoder extends AbstractLongEncoder<String> {
 
     @Override
     public String encode(Long value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         return encodeULong(value ^ Long.MIN_VALUE);
     }
 
     @Override
     public Long decode(String value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         checkArgument(value.length() == 16, "The value is not a valid encoding");
         return fromHex(value) ^ Long.MIN_VALUE;
     }

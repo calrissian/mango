@@ -24,8 +24,8 @@ import java.net.Inet6Address;
 import java.net.UnknownHostException;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
 import static java.net.Inet6Address.getByAddress;
+import static java.util.Objects.requireNonNull;
 import static org.apache.commons.codec.binary.Hex.decodeHex;
 import static org.apache.commons.codec.binary.Hex.encodeHexString;
 import static org.calrissian.mango.types.encoders.lexi.EncodingUtils.reverse;
@@ -33,13 +33,13 @@ import static org.calrissian.mango.types.encoders.lexi.EncodingUtils.reverse;
 public class Inet6AddressReverseEncoder extends AbstractInet6AddressEncoder<String> {
     @Override
     public String encode(Inet6Address value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         return encodeHexString(reverse(value.getAddress()));
     }
 
     @Override
     public Inet6Address decode(String value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         checkArgument(value.length() == 32, "The value is not a valid encoding");
         try {
             //Use this getByAddress function to prevent the InetAddress.getByAddress function from turning the value

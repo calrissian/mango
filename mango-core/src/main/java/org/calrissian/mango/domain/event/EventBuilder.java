@@ -17,14 +17,14 @@ package org.calrissian.mango.domain.event;
 
 import org.calrissian.mango.domain.AbstractAttributeStoreBuilder;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 public class EventBuilder extends AbstractAttributeStoreBuilder<Event, EventBuilder> {
 
     private final EventIdentifier identifier;
 
     public static EventBuilder create(EventIdentifier identifier) {
-        checkNotNull(identifier);
+        requireNonNull(identifier);
         return new EventBuilder(identifier);
     }
 

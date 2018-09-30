@@ -22,9 +22,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static java.util.Collections.unmodifiableMap;
 import static java.util.Collections.unmodifiableSet;
+import static java.util.Objects.requireNonNull;
 
 /**
  * A value class representing a key/value pair with metadata. This class is immutable.
@@ -47,9 +47,9 @@ public class Attribute<T> implements Serializable {
     }
 
     public Attribute(String key, T value, Map<String, String> metadata) {
-        checkNotNull(key);
-        checkNotNull(value);
-        checkNotNull(metadata);
+        requireNonNull(key);
+        requireNonNull(value);
+        requireNonNull(metadata);
 
         this.key = key;
         this.value = value;

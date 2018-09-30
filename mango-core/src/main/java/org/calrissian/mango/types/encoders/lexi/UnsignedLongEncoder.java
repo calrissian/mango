@@ -20,8 +20,8 @@ import com.google.common.primitives.UnsignedLong;
 import org.calrissian.mango.types.encoders.AbstractUnsignedLongEncoder;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.primitives.UnsignedLong.fromLongBits;
+import static java.util.Objects.requireNonNull;
 import static org.calrissian.mango.types.encoders.lexi.EncodingUtils.encodeULong;
 import static org.calrissian.mango.types.encoders.lexi.EncodingUtils.fromHex;
 
@@ -30,13 +30,13 @@ public class UnsignedLongEncoder extends AbstractUnsignedLongEncoder<String> {
 
     @Override
     public String encode(UnsignedLong value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         return encodeULong(value.longValue());
     }
 
     @Override
     public UnsignedLong decode(String value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         checkArgument(value.length() == 16, "The value is not a valid encoding");
         return fromLongBits((int) fromHex(value));
     }

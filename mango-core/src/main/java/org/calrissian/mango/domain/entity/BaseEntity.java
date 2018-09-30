@@ -18,7 +18,7 @@ package org.calrissian.mango.domain.entity;
 import org.calrissian.mango.domain.AbstractAttributeStore;
 import org.calrissian.mango.domain.Attribute;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 /**
  * Default implementation of {@link Entity}.
@@ -31,7 +31,7 @@ public class BaseEntity extends AbstractAttributeStore implements Entity {
 
     public BaseEntity(EntityIdentifier identifier, Iterable<? extends Attribute> attributes) {
         super(attributes);
-        this.identifier = checkNotNull(identifier);
+        this.identifier = requireNonNull(identifier);
     }
 
     /**

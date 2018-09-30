@@ -18,21 +18,21 @@ package org.calrissian.mango.types.encoders.simple;
 
 import org.calrissian.mango.types.encoders.AbstractIntegerEncoder;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static java.lang.Integer.parseInt;
+import static java.util.Objects.requireNonNull;
 
 public class IntegerEncoder extends AbstractIntegerEncoder<String> {
     private static final long serialVersionUID = 1L;
 
     @Override
     public String encode(Integer value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         return value.toString();
     }
 
     @Override
     public Integer decode(String value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         return parseInt(value);
     }
 }

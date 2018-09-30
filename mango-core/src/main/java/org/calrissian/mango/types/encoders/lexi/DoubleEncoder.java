@@ -19,7 +19,7 @@ package org.calrissian.mango.types.encoders.lexi;
 import org.calrissian.mango.types.encoders.AbstractDoubleEncoder;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 import static org.calrissian.mango.types.encoders.lexi.EncodingUtils.*;
 
 public class DoubleEncoder extends AbstractDoubleEncoder<String> {
@@ -27,13 +27,13 @@ public class DoubleEncoder extends AbstractDoubleEncoder<String> {
 
     @Override
     public String encode(Double value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         return encodeULong(normalizeDouble(value));
     }
 
     @Override
     public Double decode(String value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         checkArgument(value.length() == 16, "The value is not a valid encoding");
         return denormalizeDouble(fromHex(value));
     }

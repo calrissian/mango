@@ -21,7 +21,7 @@ import org.calrissian.mango.domain.AttributeStore;
 import java.util.Comparator;
 import java.util.Objects;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 public class RangeCriteria<T> extends TermCriteria {
 
@@ -31,9 +31,9 @@ public class RangeCriteria<T> extends TermCriteria {
 
     public RangeCriteria(String term, T start, T end, Comparator<T> comparator, ParentCriteria parentCriteria) {
         super(term, parentCriteria);
-        this.start = checkNotNull(start);
-        this.end = checkNotNull(end);
-        this.comparator = checkNotNull(comparator);
+        this.start = requireNonNull(start);
+        this.end = requireNonNull(end);
+        this.comparator = requireNonNull(comparator);
     }
 
     @Override

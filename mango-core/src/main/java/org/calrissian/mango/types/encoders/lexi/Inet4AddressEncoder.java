@@ -24,21 +24,21 @@ import java.net.Inet4Address;
 import java.net.UnknownHostException;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
 import static java.net.InetAddress.getByAddress;
+import static java.util.Objects.requireNonNull;
 import static org.apache.commons.codec.binary.Hex.decodeHex;
 import static org.apache.commons.codec.binary.Hex.encodeHexString;
 
 public class Inet4AddressEncoder extends AbstractInet4AddressEncoder<String> {
     @Override
     public String encode(Inet4Address value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         return encodeHexString(value.getAddress());
     }
 
     @Override
     public Inet4Address decode(String value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         checkArgument(value.length() == 8, "The value is not a valid encoding");
         try {
             return (Inet4Address) getByAddress(decodeHex(value.toCharArray()));

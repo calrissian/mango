@@ -21,9 +21,9 @@ import org.calrissian.mango.types.exception.TypeDecodingException;
 import org.calrissian.mango.types.exception.TypeEncodingException;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
 import static java.lang.Long.parseLong;
 import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 
 public class EventIdentifierEncoder extends AbstractEventIdentifierEncoder<String> {
     private static final long serialVersionUID = 1L;
@@ -32,13 +32,13 @@ public class EventIdentifierEncoder extends AbstractEventIdentifierEncoder<Strin
 
     @Override
     public String encode(EventIdentifier value) throws TypeEncodingException {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         return format("%s%s#%s@%d", SCHEME, value.getType(), value.getId(), value.getTimestamp());
     }
 
     @Override
     public EventIdentifier decode(String value) throws TypeDecodingException {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         checkArgument(value.startsWith(SCHEME) && value.contains("#") && value.contains("@"), "The value is not a valid encoding");
 
         String rel = value.substring(SCHEME.length(), value.length());

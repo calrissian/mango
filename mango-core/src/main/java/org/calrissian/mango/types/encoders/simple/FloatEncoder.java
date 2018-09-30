@@ -18,21 +18,21 @@ package org.calrissian.mango.types.encoders.simple;
 
 import org.calrissian.mango.types.encoders.AbstractFloatEncoder;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static java.lang.Float.parseFloat;
+import static java.util.Objects.requireNonNull;
 
 public class FloatEncoder extends AbstractFloatEncoder<String> {
     private static final long serialVersionUID = 1L;
 
     @Override
     public String encode(Float value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         return value.toString();
     }
 
     @Override
     public Float decode(String value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         return parseFloat(value);
     }
 }

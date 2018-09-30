@@ -21,8 +21,8 @@ import org.calrissian.mango.types.exception.TypeDecodingException;
 import org.calrissian.mango.types.exception.TypeEncodingException;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
 import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 
 public class EntityIdentifierEncoder extends AbstractEntityIdentifierEncoder<String> {
     private static final long serialVersionUID = 1L;
@@ -31,13 +31,13 @@ public class EntityIdentifierEncoder extends AbstractEntityIdentifierEncoder<Str
 
     @Override
     public String encode(EntityIdentifier value) throws TypeEncodingException {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         return format("%s%s#%s", SCHEME, value.getType(), value.getId());
     }
 
     @Override
     public EntityIdentifier decode(String value) throws TypeDecodingException {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         checkArgument(value.startsWith(SCHEME) && value.contains("#"), "The value is not a valid encoding");
 
         String rel = value.substring(SCHEME.length(), value.length());

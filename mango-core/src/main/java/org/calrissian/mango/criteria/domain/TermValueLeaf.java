@@ -17,7 +17,7 @@ package org.calrissian.mango.criteria.domain;
 
 import java.util.Objects;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 public abstract class TermValueLeaf<T> extends TypedTermLeaf<T> {
     private static final long serialVersionUID = 1L;
@@ -26,7 +26,7 @@ public abstract class TermValueLeaf<T> extends TypedTermLeaf<T> {
 
     public TermValueLeaf(String key, T value, ParentNode parent) {
         super(key, firstKnownType(value), parent);
-        this.value = checkNotNull(value);
+        this.value = requireNonNull(value);
     }
 
     public T getValue() {

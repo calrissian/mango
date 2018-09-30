@@ -25,8 +25,8 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static java.util.Arrays.asList;
+import static java.util.Objects.requireNonNull;
 import static org.calrissian.mango.collect.CloseableIterables.wrap;
 
 /**
@@ -371,7 +371,7 @@ public abstract class FluentCloseableIterable<T> extends AbstractCloseableIterab
      * calling {@code Iterables.addAll(collection, this)}.
      */
     public final <C extends Collection<? super T>> C copyInto(C collection) {
-        checkNotNull(collection);
+        requireNonNull(collection);
         for (T item : this) {
             collection.add(item);
         }

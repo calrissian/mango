@@ -16,15 +16,14 @@
 package org.calrissian.mango.domain;
 
 import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
 
 import java.util.Collection;
 import java.util.Set;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Iterables.getFirst;
 import static java.util.Collections.unmodifiableCollection;
 import static java.util.Collections.unmodifiableSet;
+import static java.util.Objects.requireNonNull;
 
 /**
  * A base attribute collection providing reusable implementations for interacting with a attribute store backed by
@@ -37,7 +36,7 @@ public abstract class AbstractAttributeStore implements AttributeStore {
     private final ArrayListMultimap<String, Attribute> attributes;
 
     protected AbstractAttributeStore(Iterable<? extends Attribute> attributes) {
-        checkNotNull(attributes);
+        requireNonNull(attributes);
         this.attributes = ArrayListMultimap.create();
         for (Attribute attr : attributes) {
             this.attributes.put(attr.getKey(), attr);

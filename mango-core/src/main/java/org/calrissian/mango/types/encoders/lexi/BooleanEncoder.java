@@ -19,20 +19,20 @@ package org.calrissian.mango.types.encoders.lexi;
 import org.calrissian.mango.types.encoders.AbstractBooleanEncoder;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 public class BooleanEncoder extends AbstractBooleanEncoder<String> {
     private static final long serialVersionUID = 1L;
 
     @Override
     public String encode(Boolean value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         return (value ? "1" : "0");
     }
 
     @Override
     public Boolean decode(String value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         checkArgument(value.equals("1") || value.equals("0"), "The value is not a valid encoding");
         return value.equals("1");
     }

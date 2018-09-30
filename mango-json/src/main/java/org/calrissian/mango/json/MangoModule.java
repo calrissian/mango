@@ -22,17 +22,17 @@ import org.calrissian.mango.domain.entity.BaseEntity;
 import org.calrissian.mango.domain.entity.Entity;
 import org.calrissian.mango.domain.event.BaseEvent;
 import org.calrissian.mango.domain.event.Event;
+import org.calrissian.mango.json.deser.AttributeDeserializer;
 import org.calrissian.mango.json.deser.EntityDeserializer;
 import org.calrissian.mango.json.deser.EventDeserializer;
 import org.calrissian.mango.json.deser.NodeDeserializer;
-import org.calrissian.mango.json.deser.AttributeDeserializer;
+import org.calrissian.mango.json.ser.AttributeSerializer;
 import org.calrissian.mango.json.ser.EntitySerializer;
 import org.calrissian.mango.json.ser.EventSerializer;
 import org.calrissian.mango.json.ser.NodeSerializer;
-import org.calrissian.mango.json.ser.AttributeSerializer;
 import org.calrissian.mango.types.TypeRegistry;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 import static org.calrissian.mango.types.SimpleTypeEncoders.SIMPLE_TYPES;
 
 
@@ -46,7 +46,7 @@ public class MangoModule extends SimpleModule {
 
     public MangoModule(TypeRegistry<String> typeRegistry) {
         super("MangoModule");
-        this.typeRegistry = checkNotNull(typeRegistry);
+        this.typeRegistry = requireNonNull(typeRegistry);
     }
 
     @Override

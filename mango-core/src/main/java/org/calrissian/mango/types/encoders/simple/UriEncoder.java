@@ -21,20 +21,20 @@ import org.calrissian.mango.types.exception.TypeDecodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 public class UriEncoder extends AbstractURIEncoder<String> {
     private static final long serialVersionUID = 1L;
 
     @Override
     public String encode(URI value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         return value.toString();
     }
 
     @Override
     public URI decode(String value) throws TypeDecodingException {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         try {
             return new URI(value);
         } catch (URISyntaxException e) {

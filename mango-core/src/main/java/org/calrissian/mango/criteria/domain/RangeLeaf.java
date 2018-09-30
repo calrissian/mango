@@ -17,7 +17,7 @@ package org.calrissian.mango.criteria.domain;
 
 import java.util.Objects;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 public class RangeLeaf<T> extends TypedTermLeaf<T> {
 
@@ -26,8 +26,8 @@ public class RangeLeaf<T> extends TypedTermLeaf<T> {
 
     public RangeLeaf(String term, T start, T end, ParentNode parent) {
         super(term, firstKnownType(start, end), parent);
-        this.start = checkNotNull(start);
-        this.end = checkNotNull(end);
+        this.start = requireNonNull(start);
+        this.end = requireNonNull(end);
     }
 
     public Object getStart() {

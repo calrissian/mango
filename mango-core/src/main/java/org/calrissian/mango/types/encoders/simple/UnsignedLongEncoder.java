@@ -19,21 +19,21 @@ package org.calrissian.mango.types.encoders.simple;
 import com.google.common.primitives.UnsignedLong;
 import org.calrissian.mango.types.encoders.AbstractUnsignedLongEncoder;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.primitives.UnsignedLong.valueOf;
+import static java.util.Objects.requireNonNull;
 
 public class UnsignedLongEncoder extends AbstractUnsignedLongEncoder<String> {
     private static final long serialVersionUID = 1L;
 
     @Override
     public String encode(UnsignedLong value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         return value.toString();
     }
 
     @Override
     public UnsignedLong decode(String value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         return valueOf(value);
     }
 }

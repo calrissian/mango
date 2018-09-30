@@ -17,7 +17,7 @@ package org.calrissian.mango.types.encoders.lexi;
 
 import org.calrissian.mango.types.encoders.AbstractByteEncoder;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 public class ByteReverseEncoder extends AbstractByteEncoder<String> {
     private static final long serialVersionUID = 1L;
@@ -26,7 +26,7 @@ public class ByteReverseEncoder extends AbstractByteEncoder<String> {
 
     @Override
     public String encode(Byte value) {
-        checkNotNull(value, "Null values are not allowed");
+        requireNonNull(value, "Null values are not allowed");
         return byteEncoder.encode((byte) ~value);
     }
 
