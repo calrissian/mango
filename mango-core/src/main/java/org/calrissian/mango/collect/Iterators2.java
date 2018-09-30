@@ -21,9 +21,9 @@ import com.google.common.collect.PeekingIterator;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 
-import static com.google.common.base.Objects.equal;
 import static com.google.common.collect.Iterators.peekingIterator;
 import static java.util.Collections.unmodifiableList;
 import static java.util.Objects.requireNonNull;
@@ -47,7 +47,7 @@ public class Iterators2 {
 
             @Override
             protected T computeNext() {
-                while (peekingIterator.hasNext() && equal(curr, peekingIterator.peek())) {
+                while (peekingIterator.hasNext() && Objects.equals(curr, peekingIterator.peek())) {
                     peekingIterator.next();
                 }
                 if (!peekingIterator.hasNext())
@@ -84,7 +84,7 @@ public class Iterators2 {
 
                 do {
                     group.add(peekingIterator.next());
-                } while (peekingIterator.hasNext() && equal(key, groupingFunction.apply(peekingIterator.peek())));
+                } while (peekingIterator.hasNext() && Objects.equals(key, groupingFunction.apply(peekingIterator.peek())));
 
                 return unmodifiableList(group);
             }
