@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.json.util.store;
+package org.calrissian.mango.json.mappings;
 
 
 import java.util.Map;

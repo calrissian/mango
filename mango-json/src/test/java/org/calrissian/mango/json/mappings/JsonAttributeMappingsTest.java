@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.json.util.store;
+package org.calrissian.mango.json.mappings;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -22,11 +22,11 @@ import org.junit.Test;
 
 import java.util.Collection;
 
-import static org.calrissian.mango.json.util.store.JsonAttributeStore.fromJson;
-import static org.calrissian.mango.json.util.store.JsonAttributeStore.toJsonString;
+import static org.calrissian.mango.json.mappings.JsonAttributeMappings.fromJson;
+import static org.calrissian.mango.json.mappings.JsonAttributeMappings.toJsonString;
 import static org.junit.Assert.assertEquals;
 
-public class JsonAttributeStoreTest {
+public class JsonAttributeMappingsTest {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 

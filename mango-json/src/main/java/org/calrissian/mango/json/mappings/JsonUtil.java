@@ -13,32 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.json.util.store;
+package org.calrissian.mango.json.mappings;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.*;
 
-public class JsonUtil {
+class JsonUtil {
 
     private JsonUtil() {}
-
-    static JsonNode objectToNode(Object obj) {
-
-        if(obj instanceof Boolean)
-            return BooleanNode.valueOf((Boolean) obj);
-        else if(obj instanceof Integer)
-            return new IntNode((Integer)obj);
-        else if(obj instanceof Long)
-            return new LongNode((Long)obj);
-        else if(obj instanceof Double)
-            return new DoubleNode((Double)obj);
-        else if (obj instanceof Float)
-            return new DoubleNode(((Float) obj).doubleValue());
-        else if(obj instanceof String)
-            return new TextNode((String)obj);
-        else return null;
-    }
-
     static Object nodeToObject(JsonNode jsonNode) {
         if(jsonNode.isBoolean())
             return jsonNode.asBoolean();
