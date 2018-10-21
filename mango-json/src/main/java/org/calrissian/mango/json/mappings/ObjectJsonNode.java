@@ -13,57 +13,61 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.json.util.store;
+package org.calrissian.mango.json.mappings;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
-import static com.google.common.collect.Collections2.transform;
+import static com.google.common.collect.Maps.transformEntries;
 
 /**
- * A container json tree node which represents a json array which holds entries
- * under specific indices. Order is preserved by nature of the flattened tree
- * given to the visit() method having already been sorted.
+ * A container json tree node which represents a json object which holds entries
+ * under different field names.
  */
-class ArrayJsonNode implements JsonTreeNode {
+class ObjectJsonNode implements JsonTreeNode {
 
-    private final List<JsonTreeNode> children = new ArrayList<>();
+    private final Map<String, JsonTreeNode> children = new HashMap<>();
 
+    /**
+     * Sets state on current instance based on the flattened tree representation from the input.
+     * This will also determine the next child, if necessary, and propagate the next level of
+     * the tree (down to the child).
+     * @param keys
+     * @param level
+     * @param levelToIdx
+     * @param valueJsonNode
+     */
     @Override
     public void visit(String[] keys, int level, Map<Integer, Integer> levelToIdx, ValueJsonNode valueJsonNode) {
+
         if(level == keys.length-1)
-            children.add(valueJsonNode);    // we know the attributes are sorted
+            children.put(keys[level], valueJsonNode);
         else {
 
-            JsonTreeNode child = null;
-
-            try {
-                child = children.get(levelToIdx.get(level));
-            }catch(Exception ignored) {}
+            JsonTreeNode child = children.get(keys[level]);
 
             // look toJson see if next item exists, otherwise, create it, add it toJson children, and visit it.
-            String nextKey = keys[level + 1];
+            String nextKey = keys[level+1];
 
-            if (child == null) {
+            if(child == null) {
 
                 if (nextKey.equals("[]"))
                     child = new ArrayJsonNode();
                 else
                     child = new ObjectJsonNode();
-                children.add(child);
+                children.put(keys[level], child);
             }
 
-            child.visit(keys, level + 1, levelToIdx, valueJsonNode);
+            child.visit(keys, level+1, levelToIdx, valueJsonNode);
         }
     }
 
 
     @Override
-    public Collection<Object> toObject() {
-        return transform(children, jsonTreeNode -> jsonTreeNode.toObject());
+    public Map<String, Object> toObject() {
+        return transformEntries(children, (s, jsonTreeNode) -> jsonTreeNode.toObject());
     }
+
 
     @Override
     public String toString() {
