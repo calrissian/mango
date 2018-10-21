@@ -21,19 +21,11 @@ limitations under the License.
     <artifactId>mango-parent</artifactId>
     <version>3.0.0-SNAPSHOT</version>
   </parent>
-  <artifactId>mango-json</artifactId>
+  <artifactId>mango-criteria</artifactId>
   <packaging>bundle</packaging>
-  <name>Mango JSON</name>
-  <description>Reusable JSON serializers and utilities</description>
-  <properties>
-    <jackson.version>2.1.2</jackson.version>
-  </properties>
+  <name>Mango Criteria</name>
+  <description>Utilties for working with boolean expression operations</description>
   <dependencies>
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-      <version>${jackson.version}</version>
-    </dependency>
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
@@ -41,10 +33,6 @@ limitations under the License.
     <dependency>
       <groupId>org.calrissian.mango</groupId>
       <artifactId>mango-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.calrissian.mango</groupId>
-      <artifactId>mango-criteria</artifactId>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -62,7 +50,7 @@ limitations under the License.
             <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
             <Bundle-Name>${project.artifactId}</Bundle-Name>
             <Bundle-Version>${project.version}</Bundle-Version>
-            <Export-Package>org.calrissian.mango.json*</Export-Package>
+            <Export-Package>org.calrissian.mango.criteria*</Export-Package>
           </instructions>
         </configuration>
       </plugin>
