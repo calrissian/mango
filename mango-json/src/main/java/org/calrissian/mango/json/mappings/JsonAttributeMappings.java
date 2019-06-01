@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.calrissian.mango.json.util.store;
+package org.calrissian.mango.json.mappings;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -30,8 +30,8 @@ import java.util.*;
 
 import static java.util.Collections.sort;
 import static java.util.Objects.requireNonNull;
-import static org.calrissian.mango.json.util.store.JsonMetadata.*;
-import static org.calrissian.mango.json.util.store.JsonUtil.nodeToObject;
+import static org.calrissian.mango.json.mappings.JsonMetadata.*;
+import static org.calrissian.mango.json.mappings.JsonUtil.nodeToObject;
 
 /**
  * Utility methods for
@@ -45,18 +45,17 @@ import static org.calrissian.mango.json.util.store.JsonUtil.nodeToObject;
  * unexpected results.
  *
  */
-public class JsonAttributeStore {
+public class JsonAttributeMappings {
 
     private static final String NESTING_DELIM = "_$";
     private static final Pair<Integer,Integer> DEFAULT_PAIR = new Pair<>(-1, -1);
     private static final Splitter SPLITTER = Splitter.on(NESTING_DELIM);
 
-    private JsonAttributeStore() {}
+    private JsonAttributeMappings() {}
 
 
     /**
-     * Flattens a raw nested json string representation into a collection of attributes that
-     * can be used to construct a {@link org.calrissian.mango.domain.AttributeStore} implementation.
+     * Flattens a raw nested json string representation into a collection of attributes.
      * @throws IOException
      */
     public static Collection<Attribute> fromJson(ObjectNode object) throws IOException {
@@ -67,8 +66,7 @@ public class JsonAttributeStore {
     }
 
     /**
-     * Flattens a raw nested json string representation into a collection of attributes that can be used to construct a
-     * {@link org.calrissian.mango.domain.AttributeStore} implementation. This method has the same effect as
+     * Flattens a raw nested json string representation into a collection of attributes. This method has the same effect as
      * {@link #fromJson(com.fasterxml.jackson.databind.node.ObjectNode)}, except it takes a json as a string
      * and a configured object mapper instance.
      * @throws java.io.IOException
@@ -84,8 +82,7 @@ public class JsonAttributeStore {
 
 
     /**
-     * Flattens a Map<String,Object> into a collection of attributes that can be used to construct a
-     * {@link org.calrissian.mango.domain.AttributeStore} implementation. This allows objects which have
+     * Flattens a Map<String,Object> into a collection of attributes. This allows objects which have
      * already been parsed from json strings and processed to be turned into attribute stores as well.
      */
     public static Collection<Attribute> fromMap(Map<String,Object> map) {
@@ -97,7 +94,7 @@ public class JsonAttributeStore {
 
 
     /**
-     * Re-expands a flattened json representation from a {@link org.calrissian.mango.domain.AttributeStore} back into a raw
+     * Re-expands a flattened json representation from a collection of attributes back into a raw
      * nested json string.
      */
     public static String toJsonString(Collection<Attribute> attributeCollection, ObjectMapper objectMapper) throws JsonProcessingException {
@@ -105,7 +102,7 @@ public class JsonAttributeStore {
     }
 
     /**
-     * Re-expands a nested attribute representation from a {@link org.calrissian.mango.domain.AttributeStore} back into a nested
+     * Re-expands a nested attribute representation from a collection of attributes back into a nested
      * java object representation (objects become Map<String,Object>, arrays become Lists, and non-containers stay
      * the same).
      *

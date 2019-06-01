@@ -24,6 +24,7 @@ limitations under the License.
   <description>Mango provides common reusable utilities.</description>
   <modules>
     <module>mango-core</module>
+    <module>mango-criteria</module>
     <module>mango-json</module>
   </modules>
   <properties>
@@ -48,6 +49,11 @@ limitations under the License.
       <dependency>
         <groupId>org.calrissian.mango</groupId>
         <artifactId>mango-core</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.calrissian.mango</groupId>
+        <artifactId>mango-criteria</artifactId>
         <version>${project.version}</version>
       </dependency>
       <!--Test-->
