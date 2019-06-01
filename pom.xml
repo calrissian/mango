@@ -88,7 +88,7 @@ limitations under the License.
         </plugin>
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.8.0</version>
+          <version>3.8.1</version>
           <configuration>
             <source>1.8</source>
             <target>1.8</target>
@@ -97,25 +97,23 @@ limitations under the License.
         </plugin>
         <plugin>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>3.0.1</version>
+          <version>3.1.0</version>
           <configuration>
+            <source>8</source>
             <quiet>true</quiet>
-            <links>
-              <link>http://download.oracle.com/javase/8/docs/api/</link>
-              <link>http://download.oracle.com/javaee/8/api/</link>
-              <link>https://google.github.io/guava/releases/${guava.version}/api/docs/</link>
-            </links>
+            <detectJavaApiLink>true</detectJavaApiLink>
+            <detectLinks>true</detectLinks>
             <additionalOptions>-Xdoclint:none</additionalOptions>
           </configuration>
         </plugin>
         <plugin>
           <artifactId>maven-source-plugin</artifactId>
-          <version>3.0.1</version>
+          <version>3.1.0</version>
         </plugin>
         <plugin>
           <groupId>org.apache.rat</groupId>
           <artifactId>apache-rat-plugin</artifactId>
-          <version>0.12</version>
+          <version>0.13</version>
           <configuration>
             <excludes>
               <exclude>**\README.md</exclude>
@@ -247,7 +245,7 @@ limitations under the License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
-            <version>1.5</version>
+            <version>1.6</version>
             <executions>
               <execution>
                 <id>sign-artifacts</id>
