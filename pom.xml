@@ -99,6 +99,7 @@ limitations under the License.
           <artifactId>maven-javadoc-plugin</artifactId>
           <version>3.1.0</version>
           <configuration>
+            <source>8</source>
             <quiet>true</quiet>
             <detectJavaApiLink>true</detectJavaApiLink>
             <detectLinks>true</detectLinks>
