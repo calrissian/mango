@@ -109,7 +109,7 @@ abstract class AbstractBatcher<T> implements Batcher<T> {
     /**
      * Used to shutdown the batching thread in case of an error or user requested close.
      */
-    private void stopRunnable() {
+    private synchronized void stopRunnable() {
         isClosed = true;
         //Force an interrupt on running thread and shutdown executor cleanly.
         batchService.shutdownNow();
@@ -160,12 +160,7 @@ abstract class AbstractBatcher<T> implements Batcher<T> {
                     //Good faith handler shutdown check
                     if (!batch.isEmpty() && !handler.isShutdown()) {
                         try {
-                            handler.execute(new Runnable() {
-                                @Override
-                                public void run() {
-                                    listener.onBatch(unmodifiableCollection(batch));
-                                }
-                            });
+                            handler.execute(() -> listener.onBatch(unmodifiableCollection(batch)));
                         } catch (Exception e) {
                             //Handler threw exception.  Close the batcher and exit cleanly.
                             logger.log(SEVERE, "Encountered exception sending to batch listener.  Stopping the batcher", e);
