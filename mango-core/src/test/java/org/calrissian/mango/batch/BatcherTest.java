@@ -373,6 +373,9 @@ public class BatcherTest {
                 });
         batcher.add(1);
 
+        //Wait to make sure that the batcher has time
+        sleep(40);
+
         //force second call to trip close
         batcher.add(1);
 
@@ -385,8 +388,6 @@ public class BatcherTest {
             batcher.add(1);
             fail();
         } catch (IllegalStateException ignored) {}
-
-        batcher.close();
     }
 
     @After
