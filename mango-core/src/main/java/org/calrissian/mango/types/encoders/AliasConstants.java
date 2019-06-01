@@ -22,6 +22,7 @@ public class AliasConstants {
     public static final String BOOLEAN_ALIAS = "boolean";
     public static final String BYTE_ALIAS = "byte";
     public static final String DATE_ALIAS = "date";
+    public static final String INSTANT_ALIAS = "instant";
     public static final String DOUBLE_ALIAS = "double";
     public static final String FLOAT_ALIAS = "float";
     public static final String INTEGER_ALIAS = "integer";

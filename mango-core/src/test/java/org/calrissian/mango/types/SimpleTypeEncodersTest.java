@@ -27,6 +27,7 @@ import org.junit.Test;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URI;
+import java.time.Instant;
 import java.util.Date;
 
 import static org.calrissian.mango.io.Serializables.deserialize;
@@ -54,6 +55,7 @@ public class SimpleTypeEncodersTest {
         verifyBasicFunctionality(BOOLEAN_ALIAS, true, booleanEncoder());
         verifyBasicFunctionality(BYTE_ALIAS, (byte) 3, byteEncoder());
         verifyBasicFunctionality(DATE_ALIAS, new Date(), dateEncoder());
+        verifyBasicFunctionality(INSTANT_ALIAS, Instant.now(), instantEncoder());
         verifyBasicFunctionality(DOUBLE_ALIAS, 0.0D, doubleEncoder());
         verifyBasicFunctionality(DOUBLE_ALIAS, -0.0D, doubleEncoder());
         verifyBasicFunctionality(DOUBLE_ALIAS, 1.5D, doubleEncoder());
@@ -89,6 +91,8 @@ public class SimpleTypeEncodersTest {
         assertEquals("3", byteEncoder().encode((byte) 3));
 
         assertEquals("10", dateEncoder().encode(new Date(10)));
+
+        assertEquals("1970-01-01T00:00:00.010Z", instantEncoder().encode(Instant.ofEpochMilli(10)));
 
         assertEquals("0.0", doubleEncoder().encode(0.0D));
         assertEquals("-0.0", doubleEncoder().encode(-0.0D));

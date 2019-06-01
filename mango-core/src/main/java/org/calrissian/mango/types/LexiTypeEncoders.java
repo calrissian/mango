@@ -29,6 +29,7 @@ import java.math.BigInteger;
 import java.net.Inet4Address;
 import java.net.Inet6Address;
 import java.net.URI;
+import java.time.Instant;
 import java.util.Date;
 
 /**
@@ -42,6 +43,7 @@ public class LexiTypeEncoders {
     private static final TypeEncoder<Boolean, String> BOOLEAN_ENCODER = new BooleanEncoder();
     private static final TypeEncoder<Byte, String> BYTE_ENCODER = new ByteEncoder();
     private static final TypeEncoder<Date, String> DATE_ENCODER = new DateEncoder();
+    private static final TypeEncoder<Instant, String> INSTANT_ENCODER = new InstantEncoder();
     private static final TypeEncoder<Double, String> DOUBLE_ENCODER = new DoubleEncoder();
     private static final TypeEncoder<Float, String> FLOAT_ENCODER = new FloatEncoder();
     private static final TypeEncoder<Integer, String> INTEGER_ENCODER = new IntegerEncoder();
@@ -62,6 +64,7 @@ public class LexiTypeEncoders {
     private static final TypeEncoder<Boolean, String> BOOLEAN_REV_ENCODER = new BooleanReverseEncoder();
     private static final TypeEncoder<Byte, String> BYTE_REV_ENCODER = new ByteReverseEncoder();
     private static final TypeEncoder<Date, String> DATE_REV_ENCODER = new DateReverseEncoder();
+    private static final TypeEncoder<Instant, String> INSTANT_REV_ENCODER = new InstantReverseEncoder();
     private static final TypeEncoder<Double, String> DOUBLE_REV_ENCODER = new DoubleReverseEncoder();
     private static final TypeEncoder<Float, String> FLOAT_REV_ENCODER = new FloatReverseEncoder();
     private static final TypeEncoder<Integer, String> INTEGER_REV_ENCODER = new IntegerReverseEncoder();
@@ -83,13 +86,13 @@ public class LexiTypeEncoders {
      * Simple Java types only
      */
     public static final TypeRegistry<String> LEXI_JAVA_TYPES = new TypeRegistry<>(
-            booleanEncoder(), byteEncoder(), dateEncoder(), doubleEncoder(), floatEncoder(),
+            booleanEncoder(), byteEncoder(), dateEncoder(), instantEncoder(), doubleEncoder(), floatEncoder(),
             integerEncoder(), longEncoder(), stringEncoder(), uriEncoder(), bigIntegerEncoder(),
             bigDecimalEncoder(), inet4AddressEncoder(), inet6AddressEncoder()
     );
 
     public static final TypeRegistry<String> LEXI_REV_JAVA_TYPES = new TypeRegistry<>(
-            booleanRevEncoder(), byteRevEncoder(), dateRevEncoder(), doubleRevEncoder(), floatRevEncoder(),
+            booleanRevEncoder(), byteRevEncoder(), dateRevEncoder(), instantRevEncoder(), doubleRevEncoder(), floatRevEncoder(),
             integerRevEncoder(), longRevEncoder(), stringRevEncoder(), uriRevEncoder(), bigIntegerRevEncoder(),
             bigDecimalRevEncoder(), inet4AddressRevEncoder(), inet6AddressRevEncoder()
     );
@@ -133,6 +136,14 @@ public class LexiTypeEncoders {
 
     public static TypeEncoder<Date, String> dateRevEncoder() {
         return DATE_REV_ENCODER;
+    }
+
+    public static TypeEncoder<Instant, String> instantEncoder() {
+        return INSTANT_ENCODER;
+    }
+
+    public static TypeEncoder<Instant, String> instantRevEncoder() {
+        return INSTANT_REV_ENCODER;
     }
 
     public static TypeEncoder<Double, String> doubleEncoder() {
