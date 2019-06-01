@@ -109,7 +109,7 @@ abstract class AbstractBatcher<T> implements Batcher<T> {
     /**
      * Used to shutdown the batching thread in case of an error or user requested close.
      */
-    private synchronized void stopRunnable() {
+    private void stopRunnable() {
         isClosed = true;
         //Force an interrupt on running thread and shutdown executor cleanly.
         batchService.shutdownNow();
