@@ -37,8 +37,47 @@ import java.util.Date;
  * strings which will produce a reverse lexicographical sort ordering.
  */
 public class LexiTypeEncoders {
-
     private LexiTypeEncoders() {/*private constructor*/}
+    
+    private static final TypeEncoder<Boolean, String> BOOLEAN_ENCODER = new BooleanEncoder();
+    private static final TypeEncoder<Byte, String> BYTE_ENCODER = new ByteEncoder();
+    private static final TypeEncoder<Date, String> DATE_ENCODER = new DateEncoder();
+    private static final TypeEncoder<Double, String> DOUBLE_ENCODER = new DoubleEncoder();
+    private static final TypeEncoder<Float, String> FLOAT_ENCODER = new FloatEncoder();
+    private static final TypeEncoder<Integer, String> INTEGER_ENCODER = new IntegerEncoder();
+    private static final TypeEncoder<Long, String> LONG_ENCODER = new LongEncoder();
+    private static final TypeEncoder<String, String> STRING_ENCODER = SimpleTypeEncoders.stringEncoder();
+    private static final TypeEncoder<URI, String> URI_ENCODER = SimpleTypeEncoders.uriEncoder();
+    private static final TypeEncoder<BigInteger, String> BIGINT_ENCODER = new BigIntegerEncoder();
+    private static final TypeEncoder<BigDecimal, String> BIGDEC_ENCODER = new BigDecimalEncoder();
+    private static final TypeEncoder<Inet4Address, String> INET4_ENCODER = new Inet4AddressEncoder();
+    private static final TypeEncoder<Inet6Address, String> INET6_ENCODER = new Inet6AddressEncoder();
+    private static final TypeEncoder<IPv4, String> IPV4_ENCODER = new IPv4Encoder();
+    private static final TypeEncoder<IPv6, String> IPV6_ENCODER = new IPv6Encoder();
+    private static final TypeEncoder<EntityIdentifier, String> ENTITY_ID_ENCODER = SimpleTypeEncoders.entityIdentifierEncoder();
+    private static final TypeEncoder<EventIdentifier, String> EVENT_ID_ENCODER = new EventIdentifierEncoder();
+    private static final TypeEncoder<UnsignedInteger, String> UINT_ENCODER = new UnsignedIntegerEncoder();
+    private static final TypeEncoder<UnsignedLong, String> ULONG_ENCODER = new UnsignedLongEncoder();
+
+    private static final TypeEncoder<Boolean, String> BOOLEAN_REV_ENCODER = new BooleanReverseEncoder();
+    private static final TypeEncoder<Byte, String> BYTE_REV_ENCODER = new ByteReverseEncoder();
+    private static final TypeEncoder<Date, String> DATE_REV_ENCODER = new DateReverseEncoder();
+    private static final TypeEncoder<Double, String> DOUBLE_REV_ENCODER = new DoubleReverseEncoder();
+    private static final TypeEncoder<Float, String> FLOAT_REV_ENCODER = new FloatReverseEncoder();
+    private static final TypeEncoder<Integer, String> INTEGER_REV_ENCODER = new IntegerReverseEncoder();
+    private static final TypeEncoder<Long, String> LONG_REV_ENCODER = new LongReverseEncoder();
+    private static final TypeEncoder<String, String> STRING_REV_ENCODER = reverseEncoder(stringEncoder());
+    private static final TypeEncoder<URI, String> URI_REV_ENCODER = reverseEncoder(uriEncoder());
+    private static final TypeEncoder<BigInteger, String> BIGINT_REV_ENCODER = new BigIntegerReverseEncoder();
+    private static final TypeEncoder<BigDecimal, String> BIGDEC_REV_ENCODER = new BigDecimalReverseEncoder();
+    private static final TypeEncoder<Inet4Address, String> INET4_REV_ENCODER = new Inet4AddressReverseEncoder();
+    private static final TypeEncoder<Inet6Address, String> INET6_REV_ENCODER = new Inet6AddressReverseEncoder();
+    private static final TypeEncoder<IPv4, String> IPV4_REV_ENCODER = new IPv4ReverseEncoder();
+    private static final TypeEncoder<IPv6, String> IPV6_REV_ENCODER = new IPv6ReverseEncoder();
+    private static final TypeEncoder<EntityIdentifier, String> ENTITY_ID_REV_ENCODER = reverseEncoder(entityIdentifierEncoder());
+    private static final TypeEncoder<EventIdentifier, String> EVENT_ID_REV_ENCODER = reverseEncoder(eventIdentifierEncoder());
+    private static final TypeEncoder<UnsignedInteger, String> UINT_REV_ENCODER = new UnsignedIntegerReverseEncoder();
+    private static final TypeEncoder<UnsignedLong, String> ULONG_REV_ENCODER = new UnsignedLongReverseEncoder();
 
     /**
      * Simple Java types only
@@ -73,154 +112,154 @@ public class LexiTypeEncoders {
     }
 
     public static TypeEncoder<Boolean, String> booleanEncoder() {
-        return new BooleanEncoder();
+        return BOOLEAN_ENCODER;
     }
 
     public static TypeEncoder<Boolean, String> booleanRevEncoder() {
-        return new BooleanReverseEncoder();
+        return BOOLEAN_REV_ENCODER;
     }
 
     public static TypeEncoder<Byte, String> byteEncoder() {
-        return new ByteEncoder();
+        return BYTE_ENCODER;
     }
 
     public static TypeEncoder<Byte, String> byteRevEncoder() {
-        return new ByteReverseEncoder();
+        return BYTE_REV_ENCODER;
     }
 
     public static TypeEncoder<Date, String> dateEncoder() {
-        return new DateEncoder();
+        return DATE_ENCODER;
     }
 
     public static TypeEncoder<Date, String> dateRevEncoder() {
-        return new DateReverseEncoder();
+        return DATE_REV_ENCODER;
     }
 
     public static TypeEncoder<Double, String> doubleEncoder() {
-        return new DoubleEncoder();
+        return DOUBLE_ENCODER;
     }
 
     public static TypeEncoder<Double, String> doubleRevEncoder() {
-        return new DoubleReverseEncoder();
+        return DOUBLE_REV_ENCODER;
     }
 
     public static TypeEncoder<Float, String> floatEncoder() {
-        return new FloatEncoder();
+        return FLOAT_ENCODER;
     }
 
     public static TypeEncoder<Float, String> floatRevEncoder() {
-        return new FloatReverseEncoder();
+        return FLOAT_REV_ENCODER;
     }
 
     public static TypeEncoder<Integer, String> integerEncoder() {
-        return new IntegerEncoder();
+        return INTEGER_ENCODER;
     }
 
     public static TypeEncoder<Integer, String> integerRevEncoder() {
-        return new IntegerReverseEncoder();
+        return INTEGER_REV_ENCODER;
     }
 
     public static TypeEncoder<Long, String> longEncoder() {
-        return new LongEncoder();
+        return LONG_ENCODER;
     }
 
     public static TypeEncoder<Long, String> longRevEncoder() {
-        return new LongReverseEncoder();
+        return LONG_REV_ENCODER;
     }
 
     public static TypeEncoder<String, String> stringEncoder() {
-        return SimpleTypeEncoders.stringEncoder();
+        return STRING_ENCODER;
     }
 
     public static TypeEncoder<String, String> stringRevEncoder() {
-        return reverseEncoder(stringEncoder());
+        return STRING_REV_ENCODER;
     }
 
     public static TypeEncoder<URI, String> uriEncoder() {
-        return SimpleTypeEncoders.uriEncoder();
+        return URI_ENCODER;
     }
 
     public static TypeEncoder<URI, String> uriRevEncoder() {
-        return reverseEncoder(uriEncoder());
+        return URI_REV_ENCODER;
     }
 
     public static TypeEncoder<BigInteger, String> bigIntegerEncoder() {
-        return new BigIntegerEncoder();
+        return BIGINT_ENCODER;
     }
 
     public static TypeEncoder<BigInteger, String> bigIntegerRevEncoder() {
-        return new BigIntegerReverseEncoder();
+        return BIGINT_REV_ENCODER;
     }
 
     public static TypeEncoder<BigDecimal, String> bigDecimalEncoder() {
-        return new BigDecimalEncoder();
+        return BIGDEC_ENCODER;
     }
 
     public static TypeEncoder<BigDecimal, String> bigDecimalRevEncoder() {
-        return new BigDecimalReverseEncoder();
+        return BIGDEC_REV_ENCODER;
     }
 
     public static TypeEncoder<Inet4Address, String> inet4AddressEncoder() {
-        return new Inet4AddressEncoder();
+        return INET4_ENCODER;
     }
 
     public static TypeEncoder<Inet4Address, String> inet4AddressRevEncoder() {
-        return new Inet4AddressReverseEncoder();
+        return INET4_REV_ENCODER;
     }
 
     public static TypeEncoder<Inet6Address, String> inet6AddressEncoder() {
-        return new Inet6AddressEncoder();
+        return INET6_ENCODER;
     }
 
     public static TypeEncoder<Inet6Address, String> inet6AddressRevEncoder() {
-        return new Inet6AddressReverseEncoder();
+        return INET6_REV_ENCODER;
     }
 
     public static TypeEncoder<IPv4, String> ipv4Encoder() {
-        return new IPv4Encoder();
+        return IPV4_ENCODER;
     }
 
     public static TypeEncoder<IPv4, String> ipv4RevEncoder() {
-        return new IPv4ReverseEncoder();
+        return IPV4_REV_ENCODER;
     }
 
     public static TypeEncoder<IPv6, String> ipv6Encoder() {
-        return new IPv6Encoder();
+        return IPV6_ENCODER;
     }
 
     public static TypeEncoder<IPv6, String> ipv6RevEncoder() {
-        return new IPv6ReverseEncoder();
+        return IPV6_REV_ENCODER;
     }
 
     public static TypeEncoder<EntityIdentifier, String> entityIdentifierEncoder() {
-        return SimpleTypeEncoders.entityIdentifierEncoder();
+        return ENTITY_ID_ENCODER;
     }
 
     public static TypeEncoder<EntityIdentifier, String> entityIdentifierRevEncoder() {
-        return reverseEncoder(SimpleTypeEncoders.entityIdentifierEncoder());
+        return ENTITY_ID_REV_ENCODER;
     }
 
     public static TypeEncoder<EventIdentifier, String> eventIdentifierEncoder() {
-        return new EventIdentifierEncoder();
+        return EVENT_ID_ENCODER;
     }
 
     public static TypeEncoder<EventIdentifier, String> eventIdentifierRevEncoder() {
-        return reverseEncoder(eventIdentifierEncoder());
+        return EVENT_ID_REV_ENCODER;
     }
 
     public static TypeEncoder<UnsignedInteger, String> unsignedIntegerEncoder() {
-        return new UnsignedIntegerEncoder();
+        return UINT_ENCODER;
     }
 
     public static TypeEncoder<UnsignedInteger, String> unsignedIntegerRevEncoder() {
-        return new UnsignedIntegerReverseEncoder();
+        return UINT_REV_ENCODER;
     }
 
     public static TypeEncoder<UnsignedLong, String> unsignedLongEncoder() {
-        return new UnsignedLongEncoder();
+        return ULONG_ENCODER;
     }
 
     public static TypeEncoder<UnsignedLong, String> unsignedLongRevEncoder() {
-        return new UnsignedLongReverseEncoder();
+        return ULONG_REV_ENCODER;
     }
 }

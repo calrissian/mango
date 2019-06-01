@@ -36,8 +36,27 @@ import java.util.Date;
  * readable strings.
  */
 public class SimpleTypeEncoders {
-
     private SimpleTypeEncoders() {/* private constructor */}
+
+    private static final TypeEncoder<Boolean, String> BOOLEAN_ENCODER = new BooleanEncoder();
+    private static final TypeEncoder<Byte, String> BYTE_ENCODER = new ByteEncoder();
+    private static final TypeEncoder<Date, String> DATE_ENCODER = new DateEncoder();
+    private static final TypeEncoder<Double, String> DOUBLE_ENCODER = new DoubleEncoder();
+    private static final TypeEncoder<Float, String> FLOAT_ENCODER = new FloatEncoder();
+    private static final TypeEncoder<Integer, String> INTEGER_ENCODER = new IntegerEncoder();
+    private static final TypeEncoder<Long, String> LONG_ENCODER = new LongEncoder();
+    private static final TypeEncoder<String, String> STRING_ENCODER = new StringEncoder();
+    private static final TypeEncoder<URI, String> URI_ENCODER = new UriEncoder();
+    private static final TypeEncoder<BigInteger, String> BIGINT_ENCODER = new BigIntegerEncoder();
+    private static final TypeEncoder<BigDecimal, String> BIGDEC_ENCODER = new BigDecimalEncoder();
+    private static final TypeEncoder<Inet4Address, String> INET4_ENCODER = new Inet4AddressEncoder();
+    private static final TypeEncoder<Inet6Address, String> INET6_ENCODER = new Inet6AddressEncoder();
+    private static final TypeEncoder<IPv4, String> IPV4_ENCODER = new IPv4Encoder();
+    private static final TypeEncoder<IPv6, String> IPV6_ENCODER = new IPv6Encoder();
+    private static final TypeEncoder<EntityIdentifier, String> ENTITY_ID_ENCODER = new EntityIdentifierEncoder();
+    private static final TypeEncoder<EventIdentifier, String> EVENT_ID_ENCODER = new EventIdentifierEncoder();
+    private static final TypeEncoder<UnsignedInteger, String> UINT_ENCODER = new UnsignedIntegerEncoder();
+    private static final TypeEncoder<UnsignedLong, String> ULONG_ENCODER = new UnsignedLongEncoder();
 
     /**
      * Simple Java types only
@@ -57,79 +76,79 @@ public class SimpleTypeEncoders {
     );
 
     public static TypeEncoder<Boolean, String> booleanEncoder() {
-        return new BooleanEncoder();
+        return BOOLEAN_ENCODER;
     }
 
     public static TypeEncoder<Byte, String> byteEncoder() {
-        return new ByteEncoder();
+        return BYTE_ENCODER;
     }
 
     public static TypeEncoder<Date, String> dateEncoder() {
-        return new DateEncoder();
+        return DATE_ENCODER;
     }
 
     public static TypeEncoder<Double, String> doubleEncoder() {
-        return new DoubleEncoder();
+        return DOUBLE_ENCODER;
     }
 
     public static TypeEncoder<Float, String> floatEncoder() {
-        return new FloatEncoder();
+        return FLOAT_ENCODER;
     }
 
     public static TypeEncoder<Integer, String> integerEncoder() {
-        return new IntegerEncoder();
+        return INTEGER_ENCODER;
     }
 
     public static TypeEncoder<Long, String> longEncoder() {
-        return new LongEncoder();
+        return LONG_ENCODER;
     }
 
     public static TypeEncoder<String, String> stringEncoder() {
-        return new StringEncoder();
+        return STRING_ENCODER;
     }
 
     public static TypeEncoder<URI, String> uriEncoder() {
-        return new UriEncoder();
+        return URI_ENCODER;
     }
 
     public static TypeEncoder<BigInteger, String> bigIntegerEncoder() {
-        return new BigIntegerEncoder();
+        return BIGINT_ENCODER;
     }
 
     public static TypeEncoder<BigDecimal, String> bigDecimalEncoder() {
-        return new BigDecimalEncoder();
+        return BIGDEC_ENCODER;
     }
 
     public static TypeEncoder<Inet4Address, String> inet4AddressEncoder() {
-        return new Inet4AddressEncoder();
+        return INET4_ENCODER;
     }
 
     public static TypeEncoder<Inet6Address, String> inet6AddressEncoder() {
-        return new Inet6AddressEncoder();
+        return INET6_ENCODER;
     }
 
     public static TypeEncoder<IPv4, String> ipv4Encoder() {
-        return new IPv4Encoder();
+        return IPV4_ENCODER;
     }
 
     public static TypeEncoder<IPv6, String> ipv6Encoder() {
-        return new IPv6Encoder();
+        return IPV6_ENCODER;
     }
 
 
     public static TypeEncoder<EntityIdentifier, String> entityIdentifierEncoder() {
-        return new EntityIdentifierEncoder();
+        return ENTITY_ID_ENCODER;
     }
 
     public static TypeEncoder<EventIdentifier, String> eventIdentifierEncoder() {
-        return new EventIdentifierEncoder();
+        return EVENT_ID_ENCODER;
     }
 
     public static TypeEncoder<UnsignedInteger, String> unsignedIntegerEncoder() {
-        return new UnsignedIntegerEncoder();
+        return UINT_ENCODER;
     }
 
     public static TypeEncoder<UnsignedLong, String> unsignedLongEncoder() {
-        return new UnsignedLongEncoder();
+        return ULONG_ENCODER;
     }
 }
