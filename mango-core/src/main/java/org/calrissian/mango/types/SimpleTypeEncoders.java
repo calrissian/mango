@@ -29,6 +29,7 @@ import java.math.BigInteger;
 import java.net.Inet4Address;
 import java.net.Inet6Address;
 import java.net.URI;
+import java.time.Instant;
 import java.util.Date;
 
 /**
@@ -41,6 +42,7 @@ public class SimpleTypeEncoders {
     private static final TypeEncoder<Boolean, String> BOOLEAN_ENCODER = new BooleanEncoder();
     private static final TypeEncoder<Byte, String> BYTE_ENCODER = new ByteEncoder();
     private static final TypeEncoder<Date, String> DATE_ENCODER = new DateEncoder();
+    private static final TypeEncoder<Instant, String> INSTANT_ENCODER = new InstantEncoder();
     private static final TypeEncoder<Double, String> DOUBLE_ENCODER = new DoubleEncoder();
     private static final TypeEncoder<Float, String> FLOAT_ENCODER = new FloatEncoder();
     private static final TypeEncoder<Integer, String> INTEGER_ENCODER = new IntegerEncoder();
@@ -62,7 +64,7 @@ public class SimpleTypeEncoders {
      * Simple Java types only
      */
     public static final TypeRegistry<String> SIMPLE_JAVA_TYPES = new TypeRegistry<>(
-            booleanEncoder(), byteEncoder(), dateEncoder(), doubleEncoder(), floatEncoder(),
+            booleanEncoder(), byteEncoder(), dateEncoder(), instantEncoder(), doubleEncoder(), floatEncoder(),
             integerEncoder(), longEncoder(), stringEncoder(), uriEncoder(), bigIntegerEncoder(),
             bigDecimalEncoder(), inet4AddressEncoder(), inet6AddressEncoder()
     );
@@ -85,6 +87,10 @@ public class SimpleTypeEncoders {
 
     public static TypeEncoder<Date, String> dateEncoder() {
         return DATE_ENCODER;
+    }
+
+    public static TypeEncoder<Instant, String> instantEncoder() {
+        return INSTANT_ENCODER;
     }
 
     public static TypeEncoder<Double, String> doubleEncoder() {

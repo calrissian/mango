@@ -26,6 +26,7 @@ import org.junit.Test;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URI;
+import java.time.Instant;
 import java.util.Date;
 
 import static org.calrissian.mango.io.Serializables.deserialize;
@@ -44,6 +45,7 @@ public class LexiTypeEncodersTest {
         verifyBasicFunctionality(BOOLEAN_ALIAS, true, booleanEncoder());
         verifyBasicFunctionality(BYTE_ALIAS, (byte) 3, byteEncoder());
         verifyBasicFunctionality(DATE_ALIAS, new Date(), dateEncoder());
+        verifyBasicFunctionality(INSTANT_ALIAS, Instant.now(), instantEncoder());
         verifyBasicFunctionality(DOUBLE_ALIAS, 0.0D, doubleEncoder());
         verifyBasicFunctionality(DOUBLE_ALIAS, -0.0D, doubleEncoder());
         verifyBasicFunctionality(DOUBLE_ALIAS, -1.5D, doubleEncoder());
@@ -76,6 +78,7 @@ public class LexiTypeEncodersTest {
         verifyBasicFunctionality(BOOLEAN_ALIAS, true, booleanRevEncoder());
         verifyBasicFunctionality(BYTE_ALIAS, (byte) 3, byteRevEncoder());
         verifyBasicFunctionality(DATE_ALIAS, new Date(), dateRevEncoder());
+        verifyBasicFunctionality(INSTANT_ALIAS, Instant.now(), instantRevEncoder());
         verifyBasicFunctionality(DOUBLE_ALIAS, 0.0D, doubleRevEncoder());
         verifyBasicFunctionality(DOUBLE_ALIAS, -0.0D, doubleRevEncoder());
         verifyBasicFunctionality(DOUBLE_ALIAS, -1.5D, doubleRevEncoder());
@@ -115,6 +118,15 @@ public class LexiTypeEncodersTest {
         assertEquals("03", byteEncoder().encode((byte) 3));
 
         assertEquals("800000000000000a", dateEncoder().encode(new Date(10)));
+
+        assertEquals("7ffffffffffffff5bb9ac9ff", instantEncoder().encode(Instant.ofEpochSecond(-10, 0).minusNanos(1)));
+        assertEquals("7ffffffffffffff680000000", instantEncoder().encode(Instant.ofEpochSecond(-10, 0)));
+        assertEquals("7fffffffffffffffbb02337f", instantEncoder().encode(Instant.ofEpochMilli(-10).minusNanos(1)));
+        assertEquals("7fffffffffffffffbb023380", instantEncoder().encode(Instant.ofEpochMilli(-10)));
+        assertEquals("800000000000000080989680", instantEncoder().encode(Instant.ofEpochMilli(10)));
+        assertEquals("800000000000000080989681", instantEncoder().encode(Instant.ofEpochMilli(10).plusNanos(1)));
+        assertEquals("800000000000000a80000000", instantEncoder().encode(Instant.ofEpochSecond(10, 0)));
+        assertEquals("800000000000000a80000001", instantEncoder().encode(Instant.ofEpochSecond(10, 0).plusNanos(1)));
 
         assertEquals("bff8000000000000", doubleEncoder().encode(1.5D));
         assertEquals("8000000000000000", doubleEncoder().encode(0.0));
@@ -178,6 +190,15 @@ public class LexiTypeEncodersTest {
         assertEquals("fc", byteRevEncoder().encode((byte) 3));
 
         assertEquals("7ffffffffffffff5", dateRevEncoder().encode(new Date(10)));
+
+        assertEquals("800000000000000a44653600", instantRevEncoder().encode(Instant.ofEpochSecond(-10, 0).minusNanos(1)));
+        assertEquals("80000000000000097fffffff", instantRevEncoder().encode(Instant.ofEpochSecond(-10, 0)));
+        assertEquals("800000000000000044fdcc80", instantRevEncoder().encode(Instant.ofEpochMilli(-10).minusNanos(1)));
+        assertEquals("800000000000000044fdcc7f", instantRevEncoder().encode(Instant.ofEpochMilli(-10)));
+        assertEquals("7fffffffffffffff7f67697f", instantRevEncoder().encode(Instant.ofEpochMilli(10)));
+        assertEquals("7fffffffffffffff7f67697e", instantRevEncoder().encode(Instant.ofEpochMilli(10).plusNanos(1)));
+        assertEquals("7ffffffffffffff57fffffff", instantRevEncoder().encode(Instant.ofEpochSecond(10, 0)));
+        assertEquals("7ffffffffffffff57ffffffe", instantRevEncoder().encode(Instant.ofEpochSecond(10, 0).plusNanos(1)));
 
         assertEquals("4007ffffffffffff", doubleRevEncoder().encode(1.5D));
         assertEquals("bff8000000000000", doubleRevEncoder().encode(-1.5D));
