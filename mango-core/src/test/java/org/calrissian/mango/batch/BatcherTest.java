@@ -373,17 +373,8 @@ public class BatcherTest {
                 });
         batcher.add(1);
 
-        //force second call to trip close
-        batcher.add(1);
-
         //Wait to make sure that the batcher has time
-        sleep(40);
-
-        //force second call to trip close
-        batcher.add(1);
-
-        //Wait to make sure that the batcher has time
-        sleep(40);
+        sleep(100);
 
         assertTrue(wasCalled.get());
         try {

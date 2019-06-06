@@ -6,7 +6,7 @@ Calrissian Mango
 
 Mango provides common reusable utilities for the cloud toolkit.
 
-###Batchers
+### Batchers
 The Batcher utilities provide an easy to configure means of generating batches of data triggered based on size and time. 
 These are designed to work in a multi-threaded environment making it easy to integrate anywhere a simple batching solution
 is needed.
@@ -54,12 +54,12 @@ List<Integer> data = FluentCloseableIterables.from(rawData)
     .toList(); 
 ``` 
 
-###IO
+### IO
 There are a few simple utilities for working with IO. The `Serializables` utilities are helpers for converting Java serialiable
 objects to and from byte arrays. The abstract buffered streams are utilities for chunking up streams and reconstituting 
 that data later.
 
-###Net
+### Net
 The ```net``` package provides utilities working with IP addresses and Java's InetAddress classes.  The ```IPv4``` and ```IPv6```
 classes are lightweight wrappers around Java's Inet4address and Inet6Address classes respectively, with the primary goal
 of making them Comparable. This makes these classes much easier to use to for things like range checks.  For instance, 
