@@ -20,7 +20,7 @@ Batcher batcher = BatcherBuilder.create()
 
 ```
 
-###Collect
+### Collect
 The collect module provides many tools for working with Iterators and Iterables. Most of these utilities provide extensions
 to the capabilities provided by Guava. 
 
@@ -78,7 +78,7 @@ Java will automatically convert "*IPv4 Mapped*" IPv6 addresses to an ```Inet4Add
 the ```InetAddresses``` utilities in Guava.  ```MoreInetAddresses``` utilities will always preserve the original ipv6 
 address as an Inet6Address irregardless of if it represents a "*IPv4 Mapped*" address.
 
-###Types
+### Types
 One of the primary utilities are the type encoders. These are a set of utilities for encoding and decoding data in a
 number of formats.  At its heart is the the ```TypeEncoder``` interface and the ```TypeRegistry``` class for interacting 
 with each encoder.  The ```TypeRegistry``` provides a means for interacting with similar groups of ```TypeEncoders```.
