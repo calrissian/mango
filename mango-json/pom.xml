@@ -26,7 +26,7 @@ limitations under the License.
   <name>Mango JSON</name>
   <description>Reusable JSON serializers and utilities</description>
   <properties>
-    <jackson.version>2.9.10.3</jackson.version>
+    <jackson.version>2.10.0.pr1</jackson.version>
   </properties>
   <dependencies>
     <dependency>
